@@ -238,6 +238,10 @@ class $AssetsImagesGen {
   AssetGenImage get a9mobile =>
       const AssetGenImage('assets/images/9mobile.png');
 
+  /// File path: assets/images/Coins-amico 1.png
+  AssetGenImage get coinsAmico1 =>
+      const AssetGenImage('assets/images/Coins-amico 1.png');
+
   /// File path: assets/images/International-2.png
   AssetGenImage get international2 =>
       const AssetGenImage('assets/images/International-2.png');
@@ -330,6 +334,9 @@ class $AssetsImagesGen {
   /// File path: assets/images/jumia.png
   AssetGenImage get jumia => const AssetGenImage('assets/images/jumia.png');
 
+  /// File path: assets/images/logo.png
+  AssetGenImage get logo => const AssetGenImage('assets/images/logo.png');
+
   /// File path: assets/images/mtn.png
   AssetGenImage get mtn => const AssetGenImage('assets/images/mtn.png');
 
@@ -401,6 +408,7 @@ class $AssetsImagesGen {
   /// List of all assets
   List<AssetGenImage> get values => [
     a9mobile,
+    coinsAmico1,
     international2,
     international,
     union,
@@ -428,6 +436,7 @@ class $AssetsImagesGen {
     gotv,
     info,
     jumia,
+    logo,
     mtn,
     nabteb,
     neco,

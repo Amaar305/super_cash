@@ -24,6 +24,8 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // final launch = serviceLocator<LaunchState>();
+
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => serviceLocator<AppBloc>()),

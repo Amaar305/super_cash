@@ -24,7 +24,7 @@ class FingerprintLoginContent extends StatelessWidget {
             border: Border.all(width: 0.5),
           ),
           child: FittedBox(
-            child: Assets.images.appLogo.image(width: 100, fit: BoxFit.cover),
+            child: Assets.images.logo.image(width: 100, fit: BoxFit.cover),
           ),
         ),
         Gap.v(AppSpacing.xlg),

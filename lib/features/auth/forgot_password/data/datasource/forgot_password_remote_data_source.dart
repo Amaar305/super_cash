@@ -63,7 +63,6 @@ class ForgotPasswordRemoteDataSourceImpl
         body: body,
         withToken: false,
       );
-      print(request.body);
       final response = jsonDecode(request.body);
 
       if (response.containsKey('status') && response['status'] != 'success') {

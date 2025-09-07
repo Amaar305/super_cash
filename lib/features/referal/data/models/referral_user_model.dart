@@ -42,14 +42,14 @@ class ReferralUserModel extends ReferralUser {
       id: map['id'] as String,
       referredId: map['referred'] as String,
       username: map['username'] as String,
-      rewardAmount: map['reward_amount'] as double,
+      rewardAmount: (map['reward_amount'] as int).toDouble(),
       rewardClaimedAt: map['reward_claimed_at'] != null
           ? DateTime.fromMillisecondsSinceEpoch(map['reward_claimed_at'] as int)
           : null,
       rewarded: map['rewarded'] as bool,
       expired: map['is_expired'] as bool,
       expiredAt: map['expired_at'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(map['expired_at'] as int)
+          ? DateTime.parse(map['expired_at'] as String)
           : null,
       active: map['is_active'] as bool,
       verified: map['is_verified'] as bool,

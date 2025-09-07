@@ -83,7 +83,6 @@ class LoginRemoteDataSourceImpl implements LoginRemoteDataSource {
         body: body,
       );
 
-      logE(response.body);
 
       if (response.statusCode != 200) {
         throw ServerException('Failed to fetch user details');

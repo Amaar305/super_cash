@@ -6,7 +6,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../../app/app.dart';
 import '../../../../../core/app_strings/app_string.dart';
-import '../cubit/data_cubit.dart';
 
 class DataButton extends StatelessWidget {
   const DataButton({super.key});

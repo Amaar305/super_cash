@@ -9,13 +9,14 @@ import '../auth.dart';
 /// {@endtemplate}
 class AuthPage extends StatelessWidget {
   /// {@macro auth_page}
-  const AuthPage({super.key});
+  final bool islogin;
+  const AuthPage({super.key, required this.islogin});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => AuthCubit(),
-      child: const AuthView(),
+      child: AuthView(islogin: islogin),
     );
   }
 }
@@ -24,20 +25,18 @@ class AuthPage extends StatelessWidget {
 /// Auth view. Shows login or signup page depending on the state of [AuthCubit].
 /// {@endtemplate}
 class AuthView extends StatelessWidget {
+  final bool islogin;
+
   /// {@macro auth_view}
-  const AuthView({super.key});
+  const AuthView({super.key, required this.islogin});
 
   @override
   Widget build(BuildContext context) {
-    final showLogin = context.select((AuthCubit b) => b.state);
+    final showLogin = context.select((AuthCubit b) => b.state) && islogin;
 
     return PageTransitionSwitcher(
       reverse: showLogin,
-      transitionBuilder: (
-        child,
-        animation,
-        secondaryAnimation,
-      ) {
+      transitionBuilder: (child, animation, secondaryAnimation) {
         return SharedAxisTransition(
           animation: animation,
           secondaryAnimation: secondaryAnimation,

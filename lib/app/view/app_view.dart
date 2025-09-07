@@ -3,6 +3,7 @@ import 'package:super_cash/app/bloc/app_bloc.dart';
 import 'package:super_cash/app/init/init.dart';
 import 'package:super_cash/core/app_strings/app_string.dart';
 import 'package:flutter/material.dart';
+import 'package:super_cash/features/onboarding/onboarding.dart';
 
 import '../app.dart';
 
@@ -14,7 +15,10 @@ class AppView extends StatefulWidget {
 }
 
 class _AppViewState extends State<AppView> {
-  final routerConfig = AppRouter(serviceLocator<AppBloc>()).router;
+  final routerConfig = AppRouter(
+    serviceLocator<AppBloc>(),
+    serviceLocator<LaunchState>(),
+  ).router;
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(

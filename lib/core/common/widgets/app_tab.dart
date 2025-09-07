@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:shared/shared.dart';
 
 class AppTab extends StatelessWidget {
-  const AppTab({super.key, this.children});
+  const AppTab({super.key, this.children, this.backgroundColor});
   final List<AppTabItem>? children;
+  final Color? backgroundColor;
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
@@ -12,13 +13,10 @@ class AppTab extends StatelessWidget {
       width: double.infinity,
       padding: EdgeInsets.all(AppSpacing.xs),
       decoration: BoxDecoration(
-        color: AppColors.primary2,
+        color: backgroundColor ?? AppColors.primary2,
         borderRadius: BorderRadius.circular(AppSpacing.sm),
       ),
-      child: Row(
-        spacing: AppSpacing.xs,
-        children: children ?? [],
-      ),
+      child: Row(spacing: AppSpacing.xs, children: children ?? []),
     );
   }
 }
@@ -29,10 +27,15 @@ class AppTabItem extends StatelessWidget {
     required this.label,
     this.activeTab = false,
     this.onTap,
+    this.activeColor,
+    this.activeTextColor,
   });
   final String label;
   final bool activeTab;
   final VoidCallback? onTap;
+  final Color? activeColor;
+  final Color? activeTextColor;
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -45,16 +48,14 @@ class AppTabItem extends StatelessWidget {
             horizontal: AppSpacing.md,
           ),
           decoration: BoxDecoration(
-            color: activeTab ? AppColors.white : null,
-            borderRadius: BorderRadius.circular(
-              AppSpacing.xs,
-            ),
+            color: activeTab ? activeColor ?? AppColors.white : null,
+            borderRadius: BorderRadius.circular(AppSpacing.xs),
           ),
           child: Text(
             label,
             style: MonaSansTextStyle.label(
               fontWeight: AppFontWeight.bold,
-              color: activeTab ? null : AppColors.white,
+              color: activeTab ? activeTextColor : AppColors.white,
             ),
           ),
         ),

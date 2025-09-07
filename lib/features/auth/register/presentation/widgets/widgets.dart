@@ -6,6 +6,8 @@ export 'phone_field.dart';
 export 'terms_and_privacy_button.dart';
 export 'app_text_field_label.dart';
 export 'email_field.dart';
+export 'referral_field.dart';
+
 export 'register_form.dart';
 export 'register_type.dart';
 export 'register_button.dart';

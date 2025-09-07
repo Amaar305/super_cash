@@ -11,5 +11,6 @@ abstract interface class RegisterRepository {
     required String lastName,
     required String password,
     required String confirmPassword,
+    required String? referral,
   });
 }

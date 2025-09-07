@@ -3,7 +3,6 @@ import 'package:super_cash/core/error/failure.dart';
 import 'package:super_cash/features/add_fund/add_fund.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:shared/shared.dart';
-import 'package:shared/src/models/account.dart';
 
 class AddFundRepositoryImpl implements AddFundRepository {
   final AddFundRemoteDataSource remoteDataSource;

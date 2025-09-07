@@ -15,6 +15,7 @@ abstract interface class RegisterRemoteDataSource {
     required String lastName,
     required String password,
     required String confirmPassword,
+    String? referral,
   });
 }
 
@@ -30,6 +31,7 @@ class RegisterRemoteDataSourceImpl implements RegisterRemoteDataSource {
     required String lastName,
     required String password,
     required String confirmPassword,
+    String? referral,
   }) async {
     try {
       final body = jsonEncode({
@@ -39,6 +41,7 @@ class RegisterRemoteDataSourceImpl implements RegisterRemoteDataSource {
         'password': password,
         'password2': confirmPassword,
         'phone_number': phone,
+        if (referral != null) 'referral_code': referral,
       });
       final res = await apiClient.request(
         method: 'POST',

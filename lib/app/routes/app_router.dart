@@ -5,11 +5,13 @@ import 'package:super_cash/features/account/account.dart';
 import 'package:super_cash/features/account/change_password/change_password.dart';
 import 'package:super_cash/features/add_fund/add_fund.dart';
 import 'package:super_cash/features/confirm_transaction_pin/confirm_transaction_pin.dart';
+import 'package:super_cash/features/onboarding/onboarding.dart';
 import 'package:super_cash/features/referal/referal.dart';
 import 'package:super_cash/features/transfer/presentation/pages/transfer_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared/shared.dart';
+import 'package:super_cash/features/welcome/welcome.dart';
 
 import '../../features/auth/auth.dart';
 import '../../features/card/card.dart';
@@ -28,17 +30,27 @@ import '../bloc/app_bloc.dart';
 final _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 
 class AppRouter {
-  const AppRouter(this.appBloc);
+  const AppRouter(this.appBloc, this.launch);
 
   final AppBloc appBloc;
+  final LaunchState launch;
 
   GoRouter get router => GoRouter(
     initialLocation: AppRoutes.dashboard,
     navigatorKey: _rootNavigatorKey,
+    debugLogDiagnostics: true,
     routes: [
       GoRoute(
         path: AppRoutes.splash,
         builder: (context, state) => SplashPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.onboarding,
+        builder: (context, state) => OnboardingPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.welcome,
+        builder: (context, state) => WelcomePage(),
       ),
       GoRoute(
         path: AppRoutes.enableBiometric,
@@ -56,7 +68,10 @@ class AppRouter {
         path: AppRoutes.addFunds,
         builder: (context, state) => AddFundPage(),
       ),
-      GoRoute(path: AppRoutes.auth, builder: (context, state) => AuthPage()),
+      GoRoute(
+        path: AppRoutes.auth,
+        builder: (context, state) => AuthPage(islogin: launch.isLoginPage),
+      ),
       GoRoute(
         path: AppRoutes.notifications,
         builder: (context, state) => NotificationPage(),
@@ -85,7 +100,7 @@ class AppRouter {
       ),
       GoRoute(
         path: AppRoutes.referFriend,
-        builder: (context, state) => ReferalPage(),
+        builder: (context, state) => ReferralPage(),
       ),
       GoRoute(
         path: AppRoutes.examPin,
@@ -298,28 +313,42 @@ class AppRouter {
     ],
     redirect: (context, state) {
       final status = appBloc.state.status;
-      final isSplash = state.matchedLocation == AppRoutes.splash;
-      final isLogin = state.matchedLocation == AppRoutes.auth;
+      final onboarded = launch.onboarded; // null/false/true
+      final welcome = launch.welcomePending; // bool
 
+      final loc = state.matchedLocation;
+      final isSplash = loc == AppRoutes.splash;
+      final isLogin = loc == AppRoutes.auth;
+      final isOb = loc == AppRoutes.onboarding;
+      final isWel = loc == AppRoutes.welcome;
+
+      // 0) Still loading → Splash
+      if (onboarded == null) return isSplash ? null : AppRoutes.splash;
+
+      // 1) Not onboarded → Onboarding
+      if (onboarded == false) return isOb ? null : AppRoutes.onboarding;
+
+      // 2) Onboarded and Welcome pending → Welcome
+      if (welcome) return isWel ? null : AppRoutes.welcome;
+
+      // 3) Onboarded & Welcome done → auth flow
       if (status == AppStatus.unknown) {
         return isSplash ? null : AppRoutes.splash;
       }
-
       if (status == AppStatus.unauthenticated || status == AppStatus.resumed) {
         return isLogin ? null : AppRoutes.auth;
       }
-
       if (status == AppStatus.authenticated) {
-        // Only redirect to dashboard if user is trying to access splash or login
-        if (isSplash || isLogin) {
-          return AppRoutes.dashboard;
-        }
-        return null; // Allow navigation to other authenticated pages
+        if (isSplash || isLogin || isOb || isWel) return AppRoutes.dashboard;
+        return null;
       }
 
       return null;
     },
-    refreshListenable: GoRouterAppBlocRefreshStream(appBloc.stream),
+    refreshListenable: Listenable.merge([
+      GoRouterAppBlocRefreshStream(appBloc.stream),
+      launch,
+    ]),
   );
 }
 

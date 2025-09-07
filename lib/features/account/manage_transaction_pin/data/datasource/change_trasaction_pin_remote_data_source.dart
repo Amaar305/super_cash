@@ -83,7 +83,6 @@ class ChangeTransactionPinRemoteDataSourceImpl
         body: body,
         // withToken: false,
       );
-      print(request.statusCode);
 
       final response = jsonDecode(request.body);
 

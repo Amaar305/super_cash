@@ -30,6 +30,9 @@ class RegisterWithBasicSignup extends StatelessWidget {
           // Password confirmation
           ConfirmPasswordField(),
 
+          // Referral
+          ReferralField(),
+
           // Terms and privacy policy
           TermsAndPrivacyButton(),
 

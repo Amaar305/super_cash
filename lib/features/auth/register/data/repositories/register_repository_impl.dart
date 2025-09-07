@@ -17,6 +17,7 @@ class RegisterRepositoryImpl implements RegisterRepository {
     required String lastName,
     required String password,
     required String confirmPassword,
+    required String? referral,
   }) async {
     try {
       final data = await registerRemoteDataSource.register(
@@ -26,6 +27,7 @@ class RegisterRepositoryImpl implements RegisterRepository {
         lastName: lastName,
         password: password,
         confirmPassword: confirmPassword,
+        referral: referral,
       );
       return right(data);
     } on ServerException catch (e) {

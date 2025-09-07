@@ -27,7 +27,6 @@ class AppTheme {
           primary: primary,
           swapOnMaterial3: true,
         ),
-        useMaterial3: true,
         useMaterial3ErrorColors: true,
       ).copyWith(
         textTheme: const AppTheme().textTheme,

@@ -53,5 +53,6 @@ class LoginLocalDataSourceImpl implements LoginLocalDataSource {
   @override
   Future<void> clearUser() async {
     await sharedPreferences.remove('user_data');
+    await sharedPreferences.remove('onboarded');
   }
 }

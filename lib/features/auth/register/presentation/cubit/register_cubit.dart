@@ -11,28 +11,23 @@ part 'register_state.dart';
 
 class RegisterCubit extends Cubit<RegisterState> {
   RegisterCubit({required RegisterUseCase registerUseCase})
-      : _registerUseCase = registerUseCase,
-        super(RegisterState.initial());
+    : _registerUseCase = registerUseCase,
+      super(RegisterState.initial());
 
   final RegisterUseCase _registerUseCase;
 
   /// Changes password visibility, making it visible or not.
   void changePasswordVisibility({bool confirmPass = false}) {
     if (confirmPass) {
-      emit(
-        state.copyWith(showConfirmPassword: !state.showConfirmPassword),
-      );
+      emit(state.copyWith(showConfirmPassword: !state.showConfirmPassword));
     } else {
-      emit(
-        state.copyWith(showPassword: !state.showPassword),
-      );
+      emit(state.copyWith(showPassword: !state.showPassword));
     }
   }
 
   void changeTermsCondition() => emit(
-        state.copyWith(
-            agreedToTermsAndCondition: !state.agreedToTermsAndCondition),
-      );
+    state.copyWith(agreedToTermsAndCondition: !state.agreedToTermsAndCondition),
+  );
 
   void changeType(bool basicSignup) {
     if (state.basicSignup == basicSignup) return;
@@ -49,16 +44,10 @@ class RegisterCubit extends Cubit<RegisterState> {
     final previousEmailState = previousScreenState.email;
     final shouldValidate = previousEmailState.invalid;
     final newEmailState = shouldValidate
-        ? Email.dirty(
-            newValue,
-          )
-        : Email.pure(
-            newValue,
-          );
+        ? Email.dirty(newValue)
+        : Email.pure(newValue);
 
-    final newScreenState = state.copyWith(
-      email: newEmailState,
-    );
+    final newScreenState = state.copyWith(email: newEmailState);
 
     emit(newScreenState);
   }
@@ -70,15 +59,10 @@ class RegisterCubit extends Cubit<RegisterState> {
     final previousEmailState = previousScreenState.email;
     final previousEmailValue = previousEmailState.value;
 
-    final newEmailState = Email.dirty(
-      previousEmailValue,
-    );
-    final newScreenState = previousScreenState.copyWith(
-      email: newEmailState,
-    );
+    final newEmailState = Email.dirty(previousEmailValue);
+    final newScreenState = previousScreenState.copyWith(email: newEmailState);
     emit(newScreenState);
   }
-
 
   /// Password value was changed, triggering new changes in state.
   /// Checking whether or not value is valid in [Password] and emmiting new
@@ -88,16 +72,10 @@ class RegisterCubit extends Cubit<RegisterState> {
     final previousPasswordState = previousScreenState.password;
     final shouldValidate = previousPasswordState.invalid;
     final newPasswordState = shouldValidate
-        ? Password.dirty(
-            newValue,
-          )
-        : Password.pure(
-            newValue,
-          );
+        ? Password.dirty(newValue)
+        : Password.pure(newValue);
 
-    final newScreenState = state.copyWith(
-      password: newPasswordState,
-    );
+    final newScreenState = state.copyWith(password: newPasswordState);
 
     emit(newScreenState);
   }
@@ -107,9 +85,7 @@ class RegisterCubit extends Cubit<RegisterState> {
     final previousPasswordState = previousScreenState.password;
     final previousPasswordValue = previousPasswordState.value;
 
-    final newPasswordState = Password.dirty(
-      previousPasswordValue,
-    );
+    final newPasswordState = Password.dirty(previousPasswordValue);
     final newScreenState = previousScreenState.copyWith(
       password: newPasswordState,
     );
@@ -124,16 +100,10 @@ class RegisterCubit extends Cubit<RegisterState> {
     final previousConfirmPasswordState = previousScreenState.confirmPassword;
     final shouldValidate = previousConfirmPasswordState.invalid;
     final newPasswordState = shouldValidate
-        ? Password.dirty(
-            newValue,
-          )
-        : Password.pure(
-            newValue,
-          );
+        ? Password.dirty(newValue)
+        : Password.pure(newValue);
 
-    final newScreenState = state.copyWith(
-      confirmPassword: newPasswordState,
-    );
+    final newScreenState = state.copyWith(confirmPassword: newPasswordState);
 
     emit(newScreenState);
   }
@@ -143,9 +113,7 @@ class RegisterCubit extends Cubit<RegisterState> {
     final previousConfirmPasswordState = previousScreenState.confirmPassword;
     final previousPasswordValue = previousConfirmPasswordState.value;
 
-    final newPasswordState = Password.dirty(
-      previousPasswordValue,
-    );
+    final newPasswordState = Password.dirty(previousPasswordValue);
     final newScreenState = previousScreenState.copyWith(
       confirmPassword: newPasswordState,
     );
@@ -160,16 +128,10 @@ class RegisterCubit extends Cubit<RegisterState> {
     final previousFirstNameState = previousScreenState.firstName;
     final shouldValidate = previousFirstNameState.invalid;
     final newFullNameState = shouldValidate
-        ? FirstName.dirty(
-            newValue,
-          )
-        : FirstName.pure(
-            newValue,
-          );
+        ? FirstName.dirty(newValue)
+        : FirstName.pure(newValue);
 
-    final newScreenState = state.copyWith(
-      firstName: newFullNameState,
-    );
+    final newScreenState = state.copyWith(firstName: newFullNameState);
 
     emit(newScreenState);
   }
@@ -181,9 +143,7 @@ class RegisterCubit extends Cubit<RegisterState> {
     final previousFirstNameState = previousScreenState.firstName;
     final previousFullNameValue = previousFirstNameState.value;
 
-    final newFullNameState = FirstName.dirty(
-      previousFullNameValue,
-    );
+    final newFullNameState = FirstName.dirty(previousFullNameValue);
     final newScreenState = previousScreenState.copyWith(
       firstName: newFullNameState,
     );
@@ -198,16 +158,10 @@ class RegisterCubit extends Cubit<RegisterState> {
     final previousLastNameState = previousScreenState.lastName;
     final shouldValidate = previousLastNameState.invalid;
     final newSurnameState = shouldValidate
-        ? LastName.dirty(
-            newValue,
-          )
-        : LastName.pure(
-            newValue,
-          );
+        ? LastName.dirty(newValue)
+        : LastName.pure(newValue);
 
-    final newScreenState = state.copyWith(
-      lastName: newSurnameState,
-    );
+    final newScreenState = state.copyWith(lastName: newSurnameState);
 
     emit(newScreenState);
   }
@@ -217,9 +171,7 @@ class RegisterCubit extends Cubit<RegisterState> {
     final previousLastNameState = previousScreenState.lastName;
     final previousUsernameValue = previousLastNameState.value;
 
-    final newUsernameState = LastName.dirty(
-      previousUsernameValue,
-    );
+    final newUsernameState = LastName.dirty(previousUsernameValue);
     final newScreenState = previousScreenState.copyWith(
       lastName: newUsernameState,
     );
@@ -234,16 +186,10 @@ class RegisterCubit extends Cubit<RegisterState> {
     final previousLastNameState = previousScreenState.phone;
     final shouldValidate = previousLastNameState.invalid;
     final newSurnameState = shouldValidate
-        ? Phone.dirty(
-            newValue,
-          )
-        : Phone.pure(
-            newValue,
-          );
+        ? Phone.dirty(newValue)
+        : Phone.pure(newValue);
 
-    final newScreenState = state.copyWith(
-      phone: newSurnameState,
-    );
+    final newScreenState = state.copyWith(phone: newSurnameState);
 
     emit(newScreenState);
   }
@@ -253,11 +199,37 @@ class RegisterCubit extends Cubit<RegisterState> {
     final previousLastNameState = previousScreenState.phone;
     final previousUsernameValue = previousLastNameState.value;
 
-    final newUsernameState = Phone.dirty(
-      previousUsernameValue,
-    );
+    final newUsernameState = Phone.dirty(previousUsernameValue);
     final newScreenState = previousScreenState.copyWith(
       phone: newUsernameState,
+    );
+    emit(newScreenState);
+  }
+
+  /// [Phone] value was changed, triggering new changes in state. Checking
+  /// whether or not value is valid in [LastName] and emmiting new [LastName]
+  /// validation state.
+  void onReferralChanged(String newValue) {
+    final previousScreenState = state;
+    final previousLastNameState = previousScreenState.referral;
+    final shouldValidate = previousLastNameState.invalid;
+    final newSurnameState = shouldValidate
+        ? Referral.dirty(newValue)
+        : Referral.pure(newValue);
+
+    final newScreenState = state.copyWith(referral: newSurnameState);
+
+    emit(newScreenState);
+  }
+
+  void onReferralUnfocused() {
+    final previousScreenState = state;
+    final previousLastNameState = previousScreenState.referral;
+    final previousUsernameValue = previousLastNameState.value;
+
+    final newUsernameState = Referral.dirty(previousUsernameValue);
+    final newScreenState = previousScreenState.copyWith(
+      referral: newUsernameState,
     );
     emit(newScreenState);
   }
@@ -269,9 +241,16 @@ class RegisterCubit extends Cubit<RegisterState> {
     final firstName = FirstName.dirty(state.firstName.value);
     final lastName = LastName.dirty(state.lastName.value);
     final phone = Phone.dirty(state.phone.value);
-    final isFormValid =
-        FormzValid([email, password, password2, firstName, lastName, phone])
-            .isFormValid;
+    final referral = Referral.dirty(state.referral.value);
+    final isFormValid = FormzValid([
+      email,
+      password,
+      password2,
+      firstName,
+      lastName,
+      phone,
+      referral,
+    ]).isFormValid;
 
     final newState = state.copyWith(
       email: email,
@@ -295,20 +274,16 @@ class RegisterCubit extends Cubit<RegisterState> {
         lastName: lastName.value,
         password: password.value,
         confirmPassword: password2.value,
+        referral: referral.value.isEmpty ? null : referral.value,
       ),
     );
 
     res.fold(
       (l) => emit(
-        state.copyWith(
-          status: RegisterStatus.error,
-          errorMessage: l.message,
-        ),
+        state.copyWith(status: RegisterStatus.error, errorMessage: l.message),
       ),
       (r) {
-        emit(
-          state.copyWith(status: RegisterStatus.success, user: r),
-        );
+        emit(state.copyWith(status: RegisterStatus.success, user: r));
         onSuccess?.call();
       },
     );

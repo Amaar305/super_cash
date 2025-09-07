@@ -59,6 +59,7 @@ class CardAppleProductSwitchSection extends StatelessWidget {
           Switch.adaptive(
             value: isAppleProduct,
             onChanged: isLoading ? null : (_) => onSwitched(),
+            // ignore: deprecated_member_use
             activeColor: AppColors.blue,
           ),
         ],

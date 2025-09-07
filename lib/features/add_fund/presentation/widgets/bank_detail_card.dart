@@ -2,7 +2,6 @@ import 'package:app_ui/app_ui.dart';
 import 'package:super_cash/core/fonts/app_text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/shared.dart';
-import 'package:shared/src/models/account.dart';
 
 class BankDetailCard extends StatelessWidget {
   const BankDetailCard({super.key, required this.bankDetail, this.label});

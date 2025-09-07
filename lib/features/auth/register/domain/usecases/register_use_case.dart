@@ -17,6 +17,7 @@ class RegisterUseCase implements UseCase<AuthUser, RegisterParam> {
       lastName: param.lastName,
       password: param.password,
       confirmPassword: param.confirmPassword,
+      referral: param.referral,
     );
   }
 }
@@ -24,6 +25,7 @@ class RegisterUseCase implements UseCase<AuthUser, RegisterParam> {
 class RegisterParam {
   final String email;
   final String phone;
+  final String? referral;
   final String firstName;
   final String lastName;
   final String password;
@@ -36,5 +38,6 @@ class RegisterParam {
     required this.lastName,
     required this.password,
     required this.confirmPassword,
+    this.referral,
   });
 }

@@ -18,4 +18,5 @@ export 'src/otp2.dart';
 export 'src/password.dart';
 export 'src/phone.dart';
 export 'src/postal_code.dart';
+export 'src/referral.dart';
 export 'src/username.dart';

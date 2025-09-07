@@ -87,7 +87,7 @@ class AppDropdownField extends StatelessWidget {
           .toList(),
       isExpanded: true,
       focusNode: focusNode,
-      value: initialValue,
+      initialValue: initialValue,
       onChanged: enabled ? onChanged : null,
       decoration: InputDecoration(
         border: border,

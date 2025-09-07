@@ -57,25 +57,27 @@ class RegisterState extends Equatable {
     required this.agreedToTermsAndCondition,
     required this.basicSignup,
     required this.phone,
+    required this.referral,
     required this.user,
   });
 
   const RegisterState.initial()
-      : this._(
-          status: RegisterStatus.idle,
-          firstName: const FirstName.pure(),
-          lastName: const LastName.pure(),
-          email: const Email.pure(),
-          password: const Password.pure(),
-          confirmPassword: const Password.pure(),
-          phone: const Phone.pure(),
-          errorMessage: '',
-          showPassword: false,
-          showConfirmPassword: false,
-          agreedToTermsAndCondition: false,
-          basicSignup: true,
-          user: const AuthUserModel.anonymousUser(),
-        );
+    : this._(
+        status: RegisterStatus.idle,
+        firstName: const FirstName.pure(),
+        lastName: const LastName.pure(),
+        email: const Email.pure(),
+        password: const Password.pure(),
+        confirmPassword: const Password.pure(),
+        phone: const Phone.pure(),
+        referral: const Referral.pure(),
+        errorMessage: '',
+        showPassword: false,
+        showConfirmPassword: false,
+        agreedToTermsAndCondition: false,
+        basicSignup: true,
+        user: const AuthUserModel.anonymousUser(),
+      );
 
   final RegisterStatus status;
   final FirstName firstName;
@@ -84,6 +86,7 @@ class RegisterState extends Equatable {
   final Password password;
   final Password confirmPassword;
   final Phone phone;
+  final Referral referral;
   final String errorMessage;
   final bool showPassword;
   final bool showConfirmPassword;
@@ -99,6 +102,7 @@ class RegisterState extends Equatable {
     Password? password,
     Password? confirmPassword,
     Phone? phone,
+    Referral? referral,
     String? errorMessage,
     bool? showPassword,
     bool? showConfirmPassword,
@@ -121,24 +125,26 @@ class RegisterState extends Equatable {
           agreedToTermsAndCondition ?? this.agreedToTermsAndCondition,
       basicSignup: basicSignup ?? this.basicSignup,
       user: user ?? this.user,
+      referral: referral ?? this.referral,
     );
   }
 
   @override
   List<Object?> get props => [
-        password,
-        confirmPassword,
-        email,
-        status,
-        errorMessage,
-        phone,
-        showPassword,
-        showConfirmPassword,
-        firstName,
-        lastName,
-        agreedToTermsAndCondition,
-        basicSignup,
-      ];
+    password,
+    confirmPassword,
+    email,
+    status,
+    errorMessage,
+    phone,
+    showPassword,
+    showConfirmPassword,
+    firstName,
+    lastName,
+    agreedToTermsAndCondition,
+    basicSignup,
+    referral,
+  ];
 }
 
 final registerStatusMessage = <RegisterStatus, SubmissionStatusMessage>{

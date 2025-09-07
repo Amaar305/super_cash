@@ -70,7 +70,6 @@ class VTUActionButtons extends StatelessWidget {
   }
 
   void _onNumberPasted(BuildContext context) async {
-    print('object');
     final data = await Clipboard.getData(Clipboard.kTextPlain);
     if (data?.text != null && context.mounted) {
       final nonDigit = RegExp("\\D");

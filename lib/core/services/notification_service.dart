@@ -96,7 +96,7 @@ class NotificationService {
     await _handleTokenRefresh();
   }
 
-  // TODO:
+  //
   // - Implement `_initializeLocalNotifications` to set up `FlutterLocalNotificationsPlugin`.
   // - Implement `_setupInteractedMessage` to handle taps on notifications.
   // - Implement `_requestPermissions` for requesting notification permissions.

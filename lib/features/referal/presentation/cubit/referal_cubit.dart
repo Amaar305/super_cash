@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:shared/shared.dart';
 import 'package:super_cash/core/usecase/use_case.dart';
 import 'package:super_cash/features/referal/referal.dart';
@@ -17,6 +18,13 @@ class ReferalCubit extends Cubit<ReferalState> {
   }) : _claimMyRewardsUseCase = claimMyRewardsUseCase,
        _fetchMyReferralsUseCase = fetchMyRerralsUseCase,
        super(ReferalState.initial());
+
+  void changeReferralType(bool type) {
+    if (type == state.showReferralList || state.status.isLoading) {
+      return;
+    }
+    emit(state.copyWith(showReferralList: type));
+  }
 
   Future<void> fetchMyReferrals() async {
     if (isClosed || state.status.isLoading) return;

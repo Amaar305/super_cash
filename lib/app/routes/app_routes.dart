@@ -2,6 +2,8 @@ class AppRoutes {
   static const String dashboard = '/';
   static const String auth = '/auth';
   static const String splash = '/splash';
+  static const String onboarding = '/onboarding';
+  static const String welcome = '/welcome-page';
   static const String enableBiometric = '/enable-biometric';
   static const String profile = '/profile';
   static const String profileDetails = '$profile/profile-details';

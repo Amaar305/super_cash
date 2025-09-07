@@ -14,7 +14,6 @@ import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:super_cash/features/referal/data/datasource/referal_remote_data_source.dart';
 import 'package:super_cash/features/referal/referal.dart';
 import 'package:token_repository/token_repository.dart';
 import 'package:http/http.dart' as http;
@@ -24,6 +23,7 @@ import '../../features/auth/auth.dart';
 import '../../features/card/card_details/domain/use_cases/card_details_use_cases.dart';
 import '../../features/card/card_repo/card_repo.dart';
 import '../../features/home/home.dart';
+import '../../features/onboarding/launch_state.dart';
 import '../../features/upgrade_tier/upgrade_tier.dart';
 import '../../features/vtupass/vtupass.dart';
 
@@ -32,10 +32,10 @@ GetIt serviceLocator = GetIt.instance;
 Future<void> initDependencies() async {
   // Init sharedPreferences
   final sharedPreferences = await SharedPreferences.getInstance();
+  final launch = LaunchState(sharedPreferences);
+  serviceLocator.registerSingleton(launch);
+  await launch.load();
 
-  // Init Dio
-  // final dio = Dio();
-  // final dioClient = DioClient(dio, sharedPreferences);
 
   final LocalAuthentication auth = LocalAuthentication();
   final isSupported = await auth.isDeviceSupported();
