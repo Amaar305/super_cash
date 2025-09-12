@@ -2,7 +2,6 @@ import 'package:app_ui/app_ui.dart';
 import 'package:super_cash/app/app.dart';
 import 'package:super_cash/core/fonts/app_text_style.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:shared/shared.dart';
 
 class TransactionTile extends StatelessWidget {
@@ -25,7 +24,7 @@ class TransactionTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Tappable.faded(
       onTap: () =>
-          context.push(AppRoutes.transacttionDetail, extra: transaction),
+          context.goNamedSafe(RNames.transactionDetail, extra: transaction),
       child: Row(
         children: [
           Container(

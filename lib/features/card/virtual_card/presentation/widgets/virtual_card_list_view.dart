@@ -1,11 +1,9 @@
 import 'package:app_ui/app_ui.dart';
-import 'package:super_cash/app/routes/app_routes.dart';
-import 'package:super_cash/app/view/view.dart';
+import 'package:super_cash/app/app.dart';
 import 'package:super_cash/core/app_strings/app_string.dart';
 import 'package:super_cash/features/card/virtual_card/virtual_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 
 class VirtualCardListView extends StatelessWidget {
   const VirtualCardListView({super.key});
@@ -63,7 +61,7 @@ class VirtualCardListView extends StatelessWidget {
             ),
           ),
           VirtualCardCreateButton(
-            onTap: () => context.push(AppRoutes.virtualCardCreate),
+            onTap: () => context.goNamedSafe(RNames.virtualCardCreate),
             label: AppStrings.createNewVirtualCard,
           ),
         ],

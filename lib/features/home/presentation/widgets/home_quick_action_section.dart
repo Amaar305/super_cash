@@ -3,7 +3,6 @@ import 'package:super_cash/app/app.dart';
 import 'package:super_cash/core/app_strings/app_string.dart';
 import 'package:super_cash/core/fonts/app_text_style.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:shared/shared.dart';
 
 class HomeQuickActionSection extends StatelessWidget {
@@ -35,19 +34,19 @@ class HomeQuickActionSection extends StatelessWidget {
             HomeQuickActionButton(
               AppStrings.fundWallet,
               icon: Assets.icons.addOutline.svg(),
-              onTap: () => context.push(AppRoutes.addFunds),
+              onTap: () => context.goNamedSafe(RNames.addFunds),
             ),
             _vertticalLine(),
             HomeQuickActionButton(
               AppStrings.transfer,
               icon: Assets.icons.transferLine.svg(),
-              onTap: () => context.push(AppRoutes.transfer),
+              onTap: () => context.goNamedSafe(RNames.transfer),
             ),
             _vertticalLine(),
             HomeQuickActionButton(
               AppStrings.virtualCard,
               icon: Assets.icons.creditCards.svg(),
-              onTap: () => context.push(AppRoutes.virtualCard),
+              onTap: () => context.goNamedSafe(RNames.virtualCard),
             ),
           ],
         ),

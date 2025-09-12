@@ -300,6 +300,9 @@ class $AssetsImagesGen {
   AssetGenImage get cellular =>
       const AssetGenImage('assets/images/cellular.png');
 
+  /// File path: assets/images/chain 1.png
+  AssetGenImage get chain1 => const AssetGenImage('assets/images/chain 1.png');
+
   /// File path: assets/images/circle_check.png
   AssetGenImage get circleCheck =>
       const AssetGenImage('assets/images/circle_check.png');
@@ -322,6 +325,10 @@ class $AssetsImagesGen {
   AssetGenImage get facebook =>
       const AssetGenImage('assets/images/facebook.png');
 
+  /// File path: assets/images/film-reel 1.png
+  AssetGenImage get filmReel1 =>
+      const AssetGenImage('assets/images/film-reel 1.png');
+
   /// File path: assets/images/glo.png
   AssetGenImage get glo => const AssetGenImage('assets/images/glo.png');
 
@@ -336,6 +343,9 @@ class $AssetsImagesGen {
 
   /// File path: assets/images/logo.png
   AssetGenImage get logo => const AssetGenImage('assets/images/logo.png');
+
+  /// File path: assets/images/medal 1.png
+  AssetGenImage get medal1 => const AssetGenImage('assets/images/medal 1.png');
 
   /// File path: assets/images/mtn.png
   AssetGenImage get mtn => const AssetGenImage('assets/images/mtn.png');
@@ -364,6 +374,9 @@ class $AssetsImagesGen {
   /// File path: assets/images/profile_photo.png
   AssetGenImage get profilePhoto =>
       const AssetGenImage('assets/images/profile_photo.png');
+
+  /// File path: assets/images/reward.png
+  AssetGenImage get reward => const AssetGenImage('assets/images/reward.png');
 
   /// File path: assets/images/showmax.png
   AssetGenImage get showmax => const AssetGenImage('assets/images/showmax.png');
@@ -426,17 +439,20 @@ class $AssetsImagesGen {
     cardEctor,
     cardTexture,
     cellular,
+    chain1,
     circleCheck,
     contact,
     dashboardPattern,
     dstv,
     emptyCard,
     facebook,
+    filmReel1,
     glo,
     gotv,
     info,
     jumia,
     logo,
+    medal1,
     mtn,
     nabteb,
     neco,
@@ -445,6 +461,7 @@ class $AssetsImagesGen {
     pattern5,
     placeholder,
     profilePhoto,
+    reward,
     showmax,
     sim,
     smile,

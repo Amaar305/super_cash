@@ -55,7 +55,7 @@ class UpgradeTierRemoteDataSourceImpl implements UpgradeTierRemoteDataSource {
   @override
   Future<String?> uploadSelfieImage({required File file}) async {
     try {
-      final response = await apiClient.multipartRequest(
+      final response = await apiClient.multipart(
         path: 'card/uploads/selfie/',
         file: file,
         fileField: 'file',

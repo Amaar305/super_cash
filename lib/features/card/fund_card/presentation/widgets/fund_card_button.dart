@@ -1,10 +1,9 @@
 import 'package:app_ui/app_ui.dart';
-import 'package:super_cash/app/routes/app_routes.dart';
+import 'package:super_cash/app/app.dart';
 import 'package:super_cash/core/app_strings/app_string.dart';
 import 'package:super_cash/features/card/card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:shared/shared.dart';
 
 import '../../../../../core/cooldown/cooldown.dart';
@@ -48,7 +47,7 @@ class _FundCardButtonState extends State<FundCardButton> {
       label: AppStrings.fundCard,
       isLoading: isLoading,
       onPressed: () async {
-        final result = await context.push(AppRoutes.confirmationDialog);
+        final result = await context.goNamedSafe(RNames.confirmationDialog);
 
         if (result == true && context.mounted) {
           _debouncer.run(

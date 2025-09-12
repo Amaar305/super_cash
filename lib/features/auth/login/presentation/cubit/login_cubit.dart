@@ -185,6 +185,7 @@ class LoginCubit extends Cubit<LoginState> {
       (l) {
         emit(state.copyWith(message: l.message, status: LoginStatus.error));
         // _appBloc.add(UserLoggedOut());
+        logI(l.message);
       },
       (token) {
         emit(state.copyWith(status: LoginStatus.success, user: token));

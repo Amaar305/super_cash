@@ -34,27 +34,18 @@ class LoginRepositoryImpl implements LoginRepository {
         password: password,
       );
 
-      // await loginLocalDataSource.cacheTokens(
-      //   tokenModel.accessToken,
-      //   tokenModel.refreshToken,
-      // );
-
       tokenRepository
         ..saveAccessToken(tokenModel.accessToken)
         ..saveRefreshToken(tokenModel.refreshToken);
 
       final user = await loginRemoteDataSource.fetchUserDetails();
 
+      logE(user.email);
+
       await loginLocalDataSource.persistUser(user);
 
       return Right(user);
     } on ServerException catch (e) {
-      // Check if the ServerException indicates invalid credentials
-      if (e.message.toLowerCase().contains('invalid credentials')) {
-        return const Left(ServerFailure('Invalid username or password.'));
-      }
-      return Left(ServerFailure(e.message));
-    } on RefreshTokenException catch (e) {
       return Left(ServerFailure(e.message));
     }
   }

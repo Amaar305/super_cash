@@ -1,7 +1,6 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:super_cash/core/fonts/app_text_style.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../../app/app.dart';
 
@@ -14,22 +13,22 @@ class HomeServicesSection extends StatelessWidget {
       HomeServiceActionButton(
         'Cable sub',
         icon: Assets.icons.cable.svg(),
-        onTap: () => context.push(AppRoutes.cable),
+        onTap: () => context.goNamedSafe(RNames.cable),
       ),
       HomeServiceActionButton(
         'Buy Airtime',
         icon: Assets.icons.airttime.svg(),
-        onTap: () => context.push(AppRoutes.airtime),
+        onTap: () => context.goNamedSafe(RNames.airtime),
       ),
       HomeServiceActionButton(
         'Buy Data',
         icon: Assets.icons.data.svg(),
-        onTap: () => context.push(AppRoutes.data),
+        onTap: () => context.goNamedSafe(RNames.data),
       ),
       HomeServiceActionButton(
         'Electricity',
         icon: Assets.icons.electricity.svg(),
-        onTap: () => context.push(AppRoutes.electricity),
+        onTap: () => context.goNamedSafe(RNames.electricity),
       ),
       HomeServiceActionButton(
         'Beneficiary',
@@ -38,22 +37,22 @@ class HomeServicesSection extends StatelessWidget {
           size: 24,
           color: AppColors.darkGrey,
         ),
-        onTap: () => context.push(AppRoutes.manageBeneficiary),
+        onTap: () => context.goNamedSafe(RNames.manageBeneficiary),
       ),
       HomeServiceActionButton(
         'Refer',
         icon: Assets.icons.refer.svg(),
-        onTap: () => context.push(AppRoutes.referFriend),
+        onTap: () => context.goNamedSafe(RNames.referFriend),
       ),
       HomeServiceActionButton(
         'Exam Pin',
         icon: Assets.icons.exam.svg(),
-        onTap: () => context.push(AppRoutes.examPin),
+        onTap: () => context.goNamedSafe(RNames.examPin),
       ),
       HomeServiceActionButton(
         'Smile Voice',
         icon: Assets.icons.smile.svg(),
-        onTap: () => context.push(AppRoutes.smile),
+        onTap: () => context.goNamedSafe(RNames.smile),
       ),
     ];
     return Padding(

@@ -1,5 +1,6 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:super_cash/app/app.dart';
 import 'package:super_cash/core/fonts/app_text_style.dart';
 
 class HowItWorksButton extends StatelessWidget {
@@ -13,7 +14,9 @@ class HowItWorksButton extends StatelessWidget {
         fontSize: AppSpacing.md,
         color: AppColors.white,
       ),
-      onPressed: () {},
+      onPressed: () {
+        context.goNamedSafe(RNames.referHowItWorks);
+      },
       style: ElevatedButton.styleFrom(
         fixedSize: Size(108, 38),
         shape: RoundedRectangleBorder(

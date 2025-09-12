@@ -2,7 +2,6 @@ import 'package:app_ui/app_ui.dart';
 import 'package:super_cash/app/routes/routes.dart';
 import 'package:super_cash/core/app_strings/app_string.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:shared/shared.dart' as s;
 
 import '../../virtual_card.dart';
@@ -14,13 +13,13 @@ class VirtualCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void fundCard() =>
-        context.push(AppRoutes.virtualCardFund, extra: card.cardId);
+        context.goNamedSafe(RNames.virtualCardFund, extra: card.cardId);
     void cardWithdraw() =>
-        context.push(AppRoutes.virtualCardWithdraw, extra: card.cardId);
+        context.goNamedSafe(RNames.virtualCardWithdraw, extra: card.cardId);
     void cardTransactions() =>
-        context.push(AppRoutes.virtualCardTransactions, extra: card.cardId);
+        context.goNamedSafe(RNames.virtualCardTransactions, extra: card.cardId);
     void viewCardDetails() =>
-        context.push(AppRoutes.virtualCardDetail, extra: card.cardId);
+        context.goNamedSafe(RNames.virtualCardDetail, extra: card.cardId);
     return Container(
       width: double.infinity,
       margin: EdgeInsets.only(bottom: AppSpacing.lg),

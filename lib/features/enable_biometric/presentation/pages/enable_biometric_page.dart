@@ -53,7 +53,6 @@ class EnableBiometricPage extends StatelessWidget {
                 serviceLocator<TokenRepository>().setBiometricEnabled(
                   enable: false,
                 );
-                // tokenStorage.setBiometricEnabled(false);
 
                 context.read<AppBloc>().add(UserLoggedIn(user));
               },

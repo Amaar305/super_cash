@@ -1,7 +1,6 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:super_cash/app/app.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class HomeNotificationBadge extends StatelessWidget {
   const HomeNotificationBadge({super.key});
@@ -9,7 +8,7 @@ class HomeNotificationBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Tappable.scaled(
-      onTap: () => context.push(AppRoutes.notifications),
+      onTap: () => context.goNamedSafe(RNames.notifications),
       child: Stack(
         children: [
           CircleAvatar(

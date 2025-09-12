@@ -45,22 +45,23 @@ class ProfileView extends StatelessWidget {
                     NewWidget(
                       label: AppStrings.profileDetails,
                       icon: Iconsax.user,
-                      onTap: () => context.push(AppRoutes.profileDetails),
+                      onTap: () => context.goNamedSafe(RNames.profileDetails),
                     ),
                     NewWidget(
                       label: AppStrings.accountVerification,
                       icon: Iconsax.location,
-                      onTap: () => context.push(AppRoutes.upgradeTier),
+                      onTap: () => context.goNamedSafe(RNames.upgradeTier),
                     ),
                     NewWidget(
                       label: AppStrings.changePassword,
                       icon: Iconsax.arrow_swap,
-                      onTap: () => context.push(AppRoutes.changePassword),
+                      onTap: () => context.goNamedSafe(RNames.changePassword),
                     ),
                     NewWidget(
                       label: AppStrings.manageTransactionPin,
                       icon: Iconsax.password_check,
-                      onTap: () => context.push(AppRoutes.manageTransactionPin),
+                      onTap: () =>
+                          context.goNamedSafe(RNames.manageTransactionPin),
                     ),
                   ],
                 ),

@@ -27,282 +27,295 @@ import '../../features/vtupass/vtupass.dart';
 import '../app.dart';
 import '../bloc/app_bloc.dart';
 
+// app_router.dart
 final _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 
 class AppRouter {
   const AppRouter(this.appBloc, this.launch);
-
   final AppBloc appBloc;
   final LaunchState launch;
 
   GoRouter get router => GoRouter(
-    initialLocation: AppRoutes.dashboard,
+    initialLocation: AppRoutes.splash,
     navigatorKey: _rootNavigatorKey,
     debugLogDiagnostics: true,
+    errorBuilder: (context, state) => const NotFoundPage(),
+
     routes: [
       GoRoute(
+        name: RNames.splash,
         path: AppRoutes.splash,
         builder: (context, state) => SplashPage(),
       ),
       GoRoute(
+        name: RNames.onboarding,
         path: AppRoutes.onboarding,
         builder: (context, state) => OnboardingPage(),
       ),
       GoRoute(
+        name: RNames.welcome,
         path: AppRoutes.welcome,
         builder: (context, state) => WelcomePage(),
       ),
       GoRoute(
+        name: RNames.enableBiometric,
         path: AppRoutes.enableBiometric,
-        builder: (context, state) {
-          final user = state.extra! as AppUser;
-
-          return EnableBiometricPage(user: user);
-        },
+        builder: (context, state) =>
+            EnableBiometricPage(user: state.extra! as AppUser),
       ),
       GoRoute(
+        name: RNames.upgradeTier,
         path: AppRoutes.upgradeTier,
         builder: (context, state) => UpgradeTierPage(),
       ),
       GoRoute(
+        name: RNames.addFunds,
         path: AppRoutes.addFunds,
         builder: (context, state) => AddFundPage(),
       ),
       GoRoute(
+        name: RNames.auth,
         path: AppRoutes.auth,
         builder: (context, state) => AuthPage(islogin: launch.isLoginPage),
       ),
       GoRoute(
+        name: RNames.notifications,
         path: AppRoutes.notifications,
         builder: (context, state) => NotificationPage(),
       ),
       GoRoute(
+        name: RNames.airtime,
         path: AppRoutes.airtime,
         builder: (context, state) => AirtimePage(),
+        routes: [
+          GoRoute(
+            name: RNames.airtimeConfirm,
+            path: 'airtime-confirm',
+            builder: (context, state) => AirtmeConfirmPage(),
+          ),
+        ],
       ),
       GoRoute(
-        path: AppRoutes.airtimeConfirm,
-        name: AppRoutes.airtimeConfirm,
-        builder: (context, state) => AirtmeConfirmPage(),
-      ),
-      GoRoute(path: AppRoutes.data, builder: (context, state) => DataPage()),
-      GoRoute(path: AppRoutes.cable, builder: (context, state) => CablePage()),
-      GoRoute(
-        path: AppRoutes.transacttionDetail,
-        builder: (context, state) {
-          final transaction = state.extra as TransactionResponse;
-          return HistoryDetailsPage(transaction: transaction);
-        },
+        name: RNames.data,
+        path: AppRoutes.data,
+        builder: (_, __) => DataPage(),
       ),
       GoRoute(
+        name: RNames.cable,
+        path: AppRoutes.cable,
+        builder: (_, __) => CablePage(),
+      ),
+      GoRoute(
+        name: RNames.electricity,
         path: AppRoutes.electricity,
-        builder: (context, state) => ElectricityPage(),
+        builder: (_, __) => ElectricityPage(),
       ),
       GoRoute(
+        name: RNames.transactionDetail,
+        path: AppRoutes.transactionDetail,
+        builder: (context, state) =>
+            HistoryDetailsPage(transaction: state.extra as TransactionResponse),
+      ),
+      GoRoute(
+        name: RNames.referFriend,
         path: AppRoutes.referFriend,
         builder: (context, state) => ReferralPage(),
+        routes: [
+          GoRoute(
+            name: RNames.referHowItWorks,
+            path: 'refer-how-it-works',
+            builder: (context, state) => HowItWorkPage(),
+          ),
+        ],
       ),
       GoRoute(
+        name: RNames.examPin,
         path: AppRoutes.examPin,
-        builder: (context, state) => ExamPinPage(),
+        builder: (_, __) => ExamPinPage(),
       ),
       GoRoute(
+        name: RNames.smile,
         path: AppRoutes.smile,
-        builder: (context, state) => SmilePage(),
+        builder: (_, __) => SmilePage(),
         routes: [
           GoRoute(
+            name: RNames.smileProceed,
             path: 'smile-proceed',
-            builder: (context, state) {
-              final cubit = state.extra as SmileCubit;
-              return SmileProceedPage(cubit: cubit);
-            },
+            builder: (context, state) =>
+                SmileProceedPage(cubit: state.extra as SmileCubit),
           ),
         ],
       ),
       GoRoute(
+        name: RNames.manageBeneficiary,
         path: AppRoutes.manageBeneficiary,
-        builder: (context, state) => ManageBeneficiaryPage(),
+        builder: (_, __) => ManageBeneficiaryPage(),
         routes: [
           GoRoute(
+            name: RNames.saveBeneficiary,
             path: 'save',
-            builder: (context, state) {
-              final beneficiary = state.extra as Beneficiary?;
-              return SaveBeneficiaryPage(beneficiary: beneficiary);
-            },
+            builder: (context, state) =>
+                SaveBeneficiaryPage(beneficiary: state.extra as Beneficiary?),
           ),
         ],
       ),
       GoRoute(
+        name: RNames.confirmationDialog,
         path: AppRoutes.confirmationDialog,
-        pageBuilder: (context, state) {
-          final result = state.extra as Widget?;
-          return MaterialPage(
-            fullscreenDialog: true,
-            child: ConfirmTransactionPinPage(transactionPurchaseDetail: result),
-          );
-        },
+        pageBuilder: (context, state) => MaterialPage(
+          fullscreenDialog: true,
+          child: ConfirmTransactionPinPage(
+            transactionPurchaseDetail: state.extra as Widget?,
+          ),
+        ),
       ),
       GoRoute(
+        name: RNames.virtualCard,
         path: AppRoutes.virtualCard,
-        builder: (context, state) => VirtualCardPage(),
+        builder: (_, __) => VirtualCardPage(),
         routes: [
           GoRoute(
+            name: RNames.virtualCardCreate,
             path: 'create',
-            builder: (context, state) => CardCreatePage(),
+            builder: (_, __) => CardCreatePage(),
           ),
           GoRoute(
+            name: RNames.virtualCardFund,
             path: 'fund',
-            builder: (context, state) {
-              final cardId = state.extra as String;
-              return FundCardPage(cardId: cardId);
-            },
+            builder: (context, state) =>
+                FundCardPage(cardId: state.extra as String),
           ),
           GoRoute(
+            name: RNames.virtualCardDetail,
             path: 'detail',
-            builder: (context, state) {
-              final cardId = state.extra as String;
-              return CardDetailsPage(cardId: cardId);
-            },
+            builder: (context, state) =>
+                CardDetailsPage(cardId: state.extra as String),
             routes: [
               GoRoute(
+                name: RNames.virtualCardChangePin,
                 path: 'change-pin',
                 builder: (context, state) {
                   final extras = state.extra as Map<String, dynamic>;
-
-                  final cardId = extras['card_id']!;
+                  final cardId = extras['card_id'] as String;
                   final cardDetails = extras['card_details'];
-
                   return ChangeCardPinPage(cardId: cardId, card: cardDetails);
                 },
               ),
             ],
           ),
           GoRoute(
+            name: RNames.virtualCardWithdraw,
             path: 'card-withdraw',
-            builder: (context, state) {
-              final cardId = state.extra as String;
-              return CardWithdrawPage(cardId: cardId);
-            },
+            builder: (context, state) =>
+                CardWithdrawPage(cardId: state.extra as String),
           ),
           GoRoute(
+            name: RNames.virtualCardTransactions,
             path: 'card-transactions',
-            builder: (context, state) {
-              final cardId = state.extra as String;
-              return CardTransactionPage(cardId: cardId);
-            },
+            builder: (context, state) =>
+                CardTransactionPage(cardId: state.extra as String),
           ),
         ],
       ),
       GoRoute(
+        name: RNames.transfer,
         path: AppRoutes.transfer,
-        builder: (context, state) => TransferPage(),
+        builder: (_, __) => TransferPage(),
       ),
       GoRoute(
+        name: RNames.generateAccount,
         path: AppRoutes.generateAccount,
-        builder: (context, state) => GenerateAccountPage(),
+        builder: (_, __) => GenerateAccountPage(),
       ),
       GoRoute(
+        name: RNames.changePassword,
         path: AppRoutes.changePassword,
-        builder: (context, state) => ChangePasswordPage(),
+        builder: (_, __) => ChangePasswordPage(),
       ),
+
+      // ---- Shell (tabs) ----
       StatefulShellRoute.indexedStack(
-        builder: (context, state, navigationShell) {
-          return IndexPage(navigationShell: navigationShell);
-        },
+        builder: (context, state, nav) => IndexPage(navigationShell: nav),
         branches: [
           StatefulShellBranch(
             routes: [
               GoRoute(
+                name: RNames.dashboard,
                 path: AppRoutes.dashboard,
-                pageBuilder: (context, state) {
-                  return CustomTransitionPage(
-                    child: HomePage(),
-                    transitionsBuilder:
-                        (context, animation, secondaryAnimation, child) {
-                          return SharedAxisTransition(
-                            animation: animation,
-                            secondaryAnimation: secondaryAnimation,
-                            transitionType: SharedAxisTransitionType.horizontal,
-                            child: child,
-                          );
-                        },
-                  );
-                },
+                pageBuilder: (context, state) => CustomTransitionPage(
+                  child: HomePage(),
+                  transitionsBuilder: (context, a, sa, child) =>
+                      SharedAxisTransition(
+                        animation: a,
+                        secondaryAnimation: sa,
+                        transitionType: SharedAxisTransitionType.horizontal,
+                        child: child,
+                      ),
+                ),
               ),
             ],
           ),
           StatefulShellBranch(
             routes: [
               GoRoute(
+                name: RNames.history,
                 path: AppRoutes.history,
-                pageBuilder: (context, state) {
-                  return CustomTransitionPage(
-                    child: HistoryPage(),
-                    transitionsBuilder:
-                        (context, animation, secondaryAnimation, child) {
-                          return FadeTransition(
-                            opacity: CurveTween(
-                              curve: Curves.easeInOut,
-                            ).animate(animation),
-                            child: child,
-                          );
-                        },
-                  );
-                },
+                pageBuilder: (context, state) => CustomTransitionPage(
+                  child: HistoryPage(),
+                  transitionsBuilder: (context, a, sa, child) => FadeTransition(
+                    opacity: CurvedAnimation(
+                      parent: a,
+                      curve: Curves.easeInOut,
+                    ),
+                    child: child,
+                  ),
+                ),
               ),
             ],
           ),
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: '/liveChat',
-                pageBuilder: (context, state) {
-                  return CustomTransitionPage(
-                    child: LiveChatPage(),
-                    transitionsBuilder:
-                        (context, animation, secondaryAnimation, child) {
-                          return SharedAxisTransition(
-                            animation: animation,
-                            secondaryAnimation: secondaryAnimation,
-                            transitionType: SharedAxisTransitionType.horizontal,
-                            child: child,
-                          );
-                        },
-                  );
-                },
+                name: RNames.liveChat,
+                path: AppRoutes.liveChat,
+                pageBuilder: (context, state) => CustomTransitionPage(
+                  child: LiveChatPage(),
+                  transitionsBuilder: (context, a, sa, child) =>
+                      SharedAxisTransition(
+                        animation: a,
+                        secondaryAnimation: sa,
+                        transitionType: SharedAxisTransitionType.horizontal,
+                        child: child,
+                      ),
+                ),
               ),
             ],
           ),
           StatefulShellBranch(
             routes: [
               GoRoute(
+                name: RNames.profile,
                 path: AppRoutes.profile,
-                pageBuilder: (context, state) {
-                  return CustomTransitionPage(
-                    child: ProfilePage(userId: 'amarr'),
-                    transitionsBuilder:
-                        (context, animation, secondaryAnimation, child) {
-                          return SharedAxisTransition(
-                            animation: animation,
-                            secondaryAnimation: secondaryAnimation,
-                            transitionType: SharedAxisTransitionType.horizontal,
-                            child: child,
-                          );
-                        },
-                  );
-                },
+                pageBuilder: (context, state) => CustomTransitionPage(
+                  child: ProfilePage(userId: 'amarr'),
+                  transitionsBuilder: (context, a, sa, child) =>
+                      SharedAxisTransition(
+                        animation: a,
+                        secondaryAnimation: sa,
+                        transitionType: SharedAxisTransitionType.horizontal,
+                        child: child,
+                      ),
+                ),
                 routes: [
                   GoRoute(
+                    name: RNames.profileDetails,
                     path: 'profile-details',
-                    builder: (context, state) {
-                      return ProfileDetailPage();
-                    },
+                    builder: (_, __) => ProfileDetailPage(),
                   ),
                   GoRoute(
+                    name: RNames.manageTransactionPin,
                     path: 'manage-transaction-pin',
-                    builder: (context, state) {
-                      return ManageTransactionPinPage();
-                    },
+                    builder: (_, __) => ManageTransactionPinPage(),
                   ),
                 ],
               ),
@@ -311,40 +324,49 @@ class AppRouter {
         ],
       ),
     ],
+
+    // Same hardened redirect you tested; returns only absolute non-empty paths or null.
     redirect: (context, state) {
       final status = appBloc.state.status;
-      final onboarded = launch.onboarded; // null/false/true
-      final welcome = launch.welcomePending; // bool
+      final onboarded = launch.onboarded;
+      final welcome = launch.welcomePending;
+      final current = state.matchedLocation.isEmpty
+          ? AppRoutes.splash
+          : state.matchedLocation;
 
-      final loc = state.matchedLocation;
-      final isSplash = loc == AppRoutes.splash;
-      final isLogin = loc == AppRoutes.auth;
-      final isOb = loc == AppRoutes.onboarding;
-      final isWel = loc == AppRoutes.welcome;
+      String? goIfDifferent(String target) => current == target ? null : target;
 
-      // 0) Still loading → Splash
-      if (onboarded == null) return isSplash ? null : AppRoutes.splash;
+      if (onboarded == null) return goIfDifferent(AppRoutes.splash);
+      if (onboarded == false) return goIfDifferent(AppRoutes.onboarding);
+      if (welcome) return goIfDifferent(AppRoutes.welcome);
 
-      // 1) Not onboarded → Onboarding
-      if (onboarded == false) return isOb ? null : AppRoutes.onboarding;
-
-      // 2) Onboarded and Welcome pending → Welcome
-      if (welcome) return isWel ? null : AppRoutes.welcome;
-
-      // 3) Onboarded & Welcome done → auth flow
-      if (status == AppStatus.unknown) {
-        return isSplash ? null : AppRoutes.splash;
+      switch (status) {
+        case AppStatus.unknown:
+          return goIfDifferent(AppRoutes.splash);
+        case AppStatus.unauthenticated:
+        case AppStatus.resumed:
+          if ([
+            AppRoutes.auth,
+            AppRoutes.onboarding,
+            AppRoutes.welcome,
+          ].contains(current)) {
+            return null;
+          }
+          return goIfDifferent(AppRoutes.auth);
+        case AppStatus.authenticated:
+        case AppStatus.updated:
+          if ([
+            AppRoutes.splash,
+            AppRoutes.auth,
+            AppRoutes.onboarding,
+            AppRoutes.welcome,
+          ].contains(current)) {
+            return goIfDifferent(AppRoutes.dashboard);
+          }
+          return null;
       }
-      if (status == AppStatus.unauthenticated || status == AppStatus.resumed) {
-        return isLogin ? null : AppRoutes.auth;
-      }
-      if (status == AppStatus.authenticated) {
-        if (isSplash || isLogin || isOb || isWel) return AppRoutes.dashboard;
-        return null;
-      }
-
-      return null;
     },
+
     refreshListenable: Listenable.merge([
       GoRouterAppBlocRefreshStream(appBloc.stream),
       launch,
@@ -366,5 +388,22 @@ class GoRouterAppBlocRefreshStream extends ChangeNotifier {
   void dispose() {
     _subscription.cancel();
     super.dispose();
+  }
+}
+
+extension NavX on BuildContext {
+  FutureOr<Null> goNamedSafe(
+    String name, {
+    Map<String, String>? pathParams,
+    Map<String, String>? queryParams,
+    Object? extra,
+  }) {
+    if (name.isEmpty) Null;
+   return pushNamed(
+      name,
+      pathParameters: pathParams ?? const {},
+      queryParameters: queryParams ?? const {},
+      extra: extra,
+    );
   }
 }

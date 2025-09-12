@@ -4,7 +4,6 @@ import 'package:super_cash/app/bloc/app_bloc.dart';
 import 'package:super_cash/features/add_fund/add_fund.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 
 class BankTransferSection extends StatelessWidget {
   const BankTransferSection({super.key});
@@ -40,7 +39,7 @@ class BankTransferSection extends StatelessWidget {
         PrimaryButton(
           label: 'Generate more accounts.',
           onPressed: () {
-            context.push(AppRoutes.generateAccount);
+            context.goNamedSafe(RNames.generateAccount);
           },
         ),
       ],

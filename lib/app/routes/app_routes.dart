@@ -1,5 +1,6 @@
+// routes.dart
 class AppRoutes {
-  static const String dashboard = '/';
+  static const String dashboard = '/dashboard';
   static const String auth = '/auth';
   static const String splash = '/splash';
   static const String onboarding = '/onboarding';
@@ -12,10 +13,8 @@ class AppRoutes {
   static const String notifications = '/notifications';
   static const String notFound = '/404';
   static const String changePassword = '/change-password';
-
   static const String airtime = '/airtime';
   static const String airtimeConfirm = '/airtime-confirm';
-
   static const String data = '/data';
   static const String dataConfirm = '/data-confirm';
   static const String cable = '/cable';
@@ -30,17 +29,62 @@ class AppRoutes {
   static const String virtualCardTransactions =
       '$virtualCard/card-transactions';
   static const String virtualCardChangePin = '$virtualCardDetail/change-pin';
-
   static const String history = '/history';
-  static const String transacttionDetail = '/transaction-details';
+  static const String transactionDetail = '/transaction-details'; // fixed name
   static const String confirmationDialog = '/confirmation-dialog';
   static const String referFriend = '/refer-friend';
+  static const String referHowItWorks = '$referFriend/refer-how-it-works';
+  static const String referTerms = '/refer-terms';
   static const String examPin = '/exam-pin';
   static const String smile = '/smile';
   static const String smileProceed = '$smile/smile-proceed';
   static const String manageBeneficiary = '/manage-beneficiary';
-
   static const String saveBeneficiary = '$manageBeneficiary/save';
   static const String transfer = '/transfer';
   static const String generateAccount = '/generate-account';
+  static const String liveChat = '/liveChat';
+}
+
+// One place for route NAMES (no paths here)
+class RNames {
+  static const splash = 'splash';
+  static const onboarding = 'onboarding';
+  static const welcome = 'welcome';
+  static const auth = 'auth';
+  static const dashboard = 'dashboard';
+  static const history = 'history';
+  static const liveChat = 'liveChat';
+  static const profile = 'profile';
+  static const profileDetails = 'profileDetails';
+  static const manageTransactionPin = 'manageTransactionPin';
+  static const notifications = 'notifications';
+  static const changePassword = 'changePassword';
+  static const airtime = 'airtime';
+  static const airtimeConfirm = 'airtimeConfirm';
+  static const data = 'data';
+  static const cable = 'cable';
+  static const electricity = 'electricity';
+  static const addFunds = 'addFunds';
+  static const virtualCard = 'virtualCard';
+  static const virtualCardCreate = 'virtualCardCreate';
+  static const virtualCardFund = 'virtualCardFund';
+  static const virtualCardDetail = 'virtualCardDetail';
+  static const virtualCardWithdraw = 'virtualCardWithdraw';
+  static const virtualCardTransactions = 'virtualCardTransactions';
+  static const virtualCardChangePin = 'virtualCardChangePin';
+  static const transactionDetail = 'transactionDetail';
+  static const confirmationDialog = 'confirmationDialog';
+  static const referFriend = 'referFriend';
+  static const referHowItWorks = 'referHowItWorks';
+  static const referTerms = 'referTerms';
+  static const examPin = 'examPin';
+  static const smile = 'smile';
+  static const smileProceed = 'smileProceed';
+  static const manageBeneficiary = 'manageBeneficiary';
+  static const saveBeneficiary = 'saveBeneficiary';
+  static const enableBiometric = 'enableBiometric';
+  static const upgradeTier = 'upgradeTier';
+  static const notFound = 'notFound';
+  static const String generateAccount = 'generateAccount';
+  static const String transfer = 'transfer';
 }

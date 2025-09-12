@@ -39,7 +39,7 @@ class ManageBeneficiaryView extends StatelessWidget {
       title: AppAppBarTitle(AppStrings.manageBeneficiary),
       actions: [
         IconButton(
-          onPressed: () => context.push(AppRoutes.saveBeneficiary),
+          onPressed: () => context.goNamedSafe(RNames.saveBeneficiary),
           icon: Icon(Icons.add, size: 24),
         ),
       ],

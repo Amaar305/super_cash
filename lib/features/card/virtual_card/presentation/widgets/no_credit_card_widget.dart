@@ -39,7 +39,7 @@ class NoCreditCardWidget extends StatelessWidget {
     if (user.isSuspended) {
       _showSuspensionDialog(context);
     } else if (user.isKycVerified) {
-      context.push(AppRoutes.virtualCardCreate);
+      context.goNamedSafe(RNames.virtualCardCreate);
     } else {
       _showUpgradeSheet(context);
     }
@@ -55,7 +55,7 @@ class NoCreditCardWidget extends StatelessWidget {
           label: AppStrings.upgradeTierTwo,
           onPressed: () {
             context.pop();
-            context.push(AppRoutes.upgradeTier);
+            context.goNamedSafe(RNames.upgradeTier);
           },
         ),
         SizedBox(
