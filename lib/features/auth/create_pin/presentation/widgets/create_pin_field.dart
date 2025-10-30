@@ -50,22 +50,9 @@ class _CreatePinFieldState extends State<CreatePinField> {
           enabled: !isLoading,
           obscured: showPin,
           onCompleted: (otp) {},
+          errorText: pinError,
           onChange: (otp) => _debouncer.run(() => _cubit.onNewPinChanged(otp)),
         ),
-        if (pinError != null)
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                pinError,
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: AppFontWeight.semiBold,
-                  color: AppColors.red,
-                ),
-              ),
-            ],
-          ),
       ],
     );
   }
