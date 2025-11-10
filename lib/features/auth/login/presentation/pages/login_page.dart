@@ -16,6 +16,7 @@ class LoginPage extends StatelessWidget {
       create: (context) => LoginCubit(
         loginUseCase: serviceLocator(),
         biometricUseCase: serviceLocator(),
+        determineLoginFlowUseCase: serviceLocator(),
         appBloc: context.read<AppBloc>(),
         hasBiometric: false,
       ),

@@ -21,10 +21,10 @@ class RegisterButton extends StatelessWidget {
       onPressed: !agreedToTermsAndCondition
           ? null
           : () {
-              context.read<RegisterCubit>().submit(() {
+              context.read<RegisterCubit>().submit((user) {
                 Navigator.pushAndRemoveUntil(
                   context,
-                  VerifyPage.route(),
+                  VerifyPage.route(email: user.email),
                   (_) => true,
                 );
               });

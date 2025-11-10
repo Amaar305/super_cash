@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "170234334876",
+    "project_id": "card-pay-64324",
+    "storage_bucket": "card-pay-64324.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:170234334876:android:4d5ed499d78a3b526be759",
+        "android_client_info": {
+          "package_name": "com.example.cash_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbRg8tqmcQot45GWVZyh-2Ci_yCN1Ln6U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:170234334876:android:9b2fc0068ebb63276be759",
+        "android_client_info": {
+          "package_name": "com.example.super_cash"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbRg8tqmcQot45GWVZyh-2Ci_yCN1Ln6U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

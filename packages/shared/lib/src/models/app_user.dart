@@ -16,8 +16,7 @@ class AppUser {
   final bool isSuspended;
   final String userTier;
   final List<Account> accounts;
-  final String? notification;
-  final List<ImageSlider> imageSliders;
+  final Tokens? tokens;
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -31,9 +30,7 @@ class AppUser {
       'is_kyc_verified': isKycVerified,
       'transactionPin': transactionPin,
       'is_suspended': isSuspended,
-      'notification': notification,
       'user_tier': userTier,
-      'sliders': imageSliders.map((e) => e.toJson()).toList(),
       'accounts': accounts
           .map(
             (e) => e.toMap(),
@@ -53,9 +50,8 @@ class AppUser {
     required this.isKycVerified,
     required this.transactionPin,
     required this.isSuspended,
-    this.notification,
+    required this.tokens,
     this.accounts = const [],
-    this.imageSliders = const [],
     this.userTier = 'one',
   });
 
@@ -74,37 +70,38 @@ class AppUser {
     wallet: Wallet.anonymous(),
     transactionPin: false,
     isSuspended: false,
+    tokens: null,
   );
   String get fullName => '$firstName  $lastName';
-
   factory AppUser.fromMap(Map<String, dynamic> map) {
+    final user = map.containsKey('user')
+        ? (map['user'] as Map?)?.cast<String, dynamic>() ?? {}
+        : map;
+
+    final accountsList = (user['accounts'] as List?)
+            ?.whereType<Map<String, dynamic>>() // only keep map items
+            .map((e) => e.cast<String, dynamic>())
+            .toList() ??
+        <Map<String, dynamic>>[];
+
     return AppUser(
-      id: map['id'] as String,
-      email: map['email'] as String,
-      phone: map['phone_number'] as String,
-      firstName: map['first_name'] as String,
-      userTier: map['user_tier'] as String? ?? 'one',
-      lastName: map['last_name'] as String,
-      wallet: Wallet.fromMap(map['wallet'] as Map<String, dynamic>),
-      isVerified: map['is_verified'] as bool,
-      isKycVerified: map['is_kyc_verified'] as bool,
-      transactionPin: map['transactionPin'] as bool,
-      isSuspended: map['is_suspended'] as bool,
-      accounts: map['accounts'] == null
-          ? []
-          : List.from(
-              (map['accounts'] as List<dynamic>).map<Account>(
-                (x) => Account.fromMap(x as Map<String, dynamic>),
-              ),
-            ),
-      imageSliders: map['sliders'] == null
-          ? []
-          : List.from(
-              (map['sliders'] as List<dynamic>).map<ImageSlider>(
-                (x) => ImageSlider.fromJson(x as Map<String, dynamic>),
-              ),
-            ),
-      notification: map['notification']?.toString(),
+      id: user['id']?.toString() ?? '',
+      email: user['email']?.toString() ?? '',
+      phone: user['phone_number']?.toString() ?? '',
+      firstName: user['first_name']?.toString() ?? '',
+      lastName: user['last_name']?.toString() ?? '',
+      userTier: user['user_tier']?.toString() ?? 'one',
+      wallet: Wallet.fromMap(
+        (user['wallet'] as Map?)?.cast<String, dynamic>() ?? const {},
+      ),
+      isVerified: user['is_verified'] == true,
+      isKycVerified: user['is_kyc_verified'] == true,
+      transactionPin: user['transactionPin'] == true,
+      isSuspended: user['is_suspended'] == true,
+      tokens: (map['tokens'] is Map)
+          ? Tokens.fromJson((map['tokens'] as Map).cast<String, dynamic>())
+          : null,
+      accounts: accountsList.map(Account.fromMap).toList(),
     );
   }
 
@@ -125,6 +122,7 @@ class AppUser {
     bool? transactionPin,
     bool? isSuspended,
     List<Account>? accounts,
+    Tokens? tokens,
   }) {
     return AppUser(
       id: id ?? this.id,
@@ -138,6 +136,27 @@ class AppUser {
       transactionPin: transactionPin ?? this.transactionPin,
       isSuspended: isSuspended ?? this.isSuspended,
       accounts: accounts ?? this.accounts,
+      tokens: tokens ?? this.tokens,
     );
   }
+}
+
+class Tokens {
+  const Tokens({
+    required this.access,
+    required this.refresh,
+  });
+
+  final String access;
+  final String refresh;
+
+  factory Tokens.fromJson(Map<String, dynamic> json) => Tokens(
+        access: json['access'] as String,
+        refresh: json['refresh'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'access': access,
+        'refresh': refresh,
+      };
 }

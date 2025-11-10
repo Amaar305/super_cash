@@ -1,14 +1,14 @@
 import 'dart:convert';
 
 import 'package:app_client/app_client.dart';
-import 'package:super_cash/core/error/errorr_message.dart';
+import 'package:super_cash/core/device/device_info.dart';
 import 'package:super_cash/core/error/exception.dart';
 import 'package:shared/shared.dart';
+import 'package:token_repository/token_repository.dart';
 
-import '../data.dart';
 
 abstract interface class RegisterRemoteDataSource {
-  Future<AuthUserModel> register({
+  Future<AppUser> register({
     required String email,
     required String phone,
     required String firstName,
@@ -21,10 +21,14 @@ abstract interface class RegisterRemoteDataSource {
 
 class RegisterRemoteDataSourceImpl implements RegisterRemoteDataSource {
   final AuthClient apiClient;
+  final Fingerprint fingerprint;
 
-  RegisterRemoteDataSourceImpl({required this.apiClient});
+  RegisterRemoteDataSourceImpl({
+    required this.apiClient,
+    required this.fingerprint,
+  });
   @override
-  Future<AuthUserModel> register({
+  Future<AppUser> register({
     required String email,
     required String phone,
     required String firstName,
@@ -34,6 +38,7 @@ class RegisterRemoteDataSourceImpl implements RegisterRemoteDataSource {
     String? referral,
   }) async {
     try {
+      final payload = await fingerprint.collect();
       final body = jsonEncode({
         'email': email,
         'first_name': firstName,
@@ -41,6 +46,7 @@ class RegisterRemoteDataSourceImpl implements RegisterRemoteDataSource {
         'password': password,
         'password2': confirmPassword,
         'phone_number': phone,
+        ...payload,
         if (referral != null) 'referral_code': referral,
       });
       final res = await apiClient.request(
@@ -49,78 +55,22 @@ class RegisterRemoteDataSourceImpl implements RegisterRemoteDataSource {
         body: body,
       );
 
-      logD(res.body);
-
-      if (res.statusCode != 201) {
-        // logD(res.body);
-        // try {
-        final Map<String, dynamic> response = jsonDecode(res.body);
-        if (response.containsKey('phone_number') &&
-            response['phone_number'].runtimeType == List) {
-          throw ServerException(response['phone_number'][0]);
-        }
-        if (response.containsKey('email') &&
-            response['email'].runtimeType == List) {
-          throw ServerException(response['email'][0]);
-        }
-        if (response.containsKey('password') &&
-            response['password'].runtimeType == List) {
-          throw ServerException(response['password'][0]);
-        }
-        if (response.containsKey('password2') &&
-            response['password2'].runtimeType == List) {
-          throw ServerException(response['password2'][0]);
-        }
-        if (response.containsKey('non_field_errors') &&
-            response['non_field_errors'].runtimeType == List) {
-          throw ServerException(response['non_field_errors'][0]);
-        }
-        if (response.containsKey('referral_code') &&
-            response['referral_code'].runtimeType == List) {
-          throw ServerException(response['referral_code'][0]);
-        }
-        final message = extractErrorMessage(response);
-
-        throw ServerException(message);
-        // } catch (e) {
-        //   throw ServerException('Something went wrong. Try again later.');
-        // }
+      final decoded = jsonDecode(res.body);
+      if (decoded is Map<String, dynamic>) {
+        return AppUser.fromMap(decoded);
       }
 
-      // if (res.statusCode != 201) {
-      //   Map<String, dynamic> response = jsonDecode(res.body);
-      //   if (response.containsKey('phone_number') &&
-      //       response['phone_number'].runtimeType == List) {
-      //     throw ServerException(response['phone_number'][0]);
-      //   }
-      //   if (response.containsKey('email') &&
-      //       response['email'].runtimeType == List) {
-      //     throw ServerException(response['email'][0]);
-      //   }
-      //   if (response.containsKey('password') &&
-      //       response['password'].runtimeType == List) {
-      //     throw ServerException(response['password'][0]);
-      //   }
-      //   if (response.containsKey('password2') &&
-      //       response['password2'].runtimeType == List) {
-      //     throw ServerException(response['password2'][0]);
-      //   }
-      //   if (response.containsKey('non_field_errors') &&
-      //       response['non_field_errors'].runtimeType == List) {
-      //     throw ServerException(response['non_field_errors'][0]);
-      //   }
-      //   if (response.containsKey('referral_code') &&
-      //       response['referral_code'].runtimeType == List) {
-      //     throw ServerException(response['referral_code'][0]);
-      //   }
-      //   final message = extractErrorMessage(response);
-
-      //   throw ServerException(message);
-      // }
-
-      // logD(jsonDecode(res.body));
-      final Map<String, dynamic> response = jsonDecode(res.body);
-      return AuthUserModel.fromMap(response['user'] as Map<String, dynamic>);
+      throw ServerException('Unexpected response format.');
+    } on RefreshTokenException catch (e) {
+      // Bubble up so the app can force re-login if needed
+      throw ServerException(e.message);
+    } on ApiException catch (e) {
+      // Non-2xx with server-provided message already extracted by AuthClient
+      throw ServerException(e.message);
+    } on NetworkException catch (e) {
+      throw ServerException(e.message);
+    } on FormatException {
+      throw ServerException('Invalid JSON from server.');
     } catch (e) {
       throw ServerException(e.toString());
     }

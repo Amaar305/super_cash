@@ -15,7 +15,7 @@ class VtuBeneficiaryPhoneNumberField extends StatelessWidget {
     this.focusNode,
     this.isLoading = false,
   });
-  final void Function(String)? onChanged;
+  final void Function(String value)? onChanged;
   final String? phoneErrorMessage;
   final VoidCallback? onForMyselfTapped;
   final bool isLoading;
@@ -24,6 +24,7 @@ class VtuBeneficiaryPhoneNumberField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // textController?.text = value ?? '';
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: AppSpacing.sm,

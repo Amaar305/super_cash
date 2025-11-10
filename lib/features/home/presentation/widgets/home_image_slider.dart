@@ -1,9 +1,9 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:super_cash/app/bloc/app_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/shared.dart';
+import 'package:super_cash/features/home/home.dart';
 
 class HomeImageSlider extends StatefulWidget {
   const HomeImageSlider({super.key});
@@ -24,7 +24,7 @@ class _HomeImageSliderState extends State<HomeImageSlider> {
   Widget build(BuildContext context) {
     final borderRadius = BorderRadius.circular(AppSpacing.spaceUnit);
     final sliders = context.select(
-      (AppBloc cubit) => cubit.state.user.imageSliders,
+      (HomeCubit cubit) => cubit.state.homeSettings?.imageSliders ?? [],
     );
     return CarouselSlider.builder(
       itemCount: sliders.length,

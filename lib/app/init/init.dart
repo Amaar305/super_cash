@@ -1,10 +1,14 @@
+import 'dart:async';
+
 import 'package:app_client/app_client.dart';
 import 'package:super_cash/app/bloc/app_bloc.dart';
 import 'package:super_cash/core/cooldown/cooldown_repository.dart';
 import 'package:super_cash/core/cooldown/cubit/cooldown_cubit.dart';
+import 'package:super_cash/core/device/device.dart';
 import 'package:super_cash/core/error/api_error_handle.dart';
 import 'package:super_cash/core/network/network_info.dart';
 import 'package:super_cash/features/account/manage_transaction_pin/manage_transaction_pin.dart';
+import 'package:super_cash/features/bonus/bonus.dart';
 import 'package:super_cash/features/card/card.dart';
 import 'package:super_cash/features/card/card_repo/cubit/card_repo_cubit.dart';
 import 'package:super_cash/features/confirm_transaction_pin/confirm_transaction_pin.dart';
@@ -29,13 +33,27 @@ import '../../features/vtupass/vtupass.dart';
 
 GetIt serviceLocator = GetIt.instance;
 
+const _fingerprintInitKey = 'fingerprint_initialized_v1';
+Future<void> _initFingerprint(SharedPreferences storage) async {
+  final fingerprint = Fingerprint(storage: storage);
+  if (!serviceLocator.isRegistered<Fingerprint>()) {
+    serviceLocator.registerSingleton<Fingerprint>(fingerprint);
+  }
+
+  final initialized = storage.getBool(_fingerprintInitKey) ?? false;
+  if (!initialized) {
+    await fingerprint.collect();
+    await storage.setBool(_fingerprintInitKey, true);
+  }
+}
+
 Future<void> initDependencies() async {
   // Init sharedPreferences
   final sharedPreferences = await SharedPreferences.getInstance();
   final launch = LaunchState(sharedPreferences);
   serviceLocator.registerSingleton(launch);
   await launch.load();
-
+  await _initFingerprint(sharedPreferences);
 
   final LocalAuthentication auth = LocalAuthentication();
   final isSupported = await auth.isDeviceSupported();
@@ -53,9 +71,13 @@ Future<void> initDependencies() async {
       () => AuthClient(
         client: http.Client(),
         tokenRepository: serviceLocator(),
-        // baseUrl: 'https://a4198e1330e0.ngrok-free.app/api/v1',
         baseUrl: 'http://127.0.0.1:8000/api/v1',
-        // baseUrl: 'http://167.71.92.9/api/v1',
+      ),
+    )
+    ..registerLazySingleton<DeviceRegistrar>(
+      () => DeviceRegistrar(
+        authClient: serviceLocator(),
+        fingerprint: serviceLocator(),
       ),
     )
     ..registerLazySingleton(() => sharedPreferences)
@@ -68,6 +90,7 @@ Future<void> initDependencies() async {
       ),
     )
     ..registerFactory(() => ApiErrorHandler(appBloc: serviceLocator()));
+  unawaited(serviceLocator<DeviceRegistrar>().register(withAuth: false));
   _auth();
   _cooldown();
   _confirmTransactionPin();
@@ -91,6 +114,30 @@ Future<void> initDependencies() async {
   _addFund();
   _changeTransactionPin();
   _referralSystem();
+  _bonus();
+}
+
+void _bonus() {
+  // Datasources
+  serviceLocator
+    ..registerFactory<BonusRemoteDataSource>(
+      () => BonusRemoteDataSourceImpl(apiClient: serviceLocator()),
+    )
+    // Repository
+    ..registerFactory<BonusRepository>(
+      () => BonusRepositoryImpl(bonusRemoteDataSource: serviceLocator()),
+    )
+    // Use cases
+    ..registerFactory(
+      () => FetchBankListUseCase(bonusRepository: serviceLocator()),
+    )
+    ..registerFactory(
+      () => ValidateBankUseCase(bonusRepository: serviceLocator()),
+    )
+    ..registerFactory(() => SendMoneyUseCase(bonusRepository: serviceLocator()))
+    ..registerFactory(
+      () => WithdrawBonusUseCase(bonusRepository: serviceLocator()),
+    );
 }
 
 void _referralSystem() {
@@ -570,6 +617,9 @@ void _verifyOTP() {
       () => OtpRepositoryImpl(otpRemoteDataSoure: serviceLocator()),
     )
     // Usecases
+    ..registerFactory(
+      () => RequestVerifyOtpUseCase(otpRepository: serviceLocator()),
+    )
     ..registerFactory(() => OtpUseCase(otpRepository: serviceLocator()));
 }
 
@@ -615,7 +665,10 @@ void _login() {
       () => LoginLocalDataSourceImpl(serviceLocator<SharedPreferences>()),
     )
     ..registerFactory<LoginRemoteDataSource>(
-      () => LoginRemoteDataSourceImpl(serviceLocator()),
+      () => LoginRemoteDataSourceImpl(
+        authClient: serviceLocator(),
+        fingerprint: serviceLocator(),
+      ),
     )
     // Repositories
     ..registerFactory<LoginRepository>(
@@ -632,18 +685,21 @@ void _login() {
       () => LoginWithBiometricUseCase(
         loginRepository: serviceLocator<LoginRepository>(),
       ),
+    )
+    ..registerFactory(
+      () => DetermineLoginFlowUseCase(
+        tokenRepository: serviceLocator<TokenRepository>(),
+      ),
     );
 }
 
 void _register() {
   serviceLocator
-    // ..registerFactory<LoginLocalDataSource>(
-    //   () => LoginLocalDataSourceImpl(
-    //     serviceLocator<SharedPreferences>(),
-    //   ),
-    // )
     ..registerFactory<RegisterRemoteDataSource>(
-      () => RegisterRemoteDataSourceImpl(apiClient: serviceLocator()),
+      () => RegisterRemoteDataSourceImpl(
+        apiClient: serviceLocator(),
+        fingerprint: serviceLocator(),
+      ),
     )
     // Repositories
     ..registerFactory<RegisterRepository>(

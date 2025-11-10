@@ -108,12 +108,29 @@ class FingerprintButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void unAuthenticated() {
-      context.read<LoginCubit>().onLoginWithBiometric(
+    void onAuthenticated() {
+      final loginCubit = context.read<LoginCubit>();
+      loginCubit.onLoginWithBiometric(
         onSuccess: (user) {
-          // _appBloc.add(UserLoggedIn(token));
-
           context.read<AppBloc>().add(UserLoggedIn(user));
+
+          if (!user.transactionPin) {
+            Navigator.pushAndRemoveUntil(
+              context,
+              CreatePinPage.route(),
+              (_) => true,
+            );
+            return;
+          }
+
+          if (!user.isVerified) {
+            Navigator.pushAndRemoveUntil(
+              context,
+              VerifyPage.route(email: user.email),
+              (_) => true,
+            );
+            return;
+          }
         },
       );
     }
@@ -121,7 +138,12 @@ class FingerprintButton extends StatelessWidget {
     return PrimaryButton(
       label: AppStrings.proceed,
       onPressed: () async {
-        await fingerprintAuthentication(onAuthenticated: unAuthenticated);
+        await fingerprintAuthentication(
+          onAuthenticated: onAuthenticated,
+          onUnAuthenticated: (s) {
+            context.read<LoginCubit>().onBiometricFailure(s);
+          },
+        );
       },
     );
   }

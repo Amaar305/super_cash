@@ -6,9 +6,7 @@ import 'package:shared/shared.dart';
 import '../presentation.dart';
 
 class VerifyOtpField extends StatefulWidget {
-  const VerifyOtpField({
-    super.key,
-  });
+  const VerifyOtpField({super.key});
 
   @override
   State<VerifyOtpField> createState() => _VerifyOtpFieldState();
@@ -18,26 +16,24 @@ class _VerifyOtpFieldState extends State<VerifyOtpField> {
   final _debounce = Debouncer();
   @override
   Widget build(BuildContext context) {
-    final isLoading =
-        context.select((VerifyCubit element) => element.state.status.isLoading);
-    final otpErrorMsg =
-        context.select((VerifyCubit element) => element.state.otp.errorMessage);
+    final isLoading = context.select(
+      (VerifyCubit element) => element.state.status.isLoading,
+    );
+    final otpErrorMsg = context.select(
+      (VerifyCubit element) => element.state.otp.errorMessage,
+    );
     return Column(
       spacing: AppSpacing.md,
       children: [
-        Text(
-          'Enter Code',
-          style: context.bodySmall,
-        ),
+        Text('Enter Code', style: context.bodySmall),
         AppOtpForm(
           enabled: !isLoading,
           errorText: otpErrorMsg,
-          numberOfInputs: 6,
+          numberOfInputs: 4,
           onCompleted: (p0) {},
-          onChange: (p0) => _debounce.run(
-            () => context.read<VerifyCubit>().onOtpChanged(p0),
-          ),
-        )
+          onChange: (p0) =>
+              _debounce.run(() => context.read<VerifyCubit>().onOtpChanged(p0)),
+        ),
       ],
     );
   }

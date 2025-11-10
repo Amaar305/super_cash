@@ -6,7 +6,7 @@ import 'package:local_auth/local_auth.dart';
 import 'package:shared/shared.dart';
 
 Future<void> fingerprintAuthentication({
-  void Function(String)? onUnAuthenticated,
+  void Function(String reason)? onUnAuthenticated,
   required VoidCallback onAuthenticated,
   String? reason,
 }) async {

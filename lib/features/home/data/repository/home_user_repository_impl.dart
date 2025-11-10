@@ -10,7 +10,7 @@ class HomeUserRepositoryImpl implements HomeUserRepository {
   final HomeUserRemoteDataSource homeUserRemoteDataSource;
   // final ApiErrorHandler apiErrorHandler;
 
-  HomeUserRepositoryImpl({
+  const HomeUserRepositoryImpl({
     required this.homeUserRemoteDataSource,
     required this.networkInfo,
     // required this.apiErrorHandler,

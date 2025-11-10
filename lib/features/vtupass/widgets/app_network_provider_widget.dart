@@ -55,12 +55,12 @@ class AppNetworkProviderWidget extends StatelessWidget {
   }
 
   Widget _buildNetworkItem(String network, String? selectedNetwork) {
-    final isSelected = selectedNetwork == network;
+    final isSelected = selectedNetwork == network.toLowerCase();
 
     return Expanded(
       child: GestureDetector(
         onTap: () {
-          onNetworkSelect?.call(network);
+          onNetworkSelect?.call(network.toLowerCase());
         },
         child: AnimatedContainer(
           duration: 200.ms,
@@ -107,5 +107,5 @@ class AppNetworkProviderWidget extends StatelessWidget {
   }
 
   final String? selectedNetwork;
-  final void Function(String)? onNetworkSelect;
+  final void Function(String network)? onNetworkSelect;
 }

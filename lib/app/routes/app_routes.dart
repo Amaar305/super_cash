@@ -43,6 +43,7 @@ class AppRoutes {
   static const String transfer = '/transfer';
   static const String generateAccount = '/generate-account';
   static const String liveChat = '/liveChat';
+  static const String bonus = '/bonus';
 }
 
 // One place for route NAMES (no paths here)
@@ -87,4 +88,5 @@ class RNames {
   static const notFound = 'notFound';
   static const String generateAccount = 'generateAccount';
   static const String transfer = 'transfer';
+  static const String bonus = 'bonus';
 }

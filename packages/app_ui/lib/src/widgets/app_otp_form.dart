@@ -94,8 +94,8 @@ class _AppOtpFormState extends State<AppOtpForm> {
               widget.numberOfInputs,
               (index) {
                 return Container(
-                  width: 35,
-                  height: 38,
+                  width: 55,
+                  height: 55,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(

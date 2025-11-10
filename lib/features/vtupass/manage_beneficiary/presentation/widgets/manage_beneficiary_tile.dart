@@ -9,9 +9,14 @@ import '../../domain/entities/entities.dart';
 import '../presentation.dart';
 
 class ManageBeneficiaryTile extends StatelessWidget {
-  const ManageBeneficiaryTile({super.key, required this.beneficiary});
+  const ManageBeneficiaryTile({
+    super.key,
+    required this.beneficiary,
+    this.fromBeneficiary = false,
+  });
 
   final Beneficiary beneficiary;
+  final bool fromBeneficiary;
 
   @override
   Widget build(BuildContext context) {
@@ -42,36 +47,41 @@ class ManageBeneficiaryTile extends StatelessWidget {
         ),
       ],
     );
-    return Column(
-      children: [
-        Row(
-          children: [
-            SizedBox.square(
-              dimension: 32,
-              child: Assets.icons.beneficiaryIcon.svg(),
-            ),
-            Gap.h(AppSpacing.xs),
-            _buildNameAndNumber(
-              context,
-              name: beneficiary.name,
-              number: beneficiary.phone,
-            ),
-            Spacer(),
-            ManageBeneficiaryIconActionButton(
-              label: AppStrings.edit,
-              icon: Assets.icons.editBeneficiary.svg(),
-              onTap: () => onEditted(context),
-            ),
-            Gap.h(AppSpacing.sm),
-            ManageBeneficiaryIconActionButton(
-              label: AppStrings.delete,
-              icon: Assets.icons.deleteBeneficiay.svg(),
-              onTap: onBeneficiaryDelete,
-            ),
-          ],
-        ),
-        Divider(thickness: 0.3),
-      ],
+    return Tappable.faded(
+      onTap: !fromBeneficiary ? () {} : () => context.pop(beneficiary),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              SizedBox.square(
+                dimension: 32,
+                child: Assets.icons.beneficiaryIcon.svg(),
+              ),
+              Gap.h(AppSpacing.xs),
+              _buildNameAndNumber(
+                context,
+                name: beneficiary.name,
+                number: beneficiary.phone,
+              ),
+              if (!fromBeneficiary) ...[
+                Spacer(),
+                ManageBeneficiaryIconActionButton(
+                  label: AppStrings.edit,
+                  icon: Assets.icons.editBeneficiary.svg(),
+                  onTap: () => onEditted(context),
+                ),
+                Gap.h(AppSpacing.sm),
+                ManageBeneficiaryIconActionButton(
+                  label: AppStrings.delete,
+                  icon: Assets.icons.deleteBeneficiay.svg(),
+                  onTap: onBeneficiaryDelete,
+                ),
+              ],
+            ],
+          ),
+          Divider(thickness: 0.3),
+        ],
+      ),
     );
   }
 

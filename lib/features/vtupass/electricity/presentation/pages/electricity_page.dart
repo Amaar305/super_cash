@@ -63,6 +63,11 @@ class ElectricityVTUButtons extends StatelessWidget {
           context.read<ElectricityCubit>().onPhoneChanged(newValue),
       onNumberPasted: (newValue) =>
           context.read<ElectricityCubit>().onPhoneChanged(newValue),
+      onBeneficiaryTapped: (beneficiary) {
+        if (beneficiary == null) return;
+
+        context.read<ElectricityCubit>().onPhoneChanged(beneficiary.phone);
+      },
     );
   }
 }

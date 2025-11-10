@@ -16,6 +16,7 @@ enum HomeStatus {
 class HomeState extends Equatable {
   final AppUser user;
   final HomeStatus status;
+  final HomeSettings? homeSettings;
   final String message;
   final bool showBalance;
 
@@ -24,23 +25,19 @@ class HomeState extends Equatable {
     required this.status,
     required this.message,
     required this.showBalance,
+    this.homeSettings,
   });
 
   const HomeState.initial()
-      : this(
-          user: AppUser.anonymous,
-          status: HomeStatus.initial,
-          message: '',
-          showBalance: true,
-        );
+    : this(
+        user: AppUser.anonymous,
+        status: HomeStatus.initial,
+        message: '',
+        showBalance: true,
+      );
 
   @override
-  List<Object?> get props => [
-        user,
-        status,
-        message,
-        showBalance,
-      ];
+  List<Object?> get props => [user, status, message, showBalance, homeSettings];
 
   factory HomeState.fromJson(Map<String, dynamic> json) =>
       _$HomeStateFromJson(json);
@@ -51,12 +48,14 @@ class HomeState extends Equatable {
     HomeStatus? status,
     String? message,
     bool? showBalance,
+    HomeSettings? homeSettings,
   }) {
     return HomeState(
       user: user ?? this.user,
       status: status ?? this.status,
       message: message ?? this.message,
       showBalance: showBalance ?? this.showBalance,
+      homeSettings: homeSettings ?? this.homeSettings,
     );
   }
 }

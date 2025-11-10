@@ -72,6 +72,8 @@ class _DataPhoneFieldState extends State<DataPhoneField> {
     final phoneErrorMessage = context.select(
       (DataCubit cubit) => cubit.state.phone.errorMessage,
     );
+    final phone = context.select((DataCubit cubit) => cubit.state.phone.value);
+    _controller.text = phone;
 
     return VtuBeneficiaryPhoneNumberField(
       focusNode: _focusNode,

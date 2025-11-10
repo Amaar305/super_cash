@@ -14,6 +14,11 @@ class DataVTUButtons extends StatelessWidget {
           context.read<DataCubit>().onPhoneChanged(newValue),
       onNumberPasted: (newValue) =>
           context.read<DataCubit>().onPhoneChanged(newValue),
+      onBeneficiaryTapped: (beneficiary) {
+        if (beneficiary == null) return;
+        context.read<DataCubit>().onPhoneChanged(beneficiary.phone);
+        context.read<DataCubit>().onNetworkChanged(beneficiary.network);
+      },
     );
   }
 }

@@ -8,6 +8,7 @@ export 'data_plan_model.dart';
 export 'data_plan_type.dart';
 export 'dollar_rate.dart';
 export 'electricity_plan.dart';
+export 'home_settings.dart';
 export 'image_slider.dart';
 export 'local_media.dart';
 export 'modal_option.dart';

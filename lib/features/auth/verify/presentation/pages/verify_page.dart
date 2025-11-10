@@ -8,10 +8,11 @@ import '../../../widgets/assistance_button.dart';
 import '../../verify.dart';
 
 class VerifyPage extends StatelessWidget {
-  const VerifyPage({super.key});
+  const VerifyPage({super.key, required this.email});
+  final String email;
 
-  static Route<void> route() => PageRouteBuilder(
-    pageBuilder: (_, __, ___) => const VerifyPage(),
+  static Route<void> route({required String email}) => PageRouteBuilder(
+    pageBuilder: (_, __, ___) => VerifyPage(email: email),
     transitionDuration: Duration.zero,
     reverseTransitionDuration: Duration.zero,
   );
@@ -19,24 +20,40 @@ class VerifyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          VerifyCubit(otpUseCase: serviceLocator<OtpUseCase>()),
+      create: (context) => VerifyCubit(
+        otpUseCase: serviceLocator<OtpUseCase>(),
+        email: email,
+        requestVerifyOtpUseCase: serviceLocator<RequestVerifyOtpUseCase>(),
+      ),
       child: VerifyView(),
     );
   }
 }
 
-class VerifyView extends StatelessWidget {
+class VerifyView extends StatefulWidget {
   const VerifyView({super.key});
 
+  @override
+  State<VerifyView> createState() => _VerifyViewState();
+}
+
+class _VerifyViewState extends State<VerifyView> {
   void _confirmGoBack(BuildContext context) => context.confirmAction(
     fn: () => Navigator.pop(context),
-    title: 'Warning',
-    content: 'Going back',
-    noText: 'Don\'t please',
-    yesText: 'Okay',
+    title: AppStrings.goBackTitle,
+    content: AppStrings.goBackDescrption,
+    noText: AppStrings.cancel,
+    yesText: AppStrings.goBack,
     yesTextStyle: context.labelLarge?.apply(color: AppColors.blue),
   );
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<VerifyCubit>().requestOtp();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

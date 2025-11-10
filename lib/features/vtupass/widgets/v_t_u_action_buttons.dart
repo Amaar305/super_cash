@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'package:super_cash/core/app_strings/app_string.dart';
 import 'package:flutter/services.dart';
+import 'package:super_cash/features/vtupass/manage_beneficiary/manage_beneficiary.dart';
 
 class VTUActionButtons extends StatelessWidget {
   const VTUActionButtons({
@@ -15,9 +16,9 @@ class VTUActionButtons extends StatelessWidget {
     this.isLoading = false,
   });
 
-  final void Function(String)? onNumberPasted;
-  final void Function(String)? onContactPicked;
-  final VoidCallback? onBeneficiaryTapped;
+  final void Function(String value)? onNumberPasted;
+  final void Function(String value)? onContactPicked;
+  final void Function(Beneficiary? beneficiary)? onBeneficiaryTapped;
   final bool isLoading;
 
   @override
@@ -46,7 +47,7 @@ class VTUActionButtons extends StatelessWidget {
             child: MiniButtonVTU(
               icon: Icons.person,
               label: AppStrings.beneficiary,
-              onTap: isLoading ? null : onBeneficiaryTapped,
+              onTap: isLoading ? null : () => _onBeneficiaryPicked(context),
             ),
           ),
           Expanded(
@@ -85,6 +86,14 @@ class VTUActionButtons extends StatelessWidget {
     final selectedPhone = await pickContact(context);
     if (selectedPhone == null || !context.mounted) return;
     onContactPicked?.call(selectedPhone);
+  }
+
+  void _onBeneficiaryPicked(BuildContext context) async {
+    final result = await showModalBottomSheet<Beneficiary?>(
+      context: context,
+      builder: (context) => ManageBeneficiaryPage(fromBeneficiary: true),
+    );
+    onBeneficiaryTapped?.call(result);
   }
 }
 

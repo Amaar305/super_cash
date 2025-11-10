@@ -155,8 +155,8 @@ class PaginationMeta {
 
   factory PaginationMeta.fromJson(Map<String, dynamic> map) {
     return PaginationMeta(
-      total: map['total'] as int,
-      pages: map['pages'] as int,
+      total: map['total'] as int? ??0,
+      pages: map['pages'] as int? ??0,
       next: map['next'] != null ? map['next'] as String : null,
       previous: map['previous'] != null ? map['previous'] as String : null,
     );

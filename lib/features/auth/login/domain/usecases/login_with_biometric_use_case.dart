@@ -11,6 +11,6 @@ class LoginWithBiometricUseCase implements UseCase<AppUser, NoParam> {
 
   @override
   Future<Either<Failure, AppUser>> call(NoParam param) async {
-    return await loginRepository.fetchUserDetails();
+    return await loginRepository.loginWithDeviceFingerprint();
   }
 }

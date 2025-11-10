@@ -2,9 +2,11 @@ import 'dart:convert';
 
 import 'package:app_client/app_client.dart';
 import 'package:super_cash/core/error/exception.dart';
+import 'package:token_repository/token_repository.dart';
 
 abstract interface class OtpRemoteDataSoure {
-  Future<Map> verifyOTP(String otp);
+  Future<Map> verifyOTP(String otp, String email);
+  Future<void> requestOTP(String email);
 }
 
 class OtpRemoteDataSoureImpl implements OtpRemoteDataSoure {
@@ -13,26 +15,66 @@ class OtpRemoteDataSoureImpl implements OtpRemoteDataSoure {
   OtpRemoteDataSoureImpl({required this.apiClient});
 
   @override
-  Future<Map> verifyOTP(String otp) async {
+  Future<Map> verifyOTP(String otp, String email) async {
     try {
-      final body = jsonEncode({'otp': otp});
+      final body = jsonEncode({
+        "email": email,
+        "purpose": "verify_email",
+        "code": otp,
+      });
       final response = await apiClient.request(
         method: 'POST',
-        path: 'auth/verify-email/',
+        path: 'auth/otp/confirm/',
         body: body,
       );
-      Map<String, dynamic> res = jsonDecode(response.body);
 
-      if (res.containsKey('otp') && res['otp'].runtimeType == List) {
-        throw ServerException(
-          (res['otp'][0] as String).replaceAll('field', 'otp'),
-        );
+      final decoded = jsonDecode(response.body);
+      if (decoded is Map<String, dynamic>) {
+        return decoded;
       }
 
-      if (res.containsKey('status') && res['status'] == 'fail') {
-        throw ServerException((res['message']));
+      throw ServerException('Unexpected response format.');
+    } on RefreshTokenException catch (e) {
+      // Bubble up so the app can force re-login if needed
+      throw ServerException(e.message);
+    } on ApiException catch (e) {
+      // Non-2xx with server-provided message already extracted by AuthClient
+      throw ServerException(e.message);
+    } on NetworkException catch (e) {
+      throw ServerException(e.message);
+    } on FormatException {
+      throw ServerException('Invalid JSON from server.');
+    } catch (e) {
+      throw ServerException(e.toString());
+    }
+  }
+
+  @override
+  Future<void> requestOTP(String email) async {
+    try {
+      final body = jsonEncode({'email': email, 'purpose': 'verify_email'});
+      final response = await apiClient.request(
+        method: 'POST',
+        path: 'auth/otp/send/',
+        body: body,
+      );
+      final decoded = jsonDecode(response.body);
+      if (decoded is Map<String, dynamic>) {
+        if (decoded.containsKey('status') && decoded['status'] == 'fail') {
+          throw ServerException((decoded['message']));
+        }
+        return;
       }
-      return res;
+    } on RefreshTokenException catch (e) {
+      // Bubble up so the app can force re-login if needed
+      throw ServerException(e.message);
+    } on ApiException catch (e) {
+      // Non-2xx with server-provided message already extracted by AuthClient
+      throw ServerException(e.message);
+    } on NetworkException catch (e) {
+      throw ServerException(e.message);
+    } on FormatException {
+      throw ServerException('Invalid JSON from server.');
     } catch (e) {
       throw ServerException(e.toString());
     }

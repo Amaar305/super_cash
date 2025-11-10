@@ -4,6 +4,7 @@ import 'package:shared/shared.dart';
 
 abstract class LoginRepository {
   Future<Either<Failure, AppUser>> login(String username, String password);
+  Future<Either<Failure, AppUser>> loginWithDeviceFingerprint();
   Future<Either<Failure, void>> logout();
   Future<Either<Failure, AppUser>> fetchUserDetails();
 }

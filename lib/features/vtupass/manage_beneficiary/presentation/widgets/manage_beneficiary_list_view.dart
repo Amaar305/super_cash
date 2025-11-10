@@ -8,10 +8,12 @@ class ManageBeneficiaryListView extends StatelessWidget {
     super.key,
     required this.beneficiaries,
     required this.hasReachMax,
+    this.fromBeneficiary = false,
   });
 
   final List<Beneficiary> beneficiaries;
   final bool hasReachMax;
+  final bool fromBeneficiary;
 
   @override
   Widget build(BuildContext context) {
@@ -33,10 +35,7 @@ class ManageBeneficiaryListView extends StatelessWidget {
         final beneficiary = beneficiaries[index];
         return ManageBeneficiaryTile(
           beneficiary: beneficiary,
-          // onTap: () => context.push(
-          //   AppRoutes.saveBeneficiary,
-          //   extra: beneficiary,
-          // ),
+          fromBeneficiary: fromBeneficiary,
         );
       },
       separatorBuilder: (context, index) => Gap.v(AppSpacing.sm),

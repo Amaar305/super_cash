@@ -15,9 +15,9 @@ class DataCubit extends Cubit<DataState> {
   DataCubit({
     required FetchDataPlanUseCase fetchDataPlanUseCase,
     required BuyDataPlanUseCase buyDataPlanUseCase,
-  })  : _buyDataPlanUseCase = buyDataPlanUseCase,
-        _fetchDataPlanUseCase = fetchDataPlanUseCase,
-        super(DataState.initial());
+  }) : _buyDataPlanUseCase = buyDataPlanUseCase,
+       _fetchDataPlanUseCase = fetchDataPlanUseCase,
+       super(DataState.initial());
 
   void resetState() => emit(DataState.initial());
 
@@ -31,28 +31,32 @@ class DataCubit extends Cubit<DataState> {
     emit(state.copyWith(status: DataStatus.loading));
 
     try {
-      final res =
-          await _fetchDataPlanUseCase(FetchDataPlanParam(network: network));
+      final res = await _fetchDataPlanUseCase(
+        FetchDataPlanParam(network: network),
+      );
 
       res.fold(
-        (l) => emit(state.copyWith(
-          status: DataStatus.failure,
-          message: l.message,
-        )),
+        (l) => emit(
+          state.copyWith(status: DataStatus.failure, message: l.message),
+        ),
         (r) {
-          emit(state.copyWith(
-            filteredPlans: r.plans,
-            dataPlans: r.plans,
-            status: DataStatus.success,
-            selectedNetwork: network,
-          ));
+          emit(
+            state.copyWith(
+              filteredPlans: r.plans,
+              dataPlans: r.plans,
+              status: DataStatus.success,
+              selectedNetwork: network,
+            ),
+          );
         },
       );
     } catch (e) {
-      emit(state.copyWith(
-        status: DataStatus.failure,
-        message: "Fail to fetch data plans.",
-      ));
+      emit(
+        state.copyWith(
+          status: DataStatus.failure,
+          message: "Fail to fetch data plans.",
+        ),
+      );
     }
   }
 
@@ -60,28 +64,32 @@ class DataCubit extends Cubit<DataState> {
     if (state.selectedNetwork == network || isClosed) return;
 
     final newState = state.resetChanges();
-    emit(newState.copyWith(
-      status: DataStatus.loading,
-      selectedNetwork: network,
-    ));
-
-    final res =
-        await _fetchDataPlanUseCase(FetchDataPlanParam(network: network));
+    emit(
+      newState.copyWith(status: DataStatus.loading, selectedNetwork: network),
+    );
+    final res = await _fetchDataPlanUseCase(
+      FetchDataPlanParam(network: network),
+    );
 
     res.fold(
-      (l) => emit(state.copyWith(
-        status: DataStatus.failure,
-        message: l.message,
-      )),
+      (l) {
+        if (isClosed) return;
+
+        emit(state.copyWith(status: DataStatus.failure, message: l.message));
+      },
       (r) {
-        emit(state.copyWith(
-          dataPlans: r.plans,
-          filteredPlans: r.plans,
-          status: DataStatus.success,
-          selectedNetwork: network,
-          selectedDataType: r.plans.firstOrNull?.planType,
-          selectedIndex: null,
-        ));
+        if (isClosed) return;
+
+        emit(
+          state.copyWith(
+            dataPlans: r.plans,
+            filteredPlans: r.plans,
+            status: DataStatus.success,
+            selectedNetwork: network,
+            selectedDataType: r.plans.firstOrNull?.planType,
+            selectedIndex: null,
+          ),
+        );
       },
     );
   }
@@ -91,8 +99,9 @@ class DataCubit extends Cubit<DataState> {
     final previousPhoneState = previousScreenState.phone;
     final shouldValidate = previousPhoneState.invalid;
 
-    final newPhoneState =
-        shouldValidate ? Phone.dirty(newValue) : Phone.pure(newValue);
+    final newPhoneState = shouldValidate
+        ? Phone.dirty(newValue)
+        : Phone.pure(newValue);
 
     final newScreenState = previousScreenState.copyWith(phone: newPhoneState);
     emit(newScreenState);
@@ -119,26 +128,24 @@ class DataCubit extends Cubit<DataState> {
     try {
       final plans = List<DataPlan>.from(state.dataPlans);
 
-      final results = plans.where(
-        (element) {
-          return element.planType.toLowerCase().contains(dataType);
-        },
-      ).toList();
+      final results = plans.where((element) {
+        return element.planType.toLowerCase().contains(dataType);
+      }).toList();
       emit(state.copyWith(filteredPlans: results, selectedDataType: dataType));
     } catch (e) {
-      emit(state.copyWith(
-        status: DataStatus.failure,
-        message: 'Fail to filter plans by plan data type',
-      ));
+      emit(
+        state.copyWith(
+          status: DataStatus.failure,
+          message: 'Fail to filter plans by plan data type',
+        ),
+      );
     }
   }
 
   void onPlanSelected(int index) {
     if (state.selectedIndex == index) return;
 
-    emit(state.copyWith(
-      selectedIndex: index,
-    ));
+    emit(state.copyWith(selectedIndex: index));
   }
 
   void onDurationChanged(String? duration) {
@@ -154,24 +161,24 @@ class DataCubit extends Cubit<DataState> {
 
       duration = duration.toLowerCase();
 
-      results = plans.where(
-        (element) {
-          final validity = element.planValidity.split(' ').first;
-          final conditions = switch (duration) {
-            'daily' => int.parse(validity) < 7,
-            'weekly' => int.parse(validity) == 7,
-            'monthly' => int.parse(validity) > 7 && int.parse(validity) <= 30,
-            _ => int.parse(validity) > 1
-          };
-          return conditions;
-        },
-      ).toList();
+      results = plans.where((element) {
+        final validity = element.planValidity.split(' ').first;
+        final conditions = switch (duration) {
+          'daily' => int.parse(validity) < 7,
+          'weekly' => int.parse(validity) == 7,
+          'monthly' => int.parse(validity) > 7 && int.parse(validity) <= 30,
+          _ => int.parse(validity) > 1,
+        };
+        return conditions;
+      }).toList();
       emit(state.copyWith(filteredPlans: results, selectedDuration: duration));
     } catch (e) {
-      emit(state.copyWith(
-        status: DataStatus.failure,
-        message: 'Fail to filter plans by plan duration',
-      ));
+      emit(
+        state.copyWith(
+          status: DataStatus.failure,
+          message: 'Fail to filter plans by plan duration',
+        ),
+      );
     }
   }
 
@@ -204,16 +211,10 @@ class DataCubit extends Cubit<DataState> {
     );
 
     res.fold(
-      (l) => emit(
-        state.copyWith(
-          status: DataStatus.failure,
-          message: l.message,
-        ),
-      ),
+      (l) =>
+          emit(state.copyWith(status: DataStatus.failure, message: l.message)),
       (r) {
-        emit(state.copyWith(
-          status: DataStatus.purchased,
-        ));
+        emit(state.copyWith(status: DataStatus.purchased));
 
         onSuccess?.call(r);
       },

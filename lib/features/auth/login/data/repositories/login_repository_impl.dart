@@ -29,18 +29,14 @@ class LoginRepositoryImpl implements LoginRepository {
       return left(NetworkFailure("No internet connection."));
     }
     try {
-      final tokenModel = await loginRemoteDataSource.login(
+      final user = await loginRemoteDataSource.login(
         username: username,
         password: password,
       );
 
       tokenRepository
-        ..saveAccessToken(tokenModel.accessToken)
-        ..saveRefreshToken(tokenModel.refreshToken);
-
-      final user = await loginRemoteDataSource.fetchUserDetails();
-
-      logE(user.email);
+        ..saveAccessToken(user.tokens!.access)
+        ..saveRefreshToken(user.tokens!.refresh);
 
       await loginLocalDataSource.persistUser(user);
 
@@ -74,6 +70,27 @@ class LoginRepositoryImpl implements LoginRepository {
       return left(
         RefreshTokenFailure("Session expired. Use email & password to login."),
       );
+    }
+  }
+
+  @override
+  Future<Either<Failure, AppUser>> loginWithDeviceFingerprint() async {
+    try {
+      if (!await networkInfo.isConnected) {
+        return left(NetworkFailure("No internet connection."));
+      }
+
+      final user = await loginRemoteDataSource.loginWithDeviceFingerprint();
+
+      tokenRepository
+        ..saveAccessToken(user.tokens!.access)
+        ..saveRefreshToken(user.tokens!.refresh);
+
+      await loginLocalDataSource.persistUser(user);
+
+      return Right(user);
+    } on ServerException catch (e) {
+      return left(Failure(e.message));
     }
   }
 }

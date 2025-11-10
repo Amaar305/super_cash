@@ -1,3 +1,4 @@
+import 'package:shared/shared.dart';
 import 'package:super_cash/core/error/failure.dart';
 
 import 'package:fpdart/fpdart.dart';
@@ -10,7 +11,7 @@ class RegisterRepositoryImpl implements RegisterRepository {
 
   RegisterRepositoryImpl({required this.registerRemoteDataSource});
   @override
-  Future<Either<Failure, AuthUser>> register({
+  Future<Either<Failure, AppUser>> register({
     required String email,
     required String phone,
     required String firstName,

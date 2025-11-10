@@ -10,12 +10,22 @@ class OtpRepositoryImpl implements OtpRepository {
   OtpRepositoryImpl({required this.otpRemoteDataSoure});
 
   @override
-  Future<Either<Failure, Map>> verifyOTP(String otp) async {
+  Future<Either<Failure, Map>> verifyOTP(String otp, String email) async {
     try {
-      final response = await otpRemoteDataSoure.verifyOTP(otp);
+      final response = await otpRemoteDataSoure.verifyOTP(otp, email);
       return right(response);
     } on ServerException catch (e) {
       return left(Failure(e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> requestOTP(String email) async {
+    try {
+      final res = await otpRemoteDataSoure.requestOTP(email);
+      return right(res);
+    } on ServerException catch (error) {
+      return left(Failure(error.message));
     }
   }
 }

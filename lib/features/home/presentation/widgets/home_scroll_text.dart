@@ -1,15 +1,17 @@
 import 'package:app_ui/app_ui.dart';
-import 'package:super_cash/app/bloc/app_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:marquee/marquee.dart';
+import 'package:super_cash/features/home/home.dart';
 
 class HomeScrollText extends StatelessWidget {
   const HomeScrollText({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final text = context.select((AppBloc bloc) => bloc.state.user.notification);
+    final text = context.select(
+      (HomeCubit bloc) => bloc.state.homeSettings?.notification?.message,
+    );
     if (text == null || text.isEmpty) return SizedBox.shrink();
 
     return Container(

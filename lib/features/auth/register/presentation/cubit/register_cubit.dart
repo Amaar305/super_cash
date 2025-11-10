@@ -234,7 +234,7 @@ class RegisterCubit extends Cubit<RegisterState> {
     emit(newScreenState);
   }
 
-  void submit(VoidCallback? onSuccess) async {
+  void submit(void Function(AppUser userr)? onSuccess) async {
     final email = Email.dirty(state.email.value);
     final password = Password.dirty(state.password.value);
     final password2 = Password.dirty(state.confirmPassword.value);
@@ -284,7 +284,7 @@ class RegisterCubit extends Cubit<RegisterState> {
       ),
       (r) {
         emit(state.copyWith(status: RegisterStatus.success, user: r));
-        onSuccess?.call();
+        onSuccess?.call(r);
       },
     );
   }

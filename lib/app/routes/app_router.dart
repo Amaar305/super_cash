@@ -4,6 +4,7 @@ import 'package:animations/animations.dart';
 import 'package:super_cash/features/account/account.dart';
 import 'package:super_cash/features/account/change_password/change_password.dart';
 import 'package:super_cash/features/add_fund/add_fund.dart';
+import 'package:super_cash/features/bonus/presentation/presentation.dart';
 import 'package:super_cash/features/confirm_transaction_pin/confirm_transaction_pin.dart';
 import 'package:super_cash/features/onboarding/onboarding.dart';
 import 'package:super_cash/features/referal/referal.dart';
@@ -232,6 +233,11 @@ class AppRouter {
         path: AppRoutes.changePassword,
         builder: (_, __) => ChangePasswordPage(),
       ),
+      GoRoute(
+        name: RNames.bonus,
+        path: AppRoutes.bonus,
+        builder: (_, __) => BonusPage(),
+      ),
 
       // ---- Shell (tabs) ----
       StatefulShellRoute.indexedStack(
@@ -378,7 +384,7 @@ class GoRouterAppBlocRefreshStream extends ChangeNotifier {
   GoRouterAppBlocRefreshStream(Stream<dynamic> stream) {
     notifyListeners();
     _subscription = stream.asBroadcastStream().listen((event) {
-      notifyListeners();
+       notifyListeners();
     });
   }
 

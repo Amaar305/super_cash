@@ -13,7 +13,11 @@ class AirtimeVTUButtons extends StatelessWidget {
     );
     return VTUActionButtons(
       isLoading: isLoading,
-      onBeneficiaryTapped: () {},
+      onBeneficiaryTapped: (beneficiary) {
+        if (beneficiary == null) return;
+        context.read<AirtimeCubit>().onPhoneChanged(beneficiary.phone);
+        context.read<AirtimeCubit>().onNetworkChanged(beneficiary.network);
+      },
       onContactPicked: (newValue) =>
           context.read<AirtimeCubit>().onPhoneChanged(newValue),
       onNumberPasted: (newValue) {

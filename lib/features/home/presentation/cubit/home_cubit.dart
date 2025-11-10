@@ -50,6 +50,7 @@ class HomeCubit extends HydratedCubit<HomeState> {
           return;
         }
         emit(state.copyWith(user: r, status: HomeStatus.success));
+        logI(r.email);
         appBloc.add(UserUpdate(r));
       },
     );

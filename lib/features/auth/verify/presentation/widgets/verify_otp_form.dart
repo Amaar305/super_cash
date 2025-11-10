@@ -38,7 +38,9 @@ class _VerifyOtpFormState extends State<VerifyOtpForm> {
         }
         if (state.status.isSuccess) {
           openSnackbar(
-            SnackbarMessage.success(title: state.response?['message']),
+            SnackbarMessage.success(
+              title: state.response?['message'] ?? 'Verification successful.',
+            ),
             clearIfQueue: true,
           );
         }

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:super_cash/app/init/init.dart';
+import 'package:super_cash/core/device/device.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/shared.dart';
@@ -61,6 +62,9 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     Emitter<AppState> emit,
   ) async {
     await serviceLocator<LoginLocalDataSource>().persistUser(event.user);
+    unawaited(
+      serviceLocator<DeviceRegistrar>().register(withAuth: true),
+    );
 
     emit(AppState.authenticated(event.user));
   }

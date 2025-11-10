@@ -58,7 +58,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCbRg8tqmcQot45GWVZyh-2Ci_yCN1Ln6U',
-    appId: '1:170234334876:android:4d5ed499d78a3b526be759',
+    appId: '1:170234334876:android:9b2fc0068ebb63276be759',
     messagingSenderId: '170234334876',
     projectId: 'card-pay-64324',
     storageBucket: 'card-pay-64324.firebasestorage.app',
@@ -66,10 +66,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyBg-Ig6UenKRyGRBsmz3QNEey-xit7Nkuc',
-    appId: '1:170234334876:ios:4c10e94d660ec3296be759',
+    appId: '1:170234334876:ios:12342131ef8f5fdc6be759',
     messagingSenderId: '170234334876',
     projectId: 'card-pay-64324',
     storageBucket: 'card-pay-64324.firebasestorage.app',
-    iosBundleId: 'com.example.cashApp',
+    iosBundleId: 'com.example.superCash',
   );
+
 }

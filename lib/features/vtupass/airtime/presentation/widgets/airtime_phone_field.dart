@@ -72,7 +72,10 @@ class _AirtimePhoneFieldState extends State<AirtimePhoneField> {
     final phoneErrorMessage = context.select(
       (AirtimeCubit cubit) => cubit.state.phone.errorMessage,
     );
-
+    final phone = context.select(
+      (AirtimeCubit cubit) => cubit.state.phone.value,
+    );
+    _controller.text = phone;
     return VtuBeneficiaryPhoneNumberField(
       focusNode: _focusNode,
       isLoading: isLoading,

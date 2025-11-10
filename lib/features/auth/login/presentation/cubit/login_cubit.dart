@@ -15,16 +15,19 @@ part 'login_state.dart';
 class LoginCubit extends Cubit<LoginState> {
   final LoginUseCase _loginUseCase;
   final LoginWithBiometricUseCase _biometricUseCase;
+  final DetermineLoginFlowUseCase _determineLoginFlowUseCase;
   final AppBloc _appBloc;
 
   LoginCubit({
     required LoginUseCase loginUseCase,
     required AppBloc appBloc,
     required LoginWithBiometricUseCase biometricUseCase,
+    required DetermineLoginFlowUseCase determineLoginFlowUseCase,
     required bool hasBiometric,
   }) : _loginUseCase = loginUseCase,
        _appBloc = appBloc,
        _biometricUseCase = biometricUseCase,
+       _determineLoginFlowUseCase = determineLoginFlowUseCase,
        super(LoginState.initial());
 
   Future<void> initialize() async {
@@ -119,9 +122,9 @@ class LoginCubit extends Cubit<LoginState> {
     void Function(AppUser)? onSuccess,
     VoidCallback? onFallbackToPassword,
   }) async {
-    final newState = state.copyWith(status: LoginStatus.loading);
+    if (isClosed) return;
 
-    emit(newState);
+    emit(state.copyWith(status: LoginStatus.loading));
 
     final res = await _biometricUseCase(NoParam());
 
@@ -139,12 +142,22 @@ class LoginCubit extends Cubit<LoginState> {
         onFallbackToPassword?.call();
         _appBloc.add(UserLoggedOut());
       },
-      (token) {
-        emit(state.copyWith(status: LoginStatus.success, user: token));
-        onSuccess?.call(token);
+      (user) {
+        emit(state.copyWith(status: LoginStatus.success, user: user));
+        onSuccess?.call(user);
       },
     );
   }
+
+void onBiometricFailure(String message) {
+    emit(
+      state.copyWith(
+        message: message,
+        status: LoginStatus.error,
+      ),
+    );
+  }
+
 
   // Add this method to your LoginCubit
   void biometricRegistrationCompleted() {
@@ -160,6 +173,7 @@ class LoginCubit extends Cubit<LoginState> {
     VoidCallback? onSuccess,
     void Function(AppUser)? onEnableBiometric,
   }) async {
+    // Validate the raw form values before hitting the network.
     final email = Email.dirty(state.email.value);
     final password = Password.dirty(state.password.value);
 
@@ -175,31 +189,46 @@ class LoginCubit extends Cubit<LoginState> {
 
     if (!isFormValid) return;
 
+    // Run the login use case against the API.
     final res = await _loginUseCase(
       LoginParams(username: email.value, password: password.value),
     );
 
     if (isClosed) return;
 
-    res.fold(
+    await res.fold(
       (l) {
+        if (isClosed) return;
+
         emit(state.copyWith(message: l.message, status: LoginStatus.error));
-        // _appBloc.add(UserLoggedOut());
-        logI(l.message);
+        _appBloc.add(UserLoggedOut());
       },
-      (token) {
-        emit(state.copyWith(status: LoginStatus.success, user: token));
-        if (token.transactionPin) {
-          final enabled =
-              serviceLocator<TokenRepository>().getBiometric() ?? false;
-          if (enabled) {
-            _appBloc.add(UserLoggedIn(token));
-          } else {
-            onEnableBiometric?.call(token);
-          }
+      (user) async {
+        if (isClosed) return;
+        emit(state.copyWith(status: LoginStatus.success, user: user));
+
+        // Decide the next screen or action to trigger after login succeeds.
+        final decisionEither = await _determineLoginFlowUseCase(user);
+        final decision = decisionEither.fold((l) => null, (r) => r);
+
+        if (decision == null) {
+          // If determining the flow failed, fallback to generic success behavior.
+          onSuccess?.call();
           return;
         }
-        onSuccess?.call();
+
+        switch (decision.action) {
+          case LoginFlowAction.requestTransactionPin:
+          case LoginFlowAction.requestVerification:
+            onSuccess?.call();
+            return;
+          case LoginFlowAction.authenticateUser:
+            _appBloc.add(UserLoggedIn(user));
+            return;
+          case LoginFlowAction.promptBiometricEnrollment:
+            onEnableBiometric?.call(user);
+            return;
+        }
       },
     );
   }

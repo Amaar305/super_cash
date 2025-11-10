@@ -76,7 +76,7 @@ class RegisterState extends Equatable {
         showConfirmPassword: false,
         agreedToTermsAndCondition: false,
         basicSignup: true,
-        user: const AuthUserModel.anonymousUser(),
+        user:  AppUser.anonymous,
       );
 
   final RegisterStatus status;
@@ -92,7 +92,7 @@ class RegisterState extends Equatable {
   final bool showConfirmPassword;
   final bool agreedToTermsAndCondition;
   final bool basicSignup;
-  final AuthUser user;
+  final AppUser user;
 
   RegisterState copyWith({
     RegisterStatus? status,
@@ -108,7 +108,7 @@ class RegisterState extends Equatable {
     bool? showConfirmPassword,
     bool? agreedToTermsAndCondition,
     bool? basicSignup,
-    AuthUser? user,
+    AppUser? user,
   }) {
     return RegisterState._(
       status: status ?? this.status,

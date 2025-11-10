@@ -3,6 +3,7 @@
 class ImageSlider {
   ImageSlider({
     required this.imageUrl,
+    required this.targetRoute,
     this.link,
     this.isActive = false,
   });
@@ -12,11 +13,13 @@ class ImageSlider {
       imageUrl: json['image_url'] as String? ?? '',
       link: json['link'] as String?,
       isActive: json['is_active'] as bool? ?? false,
+      targetRoute: json['target_route'] as String?,
     );
   }
   final String imageUrl;
   final String? link;
   final bool isActive;
+  final String? targetRoute;
 
   bool get isValidUrl => imageUrl.isNotEmpty && imageUrl.startsWith('http');
 
@@ -25,6 +28,7 @@ class ImageSlider {
       'image_url': imageUrl,
       'link': link,
       'is_active': isActive,
+      'target_route': targetRoute,
     };
   }
 }

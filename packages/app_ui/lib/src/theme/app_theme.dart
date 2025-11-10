@@ -141,7 +141,6 @@ class AppDarkTheme extends AppTheme {
           appBarColor: AppColors.transparent,
           swapOnMaterial3: true,
         ),
-        useMaterial3: true,
         useMaterial3ErrorColors: true,
       ).copyWith(
         textTheme: const AppDarkTheme().textTheme,

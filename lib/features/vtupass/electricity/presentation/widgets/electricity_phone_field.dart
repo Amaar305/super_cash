@@ -39,8 +39,9 @@ class _ElectricityPhoneFieldState extends State<ElectricityPhoneField> {
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  void didUpdateWidget(ElectricityPhoneField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
     final phoneValue = _cubit.state.phone.value;
 
     if (_controller.text != phoneValue) {
@@ -69,6 +70,11 @@ class _ElectricityPhoneFieldState extends State<ElectricityPhoneField> {
     final phoneErrorMessage = context.select(
       (ElectricityCubit cubit) => cubit.state.phone.errorMessage,
     );
+    final phone = context.select(
+      (ElectricityCubit cubit) => cubit.state.phone.value,
+    );
+
+    _controller.text = phone;
 
     return VtuBeneficiaryPhoneNumberField(
       focusNode: _focusNode,

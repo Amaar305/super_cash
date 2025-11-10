@@ -41,16 +41,14 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
       listener: (context, state) {
         if (state.status.isError) {
           openSnackbar(
-            SnackbarMessage.error(
-              title: state.message,
-            ),
+            SnackbarMessage.error(title: state.message),
             clearIfQueue: true,
           );
         }
         if (state.status.isSuccess) {
           openSnackbar(
             SnackbarMessage.success(
-              title: state.response?['message'],
+              title: state.response?['message'] ?? 'Success',
             ),
             clearIfQueue: true,
           );
@@ -62,13 +60,9 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
           return Column(
             children: [
               if (state.withEmail)
-                ForgotPasswordEmailField(
-                  key: ValueKey('email_f'),
-                )
+                ForgotPasswordEmailField(key: ValueKey('email_f'))
               else
-                ForgotPasswordPhoneField(
-                  key: ValueKey('phone_f'),
-                )
+                ForgotPasswordPhoneField(key: ValueKey('phone_f')),
             ],
           );
         },

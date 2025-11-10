@@ -13,8 +13,10 @@ class Wallet {
 
   factory Wallet.fromMap(Map<String, dynamic> map) {
     return Wallet(
-      walletBalance: map['wallet_balance'] as String,
-      bonus: map['bonus'] as String,
+      walletBalance:
+          double.tryParse(map['wallet_balance'] as String? ?? '')?.toString() ??
+              '',
+      bonus: double.tryParse(map['bonus'] as String? ?? '')?.toString() ?? '',
     );
   }
 

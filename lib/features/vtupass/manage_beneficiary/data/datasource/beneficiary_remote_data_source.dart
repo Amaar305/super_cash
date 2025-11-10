@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:app_client/app_client.dart';
+import 'package:shared/shared.dart';
 import 'package:super_cash/core/error/errorr_message.dart';
 import 'package:super_cash/core/error/exception.dart';
 import 'package:token_repository/token_repository.dart';
@@ -53,6 +54,8 @@ class BeneficiaryRemoteDataSourceImpl implements BeneficiaryRemoteDataSource {
         path: 'vtu/beneficiaries/?page=$page',
         body: jsonEncode({}),
       );
+
+      logI(response.body);
 
       if (response.statusCode != 200) {
         throw ServerException('Something went wrong. Try again later');

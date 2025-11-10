@@ -10,8 +10,8 @@ part 'airtime_state.dart';
 class AirtimeCubit extends Cubit<AirtimeState> {
   final AirtimeUsecase _airtimeUsecase;
   AirtimeCubit({required AirtimeUsecase airtimeUsecase})
-      : _airtimeUsecase = airtimeUsecase,
-        super(AirtimeState.initial());
+    : _airtimeUsecase = airtimeUsecase,
+      super(AirtimeState.initial());
 
   void resetState() => emit(AirtimeState.initial());
   void onNetworkChanged(String network) =>
@@ -24,8 +24,9 @@ class AirtimeCubit extends Cubit<AirtimeState> {
     final commaOrSpace = RegExp(r'[, ]');
 
     final amountValue = newValue.replaceAll(commaOrSpace, "");
-    final newAmountState =
-        shouldValidate ? Amount.dirty(amountValue) : Amount.pure(amountValue);
+    final newAmountState = shouldValidate
+        ? Amount.dirty(amountValue)
+        : Amount.pure(amountValue);
 
     final newScreenState = previousScreenState.copyWith(amount: newAmountState);
 
@@ -50,8 +51,9 @@ class AirtimeCubit extends Cubit<AirtimeState> {
     final previousPhoneState = previousScreenState.phone;
     final shouldValidate = previousPhoneState.invalid;
 
-    final newPhoneState =
-        shouldValidate ? Phone.dirty(newValue) : Phone.pure(newValue);
+    final newPhoneState = shouldValidate
+        ? Phone.dirty(newValue)
+        : Phone.pure(newValue);
 
     final newScreenState = previousScreenState.copyWith(phone: newPhoneState);
     emit(newScreenState);
@@ -79,17 +81,27 @@ class AirtimeCubit extends Cubit<AirtimeState> {
     final amount = Amount.dirty(state.amount.value);
     final phone = Phone.dirty(state.phone.value);
     final network = state.selectedNetwork;
-    final isFormValid = FormzValid([amount, phone]).isFormValid &&
-        const ['MTN', 'Airtel', '9Mobile', 'Glo'].contains(network);
+    final isFormValid =
+        FormzValid([amount, phone]).isFormValid &&
+        const [
+          'MTN',
+          'Airtel',
+          '9Mobile',
+          'Glo',
+          'mtn',
+          'airtel',
+          'glo',
+          '9mobile',
+        ].contains(network);
 
-    final newState = state.copyWith(
-      amount: amount,
-      phone: phone,
-      selectedNetwork: network,
-      status: isFormValid ? AirtimeStatus.loading : null,
-    );
+    // final newState = state.copyWith(
+    //   amount: amount,
+    //   phone: phone,
+    //   selectedNetwork: network,
+    //   status: isFormValid ? AirtimeStatus.loading : null,
+    // );
 
-    emit(newState);
+    // emit(newState);
 
     if (!isFormValid) return;
 
@@ -100,8 +112,18 @@ class AirtimeCubit extends Cubit<AirtimeState> {
     final amount = Amount.dirty(state.amount.value);
     final phone = Phone.dirty(state.phone.value);
     final network = state.selectedNetwork;
-    final isFormValid = FormzValid([amount, phone]).isFormValid &&
-        const ['MTN', 'Airtel', '9Mobile', 'Glo'].contains(network);
+    final isFormValid =
+        FormzValid([amount, phone]).isFormValid &&
+        const [
+          'MTN',
+          'Airtel',
+          '9Mobile',
+          'Glo',
+          'mtn',
+          'airtel',
+          'glo',
+          '9mobile',
+        ].contains(network);
 
     final newState = state.copyWith(
       amount: amount,
@@ -127,12 +149,10 @@ class AirtimeCubit extends Cubit<AirtimeState> {
 
       res.fold(
         (l) => emit(
-            state.copyWith(status: AirtimeStatus.failure, message: l.message)),
+          state.copyWith(status: AirtimeStatus.failure, message: l.message),
+        ),
         (r) {
-          emit(newState.copyWith(
-            status: AirtimeStatus.success,
-            response: r,
-          ));
+          emit(newState.copyWith(status: AirtimeStatus.success, response: r));
           onSuccess?.call(r);
         },
       );
@@ -152,10 +172,7 @@ class AirtimeCubit extends Cubit<AirtimeState> {
     // };
 
     emit(
-      state.copyWith(
-        status: AirtimeStatus.failure,
-        message: error.toString(),
-      ),
+      state.copyWith(status: AirtimeStatus.failure, message: error.toString()),
     );
   }
 }

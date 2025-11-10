@@ -57,7 +57,15 @@ class DataRemoteDataSourceImpl implements DataRemoteDataSource {
 
       return TransactionResponse.fromJson(res as Map<String, dynamic>);
     } on RefreshTokenException catch (e) {
-      throw RefreshTokenException(e.message);
+      // Bubble up so the app can force re-login if needed
+      throw ServerException(e.message);
+    } on ApiException catch (e) {
+      // Non-2xx with server-provided message already extracted by AuthClient
+      throw ServerException(e.message);
+    } on NetworkException catch (e) {
+      throw ServerException(e.message);
+    } on FormatException {
+      throw ServerException('Invalid JSON from server.');
     } catch (e) {
       throw ServerException(e.toString());
     }
@@ -89,7 +97,15 @@ class DataRemoteDataSourceImpl implements DataRemoteDataSource {
 
       return DataPlanResponse.fromJson(res as Map<String, dynamic>);
     } on RefreshTokenException catch (e) {
-      throw RefreshTokenException(e.message);
+      // Bubble up so the app can force re-login if needed
+      throw ServerException(e.message);
+    } on ApiException catch (e) {
+      // Non-2xx with server-provided message already extracted by AuthClient
+      throw ServerException(e.message);
+    } on NetworkException catch (e) {
+      throw ServerException(e.message);
+    } on FormatException {
+      throw ServerException('Invalid JSON from server.');
     } catch (e) {
       throw ServerException(e.toString());
     }

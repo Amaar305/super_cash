@@ -121,38 +121,54 @@ class ElectricityCubit extends Cubit<ElectricityState> {
     emit(newScreenState);
   }
 
-  void onElectricityValidation({void Function(Map)? onVerified}) async {
-    final selectedPlan = state.selectedPlan;
-    final type = state.prepaid;
+  Future<void> validateFields(Future<void> Function() onValidated) async {
     final meter = Decoder.dirty(state.meter.value);
+    final phone = Phone.dirty(state.phone.value);
+    final amount = Amount.dirty(state.amount.value);
+    final hasPlan = state.selectedPlan != null;
+    final isFormValid = hasPlan && FormzValid([meter, phone, amount]).isFormValid;
 
-    final isFormValid = FormzValid([meter]).isFormValid;
-    if (selectedPlan == null || !isFormValid) return;
     emit(
       state.copyWith(
-        selectedPlan: selectedPlan,
-        prepaid: type,
         meter: meter,
+        phone: phone,
+        amount: amount,
         status: isFormValid ? ElectricityStatus.loading : null,
-      ),
-    );
-    final res = await _validateElectricityPlanUseCase(
-      ValidateElectricityPlanParams(
-        billersCode: meter.value,
-        serviceID: selectedPlan.discoId,
-        type: type ? "prepaid" : "postpaid",
+        message: isFormValid ? '' : state.message,
       ),
     );
 
-    res.fold(
-      (l) => emit(
-        state.copyWith(message: l.message, status: ElectricityStatus.failure),
-      ),
-      (r) {
-        emit(state.copyWith(status: ElectricityStatus.success));
-        onVerified?.call(r);
-      },
-    );
+    if (!isFormValid) return;
+
+    await onValidated();
+  }
+
+  Future<void> onElectricityValidation({void Function(Map)? onVerified}) async {
+    await validateFields(() async {
+      final selectedPlan = state.selectedPlan!;
+      final meterValue = state.meter.value;
+      final type = state.prepaid ? 'prepaid' : 'postpaid';
+
+      final res = await _validateElectricityPlanUseCase(
+        ValidateElectricityPlanParams(
+          billersCode: meterValue,
+          serviceID: selectedPlan.discoId,
+          type: type,
+        ),
+      );
+
+      if (isClosed) return;
+
+      res.fold(
+        (l) => emit(
+          state.copyWith(message: l.message, status: ElectricityStatus.failure),
+        ),
+        (r) {
+          emit(state.copyWith(status: ElectricityStatus.success));
+          onVerified?.call(r);
+        },
+      );
+    });
   }
 
   void onElectrityPurchase({

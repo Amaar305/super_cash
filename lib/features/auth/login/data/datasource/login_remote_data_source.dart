@@ -1,26 +1,29 @@
 import 'dart:convert';
 
 import 'package:app_client/app_client.dart';
+import 'package:super_cash/core/device/device_info.dart';
 import 'package:super_cash/core/error/exception.dart';
 import 'package:shared/shared.dart';
 import 'package:token_repository/token_repository.dart';
-import '../models/token_model.dart';
 
 abstract class LoginRemoteDataSource {
-  Future<TokenModel> login({
-    required String username,
-    required String password,
-  });
+  Future<AppUser> login({required String username, required String password});
+  Future<AppUser> loginWithDeviceFingerprint();
+
   Future<AppUser> fetchUserDetails();
 }
 
 class LoginRemoteDataSourceImpl implements LoginRemoteDataSource {
-  final AuthClient authClient;
+  LoginRemoteDataSourceImpl({
+    required this.authClient,
+    required this.fingerprint,
+  });
 
-  LoginRemoteDataSourceImpl(this.authClient);
+  final AuthClient authClient;
+  final Fingerprint fingerprint;
 
   @override
-  Future<TokenModel> login({
+  Future<AppUser> login({
     required String username,
     required String password,
   }) async {
@@ -34,8 +37,7 @@ class LoginRemoteDataSourceImpl implements LoginRemoteDataSource {
       );
       final decoded = jsonDecode(response.body);
       if (decoded is Map<String, dynamic>) {
-        logD(decoded);
-        return TokenModel.fromJson(decoded);
+        return AppUser.fromMap(decoded);
       }
 
       throw ServerException('Unexpected response format.');
@@ -73,6 +75,34 @@ class LoginRemoteDataSourceImpl implements LoginRemoteDataSource {
       throw ServerException(e.message);
     } on ApiException catch (e) {
       // Non-2xx with server-provided message already extracted by AuthClient
+      throw ServerException(e.message);
+    } on NetworkException catch (e) {
+      throw ServerException(e.message);
+    } on FormatException {
+      throw ServerException('Invalid JSON from server.');
+    } catch (e) {
+      throw ServerException(e.toString());
+    }
+  }
+
+  @override
+  Future<AppUser> loginWithDeviceFingerprint() async {
+    try {
+      final payload = await fingerprint.collect();
+      final response = await authClient.request(
+        method: 'POST',
+        path: 'auth/device-fingerprint-login/',
+        body: payload,
+        withToken: false,
+      );
+      final decoded = jsonDecode(response.body);
+      if (decoded is Map<String, dynamic>) {
+        return AppUser.fromMap(decoded);
+      }
+      throw ServerException('Unexpected response format.');
+    } on RefreshTokenException catch (e) {
+      throw ServerException(e.message);
+    } on ApiException catch (e) {
       throw ServerException(e.message);
     } on NetworkException catch (e) {
       throw ServerException(e.message);

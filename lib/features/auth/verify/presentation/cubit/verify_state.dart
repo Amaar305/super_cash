@@ -5,16 +5,18 @@ enum VerifyStatus {
   initial,
   loading,
   success,
+  otpRequested,
   failure;
 
   bool get isError => this == VerifyStatus.failure;
   bool get isLoading => this == VerifyStatus.loading;
+  bool get isOtpRequested => this == VerifyStatus.otpRequested;
   bool get isSuccess => this == VerifyStatus.success;
 }
 
 class VerifyState extends Equatable {
   final VerifyStatus status;
-  final Otp2 otp;
+  final Otp otp;
   final String message;
   final Map? response;
 
@@ -26,19 +28,19 @@ class VerifyState extends Equatable {
   });
 
   const VerifyState.initial()
-      : this._(
-          status: VerifyStatus.initial,
-          otp: const Otp2.pure(),
-          message: '',
-          response: null,
-        );
+    : this._(
+        status: VerifyStatus.initial,
+        otp: const Otp.pure(),
+        message: '',
+        response: null,
+      );
 
   @override
   List<Object?> get props => [status, otp, message, response];
 
   VerifyState copyWith({
     VerifyStatus? status,
-    Otp2? otp,
+    Otp? otp,
     String? message,
     Map? response,
   }) {
@@ -46,8 +48,7 @@ class VerifyState extends Equatable {
       status: status ?? this.status,
       otp: otp ?? this.otp,
       message: message ?? this.message,
-      response: response??this.response,
-
+      response: response ?? this.response,
     );
   }
 }

@@ -8,28 +8,28 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class ManageBeneficiaryPage extends StatelessWidget {
-  const ManageBeneficiaryPage({super.key});
+  const ManageBeneficiaryPage({super.key, this.fromBeneficiary = false});
+  final bool fromBeneficiary;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
-      value: serviceLocator<ManageBeneficiaryCubit>()
-        ..fetchBeneficiaries(forceReload: true),
-      child: const ManageBeneficiaryView(),
+      value: serviceLocator<ManageBeneficiaryCubit>()..fetchBeneficiaries(),
+      child: ManageBeneficiaryView(fromBeneficiary: fromBeneficiary),
     );
   }
 }
 
 class ManageBeneficiaryView extends StatelessWidget {
-  const ManageBeneficiaryView({super.key});
-
+  const ManageBeneficiaryView({super.key, this.fromBeneficiary = false});
+  final bool fromBeneficiary;
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
       appBar: _appBar(context),
       body: Padding(
         padding: EdgeInsets.all(AppSpacing.lg),
-        child: ManageBeneficiaryBody(),
+        child: ManageBeneficiaryBody(fromBeneficiary: fromBeneficiary),
       ),
     );
   }
@@ -38,10 +38,11 @@ class ManageBeneficiaryView extends StatelessWidget {
     return AppBar(
       title: AppAppBarTitle(AppStrings.manageBeneficiary),
       actions: [
-        IconButton(
-          onPressed: () => context.goNamedSafe(RNames.saveBeneficiary),
-          icon: Icon(Icons.add, size: 24),
-        ),
+        if (!fromBeneficiary)
+          IconButton(
+            onPressed: () => context.goNamedSafe(RNames.saveBeneficiary),
+            icon: Icon(Icons.add, size: 24),
+          ),
       ],
       leading: AppLeadingAppBarWidget(onTap: context.pop),
     );
@@ -49,7 +50,8 @@ class ManageBeneficiaryView extends StatelessWidget {
 }
 
 class ManageBeneficiaryBody extends StatelessWidget {
-  const ManageBeneficiaryBody({super.key});
+  const ManageBeneficiaryBody({super.key, this.fromBeneficiary = false});
+  final bool fromBeneficiary;
 
   @override
   Widget build(BuildContext context) {
@@ -69,13 +71,13 @@ class ManageBeneficiaryBody extends StatelessWidget {
           return const Center(child: CircularProgressIndicator.adaptive());
         }
 
-        if (state.status == ManageBeneficiaryStatus.failure &&
-            state.beneficiaries.isEmpty) {
+        if (state.status.isFailure && state.beneficiaries.isEmpty) {
           return _buildFailureState(context, state.message);
         }
         return ManageBeneficiaryListView(
           beneficiaries: state.beneficiaries,
           hasReachMax: state.hasReachedMax,
+          fromBeneficiary: fromBeneficiary,
         );
       },
     );

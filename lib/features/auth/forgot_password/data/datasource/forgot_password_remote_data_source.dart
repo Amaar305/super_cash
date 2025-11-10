@@ -28,26 +28,27 @@ class ForgotPasswordRemoteDataSourceImpl
     try {
       final body = jsonEncode({
         "email": email,
-        "otp": otp,
-        "password": password,
-        "confirm_password": confirmPassword,
+        "code": otp,
+        "new_password": password,
+        "new_password_confirm": confirmPassword,
       });
       final request = await authClient.request(
         method: 'POST',
-        path: 'auth/reset-password/',
+        path: 'auth/password/reset/otp/confirm/',
         body: body,
         withToken: false,
       );
-      final response = jsonDecode(request.body);
-
-      if (response.containsKey('status') && response['status'] != 'success') {
-        throw ServerException(response['message']);
+      final decoded = jsonDecode(request.body);
+      if (decoded is Map<String, dynamic>) {
+        return decoded;
       }
-      if (response.containsKey('non_field_errors') &&
-          response['non_field_errors'].runtimeType == List) {
-        throw ServerException(response['non_field_errors'][0]);
-      }
-      return response;
+      throw ServerException('Unexpected response format.');
+    } on ApiException catch (e) {
+      throw ServerException(e.message);
+    } on NetworkException catch (e) {
+      throw ServerException(e.message);
+    } on FormatException {
+      throw ServerException('Invalid JSON from server.');
     } catch (e) {
       throw ServerException(e.toString());
     }
@@ -56,25 +57,27 @@ class ForgotPasswordRemoteDataSourceImpl
   @override
   Future<Map> requestOtpWithEmail(String email) async {
     try {
-      final body = jsonEncode({'email': email});
+      final body = jsonEncode({
+        'email': email,
+        'purpose': 'password_reset_otp',
+      });
       final request = await authClient.request(
         method: 'POST',
-        path: 'auth/send-otp/',
+        path: 'auth/password/reset/otp/request/',
         body: body,
         withToken: false,
       );
-      final response = jsonDecode(request.body);
-
-      if (response.containsKey('status') && response['status'] != 'success') {
-        throw ServerException(response['message']);
+      final decoded = jsonDecode(request.body);
+      if (decoded is Map<String, dynamic>) {
+        return decoded;
       }
-
-      if (response.containsKey('non_field_errors') &&
-          response['non_field_errors'].runtimeType == List) {
-        throw ServerException(response['non_field_errors'][0]);
-      }
-
-      return response;
+      throw ServerException('Unexpected response format.');
+    } on ApiException catch (e) {
+      throw ServerException(e.message);
+    } on NetworkException catch (e) {
+      throw ServerException(e.message);
+    } on FormatException {
+      throw ServerException('Invalid JSON from server.');
     } catch (e) {
       throw ServerException(e.toString());
     }

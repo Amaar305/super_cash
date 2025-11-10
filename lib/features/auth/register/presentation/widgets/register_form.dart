@@ -31,16 +31,14 @@ class _RegisterFormState extends State<RegisterForm> {
       listener: (context, state) {
         if (state.status.isError) {
           openSnackbar(
-            SnackbarMessage.error(
-              title: state.errorMessage,
-            ),
+            SnackbarMessage.error(title: state.errorMessage),
             clearIfQueue: true,
           );
         }
         if (state.status.isSuccess) {
           openSnackbar(
             SnackbarMessage.success(
-              title: state.user.message,
+              title: 'Registration successful! Please verify your email.',
             ),
             clearIfQueue: true,
           );
@@ -56,8 +54,9 @@ class _RegisterForm extends StatelessWidget {
   const _RegisterForm();
   @override
   Widget build(BuildContext context) {
-    final basicSignup =
-        context.select((RegisterCubit element) => element.state.basicSignup);
+    final basicSignup = context.select(
+      (RegisterCubit element) => element.state.basicSignup,
+    );
 
     // return basicSignup
     //     ? RegisterWithBasicSignup(
