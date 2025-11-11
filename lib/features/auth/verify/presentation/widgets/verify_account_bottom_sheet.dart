@@ -1,11 +1,13 @@
 import 'package:app_ui/app_ui.dart';
-import 'package:super_cash/app/app.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared/shared.dart';
+import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/core/app_strings/app_string.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class VerifyAccountBottomSheet extends StatelessWidget {
-  const VerifyAccountBottomSheet({super.key});
+  const VerifyAccountBottomSheet({super.key, required this.user});
+  final AppUser user;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +35,10 @@ class VerifyAccountBottomSheet extends StatelessWidget {
               PrimaryButton(
                 isLoading: false,
                 label: 'Done',
-                onPressed: () => context.pushReplacement(AppRoutes.auth),
+                onPressed: () {
+                  Navigator.pop(context); // Close bottom sheet
+                  context.read<AppCubit>().userLoggedIn(user);
+                },
               ),
             ],
           ),

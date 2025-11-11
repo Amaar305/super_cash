@@ -11,23 +11,30 @@ class ReferralOptions extends StatelessWidget {
     final isSelected = context.select(
       (ReferralTypeCubit element) => element.state.isIndividual,
     );
+    final enabled = context.select(
+      (ReferralTypeCubit element) =>
+          element.state.referralTypeResult?.enabled ?? false,
+    );
     return Column(
       spacing: AppSpacing.md,
       children: [
         ReferralTypeOption(
           title: 'Continue with App Services',
           description: 'Use our app services and enjoy seamless integration.',
-          isSelected: isSelected == true,
+          isSelected: isSelected == false,
           onTap: () =>
-              context.read<ReferralTypeCubit>().onSelectReferralType(true),
+              context.read<ReferralTypeCubit>().onSelectReferralType(false),
         ),
 
         ReferralTypeOption(
           title: 'Use Referral Service',
           description: 'Refer a business and earn rewards.',
-          isSelected: isSelected == false,
-          onTap: () =>
-              context.read<ReferralTypeCubit>().onSelectReferralType(false),
+          isSelected: isSelected == true,
+          onTap: !enabled
+              ? null
+              : () => context.read<ReferralTypeCubit>().onSelectReferralType(
+                  true,
+                ),
         ),
       ],
     );

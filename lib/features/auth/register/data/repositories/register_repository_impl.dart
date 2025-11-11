@@ -2,14 +2,24 @@ import 'package:shared/shared.dart';
 import 'package:super_cash/core/error/failure.dart';
 
 import 'package:fpdart/fpdart.dart';
+import 'package:super_cash/features/auth/login/login.dart';
+import 'package:token_repository/token_repository.dart';
 
 import '../../../../../core/error/exception.dart';
 import '../../register.dart';
 
 class RegisterRepositoryImpl implements RegisterRepository {
   final RegisterRemoteDataSource registerRemoteDataSource;
+  final LoginLocalDataSource loginLocalDataSource;
 
-  RegisterRepositoryImpl({required this.registerRemoteDataSource});
+  final TokenRepository tokenRepository;
+
+  const RegisterRepositoryImpl({
+    required this.registerRemoteDataSource,
+    required this.loginLocalDataSource,
+    required this.tokenRepository,
+  });
+
   @override
   Future<Either<Failure, AppUser>> register({
     required String email,
@@ -21,7 +31,7 @@ class RegisterRepositoryImpl implements RegisterRepository {
     required String? referral,
   }) async {
     try {
-      final data = await registerRemoteDataSource.register(
+      final user = await registerRemoteDataSource.register(
         email: email,
         phone: phone,
         firstName: firstName,
@@ -30,7 +40,12 @@ class RegisterRepositoryImpl implements RegisterRepository {
         confirmPassword: confirmPassword,
         referral: referral,
       );
-      return right(data);
+      tokenRepository
+        ..saveAccessToken(user.tokens!.access)
+        ..saveRefreshToken(user.tokens!.refresh);
+
+      await loginLocalDataSource.persistUser(user);
+      return right(user);
     } on ServerException catch (e) {
       return left(Failure(e.message));
     }

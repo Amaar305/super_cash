@@ -1,3 +1,4 @@
+import 'package:shared/shared.dart';
 import 'package:super_cash/core/error/exception.dart';
 import 'package:super_cash/core/error/failure.dart';
 import 'package:fpdart/fpdart.dart';
@@ -10,7 +11,7 @@ class OtpRepositoryImpl implements OtpRepository {
   OtpRepositoryImpl({required this.otpRemoteDataSoure});
 
   @override
-  Future<Either<Failure, Map>> verifyOTP(String otp, String email) async {
+  Future<Either<Failure, AppUser>> verifyOTP(String otp, String email) async {
     try {
       final response = await otpRemoteDataSoure.verifyOTP(otp, email);
       return right(response);

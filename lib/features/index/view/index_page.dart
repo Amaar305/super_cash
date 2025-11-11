@@ -1,5 +1,5 @@
 import 'package:app_ui/app_ui.dart';
-import 'package:super_cash/app/bloc/app_bloc.dart';
+import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/app/init/init.dart';
 import 'package:super_cash/features/history/history.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +20,7 @@ class IndexPage extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) =>
-              HomeCubit(serviceLocator(), context.read<AppBloc>())
+              HomeCubit(serviceLocator(), context.read<AppCubit>())
                 ..onRefresh(forceRefresh: true),
         ),
         BlocProvider(

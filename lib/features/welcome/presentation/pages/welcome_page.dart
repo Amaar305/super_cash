@@ -1,11 +1,9 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:super_cash/app/bloc/app_bloc.dart';
-import 'package:super_cash/app/init/init.dart';
+import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/core/app_strings/app_string.dart';
 import 'package:super_cash/core/fonts/app_text_style.dart';
-import 'package:super_cash/features/onboarding/launch_state.dart';
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({super.key});
@@ -57,11 +55,7 @@ class _WelcomePageState extends State<WelcomePage> {
             PrimaryButton(
               label: 'Create an Account',
               onPressed: () {
-                // Mark welcome done
-                serviceLocator<LaunchState>().completeWelcome(false);
-
-                // Ensure auth state is resolved; router will redirect to /auth or /dashboard
-                context.read<AppBloc>().add(AppStarted());
+                context.read<AppCubit>().userStarted(false);
               },
             ),
             Gap.v(AppSpacing.lg),
@@ -70,11 +64,7 @@ class _WelcomePageState extends State<WelcomePage> {
               child: AppButton.outlined(
                 text: 'Login',
                 onPressed: () {
-                  // Mark welcome done
-                  serviceLocator<LaunchState>().completeWelcome(true);
-
-                  // Ensure auth state is resolved; router will redirect to /auth or /dashboard
-                  context.read<AppBloc>().add(AppStarted());
+                  context.read<AppCubit>().userStarted(true);
                 },
                 style: ElevatedButton.styleFrom(
                   fixedSize: Size.fromHeight(50),

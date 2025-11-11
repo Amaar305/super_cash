@@ -6,6 +6,10 @@ class AppRoutes {
   static const String onboarding = '/onboarding';
   static const String welcome = '/welcome-page';
   static const String enableBiometric = '/enable-biometric';
+  static const String verifyAccount = '/verify-account';
+  static const createPin = '/create-pin';
+  static const String referralType = '/referral-type';
+
   static const String profile = '/profile';
   static const String profileDetails = '$profile/profile-details';
   static const String manageTransactionPin = '$profile/manage-transaction-pin';
@@ -52,6 +56,10 @@ class RNames {
   static const onboarding = 'onboarding';
   static const welcome = 'welcome';
   static const auth = 'auth';
+  static const verifyAccount = 'verifyAccount';
+  static const createPin = 'createPin';
+  static const referralType = 'referralType';
+  static const settings = 'settings';
   static const dashboard = 'dashboard';
   static const history = 'history';
   static const liveChat = 'liveChat';

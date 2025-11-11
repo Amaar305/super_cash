@@ -2,12 +2,14 @@ import 'dart:async';
 
 import 'package:app_client/app_client.dart';
 import 'package:super_cash/app/bloc/app_bloc.dart';
+import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/core/cooldown/cooldown_repository.dart';
 import 'package:super_cash/core/cooldown/cubit/cooldown_cubit.dart';
 import 'package:super_cash/core/device/device.dart';
 import 'package:super_cash/core/error/api_error_handle.dart';
 import 'package:super_cash/core/network/network_info.dart';
 import 'package:super_cash/features/account/manage_transaction_pin/manage_transaction_pin.dart';
+import 'package:super_cash/features/auth/referral_type/referral_type.dart';
 import 'package:super_cash/features/bonus/bonus.dart';
 import 'package:super_cash/features/card/card.dart';
 import 'package:super_cash/features/card/card_repo/cubit/card_repo_cubit.dart';
@@ -89,6 +91,13 @@ Future<void> initDependencies() async {
         userRepository: serviceLocator(),
       ),
     )
+    ..registerLazySingleton(
+      () => AppCubit(
+        tokenRepository: serviceLocator(),
+        loginLocalDataSource: serviceLocator(),
+        preferences: serviceLocator(),
+      ),
+    )
     ..registerFactory(() => ApiErrorHandler(appBloc: serviceLocator()));
   unawaited(serviceLocator<DeviceRegistrar>().register(withAuth: false));
   _auth();
@@ -114,7 +123,30 @@ Future<void> initDependencies() async {
   _addFund();
   _changeTransactionPin();
   _referralSystem();
+  _referralType();
   _bonus();
+}
+
+void _referralType() {
+  // DataSource
+  serviceLocator
+    ..registerFactory<ReferralTypeRemoteDataSource>(
+      () => ReferralTypeRemoteDataSourceImpl(apiClient: serviceLocator()),
+    )
+    // Repository
+    ..registerFactory<ReferralTypeRepository>(
+      () => ReferralTypeRepositoryImpl(
+        referralTypeRemoteDataSource: serviceLocator(),
+        networkInfo: serviceLocator(),
+      ),
+    )
+    // UseCases
+    ..registerFactory(
+      () => FetchCompainsUseCase(referralTypeRepository: serviceLocator()),
+    )
+    ..registerFactory(
+      () => EnrolCompainUseCase(referralTypeRepository: serviceLocator()),
+    );
 }
 
 void _bonus() {
@@ -703,7 +735,11 @@ void _register() {
     )
     // Repositories
     ..registerFactory<RegisterRepository>(
-      () => RegisterRepositoryImpl(registerRemoteDataSource: serviceLocator()),
+      () => RegisterRepositoryImpl(
+        registerRemoteDataSource: serviceLocator(),
+        loginLocalDataSource: serviceLocator(),
+        tokenRepository: serviceLocator(),
+      ),
     )
     // Usecases
     ..registerFactory(

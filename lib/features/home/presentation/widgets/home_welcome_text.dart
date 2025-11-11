@@ -1,7 +1,7 @@
 import 'package:app_ui/app_ui.dart';
-import 'package:super_cash/app/bloc/app_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:super_cash/app/cubit/app_cubit.dart';
 
 class HomeWelcomeText extends StatelessWidget {
   const HomeWelcomeText({super.key});
@@ -31,9 +31,9 @@ class HomeWelcomeUserText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = context.watch<AppBloc>().state.user;
+    final user = context.watch<AppCubit>().state.user;
     return Text(
-      user.fullName,
+      user?.fullName ?? 'User',
       style: TextStyle(
         color: AppColors.background,
         fontSize: AppSpacing.md,

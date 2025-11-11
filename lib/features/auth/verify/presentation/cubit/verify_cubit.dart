@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_fields/form_fields.dart';
 import 'package:shared/shared.dart';
@@ -64,7 +63,7 @@ class VerifyCubit extends Cubit<VerifyState> {
     }
   }
 
-  void onSubmit(VoidCallback? onSuccess) async {
+  void onSubmit(void Function(AppUser user) onSuccess) async {
     final otp = Otp.dirty(state.otp.value);
     final isFormValid = FormzValid([otp]).isFormValid;
     final newState = state.copyWith(
@@ -84,8 +83,8 @@ class VerifyCubit extends Cubit<VerifyState> {
           state.copyWith(status: VerifyStatus.failure, message: l.message),
         ),
         (r) {
-          emit(state.copyWith(status: VerifyStatus.success, response: r));
-          onSuccess?.call();
+          emit(state.copyWith(status: VerifyStatus.success,));
+          onSuccess.call(r);
         },
       );
     } catch (e, er) {

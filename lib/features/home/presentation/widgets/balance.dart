@@ -1,10 +1,10 @@
 import 'package:app_ui/app_ui.dart';
+import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/core/fonts/app_text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/shared.dart';
 
-import '../../../../app/bloc/app_bloc.dart';
 import '../presentation.dart';
 
 class Balance extends StatelessWidget {
@@ -12,7 +12,7 @@ class Balance extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final wallet = context.select((AppBloc bloc) => bloc.state.user).wallet;
+    final wallet = context.select((AppCubit bloc) => bloc.state.user)?.wallet;
     final showBalance = context.select(
       (HomeCubit bloc) => bloc.state.showBalance,
     );
@@ -25,7 +25,7 @@ class Balance extends StatelessWidget {
       firstCurve: Curves.easeIn,
       secondCurve: Curves.easeOut,
       firstChild: Text(
-        wallet.walletBalance,
+        wallet?.walletBalance ?? '0.00',
         style: poppinsTextStyle(
           fontSize: 26,
           fontWeight: AppFontWeight.semiBold,

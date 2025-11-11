@@ -1,15 +1,16 @@
+import 'package:shared/shared.dart';
 import 'package:super_cash/core/error/failure.dart';
 import 'package:super_cash/core/usecase/use_case.dart';
 import 'package:fpdart/fpdart.dart';
 
 import '../domain.dart';
 
-class OtpUseCase implements UseCase<Map, OtpParam> {
+class OtpUseCase implements UseCase<AppUser, OtpParam> {
   final OtpRepository otpRepository;
 
   OtpUseCase({required this.otpRepository});
   @override
-  Future<Either<Failure, Map>> call(OtpParam param) async {
+  Future<Either<Failure, AppUser>> call(OtpParam param) async {
     return await otpRepository.verifyOTP(param.otp, param.email);
   }
 }

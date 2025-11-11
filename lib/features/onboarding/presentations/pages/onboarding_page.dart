@@ -2,13 +2,10 @@ import 'package:app_ui/app_ui.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:super_cash/app/bloc/app_bloc.dart';
-import 'package:super_cash/app/init/init.dart';
+import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/core/app_strings/app_string.dart';
-import 'package:super_cash/features/onboarding/launch_state.dart';
 import 'package:super_cash/features/onboarding/presentations/widgets/onboarding.dart';
 import 'package:super_cash/features/onboarding/presentations/widgets/onboarding_stepper.dart';
-
 
 class OnboardingPage extends StatelessWidget {
   const OnboardingPage({super.key});
@@ -118,26 +115,12 @@ class _OnboardingViewState extends State<OnboardingView> {
   }
 
   Future<void> _skip() async {
-    // Save user as not new
-    await serviceLocator<LaunchState>().completeOnboarding();
-
-    // To home page
-
-    if (mounted) {
-      context.read<AppBloc>().add(AppStarted());
-    }
+    context.read<AppCubit>().completeOnboarding();
   }
 
   Future<void> _finished() async {
     if (reached) {
-      // Save user as not new
-      await serviceLocator<LaunchState>().completeOnboarding();
-
-      // To home page
-      if (mounted) {
-        context.read<AppBloc>().add(AppStarted());
-      }
-
+      _skip();
       return;
     }
     final val = currentIndex += 1;

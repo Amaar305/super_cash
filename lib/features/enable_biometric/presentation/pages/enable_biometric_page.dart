@@ -1,5 +1,5 @@
 import 'package:app_ui/app_ui.dart';
-import 'package:super_cash/app/bloc/app_bloc.dart';
+import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/app/init/init.dart';
 import 'package:super_cash/app/view/app.dart';
 import 'package:super_cash/core/helper/fingerprint_authentication.dart';
@@ -28,22 +28,21 @@ class EnableBiometricPage extends StatelessWidget {
             ),
             PrimaryButton(
               label: 'Enable Biometric',
-              onPressed: () {
-                fingerprintAuthentication(
+              onPressed: () async {
+                await fingerprintAuthentication(
                   onUnAuthenticated: (p0) {
                     // Biometric not available
                     openSnackbar(
                       SnackbarMessage.error(title: p0),
                       clearIfQueue: true,
                     );
-                    context.read<AppBloc>().add(UserLoggedIn(user));
                   },
                   onAuthenticated: () {
                     serviceLocator<TokenRepository>().setBiometricEnabled(
                       enable: true,
                     );
 
-                    context.read<AppBloc>().add(UserLoggedIn(user));
+                    context.read<AppCubit>().userLoggedIn(user);
                   },
                 );
               },
@@ -54,7 +53,7 @@ class EnableBiometricPage extends StatelessWidget {
                   enable: false,
                 );
 
-                context.read<AppBloc>().add(UserLoggedIn(user));
+                context.read<AppCubit>().userLoggedIn(user);
               },
               child: const Text("Skip"),
             ),

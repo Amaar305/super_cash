@@ -1,4 +1,4 @@
-import 'package:super_cash/app/bloc/app_bloc.dart';
+import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/core/usecase/use_case.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -13,14 +13,14 @@ part 'home_cubit.g.dart';
 class HomeCubit extends HydratedCubit<HomeState> {
   HomeCubit(this.fetchUserUseCase, this.appBloc) : super(HomeState.initial());
   final FetchUserUseCase fetchUserUseCase;
-  final AppBloc appBloc;
+  final AppCubit appBloc;
 
   void showBalance() => emit(state.copyWith(showBalance: !state.showBalance));
 
   void onLogout() {
     try {
-      appBloc.add(UserLoggedOut());
-      emit(state.copyWith(user: null, status: HomeStatus.initial));
+      appBloc.logout();
+      emit(HomeState.initial());
     } catch (e) {
       emit(state.copyWith(message: e.toString(), status: HomeStatus.failure));
     }
@@ -46,12 +46,12 @@ class HomeCubit extends HydratedCubit<HomeState> {
               message: 'You have been suspended from this app.',
             ),
           );
-          appBloc.add(UserLoggedOut());
+          appBloc.logout();
           return;
         }
         emit(state.copyWith(user: r, status: HomeStatus.success));
-        logI(r.email);
-        appBloc.add(UserUpdate(r));
+
+        appBloc.updateUser(r);
       },
     );
   }

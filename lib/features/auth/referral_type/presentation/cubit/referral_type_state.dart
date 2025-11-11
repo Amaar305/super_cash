@@ -15,12 +15,18 @@ enum ReferralTypeStatus {
 class ReferralTypeState extends Equatable {
   final ReferralTypeStatus status;
   final bool? isIndividual;
+  final ReferralTypeResult? referralTypeResult;
+  final ReferralTypeModel? selectedCampaign;
+  final bool termsContidition;
   final String message;
 
   const ReferralTypeState._({
     required this.status,
     required this.isIndividual,
     required this.message,
+    this.referralTypeResult,
+    this.selectedCampaign,
+    this.termsContidition = false,
   });
 
   const ReferralTypeState.inital()
@@ -31,17 +37,30 @@ class ReferralTypeState extends Equatable {
       );
 
   @override
-  List<Object?> get props => [status, isIndividual, message];
+  List<Object?> get props => [
+    status,
+    isIndividual,
+    message,
+    referralTypeResult,
+    selectedCampaign,
+    termsContidition,
+  ];
 
   ReferralTypeState copyWith({
     ReferralTypeStatus? status,
     bool? isIndividual,
     String? message,
+    ReferralTypeResult? referralTypeResult,
+    ReferralTypeModel? selectedCampaign,
+    bool? termsContidition,
   }) {
     return ReferralTypeState._(
       status: status ?? this.status,
       isIndividual: isIndividual ?? this.isIndividual,
       message: message ?? this.message,
+      referralTypeResult: referralTypeResult ?? this.referralTypeResult,
+      selectedCampaign: selectedCampaign ?? this.selectedCampaign,
+      termsContidition: termsContidition ?? this.termsContidition,
     );
   }
 }

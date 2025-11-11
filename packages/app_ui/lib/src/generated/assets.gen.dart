@@ -1,3 +1,5 @@
+// dart format width=80
+
 /// GENERATED CODE - DO NOT MODIFY BY HAND
 /// *****************************************************
 ///  FlutterGen
@@ -5,7 +7,7 @@
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
-// ignore_for_file: directives_ordering,unnecessary_import,implicit_dynamic_list_literal,deprecated_member_use
+// ignore_for_file: deprecated_member_use,directives_ordering,implicit_dynamic_list_literal,unnecessary_import
 
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -144,12 +146,28 @@ class $AssetsIconsGen {
   /// File path: assets/icons/menu.svg
   SvgGenImage get menu => const SvgGenImage('assets/icons/menu.svg');
 
+  /// File path: assets/icons/mingcute_celebrate-line-2.svg
+  SvgGenImage get mingcuteCelebrateLine2 =>
+      const SvgGenImage('assets/icons/mingcute_celebrate-line-2.svg');
+
+  /// File path: assets/icons/mingcute_celebrate-line.svg
+  SvgGenImage get mingcuteCelebrateLine =>
+      const SvgGenImage('assets/icons/mingcute_celebrate-line.svg');
+
   /// File path: assets/icons/profile_actiive.svg
   SvgGenImage get profileActiive =>
       const SvgGenImage('assets/icons/profile_actiive.svg');
 
   /// File path: assets/icons/refer.svg
   SvgGenImage get refer => const SvgGenImage('assets/icons/refer.svg');
+
+  /// File path: assets/icons/referral_users_icon.svg
+  SvgGenImage get referralUsersIcon =>
+      const SvgGenImage('assets/icons/referral_users_icon.svg');
+
+  /// File path: assets/icons/referral_users_icon2.svg
+  SvgGenImage get referralUsersIcon2 =>
+      const SvgGenImage('assets/icons/referral_users_icon2.svg');
 
   /// File path: assets/icons/search.svg
   SvgGenImage get search => const SvgGenImage('assets/icons/search.svg');
@@ -182,53 +200,57 @@ class $AssetsIconsGen {
 
   /// List of all assets
   List<SvgGenImage> get values => [
-    buy,
-    chat,
-    location,
-    profile,
-    swap,
-    account,
-    addButton,
-    addOutline,
-    airttime,
-    beneficiaryIcon,
-    cable,
-    camera,
-    chatCircle,
-    check,
-    chevronDown,
-    chevronUp,
-    contact,
-    copy,
-    createCard,
-    creditCards,
-    data,
-    deleteBeneficiay,
-    editBeneficiary,
-    electricity,
-    exam,
-    fund,
-    history,
-    home,
-    homeActive,
-    hot,
-    iconSettingEye,
-    iconWallet,
-    instagramReel,
-    liveChat,
-    menu,
-    profileActiive,
-    refer,
-    search,
-    setting,
-    smile,
-    transferLine,
-    trash,
-    user,
-    verifiedUser,
-    verify,
-    wifi,
-  ];
+        buy,
+        chat,
+        location,
+        profile,
+        swap,
+        account,
+        addButton,
+        addOutline,
+        airttime,
+        beneficiaryIcon,
+        cable,
+        camera,
+        chatCircle,
+        check,
+        chevronDown,
+        chevronUp,
+        contact,
+        copy,
+        createCard,
+        creditCards,
+        data,
+        deleteBeneficiay,
+        editBeneficiary,
+        electricity,
+        exam,
+        fund,
+        history,
+        home,
+        homeActive,
+        hot,
+        iconSettingEye,
+        iconWallet,
+        instagramReel,
+        liveChat,
+        menu,
+        mingcuteCelebrateLine2,
+        mingcuteCelebrateLine,
+        profileActiive,
+        refer,
+        referralUsersIcon,
+        referralUsersIcon2,
+        search,
+        setting,
+        smile,
+        transferLine,
+        trash,
+        user,
+        verifiedUser,
+        verify,
+        wifi
+      ];
 }
 
 class $AssetsImagesGen {
@@ -420,61 +442,61 @@ class $AssetsImagesGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [
-    a9mobile,
-    coinsAmico1,
-    international2,
-    international,
-    union,
-    airtel,
-    appLogo,
-    appleMusic,
-    avatar,
-    bg,
-    bg2,
-    bg3,
-    bg4,
-    bg5,
-    bgp,
-    cardBg,
-    cardEctor,
-    cardTexture,
-    cellular,
-    chain1,
-    circleCheck,
-    contact,
-    dashboardPattern,
-    dstv,
-    emptyCard,
-    facebook,
-    filmReel1,
-    glo,
-    gotv,
-    info,
-    jumia,
-    logo,
-    medal1,
-    mtn,
-    nabteb,
-    neco,
-    netflix,
-    pattern3,
-    pattern5,
-    placeholder,
-    profilePhoto,
-    reward,
-    showmax,
-    sim,
-    smile,
-    spotify,
-    starttime,
-    tiktok,
-    upgradeUser,
-    visaelectron,
-    waec,
-    warning,
-    whatsapp,
-    youtube,
-  ];
+        a9mobile,
+        coinsAmico1,
+        international2,
+        international,
+        union,
+        airtel,
+        appLogo,
+        appleMusic,
+        avatar,
+        bg,
+        bg2,
+        bg3,
+        bg4,
+        bg5,
+        bgp,
+        cardBg,
+        cardEctor,
+        cardTexture,
+        cellular,
+        chain1,
+        circleCheck,
+        contact,
+        dashboardPattern,
+        dstv,
+        emptyCard,
+        facebook,
+        filmReel1,
+        glo,
+        gotv,
+        info,
+        jumia,
+        logo,
+        medal1,
+        mtn,
+        nabteb,
+        neco,
+        netflix,
+        pattern3,
+        pattern5,
+        placeholder,
+        profilePhoto,
+        reward,
+        showmax,
+        sim,
+        smile,
+        spotify,
+        starttime,
+        tiktok,
+        upgradeUser,
+        visaelectron,
+        waec,
+        warning,
+        whatsapp,
+        youtube
+      ];
 }
 
 class Assets {
@@ -488,7 +510,12 @@ class Assets {
 }
 
 class AssetGenImage {
-  const AssetGenImage(this._assetName, {this.size, this.flavors = const {}});
+  const AssetGenImage(
+    this._assetName, {
+    this.size,
+    this.flavors = const {},
+    this.animation,
+  });
 
   final String _assetName;
 
@@ -496,6 +523,7 @@ class AssetGenImage {
 
   final Size? size;
   final Set<String> flavors;
+  final AssetGenImageAnimation? animation;
 
   Image image({
     Key? key,
@@ -556,7 +584,11 @@ class AssetGenImage {
     @Deprecated('Do not specify package for a generated library asset')
     String? package = package,
   }) {
-    return AssetImage(_assetName, bundle: bundle, package: package);
+    return AssetImage(
+      _assetName,
+      bundle: bundle,
+      package: package,
+    );
   }
 
   String get path => _assetName;
@@ -564,12 +596,30 @@ class AssetGenImage {
   String get keyName => 'packages/app_ui/$_assetName';
 }
 
-class SvgGenImage {
-  const SvgGenImage(this._assetName, {this.size, this.flavors = const {}})
-    : _isVecFormat = false;
+class AssetGenImageAnimation {
+  const AssetGenImageAnimation({
+    required this.isAnimation,
+    required this.duration,
+    required this.frames,
+  });
 
-  const SvgGenImage.vec(this._assetName, {this.size, this.flavors = const {}})
-    : _isVecFormat = true;
+  final bool isAnimation;
+  final Duration duration;
+  final int frames;
+}
+
+class SvgGenImage {
+  const SvgGenImage(
+    this._assetName, {
+    this.size,
+    this.flavors = const {},
+  }) : _isVecFormat = false;
+
+  const SvgGenImage.vec(
+    this._assetName, {
+    this.size,
+    this.flavors = const {},
+  }) : _isVecFormat = true;
 
   final String _assetName;
   final Size? size;
@@ -593,6 +643,7 @@ class SvgGenImage {
     String? semanticsLabel,
     bool excludeFromSemantics = false,
     _svg.SvgTheme? theme,
+    _svg.ColorMapper? colorMapper,
     ColorFilter? colorFilter,
     Clip clipBehavior = Clip.hardEdge,
     @deprecated Color? color,
@@ -612,6 +663,7 @@ class SvgGenImage {
         assetBundle: bundle,
         packageName: package,
         theme: theme,
+        colorMapper: colorMapper,
       );
     }
     return _svg.SvgPicture(
@@ -626,8 +678,7 @@ class SvgGenImage {
       placeholderBuilder: placeholderBuilder,
       semanticsLabel: semanticsLabel,
       excludeFromSemantics: excludeFromSemantics,
-      colorFilter:
-          colorFilter ??
+      colorFilter: colorFilter ??
           (color == null ? null : ColorFilter.mode(color, colorBlendMode)),
       clipBehavior: clipBehavior,
       cacheColorFilter: cacheColorFilter,

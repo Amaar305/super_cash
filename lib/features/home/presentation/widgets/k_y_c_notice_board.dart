@@ -1,5 +1,5 @@
 import 'package:app_ui/app_ui.dart';
-import 'package:super_cash/app/bloc/app_bloc.dart';
+import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/core/fonts/app_text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,7 +10,7 @@ class KYCNoticeBoard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isKYCVerified = context.select(
-      (AppBloc cubit) => cubit.state.user.isKycVerified,
+      (AppCubit cubit) => cubit.state.user?.isKycVerified ?? false,
     );
 
     if (isKYCVerified) {
@@ -46,14 +46,6 @@ class KYCNoticeBoard extends StatelessWidget {
                 'Please verify your KYC to enjoy all features',
                 textAlign: TextAlign.center,
                 maxLines: 2,
-                //
-                // This is a long text that should be truncated if it exceeds the available space.
-                // It should not overflow and should be displayed properly.
-                // The text should be styled with a specific font size and weight.
-                // The color should be green to indicate a positive message.
-                // The text should be centered and should not exceed two lines.
-                // It should be styled with a specific font size and weight.
-                // The color should be green to indicate a positive message.
                 overflow: TextOverflow.ellipsis,
                 style: poppinsTextStyle(
                   fontSize: 12,

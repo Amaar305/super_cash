@@ -1,4 +1,5 @@
 import 'package:app_ui/app_ui.dart';
+import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/app/init/init.dart';
 import 'package:super_cash/core/cooldown/cubit/cooldown_cubit.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +30,7 @@ class App extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => serviceLocator<AppBloc>()),
+        BlocProvider(create: (context) => serviceLocator<AppCubit>()),
         BlocProvider(create: (context) => serviceLocator<CooldownCubit>()),
         BlocProvider(
           create: (context) => serviceLocator<ConfirmTransactionPinCubit>(),

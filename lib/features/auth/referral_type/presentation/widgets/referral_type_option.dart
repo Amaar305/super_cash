@@ -8,58 +8,87 @@ class ReferralTypeOption extends StatelessWidget {
     super.key,
     required this.title,
     required this.description,
-    required this.onTap,
+    this.onTap,
     this.isSelected = false,
   });
 
   final String title;
   final String description;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   final bool isSelected;
 
   @override
   Widget build(BuildContext context) {
     return Tappable.faded(
       onTap: onTap,
-      child: AnimatedContainer(
-        duration: 200.ms,
-        padding: const EdgeInsets.all(AppSpacing.md),
-        width: double.infinity,
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: isSelected ? AppColors.blue : AppColors.brightGrey,
-            width: isSelected ? 2 : 1,
-          ),
-          borderRadius: BorderRadius.circular(AppSpacing.sm),
-        ),
-        child: Row(
-          spacing: AppSpacing.md,
-          children: [
-            Icon(
-              isSelected ? Icons.radio_button_checked : Icons.radio_button_off,
-              color: isSelected ? AppColors.blue : AppColors.grey,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          AnimatedContainer(
+            duration: 200.ms,
+            padding: const EdgeInsets.all(AppSpacing.md),
+            width: double.infinity,
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: isSelected ? AppColors.blue : AppColors.brightGrey,
+                width: isSelected ? 2 : 1,
+              ),
+              borderRadius: BorderRadius.circular(AppSpacing.sm),
             ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: poppinsTextStyle(
-                      fontSize: AppSpacing.lg,
-                      fontWeight: AppFontWeight.semiBold,
-                    ),
+            child: Row(
+              spacing: AppSpacing.md,
+              children: [
+                Icon(
+                  isSelected
+                      ? Icons.radio_button_checked
+                      : Icons.radio_button_off,
+                  color: isSelected ? AppColors.blue : AppColors.grey,
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: poppinsTextStyle(
+                          fontSize: AppSpacing.lg,
+                          fontWeight: AppFontWeight.semiBold,
+                        ),
+                      ),
+                      const Gap.v(AppSpacing.sm),
+                      Text(
+                        description,
+                        style: poppinsTextStyle(color: AppColors.grey),
+                      ),
+                    ],
                   ),
-                  const Gap.v(AppSpacing.sm),
-                  Text(
-                    description,
-                    style: poppinsTextStyle(color: AppColors.grey),
+                ),
+              ],
+            ),
+          ),
+          if (onTap == null)
+            Positioned(
+              right: 0,
+              top: -7,
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: AppSpacing.sm,
+                  vertical: AppSpacing.xs,
+                ),
+                decoration: BoxDecoration(
+                  color: AppColors.red,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Text(
+                  'Unavailable',
+                  style: poppinsTextStyle(
+                    fontSize: AppSpacing.sm,
+                    color: AppColors.white,
                   ),
-                ],
+                ),
               ),
             ),
-          ],
-        ),
+        ],
       ),
     );
   }

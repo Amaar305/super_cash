@@ -4,10 +4,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:super_cash/app/bloc/app_bloc.dart';
-import 'package:super_cash/app/init/init.dart';
+import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/core/app_strings/app_string.dart';
-import 'package:super_cash/features/onboarding/onboarding.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -17,7 +15,6 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
-  bool _fired = false;
   late final AnimationController _introController;
   late final AnimationController _ambientController;
   late final AnimationController _glowController;
@@ -38,7 +35,8 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
           )
           ..addStatusListener((status) {
             if (status == AnimationStatus.completed) {
-              _onIntroAnimationComplete();
+              // _onIntroAnimationComplete();
+              context.read<AppCubit>().appStarted();
             }
           })
           ..forward();
@@ -104,15 +102,6 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
     _haloIntensity = Tween<double>(begin: 0.35, end: 0.75).animate(
       CurvedAnimation(parent: _glowController, curve: Curves.easeInOut),
     );
-  }
-
-  void _onIntroAnimationComplete() {
-    if (_fired || !mounted) return;
-    final launch = serviceLocator<LaunchState>();
-    if (launch.onboarded == true) {
-      _fired = true;
-      context.read<AppBloc>().add(AppStarted());
-    }
   }
 
   @override

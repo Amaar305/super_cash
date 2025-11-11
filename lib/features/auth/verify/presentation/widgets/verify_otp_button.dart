@@ -17,10 +17,10 @@ class VerifyOtpButton extends StatelessWidget {
       isLoading: isLoading,
       label: AppStrings.signUp,
       onPressed: () {
-        context.read<VerifyCubit>().onSubmit(() {
+        context.read<VerifyCubit>().onSubmit((user) {
           showModalBottomSheet(
             context: context,
-            builder: (context) => VerifyAccountBottomSheet(),
+            builder: (context) => VerifyAccountBottomSheet(user: user),
           );
         });
       },

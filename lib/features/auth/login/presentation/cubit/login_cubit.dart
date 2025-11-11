@@ -149,15 +149,9 @@ class LoginCubit extends Cubit<LoginState> {
     );
   }
 
-void onBiometricFailure(String message) {
-    emit(
-      state.copyWith(
-        message: message,
-        status: LoginStatus.error,
-      ),
-    );
+  void onBiometricFailure(String message) {
+    emit(state.copyWith(message: message, status: LoginStatus.error));
   }
-
 
   // Add this method to your LoginCubit
   void biometricRegistrationCompleted() {
@@ -170,8 +164,8 @@ void onBiometricFailure(String message) {
   }
 
   void submit({
-    VoidCallback? onSuccess,
-    void Function(AppUser)? onEnableBiometric,
+    void Function(AppUser user)? onSuccess,
+    void Function(AppUser user)? onEnableBiometric,
   }) async {
     // Validate the raw form values before hitting the network.
     final email = Email.dirty(state.email.value);
@@ -213,14 +207,14 @@ void onBiometricFailure(String message) {
 
         if (decision == null) {
           // If determining the flow failed, fallback to generic success behavior.
-          onSuccess?.call();
+          onSuccess?.call(user);
           return;
         }
 
         switch (decision.action) {
           case LoginFlowAction.requestTransactionPin:
           case LoginFlowAction.requestVerification:
-            onSuccess?.call();
+            onSuccess?.call(user);
             return;
           case LoginFlowAction.authenticateUser:
             _appBloc.add(UserLoggedIn(user));

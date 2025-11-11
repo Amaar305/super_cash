@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:animations/animations.dart';
+import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/features/account/account.dart';
 import 'package:super_cash/features/account/change_password/change_password.dart';
 import 'package:super_cash/features/add_fund/add_fund.dart';
+import 'package:super_cash/features/auth/referral_type/referral_type.dart';
 import 'package:super_cash/features/bonus/presentation/presentation.dart';
 import 'package:super_cash/features/confirm_transaction_pin/confirm_transaction_pin.dart';
 import 'package:super_cash/features/onboarding/onboarding.dart';
@@ -32,9 +34,9 @@ import '../bloc/app_bloc.dart';
 final _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 
 class AppRouter {
-  const AppRouter(this.appBloc, this.launch);
+  const AppRouter(this.appBloc, this.app);
   final AppBloc appBloc;
-  final LaunchState launch;
+  final AppCubit app;
 
   GoRouter get router => GoRouter(
     initialLocation: AppRoutes.splash,
@@ -61,8 +63,7 @@ class AppRouter {
       GoRoute(
         name: RNames.enableBiometric,
         path: AppRoutes.enableBiometric,
-        builder: (context, state) =>
-            EnableBiometricPage(user: state.extra! as AppUser),
+        builder: (context, state) => EnableBiometricPage(user: app.state.user!),
       ),
       GoRoute(
         name: RNames.upgradeTier,
@@ -77,8 +78,28 @@ class AppRouter {
       GoRoute(
         name: RNames.auth,
         path: AppRoutes.auth,
-        builder: (context, state) => AuthPage(islogin: launch.isLoginPage),
+        builder: (context, state) => AuthPage(islogin: app.state.showLogin),
       ),
+      GoRoute(
+        name: RNames.verifyAccount,
+        path: AppRoutes.verifyAccount,
+        builder: (context, state) => VerifyPage(email: app.state.user!.email),
+      ),
+
+      GoRoute(
+        path: AppRoutes.createPin,
+        name: RNames.createPin,
+        builder: (context, state) {
+          return CreatePinPage();
+        },
+      ),
+
+      GoRoute(
+        name: RNames.referralType,
+        path: AppRoutes.referralType,
+        builder: (context, state) => ReferralTypePage(),
+      ),
+
       GoRoute(
         name: RNames.notifications,
         path: AppRoutes.notifications,
@@ -332,59 +353,103 @@ class AppRouter {
     ],
 
     // Same hardened redirect you tested; returns only absolute non-empty paths or null.
-    redirect: (context, state) {
-      final status = appBloc.state.status;
-      final onboarded = launch.onboarded;
-      final welcome = launch.welcomePending;
-      final current = state.matchedLocation.isEmpty
-          ? AppRoutes.splash
-          : state.matchedLocation;
+    redirect: guardRedirect,
 
-      String? goIfDifferent(String target) => current == target ? null : target;
+    //  (context, state) {
+    //   final status = appBloc.state.status;
+    //   final onboarded = launch.onboarded;
+    //   final welcome = launch.welcomePending;
+    //   final current = state.matchedLocation.isEmpty
+    //       ? AppRoutes.splash
+    //       : state.matchedLocation;
 
-      if (onboarded == null) return goIfDifferent(AppRoutes.splash);
-      if (onboarded == false) return goIfDifferent(AppRoutes.onboarding);
-      if (welcome) return goIfDifferent(AppRoutes.welcome);
+    //   String? goIfDifferent(String target) => current == target ? null : target;
 
-      switch (status) {
-        case AppStatus.unknown:
-          return goIfDifferent(AppRoutes.splash);
-        case AppStatus.unauthenticated:
-        case AppStatus.resumed:
-          if ([
-            AppRoutes.auth,
-            AppRoutes.onboarding,
-            AppRoutes.welcome,
-          ].contains(current)) {
-            return null;
-          }
-          return goIfDifferent(AppRoutes.auth);
-        case AppStatus.authenticated:
-        case AppStatus.updated:
-          if ([
-            AppRoutes.splash,
-            AppRoutes.auth,
-            AppRoutes.onboarding,
-            AppRoutes.welcome,
-          ].contains(current)) {
-            return goIfDifferent(AppRoutes.dashboard);
-          }
-          return null;
-      }
-    },
+    //   if (onboarded == null) return goIfDifferent(AppRoutes.splash);
+    //   if (onboarded == false) return goIfDifferent(AppRoutes.onboarding);
+    //   if (welcome) return goIfDifferent(AppRoutes.welcome);
 
-    refreshListenable: Listenable.merge([
-      GoRouterAppBlocRefreshStream(appBloc.stream),
-      launch,
-    ]),
+    //   switch (status) {
+    //     case AppStatus.unknown:
+    //       return goIfDifferent(AppRoutes.splash);
+    //     case AppStatus.unauthenticated:
+    //     case AppStatus.resumed:
+    //       if ([
+    //         AppRoutes.auth,
+    //         AppRoutes.onboarding,
+    //         AppRoutes.welcome,
+    //       ].contains(current)) {
+    //         return null;
+    //       }
+    //       return goIfDifferent(AppRoutes.auth);
+    //     case AppStatus.authenticated:
+    //     case AppStatus.updated:
+    //       if ([
+    //         AppRoutes.splash,
+    //         AppRoutes.auth,
+    //         AppRoutes.onboarding,
+    //         AppRoutes.welcome,
+    //       ].contains(current)) {
+    //         return goIfDifferent(AppRoutes.dashboard);
+    //       }
+    //       return null;
+    //   }
+    // },
+    refreshListenable: GoRouterAppBlocRefreshStream(app.stream),
   );
+
+  String? guardRedirect(BuildContext context, GoRouterState s) {
+    final st = app.state.status;
+    final loc = s.matchedLocation.isEmpty
+        ? AppRoutes.splash
+        : s.matchedLocation;
+
+    bool at(String path) => loc == path || loc.startsWith("$path/");
+    String? go(String path) => at(path) ? null : path;
+
+    switch (st) {
+      case AppStatus2.initial:
+      case AppStatus2.splash:
+        return go(AppRoutes.splash);
+      case AppStatus2.onboarding:
+        return go(AppRoutes.onboarding);
+      case AppStatus2.welcome:
+        return go(AppRoutes.welcome);
+      case AppStatus2.unauthenticated:
+        return go(AppRoutes.auth);
+     
+      case AppStatus2.createPin:
+        return go(AppRoutes.createPin);
+      case AppStatus2.verifyAccount:
+        return go(AppRoutes.verifyAccount);
+      case AppStatus2.referralType:
+        return go(AppRoutes.referralType);
+      case AppStatus2.authenticated:
+        const blocked = <String>{
+          AppRoutes.splash,
+          AppRoutes.onboarding,
+          AppRoutes.welcome,
+          AppRoutes.auth,
+          AppRoutes.createPin,
+          AppRoutes.referralType,
+          // AppRoutes.enableBiometric,
+        };
+        if (blocked.any(at)) {
+          return AppRoutes.dashboard;
+        }
+        return null;
+      case AppStatus2.tokenExpired:
+      case AppStatus2.enableBiometric:
+        return null;
+    }
+  }
 }
 
 class GoRouterAppBlocRefreshStream extends ChangeNotifier {
   GoRouterAppBlocRefreshStream(Stream<dynamic> stream) {
     notifyListeners();
     _subscription = stream.asBroadcastStream().listen((event) {
-       notifyListeners();
+      notifyListeners();
     });
   }
 
@@ -405,7 +470,7 @@ extension NavX on BuildContext {
     Object? extra,
   }) {
     if (name.isEmpty) Null;
-   return pushNamed(
+    return pushNamed(
       name,
       pathParameters: pathParams ?? const {},
       queryParameters: queryParams ?? const {},

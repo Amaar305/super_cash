@@ -1,11 +1,12 @@
 import 'dart:convert';
 
 import 'package:app_client/app_client.dart';
+import 'package:shared/shared.dart';
 import 'package:super_cash/core/error/exception.dart';
 import 'package:token_repository/token_repository.dart';
 
 abstract interface class OtpRemoteDataSoure {
-  Future<Map> verifyOTP(String otp, String email);
+  Future<AppUser> verifyOTP(String otp, String email);
   Future<void> requestOTP(String email);
 }
 
@@ -15,7 +16,7 @@ class OtpRemoteDataSoureImpl implements OtpRemoteDataSoure {
   OtpRemoteDataSoureImpl({required this.apiClient});
 
   @override
-  Future<Map> verifyOTP(String otp, String email) async {
+  Future<AppUser> verifyOTP(String otp, String email) async {
     try {
       final body = jsonEncode({
         "email": email,
@@ -30,7 +31,7 @@ class OtpRemoteDataSoureImpl implements OtpRemoteDataSoure {
 
       final decoded = jsonDecode(response.body);
       if (decoded is Map<String, dynamic>) {
-        return decoded;
+        return AppUser.fromMap(decoded);
       }
 
       throw ServerException('Unexpected response format.');

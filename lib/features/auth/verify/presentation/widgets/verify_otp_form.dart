@@ -36,6 +36,16 @@ class _VerifyOtpFormState extends State<VerifyOtpForm> {
             clearIfQueue: true,
           );
         }
+
+        if (state.status.isOtpRequested) {
+          openSnackbar(
+            SnackbarMessage.success(
+              title: 'An OTP has been sent to your email.',
+            ),
+            clearIfQueue: true,
+          );
+        }
+
         if (state.status.isSuccess) {
           openSnackbar(
             SnackbarMessage.success(
