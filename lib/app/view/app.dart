@@ -29,13 +29,13 @@ class App extends StatelessWidget {
 
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => serviceLocator<AppBloc>()),
-        BlocProvider(create: (context) => serviceLocator<AppCubit>()),
-        BlocProvider(create: (context) => serviceLocator<CooldownCubit>()),
-        BlocProvider(
-          create: (context) => serviceLocator<ConfirmTransactionPinCubit>(),
-        ),
-        BlocProvider(create: (context) => serviceLocator<CardRepoCubit>()),
+        BlocProvider.value(value: serviceLocator<AppBloc>()),
+        BlocProvider.value(value: serviceLocator<AppCubit>()),
+        BlocProvider.value(value: serviceLocator<CooldownCubit>()),
+
+        BlocProvider.value(value: serviceLocator<ConfirmTransactionPinCubit>()),
+
+        BlocProvider.value(value: serviceLocator<CardRepoCubit>()),
       ],
       child: AppView(),
     );

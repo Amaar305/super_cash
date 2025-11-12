@@ -51,6 +51,8 @@ enum TransactionType {
   walletfunding('walletfunding'),
   airtime('airtime'),
   palmpay('palmpay'),
+  referral('referral'),
+  bonus('bonus'),
   others('others');
 
   const TransactionType(this.value);

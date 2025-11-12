@@ -35,10 +35,8 @@ class NewWallet extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Tappable.faded(
-                onTap: () {
-                  // Handle refresh action
-                  context.read<HomeCubit>().onRefresh(forceRefresh: true);
-                },
+                onTap: () =>
+                    context.read<HomeCubit>().onRefresh(forceRefresh: true),
                 child: Icon(Icons.refresh, color: AppColors.white),
               ),
               Balance(),

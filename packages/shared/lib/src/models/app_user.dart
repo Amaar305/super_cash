@@ -56,13 +56,13 @@ class AppUser {
   });
 
   /// Whether the current user is anonymous.
-  bool get isAnonymous => this == anonymous;
+  bool get isAnonymous => id == 'none';
 
   /// Anonymous user which represents an unauthenticated user.
   static const anonymous = AppUser(
     email: '',
     firstName: 'Anonymous',
-    id: '',
+    id: 'none',
     isKycVerified: false,
     isVerified: false,
     lastName: 'User',

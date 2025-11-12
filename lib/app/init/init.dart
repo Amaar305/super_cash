@@ -73,7 +73,7 @@ Future<void> initDependencies() async {
       () => AuthClient(
         client: http.Client(),
         tokenRepository: serviceLocator(),
-        baseUrl: 'http://127.0.0.1:8000/api/v1',
+        baseUrl: 'http://167.71.92.9/api/v1',
       ),
     )
     ..registerLazySingleton<DeviceRegistrar>(
@@ -98,7 +98,12 @@ Future<void> initDependencies() async {
         preferences: serviceLocator(),
       ),
     )
-    ..registerFactory(() => ApiErrorHandler(appBloc: serviceLocator()));
+    ..registerFactory(
+      () => ApiErrorHandler(
+        appBloc: serviceLocator(),
+        appCubit: serviceLocator(),
+      ),
+    );
   unawaited(serviceLocator<DeviceRegistrar>().register(withAuth: false));
   _auth();
   _cooldown();
@@ -628,6 +633,9 @@ void _home() {
     // Usecases
     ..registerFactory(
       () => FetchUserUseCase(homeUserRepository: serviceLocator()),
+    )
+    ..registerFactory(
+      () => FetchAppSettingsUseCase(homeUserRepository: serviceLocator()),
     );
 }
 

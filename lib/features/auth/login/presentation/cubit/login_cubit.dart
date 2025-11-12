@@ -1,3 +1,4 @@
+import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/app/init/init.dart';
 import 'package:super_cash/core/usecase/use_case.dart';
 import 'package:equatable/equatable.dart';
@@ -7,7 +8,7 @@ import 'package:form_fields/form_fields.dart';
 import 'package:shared/shared.dart';
 import 'package:token_repository/token_repository.dart';
 
-import '../../../../../app/bloc/app_bloc.dart';
+
 import '../../domain/domain.dart';
 
 part 'login_state.dart';
@@ -16,11 +17,11 @@ class LoginCubit extends Cubit<LoginState> {
   final LoginUseCase _loginUseCase;
   final LoginWithBiometricUseCase _biometricUseCase;
   final DetermineLoginFlowUseCase _determineLoginFlowUseCase;
-  final AppBloc _appBloc;
+  final AppCubit _appBloc;
 
   LoginCubit({
     required LoginUseCase loginUseCase,
-    required AppBloc appBloc,
+    required AppCubit appBloc,
     required LoginWithBiometricUseCase biometricUseCase,
     required DetermineLoginFlowUseCase determineLoginFlowUseCase,
     required bool hasBiometric,
@@ -119,7 +120,7 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   void onLoginWithBiometric({
-    void Function(AppUser)? onSuccess,
+    void Function(AppUser user)? onSuccess,
     VoidCallback? onFallbackToPassword,
   }) async {
     if (isClosed) return;
@@ -140,7 +141,7 @@ class LoginCubit extends Cubit<LoginState> {
           ),
         );
         onFallbackToPassword?.call();
-        _appBloc.add(UserLoggedOut());
+        // _appBloc.logout();
       },
       (user) {
         emit(state.copyWith(status: LoginStatus.success, user: user));
@@ -195,7 +196,7 @@ class LoginCubit extends Cubit<LoginState> {
         if (isClosed) return;
 
         emit(state.copyWith(message: l.message, status: LoginStatus.error));
-        _appBloc.add(UserLoggedOut());
+        // _appBloc.add(UserLoggedOut());
       },
       (user) async {
         if (isClosed) return;
@@ -217,7 +218,8 @@ class LoginCubit extends Cubit<LoginState> {
             onSuccess?.call(user);
             return;
           case LoginFlowAction.authenticateUser:
-            _appBloc.add(UserLoggedIn(user));
+            // _appBloc.add(UserLoggedIn(user));
+            _appBloc.userLoggedIn(user);
             return;
           case LoginFlowAction.promptBiometricEnrollment:
             onEnableBiometric?.call(user);

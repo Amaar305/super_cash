@@ -53,6 +53,8 @@ const _$TransactionTypeEnumMap = {
   TransactionType.walletfunding: 'walletfunding',
   TransactionType.airtime: 'airtime',
   TransactionType.palmpay: 'palmpay',
+  TransactionType.referral: 'referral',
+  TransactionType.bonus: 'bonus',
   TransactionType.others: 'others',
 };
 

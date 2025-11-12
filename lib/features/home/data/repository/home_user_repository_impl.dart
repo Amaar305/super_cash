@@ -31,4 +31,26 @@ class HomeUserRepositoryImpl implements HomeUserRepository {
       return left(ServerFailure(error.message));
     }
   }
+
+  @override
+  Future<Either<Failure, HomeSettings>> fetchAppSettings({
+    required String platform,
+    required String version,
+    required String versionCode,
+  }) async {
+    try {
+      if (!await networkInfo.isConnected) {
+        return left(NetworkFailure("No internet connection."));
+      }
+      final res = await homeUserRemoteDataSource.fetchAppSettings(
+        platform: platform,
+        version: version,
+        versionCode: versionCode,
+      );
+
+      return right(res);
+    } on ServerException catch (error) {
+      return left(ServerFailure(error.message));
+    }
+  }
 }

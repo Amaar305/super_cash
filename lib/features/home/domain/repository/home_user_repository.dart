@@ -4,4 +4,10 @@ import 'package:shared/shared.dart';
 
 abstract class HomeUserRepository {
   Future<Either<Failure, AppUser>> fetchUserDetails();
+
+  Future<Either<Failure, HomeSettings>> fetchAppSettings({
+    required String platform,
+    required String version,
+    required String versionCode,
+  });
 }

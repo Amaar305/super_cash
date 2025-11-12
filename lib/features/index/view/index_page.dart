@@ -19,9 +19,11 @@ class IndexPage extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) =>
-              HomeCubit(serviceLocator(), context.read<AppCubit>())
-                ..onRefresh(forceRefresh: true),
+          create: (context) => HomeCubit(
+            appCubit: context.read<AppCubit>(),
+            fetchAppSettingsUseCase: serviceLocator(),
+            fetchUserUseCase: serviceLocator(),
+          )..onRefresh(forceRefresh: true),
         ),
         BlocProvider(
           create: (context) =>

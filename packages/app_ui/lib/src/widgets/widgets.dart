@@ -15,6 +15,7 @@ export 'app_pin_form.dart';
 export 'app_scaffold.dart';
 export 'app_snackbar.dart';
 export 'app_text_field.dart';
+export 'app_update_dialog.dart';
 export 'gap.dart';
 export 'primary_button.dart';
 export 'purchase_container_info.dart';

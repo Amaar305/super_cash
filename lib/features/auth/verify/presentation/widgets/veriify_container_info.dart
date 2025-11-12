@@ -1,9 +1,11 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:super_cash/core/app_strings/app_string.dart';
 import 'package:flutter/material.dart';
+import 'package:super_cash/features/auth/login/presentation/utils/utils.dart';
 
 class VeriifyContainerInfo extends StatelessWidget {
-  const VeriifyContainerInfo({super.key});
+  const VeriifyContainerInfo({super.key, required this.email});
+  final String email;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,10 @@ class VeriifyContainerInfo extends StatelessWidget {
             ),
             Flexible(
               child: Text(
-                AppStrings.verifyAccountInstruction,
+                AppStrings.verifyAccountInstruction.replaceAll(
+                  'maskemail',
+                  maskEmail(email),
+                ),
                 style: TextStyle(fontSize: 10, fontWeight: FontWeight.w500),
               ),
             ),

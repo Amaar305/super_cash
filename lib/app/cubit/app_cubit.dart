@@ -26,20 +26,23 @@ class AppCubit extends Cubit<AppState> {
 
   Future<void> appStarted() async {
     try {
-      final completedOnboarding = _preferences.getBool('onboarded') ?? false;
+      final completedOnboarding = _preferences.getBool('onboarded') ?? true;
       if (!completedOnboarding) {
+        logI('Not onboarded');
         emit(AppState.onboarding());
         return;
       }
 
       final tokensExist = await _tokenRepository.hasToken();
       if (!tokensExist) {
+        logI('Not logged In');
         emit(AppState.welcome());
         return;
       }
 
       final user = _loginLocalDataSource.getUser();
       if (user == null || user.isAnonymous) {
+        logI('Not logged In');
         emit(AppState.unauthenticated());
         return;
       }
@@ -76,7 +79,7 @@ class AppCubit extends Cubit<AppState> {
   Future<void> tokenExpired() async {
     await _tokenRepository.clearTokens();
     await _loginLocalDataSource.clearUser();
-    emit(AppState.unauthenticated());
+    emit(AppState.tokenExpired());
   }
 
   Future<void> logout() async {

@@ -1,5 +1,5 @@
 import 'package:app_ui/app_ui.dart';
-import 'package:super_cash/app/bloc/app_bloc.dart';
+import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/app/init/init.dart';
 import 'package:super_cash/core/app_strings/app_string.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +17,7 @@ class LoginPage extends StatelessWidget {
         loginUseCase: serviceLocator(),
         biometricUseCase: serviceLocator(),
         determineLoginFlowUseCase: serviceLocator(),
-        appBloc: context.read<AppBloc>(),
+        appBloc: context.read<AppCubit>(),
         hasBiometric: false,
       ),
       child: LoginView(),

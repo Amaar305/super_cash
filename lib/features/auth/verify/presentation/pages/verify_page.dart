@@ -73,7 +73,7 @@ class _VerifyViewState extends State<VerifyView> {
             child: Column(
               spacing: AppSpacing.lg,
               children: [
-                VeriifyContainerInfo(),
+                VeriifyContainerInfo(email: ''),
                 Gap.v(AppSpacing.xxlg),
                 VerifyOtpForm(),
                 Gap.v(AppSpacing.spaceUnit),

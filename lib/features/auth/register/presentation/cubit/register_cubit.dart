@@ -241,7 +241,7 @@ class RegisterCubit extends Cubit<RegisterState> {
     final firstName = FirstName.dirty(state.firstName.value);
     final lastName = LastName.dirty(state.lastName.value);
     final phone = Phone.dirty(state.phone.value);
-    final referral = Referral.dirty(state.referral.value);
+    // final referral = Referral.dirty(state.referral.value);
     final isFormValid = FormzValid([
       email,
       password,
@@ -249,7 +249,7 @@ class RegisterCubit extends Cubit<RegisterState> {
       firstName,
       lastName,
       phone,
-      referral,
+      // referral,
     ]).isFormValid;
 
     final newState = state.copyWith(
@@ -274,7 +274,7 @@ class RegisterCubit extends Cubit<RegisterState> {
         lastName: lastName.value,
         password: password.value,
         confirmPassword: password2.value,
-        referral: referral.value.isEmpty ? null : referral.value,
+        referral: state.referral.value.isEmpty ? null : state.referral.value,
       ),
     );
 

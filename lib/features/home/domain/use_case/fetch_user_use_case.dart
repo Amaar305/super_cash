@@ -8,10 +8,12 @@ import '../domain.dart';
 class FetchUserUseCase implements UseCase<AppUser, NoParam> {
   final HomeUserRepository homeUserRepository;
 
-  FetchUserUseCase({required this.homeUserRepository});
+  const FetchUserUseCase({required this.homeUserRepository});
 
   @override
   Future<Either<Failure, AppUser>> call(NoParam param) async {
     return await homeUserRepository.fetchUserDetails();
   }
 }
+
+

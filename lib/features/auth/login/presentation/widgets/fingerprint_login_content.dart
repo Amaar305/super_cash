@@ -1,4 +1,5 @@
 import 'package:app_ui/app_ui.dart';
+import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/app/init/init.dart';
 import 'package:super_cash/core/app_strings/app_string.dart';
 import 'package:super_cash/core/fonts/app_text_style.dart';
@@ -7,7 +8,6 @@ import 'package:super_cash/features/auth/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../app/bloc/app_bloc.dart';
 
 class FingerprintLoginContent extends StatelessWidget {
   const FingerprintLoginContent({super.key});
@@ -79,9 +79,7 @@ class FingerprintIconButton extends StatelessWidget {
     void unAuthenticated() {
       context.read<LoginCubit>().onLoginWithBiometric(
         onSuccess: (user) {
-          // _appBloc.add(UserLoggedIn(token));
-
-          context.read<AppBloc>().add(UserLoggedIn(user));
+          context.read<AppCubit>().updateUser(user);
         },
       );
     }
@@ -112,25 +110,7 @@ class FingerprintButton extends StatelessWidget {
       final loginCubit = context.read<LoginCubit>();
       loginCubit.onLoginWithBiometric(
         onSuccess: (user) {
-          context.read<AppBloc>().add(UserLoggedIn(user));
-
-          if (!user.transactionPin) {
-            Navigator.pushAndRemoveUntil(
-              context,
-              CreatePinPage.route(),
-              (_) => true,
-            );
-            return;
-          }
-
-          if (!user.isVerified) {
-            Navigator.pushAndRemoveUntil(
-              context,
-              VerifyPage.route(email: user.email),
-              (_) => true,
-            );
-            return;
-          }
+          context.read<AppCubit>().updateUser(user);
         },
       );
     }
@@ -157,7 +137,7 @@ class LoggedInMaskedUserEmailText extends StatelessWidget {
     final user = serviceLocator<LoginLocalDataSource>().getUser();
 
     return Text(
-      maskEmail(user?.email ?? 'useremail'),
+      maskEmail(user?.email ?? 'user email'),
       style: poppinsTextStyle(fontWeight: FontWeight.w400, fontSize: 13),
     );
   }
