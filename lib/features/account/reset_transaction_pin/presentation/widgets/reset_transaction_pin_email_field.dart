@@ -1,7 +1,7 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:super_cash/app/bloc/app_bloc.dart';
+import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/config.dart';
 import 'package:super_cash/core/app_strings/app_string.dart';
 
@@ -20,8 +20,8 @@ class _ResetTransactionPinEmailFieldState
   @override
   void initState() {
     super.initState();
-    final email = context.read<AppBloc>().state.user.email;
-    controller = TextEditingController(text: email);
+    final email = context.read<AppCubit>().state.user?.email;
+    controller = TextEditingController(text: email ?? '');
   }
 
   @override

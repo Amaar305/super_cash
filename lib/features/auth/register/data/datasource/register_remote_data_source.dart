@@ -4,8 +4,6 @@ import 'package:app_client/app_client.dart';
 import 'package:super_cash/core/device/device_info.dart';
 import 'package:super_cash/core/error/exception.dart';
 import 'package:shared/shared.dart';
-import 'package:token_repository/token_repository.dart';
-
 
 abstract interface class RegisterRemoteDataSource {
   Future<AppUser> register({
@@ -61,9 +59,6 @@ class RegisterRemoteDataSourceImpl implements RegisterRemoteDataSource {
       }
 
       throw ServerException('Unexpected response format.');
-    } on RefreshTokenException catch (e) {
-      // Bubble up so the app can force re-login if needed
-      throw ServerException(e.message);
     } on ApiException catch (e) {
       // Non-2xx with server-provided message already extracted by AuthClient
       throw ServerException(e.message);

@@ -1,8 +1,4 @@
-// ignore_for_file: unused_field
-
-import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:webview_flutter_plus/webview_flutter_plus.dart';
 
 class LiveChatPage extends StatelessWidget {
@@ -46,12 +42,7 @@ class _LiveChatViewState extends State<LiveChatView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Live Chat'),
-        leading: AppLeadingAppBarWidget(
-          onTap: context.pop,
-        ),
-      ),
+      appBar: AppBar(title: const Text('Live Chat')),
       body: Center(
         child: ElevatedButton(
           onPressed: () async {

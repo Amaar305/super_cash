@@ -14,49 +14,138 @@ class KYCNoticeBoard extends StatelessWidget {
     );
 
     if (isKYCVerified) {
-      return SizedBox.shrink();
+      return const SizedBox.shrink();
     }
+
     return Padding(
-      padding: EdgeInsets.all(AppSpacing.sm),
-      child: Material(
-        borderRadius: BorderRadius.circular(AppSpacing.sm),
-        color: AppColors.green.withValues(alpha: 0.1),
-        child: Container(
-          width: double.infinity,
-          padding: EdgeInsets.all(AppSpacing.sm),
-          height: 120,
-          alignment: Alignment.center,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            spacing: AppSpacing.sm,
-            children: [
-              Text(
-                'KYC Not Verified',
-                textAlign: TextAlign.center,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: poppinsTextStyle(
-                  fontSize: 14,
-                  fontWeight: AppFontWeight.semiBold,
-                  color: AppColors.red,
-                ),
-              ),
-              Text(
-                'Please verify your KYC to enjoy all features',
-                textAlign: TextAlign.center,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: poppinsTextStyle(
-                  fontSize: 12,
-                  fontWeight: AppFontWeight.regular,
-                  color: AppColors.green,
-                ),
-              ),
-            ],
+      padding: EdgeInsets.symmetric(
+        horizontal: AppSpacing.md,
+        vertical: AppSpacing.sm,
+      ),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [AppColors.deepBlue, AppColors.green.shade400],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
+          borderRadius: BorderRadius.circular(AppSpacing.xlg),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.black.withValues(alpha: 0.25),
+              blurRadius: 28,
+              offset: const Offset(0, 18),
+            ),
+          ],
+        ),
+        child: Stack(
+          children: [
+            Positioned(
+              top: -AppSpacing.xlg,
+              right: -AppSpacing.lg,
+              child: _AccentCircle(
+                diameter: 150,
+                color: AppColors.white.withValues(alpha: 0.08),
+              ),
+            ),
+            Positioned(
+              bottom: -AppSpacing.md,
+              left: -AppSpacing.lg,
+              child: _AccentCircle(
+                diameter: 120,
+                color: AppColors.white.withValues(alpha: 0.05),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(AppSpacing.lg),
+              child: Row(
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(AppSpacing.md),
+                    decoration: BoxDecoration(
+                      color: AppColors.white.withValues(alpha: 0.15),
+                      borderRadius: BorderRadius.circular(AppSpacing.xxxlg),
+                      border: Border.all(
+                        color: AppColors.white.withValues(alpha: 0.2),
+                      ),
+                    ),
+                    child: Icon(
+                      Icons.verified_user_outlined,
+                      color: AppColors.white,
+                      size: 32,
+                    ),
+                  ),
+                  SizedBox(width: AppSpacing.md),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      spacing: AppSpacing.xs,
+                      children: [
+                        Text(
+                          'Complete your KYC',
+                          style: poppinsTextStyle(
+                            fontSize: 16,
+                            fontWeight: AppFontWeight.semiBold,
+                            color: AppColors.white,
+                          ),
+                        ),
+                        Text(
+                          'Verify your identity now to unlock seamless transfers, higher limits, and rewards tailored for you.',
+                          style: poppinsTextStyle(
+                            fontSize: 12,
+                            fontWeight: AppFontWeight.medium,
+                            color: AppColors.white.withValues(alpha: 0.8),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(width: AppSpacing.md),
+                  Material(
+                    color: AppColors.white,
+                    borderRadius: BorderRadius.circular(AppSpacing.md),
+
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(AppSpacing.md),
+                      onTap: () {},
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: AppSpacing.md,
+                          vertical: AppSpacing.sm,
+                        ),
+                        child: Text(
+                          'Verify Now',
+                          style: poppinsTextStyle(
+                            fontSize: 12,
+                            fontWeight: AppFontWeight.semiBold,
+                            color: AppColors.deepBlue,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
+    );
+  }
+}
+
+class _AccentCircle extends StatelessWidget {
+  const _AccentCircle({required this.diameter, required this.color});
+
+  final double diameter;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: diameter,
+      height: diameter,
+      decoration: BoxDecoration(shape: BoxShape.circle, color: color),
     );
   }
 }

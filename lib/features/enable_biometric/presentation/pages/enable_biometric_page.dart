@@ -42,6 +42,16 @@ class EnableBiometricPage extends StatelessWidget {
                       enable: true,
                     );
 
+                    if (!user.isVerified) {
+                      context.read<AppCubit>().verifyAccount(user);
+                      return;
+                    }
+
+                    if (!user.transactionPin) {
+                      context.read<AppCubit>().createPin(user);
+                      return;
+                    }
+
                     context.read<AppCubit>().userLoggedIn(user);
                   },
                 );

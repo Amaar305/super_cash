@@ -1,5 +1,4 @@
 import 'package:app_ui/app_ui.dart';
-import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/core/app_strings/app_string.dart';
 import 'package:super_cash/features/auth/auth.dart';
 import 'package:flutter/material.dart';
@@ -22,14 +21,7 @@ class RegisterButton extends StatelessWidget {
       onPressed: !agreedToTermsAndCondition
           ? null
           : () {
-              context.read<RegisterCubit>().submit((user) {
-                context.read<AppCubit>().referralType();
-                // Navigator.pushAndRemoveUntil(
-                //   context,
-                //   ReferralTypePage.route(),
-                //   (_) => true,
-                // );
-              });
+              context.read<RegisterCubit>().submit(null);
             },
     );
   }

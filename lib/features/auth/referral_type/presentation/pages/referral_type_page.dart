@@ -2,7 +2,6 @@ import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:super_cash/app/init/init.dart';
-import 'package:super_cash/app/view/app.dart';
 
 import 'package:super_cash/features/auth/referral_type/presentation/presentation.dart';
 
@@ -47,26 +46,16 @@ class _ReferralTypeViewState extends State<ReferralTypeView> {
       appBar: AppBar(title: AppAppBarTitle('Referral Type')),
       body: AppConstrainedScrollView(
         mainAxisAlignment: MainAxisAlignment.center,
-
         padding: const EdgeInsets.all(AppSpacing.lg),
-        child: BlocListener<ReferralTypeCubit, ReferralTypeState>(
-          listenWhen: (previous, current) => previous.status != current.status,
-          listener: (context, state) {
-            if (state.status.isFailure && state.message.isNotEmpty) {
-              openSnackbar(SnackbarMessage.error(title: state.message));
-            }
-          },
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            spacing: AppSpacing.xxlg,
-            children: [
-              ReferralTypeHeader(),
-
-              ReferralOptions(),
-              Gap.v(AppSpacing.xxlg),
-              ReferralTypeButton(),
-            ],
-          ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          spacing: AppSpacing.xxlg,
+          children: const [
+            ReferralTypeHeader(),
+            ReferralOptions(),
+            Gap.v(AppSpacing.xxlg),
+            ReferralTypeButton(),
+          ],
         ),
       ),
     );

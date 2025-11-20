@@ -7,19 +7,29 @@ class ReferralSelectionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      spacing: AppSpacing.md,
+    return Column(
+      spacing: AppSpacing.sm,
       children: [
-        Assets.icons.mingcuteCelebrateLine.svg(),
-        Expanded(
-          child: Text(
-            'Select the referral type that suites you best.',
-            textAlign: TextAlign.center,
-            style: poppinsTextStyle(fontSize: AppSpacing.md),
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          spacing: AppSpacing.md,
+          children: [
+            Assets.icons.mingcuteCelebrateLine.svg(),
+            Expanded(
+              child: Text(
+                'Select the referral type that suites you best.',
+                textAlign: TextAlign.center,
+                style: poppinsTextStyle(),
+              ),
+            ),
+            Assets.icons.mingcuteCelebrateLine2.svg(),
+          ],
         ),
-        Assets.icons.mingcuteCelebrateLine2.svg(),
+        Text(
+          'Select your desired "Welcome Referral for Cash" and earn the amount stated from below list.',
+          textAlign: TextAlign.center,
+          style: poppinsTextStyle(fontSize: AppSpacing.md, ),
+        ),
       ],
     );
   }

@@ -8,7 +8,6 @@ import 'package:super_cash/features/auth/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
 class FingerprintLoginContent extends StatelessWidget {
   const FingerprintLoginContent({super.key});
 
@@ -17,16 +16,7 @@ class FingerprintLoginContent extends StatelessWidget {
     return Column(
       spacing: AppSpacing.lg,
       children: [
-        Container(
-          // padding: EdgeInsets.all(AppSpacing.md),
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            border: Border.all(width: 0.5),
-          ),
-          child: FittedBox(
-            child: Assets.images.logo.image(width: 100, fit: BoxFit.cover),
-          ),
-        ),
+        Assets.images.logo.image(width: 100, fit: BoxFit.cover),
         Gap.v(AppSpacing.xlg),
         Column(
           children: [

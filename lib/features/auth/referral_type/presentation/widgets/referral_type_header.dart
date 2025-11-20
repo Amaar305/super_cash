@@ -21,7 +21,10 @@ class ReferralTypeHeader extends StatelessWidget {
 
         Text(
           'Please select your preferred referral type to proceed with the registration process.',
-          style: poppinsTextStyle(color: AppColors.grey),
+          style: poppinsTextStyle(
+            color: AppColors.grey,
+            fontSize: AppSpacing.md,
+          ),
           textAlign: TextAlign.center,
         ),
       ],

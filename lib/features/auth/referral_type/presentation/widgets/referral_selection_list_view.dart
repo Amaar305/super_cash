@@ -16,14 +16,17 @@ class ReferralSelectionListView extends StatelessWidget {
     );
     return ListView.builder(
       itemCount: referrals.length,
+      padding: EdgeInsets.only(top: 10),
       itemBuilder: (context, index) {
         final referral = referrals[index];
         return ReferralSelectionCard(
           isSelected: referral.id == selectedCampaign?.id,
           isRecommended: !referral.hasLimitedReferees,
           numberToRefer: referral.maxRefereesString,
-          rewardToEarn: referral.perRefereeReward,
-          referralTitle: referral.name,
+          rewardToEarn: referral.perRefereeReward.toString(),
+          referralTitle: !referral.hasLimitedReferees
+              ? referral.maxRefereesString
+              : '${referral.maxReferees} for ${((referral.maxReferees ?? 1) * referral.perRefereeReward)}',
           referralDescription: referral.description,
           onTap: () {
             context.read<ReferralTypeCubit>().onCampaignSelected(referral);

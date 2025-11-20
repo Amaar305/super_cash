@@ -1,7 +1,10 @@
 import 'package:app_ui/app_ui.dart';
+import 'package:go_router/go_router.dart';
+import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/app/init/init.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:super_cash/core/cooldown/cooldown.dart';
 
 import '../../../../../core/app_strings/app_string.dart';
 import '../../../widgets/assistance_button.dart';
@@ -39,7 +42,7 @@ class VerifyView extends StatefulWidget {
 
 class _VerifyViewState extends State<VerifyView> {
   void _confirmGoBack(BuildContext context) => context.confirmAction(
-    fn: () => Navigator.pop(context),
+    fn: context.read<AppCubit>().logout,
     title: AppStrings.goBackTitle,
     content: AppStrings.goBackDescrption,
     noText: AppStrings.cancel,
@@ -51,7 +54,18 @@ class _VerifyViewState extends State<VerifyView> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<VerifyCubit>().requestOtp();
+      context.showConfirmationBottomSheet(
+        dismissible: false,
+        showIcon: false,
+        title: 'Verify your email.',
+        description:
+            'Your email is not verified, please request an OTP to verify your email.',
+        okText: 'Request OTP',
+        onDone: () {
+          context.pop();
+          context.read<VerifyCubit>().requestOtp();
+        },
+      );
     });
   }
 
@@ -77,13 +91,7 @@ class _VerifyViewState extends State<VerifyView> {
                 Gap.v(AppSpacing.xxlg),
                 VerifyOtpForm(),
                 Gap.v(AppSpacing.spaceUnit),
-                Text(
-                  'Resend code in 0:44 sec',
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: AppFontWeight.bold,
-                  ),
-                ),
+                VerifyAccountCooldownText(),
                 Gap.v(AppSpacing.xxxlg),
                 VerifyOtpButton(),
                 AssistanceButton(),
@@ -102,6 +110,67 @@ class _VerifyViewState extends State<VerifyView> {
         AppStrings.verifyAccount,
         style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
       ),
+    );
+  }
+}
+
+class VerifyAccountCooldownText extends StatelessWidget {
+  const VerifyAccountCooldownText({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<CooldownCubit, CooldownState>(
+      builder: (context, state) {
+        final cooldowns = state.cooldowns;
+        final remaining = cooldowns[CooldownKeys.verifyAccount];
+
+        if (remaining != null) {
+          final minutes = remaining.inMinutes;
+          final seconds = remaining.inSeconds % 60;
+
+          final s = "$minutes:${seconds.toString().padLeft(2, '0')}";
+
+          return Text(
+            'Resend code in $s sec',
+            style: TextStyle(fontSize: 12, fontWeight: AppFontWeight.bold),
+          );
+        }
+
+        return Text(
+          'Resend code in 0:44 sec',
+          style: TextStyle(fontSize: 12, fontWeight: AppFontWeight.bold),
+        );
+      },
+    );
+  }
+}
+
+class VerifyRequestOtpButton extends StatelessWidget {
+  const VerifyRequestOtpButton({super.key, required this.cubit});
+
+  final VerifyCubit cubit;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider.value(value: cubit, child: NewWidget());
+  }
+}
+
+class NewWidget extends StatelessWidget {
+  const NewWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final isLoading = context.select(
+      (VerifyCubit element) => element.state.status.isLoading,
+    );
+    return PrimaryButton(
+      isLoading: isLoading,
+      label: 'Request OTP',
+      onPressed: () {
+        context.pop();
+        context.read<VerifyCubit>().requestOtp();
+      },
     );
   }
 }

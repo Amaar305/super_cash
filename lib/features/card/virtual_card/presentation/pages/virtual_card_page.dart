@@ -32,7 +32,10 @@ class _VirtualCardViewState extends State<VirtualCardView> {
   @override
   void initState() {
     super.initState();
-    context.read<VirtualCardCubit>().fetchCards();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<VirtualCardCubit>().fetchCards();
+    });
   }
 
   @override

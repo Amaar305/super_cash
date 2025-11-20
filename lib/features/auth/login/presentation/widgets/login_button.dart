@@ -22,9 +22,6 @@ class LoginButton extends StatelessWidget {
       onPressed: () => context.read<LoginCubit>().submit(
         onSuccess: context.read<AppCubit>().userLoggedIn,
         onEnableBiometric: (user) {
-          // context.goNamedSafe(AppRoutes.enableBiometric, extra: user);
-
-          // context.read<AppCubit>().enableBiometric(user);
           Navigator.push(
             context,
             MaterialPageRoute(

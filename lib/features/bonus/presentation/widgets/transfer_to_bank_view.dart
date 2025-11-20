@@ -11,7 +11,11 @@ class TransferToBankView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: AppSpacing.lg,
-      children: [TransferToBankForm(), TransferToBankButton()],
+      children: [
+        TransferToBankForm(),
+        TransferToBankButton(),
+        UserBonusOverview(),
+      ],
     );
   }
 }

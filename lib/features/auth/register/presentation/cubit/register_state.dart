@@ -54,6 +54,7 @@ class RegisterState extends Equatable {
     required this.showPassword,
     required this.showConfirmPassword,
     required this.confirmPassword,
+    required this.confirmPasswordError,
     required this.agreedToTermsAndCondition,
     required this.basicSignup,
     required this.phone,
@@ -69,6 +70,7 @@ class RegisterState extends Equatable {
         email: const Email.pure(),
         password: const Password.pure(),
         confirmPassword: const Password.pure(),
+        confirmPasswordError: '',
         phone: const Phone.pure(),
         referral: const Referral.pure(),
         errorMessage: '',
@@ -85,11 +87,13 @@ class RegisterState extends Equatable {
   final Email email;
   final Password password;
   final Password confirmPassword;
+  final String confirmPasswordError;
   final Phone phone;
   final Referral referral;
   final String errorMessage;
   final bool showPassword;
   final bool showConfirmPassword;
+
   final bool agreedToTermsAndCondition;
   final bool basicSignup;
   final AppUser user;
@@ -101,6 +105,7 @@ class RegisterState extends Equatable {
     Email? email,
     Password? password,
     Password? confirmPassword,
+    String? confirmPasswordError,
     Phone? phone,
     Referral? referral,
     String? errorMessage,
@@ -117,6 +122,8 @@ class RegisterState extends Equatable {
       email: email ?? this.email,
       password: password ?? this.password,
       confirmPassword: confirmPassword ?? this.confirmPassword,
+      confirmPasswordError:
+          confirmPasswordError ?? this.confirmPasswordError,
       phone: phone ?? this.phone,
       errorMessage: errorMessage ?? this.errorMessage,
       showPassword: showPassword ?? this.showPassword,
@@ -133,6 +140,7 @@ class RegisterState extends Equatable {
   List<Object?> get props => [
     password,
     confirmPassword,
+    confirmPasswordError,
     email,
     status,
     errorMessage,

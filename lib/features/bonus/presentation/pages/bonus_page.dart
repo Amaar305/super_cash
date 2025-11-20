@@ -1,6 +1,7 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:super_cash/app/init/init.dart';
 import 'package:super_cash/features/bonus/presentation/presentation.dart';
 
@@ -43,6 +44,7 @@ class _BonusViewState extends State<BonusView> {
       releaseFocus: true,
       appBar: AppBar(
         title: AppAppBarTitle('Bonus'),
+        leading: AppLeadingAppBarWidget(onTap: context.pop),
         actions: [
           BlocSelector<BonusCubit, BonusState, bool>(
             selector: (state) => state.status.isValidated,

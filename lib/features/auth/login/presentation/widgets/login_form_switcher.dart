@@ -24,6 +24,13 @@ class LoginFormSwitcher extends StatelessWidget {
           );
           return;
         }
+        if (state.status.isSuccess) {
+          openSnackbar(
+            SnackbarMessage.success(title: 'Login successful!'),
+            clearIfQueue: true,
+          );
+          return;
+        }
       },
       child: PageTransitionSwitcher(
         reverse: isPasswordLogin,

@@ -1,6 +1,6 @@
 import 'package:app_ui/app_ui.dart';
-import 'package:super_cash/app/app.dart';
 import 'package:super_cash/app/bloc/app_bloc.dart';
+import 'package:super_cash/app/routes/routes.dart';
 import 'package:super_cash/core/fonts/app_text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

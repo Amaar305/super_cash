@@ -1,5 +1,4 @@
 import 'package:app_ui/app_ui.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:super_cash/app/bloc/app_bloc.dart' hide AppState;
 import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/app/init/init.dart';
@@ -20,7 +19,6 @@ class _AppViewState extends State<AppView> {
     serviceLocator<AppBloc>(),
     serviceLocator<AppCubit>(),
   ).router;
-  bool _tokenDialogVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -33,44 +31,19 @@ class _AppViewState extends State<AppView> {
       routerConfig: routerConfig,
 
       builder: (context, child) {
-        return BlocListener<AppCubit, AppState>(
-          listenWhen: (previous, current) =>
-              current.status == AppStatus2.tokenExpired,
-          listener: (context, state) async {
-            final navigatorContext =
-                routerConfig.routerDelegate.navigatorKey.currentContext;
-            if (!mounted || _tokenDialogVisible || navigatorContext == null) {
-              return;
-            }
-            _tokenDialogVisible = true;
-            try {
-              await showDialog<void>(
-                context: navigatorContext,
-                barrierDismissible: false,
-                // ignore: deprecated_member_use
-                builder: (_) => WillPopScope(
-                  onWillPop: () async => false,
-                  child: NewWidget(),
-                ),
-              );
-            } finally {
-              _tokenDialogVisible = false;
-            }
-          },
-          child: Stack(
-            children: [
-              child!,
-              AppSnackbar(key: snackbarKey),
-            ],
-          ),
+        return Stack(
+          children: [
+            child!,
+            AppSnackbar(key: snackbarKey),
+          ],
         );
       },
     );
   }
 }
 
-class NewWidget extends StatelessWidget {
-  const NewWidget({super.key});
+class SessionExpiredDialog extends StatelessWidget {
+  const SessionExpiredDialog({super.key});
 
   @override
   Widget build(BuildContext context) {

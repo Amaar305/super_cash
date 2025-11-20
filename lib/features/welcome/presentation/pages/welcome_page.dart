@@ -23,7 +23,7 @@ class _WelcomePageState extends State<WelcomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              width: 211,
+              width: 180,
               height: 167,
               alignment: Alignment.center,
               decoration: BoxDecoration(
@@ -31,7 +31,6 @@ class _WelcomePageState extends State<WelcomePage> {
                   image: Assets.images.logo.provider(),
                   fit: BoxFit.cover,
                 ),
-                color: AppColors.brightGrey,
                 borderRadius: BorderRadius.circular(18),
               ),
             ),

@@ -1,6 +1,7 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:super_cash/app/cubit/app_cubit.dart';
 
 import 'package:super_cash/core/app_strings/app_string.dart';
 import 'package:super_cash/features/auth/auth.dart';
@@ -88,6 +89,7 @@ class AuthSocialContainer extends StatelessWidget {
               label: authButtonLabel,
               onPressed: () {
                 context.read<AuthCubit>().changeAuth(showLogin: !isLogin);
+                context.read<AppCubit>().userStarted(true);
               },
             ),
           ),

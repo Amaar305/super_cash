@@ -1,7 +1,9 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/services.dart';
 import 'package:shared/shared.dart';
+import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/config.dart';
 import 'package:super_cash/core/app_strings/app_string.dart';
 import 'package:super_cash/core/fonts/app_text_style.dart';
@@ -87,8 +89,40 @@ class _BonusAmountFieldState extends State<BonusAmountField> {
           textInputAction: TextInputAction.done,
           filled: Config.filled,
           enabled: !isLoading,
+          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           textController: _controller,
           errorText: amountErrorMessage,
+          suffixIcon: SizedBox(
+            height: 42,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: FilledButton(
+                style: FilledButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  backgroundColor: AppColors.primary2,
+                ),
+                onPressed: () {
+                  final bonus =
+                      context.read<AppCubit>().state.user?.wallet.bonus ?? '';
+                  final sanitizedBonus = bonus.split('.').first;
+                  if (sanitizedBonus.isEmpty) return;
+                  _controller
+                    ..text = sanitizedBonus
+                    ..selection = TextSelection.collapsed(
+                      offset: sanitizedBonus.length,
+                    );
+                  _cubit.onAmountChanged(sanitizedBonus);
+                },
+                child: Text(
+                  'Max',
+                  style: TextStyle(fontSize: 10, color: AppColors.white),
+                ),
+              ),
+            ),
+          ),
         ),
       ],
     );

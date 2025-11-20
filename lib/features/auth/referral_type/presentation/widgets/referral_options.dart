@@ -20,15 +20,17 @@ class ReferralOptions extends StatelessWidget {
       children: [
         ReferralTypeOption(
           title: 'Continue with App Services',
-          description: 'Use our app services and enjoy seamless integration.',
+          description:
+              'Use our app services without welcome Referral for Cash campaign.',
           isSelected: isSelected == false,
           onTap: () =>
               context.read<ReferralTypeCubit>().onSelectReferralType(false),
         ),
 
         ReferralTypeOption(
-          title: 'Use Referral Service',
-          description: 'Refer a business and earn rewards.',
+          title: 'Use Welcome Referral for Cash',
+          description:
+              'Refer new users and earn rewards for their transactions and activeness.',
           isSelected: isSelected == true,
           onTap: !enabled
               ? null

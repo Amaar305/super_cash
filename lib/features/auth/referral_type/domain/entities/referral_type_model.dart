@@ -4,7 +4,7 @@ class ReferralTypeModel {
   final String id;
   final int? maxReferees;
   final int conversionWindowDays;
-  final String perRefereeReward;
+  final double perRefereeReward;
   final String name;
   final ReferralTypeModelStatus status;
   final String description;
@@ -30,7 +30,7 @@ class ReferralTypeModel {
       maxReferees: (json['max_referees'] as num?)?.toInt(),
       conversionWindowDays:
           (json['conversion_window_days'] as num?)?.toInt() ?? 7,
-      perRefereeReward: json['per_referee_reward'] as String? ?? '',
+      perRefereeReward: double.tryParse((json['per_referee_reward'] as String?)??'0')?? 0,
       name: json['name'] as String? ?? '',
       status: ReferralTypeModel._statusFromJson(json['status'] as String?),
       description: json['description'] as String? ?? '',

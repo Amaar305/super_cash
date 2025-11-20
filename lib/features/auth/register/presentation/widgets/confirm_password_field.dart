@@ -47,6 +47,9 @@ class _ConfirmPasswordFieldState extends State<ConfirmPasswordField> {
     final passwordError = context.select(
       (RegisterCubit cubit) => cubit.state.confirmPassword.errorMessage,
     );
+    final confirmPasswordError = context.select(
+      (RegisterCubit cubit) => cubit.state.confirmPasswordError,
+    );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,7 +65,9 @@ class _ConfirmPasswordFieldState extends State<ConfirmPasswordField> {
           ),
           filled: Config.filled,
           focusNode: _focusNode,
-          errorText: passwordError,
+          errorText: confirmPasswordError.isNotEmpty
+              ? confirmPasswordError
+              : passwordError,
           enabled: !isLoading,
           textInputAction: TextInputAction.done,
           obscureText: !showPassword,

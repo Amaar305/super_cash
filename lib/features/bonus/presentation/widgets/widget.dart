@@ -10,6 +10,7 @@ export 'bonus_account_name_field.dart';
 export 'transfer_to_bank_button.dart';
 export 'transfer_to_bank_form.dart';
 export 'bonus_bank_list_dropdown.dart';
+export 'user_bonus_overview.dart';
 export 'validation_summary_card.dart';
 
 // export 'validate_bank_button.dart';

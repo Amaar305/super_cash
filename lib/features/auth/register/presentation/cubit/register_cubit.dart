@@ -75,7 +75,15 @@ class RegisterCubit extends Cubit<RegisterState> {
         ? Password.dirty(newValue)
         : Password.pure(newValue);
 
-    final newScreenState = state.copyWith(password: newPasswordState);
+    final confirmPasswordError = _confirmPasswordError(
+      password: newPasswordState.value,
+      confirmPassword: previousScreenState.confirmPassword.value,
+    );
+
+    final newScreenState = state.copyWith(
+      password: newPasswordState,
+      confirmPasswordError: confirmPasswordError,
+    );
 
     emit(newScreenState);
   }
@@ -103,7 +111,15 @@ class RegisterCubit extends Cubit<RegisterState> {
         ? Password.dirty(newValue)
         : Password.pure(newValue);
 
-    final newScreenState = state.copyWith(confirmPassword: newPasswordState);
+    final confirmPasswordError = _confirmPasswordError(
+      password: previousScreenState.password.value,
+      confirmPassword: newPasswordState.value,
+    );
+
+    final newScreenState = state.copyWith(
+      confirmPassword: newPasswordState,
+      confirmPasswordError: confirmPasswordError,
+    );
 
     emit(newScreenState);
   }
@@ -251,6 +267,7 @@ class RegisterCubit extends Cubit<RegisterState> {
       phone,
       // referral,
     ]).isFormValid;
+    final passwordsMatch = password.value == password2.value;
 
     final newState = state.copyWith(
       email: email,
@@ -259,12 +276,16 @@ class RegisterCubit extends Cubit<RegisterState> {
       firstName: firstName,
       lastName: lastName,
       phone: phone,
-      status: isFormValid ? RegisterStatus.inProgress : null,
+      confirmPasswordError:
+          passwordsMatch ? '' : 'Password does not match',
+      status: isFormValid && passwordsMatch
+          ? RegisterStatus.inProgress
+          : null,
     );
 
     emit(newState);
 
-    if (!isFormValid) return;
+    if (!isFormValid || !passwordsMatch) return;
 
     final res = await _registerUseCase(
       RegisterParam(
@@ -287,5 +308,13 @@ class RegisterCubit extends Cubit<RegisterState> {
         onSuccess?.call(r);
       },
     );
+  }
+
+  String _confirmPasswordError({
+    required String password,
+    required String confirmPassword,
+  }) {
+    if (confirmPassword.isEmpty) return '';
+    return password == confirmPassword ? '' : 'Password does not match';
   }
 }

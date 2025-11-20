@@ -1,5 +1,6 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shared/shared.dart';
 import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/core/app_strings/app_string.dart';
@@ -35,9 +36,18 @@ class VerifyAccountBottomSheet extends StatelessWidget {
               PrimaryButton(
                 isLoading: false,
                 label: 'Done',
-                onPressed: () {
-                  Navigator.pop(context); // Close bottom sheet
-                  context.read<AppCubit>().userLoggedIn(user);
+                onPressed: () async {
+                  
+                  final appCubit = context.read<AppCubit>();
+                  context.pop(); // Close bottom sheet
+
+                  if (!user.transactionPin) {
+                    appCubit.createPin(user);
+                    return;
+                  }
+
+                  appCubit.userStarted(true);
+                  // router.goNamed(RNames.dashboard);
                 },
               ),
             ],

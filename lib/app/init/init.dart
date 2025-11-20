@@ -29,7 +29,6 @@ import '../../features/auth/auth.dart';
 import '../../features/card/card_details/domain/use_cases/card_details_use_cases.dart';
 import '../../features/card/card_repo/card_repo.dart';
 import '../../features/home/home.dart';
-import '../../features/onboarding/launch_state.dart';
 import '../../features/upgrade_tier/upgrade_tier.dart';
 import '../../features/vtupass/vtupass.dart';
 
@@ -52,9 +51,7 @@ Future<void> _initFingerprint(SharedPreferences storage) async {
 Future<void> initDependencies() async {
   // Init sharedPreferences
   final sharedPreferences = await SharedPreferences.getInstance();
-  final launch = LaunchState(sharedPreferences);
-  serviceLocator.registerSingleton(launch);
-  await launch.load();
+  
   await _initFingerprint(sharedPreferences);
 
   final LocalAuthentication auth = LocalAuthentication();
@@ -73,7 +70,7 @@ Future<void> initDependencies() async {
       () => AuthClient(
         client: http.Client(),
         tokenRepository: serviceLocator(),
-        baseUrl: 'http://167.71.92.9/api/v1',
+        baseUrl: 'http://127.0.0.1:8000/api/v1',
       ),
     )
     ..registerLazySingleton<DeviceRegistrar>(

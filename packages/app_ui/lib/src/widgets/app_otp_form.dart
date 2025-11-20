@@ -95,11 +95,13 @@ class _AppOtpFormState extends State<AppOtpForm> {
               (index) {
                 return Container(
                   width: 55,
-                  height: 55,
+                  height: 35,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(
-                      color: AppColors.blue.withValues(alpha: 0.17),
+                    // borderRadius: BorderRadius.circular(8),
+                    border: Border(
+                      bottom: BorderSide(
+                        color: AppColors.blue.withValues(alpha: .8),
+                      ),
                     ),
                   ),
                   child: Center(

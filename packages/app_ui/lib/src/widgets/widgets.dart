@@ -13,6 +13,7 @@ export 'app_otp_form.dart';
 export 'app_outlined_button.dart';
 export 'app_pin_form.dart';
 export 'app_scaffold.dart';
+export 'app_session_expired_overlay.dart';
 export 'app_snackbar.dart';
 export 'app_text_field.dart';
 export 'app_update_dialog.dart';

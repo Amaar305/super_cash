@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:animations/animations.dart';
+import 'package:app_ui/app_ui.dart';
 import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/features/account/account.dart';
 import 'package:super_cash/features/account/change_password/change_password.dart';
@@ -37,6 +38,7 @@ class AppRouter {
   const AppRouter(this.appBloc, this.app);
   final AppBloc appBloc;
   final AppCubit app;
+  static bool _sessionExpiredOverlayVisible = false;
 
   GoRouter get router => GoRouter(
     initialLocation: AppRoutes.splash,
@@ -407,6 +409,11 @@ class AppRouter {
     bool at(String path) => loc == path || loc.startsWith("$path/");
     String? go(String path) => at(path) ? null : path;
 
+    final bool isLoggingIn = at(AppRoutes.auth);
+
+    // logI('logged In $loggedIn');
+    // logI('is Logging In $isLoggingIn');
+
     switch (st) {
       case AppStatus2.initial:
       case AppStatus2.splash:
@@ -417,7 +424,7 @@ class AppRouter {
         return go(AppRoutes.welcome);
       case AppStatus2.unauthenticated:
         return go(AppRoutes.auth);
-     
+
       case AppStatus2.createPin:
         return go(AppRoutes.createPin);
       case AppStatus2.verifyAccount:
@@ -432,13 +439,33 @@ class AppRouter {
           AppRoutes.auth,
           AppRoutes.createPin,
           AppRoutes.referralType,
-          // AppRoutes.enableBiometric,
+          AppRoutes.enableBiometric,
+          AppRoutes.verifyAccount,
         };
         if (blocked.any(at)) {
           return AppRoutes.dashboard;
         }
         return null;
       case AppStatus2.tokenExpired:
+        if (isLoggingIn) return null;
+        if (!_sessionExpiredOverlayVisible) {
+          final navigatorContext = _rootNavigatorKey.currentContext;
+          if (navigatorContext != null) {
+            _sessionExpiredOverlayVisible = true;
+            unawaited(
+              AppSessionExpiredOverlay.show(
+                navigatorContext,
+                onPrimaryPressed: () {
+                  app.userStarted(true);
+                },
+              ).whenComplete(() {
+                _sessionExpiredOverlayVisible = false;
+              }),
+            );
+          }
+        }
+
+        return null;
       case AppStatus2.enableBiometric:
         return null;
     }

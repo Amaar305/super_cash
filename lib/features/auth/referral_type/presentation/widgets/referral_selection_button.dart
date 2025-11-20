@@ -2,6 +2,7 @@ import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/core/app_strings/app_string.dart';
 import 'package:super_cash/features/auth/referral_type/presentation/presentation.dart';
@@ -26,20 +27,17 @@ class ReferralSelectionButton extends StatelessWidget {
           ? null
           : () {
               final cubit = context.read<ReferralTypeCubit>();
-              final campaignId = cubit.state.selectedCampaign?.id ?? '';
               cubit.onEnroll((result) {
                 if (!context.mounted) return;
-                showModalBottomSheet<void>(
-                  context: context,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(30),
-                    ),
-                  ),
-                  builder: (sheetContext) => _ReferralEnrollmentSheet(
-                    campaignId: campaignId,
-                    referralCode: result.referralCode,
-                  ),
+                context.showConfirmationBottomSheet(
+                  title: 'Enrollment successful',
+                  okText: AppStrings.proceed,
+                  description:
+                      'Your referral enrollment is successful, you are required to invite the number of users selected before and gain their rewards when their account has been verified successfull and perform a data transaction. ',
+                  onDone: () {
+                    context.pop();
+                    context.read<AppCubit>().userStarted(true);
+                  },
                 );
               });
             },
@@ -47,8 +45,9 @@ class ReferralSelectionButton extends StatelessWidget {
   }
 }
 
-class _ReferralEnrollmentSheet extends StatelessWidget {
-  const _ReferralEnrollmentSheet({
+class ReferralEnrollmentSheet extends StatelessWidget {
+  const ReferralEnrollmentSheet({
+    super.key,
     required this.campaignId,
     required this.referralCode,
   });
@@ -91,8 +90,8 @@ class _ReferralEnrollmentSheet extends StatelessWidget {
             PrimaryButton(
               label: AppStrings.done,
               onPressed: () {
-                Navigator.of(context).pop();
-                context.read<AppCubit>().userStarted(true);
+                // Navigator.of(context).pop();
+                // context.read<AppCubit>().userStarted(true);
               },
             ),
           ],

@@ -1,5 +1,5 @@
 import 'package:app_ui/app_ui.dart';
-import 'package:super_cash/app/bloc/app_bloc.dart';
+import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/app/init/init.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,7 +14,7 @@ class UpgradeTierPage extends StatelessWidget {
     return BlocProvider(
       create: (context) => UpgradeTierCubit(
         upgradeAccountUseCase: serviceLocator(),
-        appBloc: context.read<AppBloc>(),
+        appBloc: context.read<AppCubit>(),
         checkUpgradeStatusUseCase: serviceLocator(),
       ),
       child: UpgradeTierView(),

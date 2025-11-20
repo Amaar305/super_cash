@@ -127,7 +127,9 @@ class ReferralSelectionCardSecondChild extends StatelessWidget {
         color: AppColors.deepBlue,
       ),
       child: Padding(
-        padding: const EdgeInsets.all(AppSpacing.md),
+        padding: const EdgeInsets.all(
+          AppSpacing.md,
+        ).copyWith(top: AppSpacing.sm),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -161,12 +163,13 @@ class ReferralSelectionCardSecondChild extends StatelessWidget {
             // fontSize: AppSpacing.,
             color: AppColors.white,
             fontWeight: AppFontWeight.medium,
+            fontSize: 12,
           ),
         ),
         Text(
           value,
           style: poppinsTextStyle(
-            fontSize: AppSpacing.xlg,
+            fontSize: AppSpacing.lg,
             fontWeight: AppFontWeight.bold,
             color: AppColors.white,
           ),

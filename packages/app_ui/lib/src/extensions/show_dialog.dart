@@ -21,9 +21,12 @@ extension DialogExtension on BuildContext {
     String? cancelText,
     VoidCallback? onCancel,
     VoidCallback? onDone,
+    bool showIcon = true,
+    bool dismissible = false,
   }) {
     return showModalBottomSheet(
       context: this,
+      isDismissible: dismissible,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(30),
@@ -40,10 +43,11 @@ extension DialogExtension on BuildContext {
               child: Column(
                 spacing: AppSpacing.md,
                 children: [
-                  Assets.images.circleCheck.image(
-                    width: 77,
-                    height: 77,
-                  ),
+                  if (showIcon)
+                    Assets.images.circleCheck.image(
+                      width: 77,
+                      height: 77,
+                    ),
                   Text(
                     title,
                     style: context.titleMedium,
@@ -77,8 +81,10 @@ extension DialogExtension on BuildContext {
     String? description,
     Widget? icon,
     List<Widget>? children,
+    bool dismissible = true,
   }) {
     return showModalBottomSheet(
+      isDismissible: dismissible,
       context: this,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
@@ -93,6 +99,7 @@ extension DialogExtension on BuildContext {
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
             child: Column(
               spacing: AppSpacing.md,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 if (icon != null)
                   SizedBox.square(
@@ -116,6 +123,7 @@ extension DialogExtension on BuildContext {
                 if (children != null)
                   Column(
                     spacing: AppSpacing.md,
+                    mainAxisSize: MainAxisSize.min,
                     children: children,
                   ),
               ],

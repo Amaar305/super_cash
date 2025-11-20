@@ -40,7 +40,7 @@ class HomeQuickActionSection extends StatelessWidget {
             HomeQuickActionButton(
               AppStrings.transfer,
               icon: Assets.icons.transferLine.svg(),
-              onTap: () => context.goNamedSafe(RNames.transfer),
+              onTap: () => context.goNamedSafe(RNames.bonus),
             ),
             _vertticalLine(),
             HomeQuickActionButton(

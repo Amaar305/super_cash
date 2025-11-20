@@ -60,6 +60,7 @@ class SnackbarMessage {
           description: description,
           icon: icon ?? Icons.cancel_rounded,
           backgroundColor: const Color.fromARGB(255, 228, 71, 71),
+          iconColor: AppColors.white,
           isError: true,
           timeout: timeout,
         );
@@ -423,7 +424,8 @@ class AppSnackbarState extends State<AppSnackbar>
                                   children: [
                                     Text(
                                       currentMessage?.title ?? '',
-                                      style: context.titleSmall,
+                                      style: context.titleSmall
+                                          ?.copyWith(color: AppColors.white),
                                       textAlign: currentMessage?.icon == null
                                           ? TextAlign.center
                                           : TextAlign.left,

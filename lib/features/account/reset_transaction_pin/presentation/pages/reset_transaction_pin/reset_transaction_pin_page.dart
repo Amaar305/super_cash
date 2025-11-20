@@ -1,8 +1,9 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared/shared.dart';
 import 'package:super_cash/app/app.dart';
-import 'package:super_cash/app/bloc/app_bloc.dart';
+import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/app/init/init.dart';
 import 'package:super_cash/core/app_strings/app_string.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,7 @@ class ResetTransactionPinPage extends StatelessWidget {
       create: (context) => ResetTransactionPinCubit(
         resetTransactionPinUseCase: serviceLocator(),
         requestTransactionPinOtpUseCase: serviceLocator(),
-        user: context.read<AppBloc>().state.user,
+        user: context.read<AppCubit>().state.user ?? AppUser.anonymous,
       ),
       child: ResetTransactionPinView(),
     );

@@ -8,9 +8,13 @@ class WithdrawBonusView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      // crossAxisAlignment: CrossAxisAlignment.start,
       spacing: AppSpacing.lg,
-      children: [BonusAmountField(), WithdrawBonusButton()],
+      children: const [
+        BonusAmountField(),
+        WithdrawBonusButton(),
+        UserBonusOverview(),
+      ],
     );
   }
 }

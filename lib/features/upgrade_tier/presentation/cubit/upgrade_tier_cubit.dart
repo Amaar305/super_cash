@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:super_cash/app/bloc/app_bloc.dart';
+import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/core/usecase/use_case.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -14,16 +14,16 @@ part 'upgrade_tier_state.dart';
 class UpgradeTierCubit extends Cubit<UpgradeTierState> {
   final UpgradeAccountUseCase _upgradeAccountUseCase;
   final CheckUpgradeStatusUseCase _checkUpgradeStatusUseCase;
-  final AppBloc _appBloc;
+  final AppCubit _appBloc;
 
   UpgradeTierCubit({
     required UpgradeAccountUseCase upgradeAccountUseCase,
     required CheckUpgradeStatusUseCase checkUpgradeStatusUseCase,
-    required AppBloc appBloc,
+    required AppCubit appBloc,
   }) : _upgradeAccountUseCase = upgradeAccountUseCase,
        _checkUpgradeStatusUseCase = checkUpgradeStatusUseCase,
        _appBloc = appBloc,
-       super(UpgradeTierState.inital(currentUser: appBloc.state.user));
+       super(UpgradeTierState.inital(currentUser: appBloc.state.user??AppUser.anonymous));
 
   void nextStep() => emit(state.copyWith(currentStep: state.currentStep + 1));
 
@@ -477,10 +477,10 @@ class UpgradeTierCubit extends Cubit<UpgradeTierState> {
           emit(state.copyWith(status: UpgradeTierStatus.upgraded));
           // Update user model
 
-          final user = _appBloc.state.user;
+          final user = _appBloc.state.user??AppUser.anonymous;
           if (user != AppUser.anonymous) {
             final newUser = user.copyWith(isKycVerified: true);
-            _appBloc.add(UserUpdate(newUser));
+            _appBloc.updateUser(newUser);
           } else {
             logE("User is anonymous, cannot update user model.");
             // Optional: log or handle the null case explicitly

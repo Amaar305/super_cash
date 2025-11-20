@@ -40,10 +40,10 @@ class Otp extends FormzInput<String, OtpValidationError>
   @override
   Map<OtpValidationError?, String?> get validationErrorMessage => {
         OtpValidationError.empty:
-            'OTP cannot be empty. Please enter your code.',
+            'PIN cannot be empty. Please enter your code.',
         OtpValidationError.invalid:
-            'Invalid OTP. Please check and re-enter the code.',
-        OtpValidationError.incomplete: 'Invalid OTP. Otp must be 6 digits.',
+            'Invalid PIN. Please check and re-enter the code.',
+        OtpValidationError.incomplete: 'Invalid OTP. PIN must be 4 digits.',
         null: null,
       };
 

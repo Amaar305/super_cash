@@ -11,6 +11,8 @@ import 'package:token_repository/token_repository.dart';
 
 part 'app_state.dart';
 
+const String _onboardingKey = 'onboarded';
+
 class AppCubit extends Cubit<AppState> {
   final TokenRepository _tokenRepository;
   final LoginLocalDataSource _loginLocalDataSource;
@@ -26,28 +28,27 @@ class AppCubit extends Cubit<AppState> {
 
   Future<void> appStarted() async {
     try {
-      final completedOnboarding = _preferences.getBool('onboarded') ?? true;
-      if (!completedOnboarding) {
-        logI('Not onboarded');
+      final completedOnboarding = _preferences.getBool(_onboardingKey) ?? false;
+      final tokensExist = await _tokenRepository.hasToken();
+      final user = _loginLocalDataSource.getUser();
+
+      if (!completedOnboarding && !tokensExist) {
         emit(AppState.onboarding());
         return;
       }
 
-      final tokensExist = await _tokenRepository.hasToken();
       if (!tokensExist) {
-        logI('Not logged In');
         emit(AppState.welcome());
         return;
       }
 
-      final user = _loginLocalDataSource.getUser();
       if (user == null || user.isAnonymous) {
-        logI('Not logged In');
         emit(AppState.unauthenticated());
         return;
       }
+      emit(AppState.unauthenticated());
 
-      _emitUserState(user);
+      // _emitUserState(user);
     } catch (_) {
       await _tokenRepository.clearTokens();
       emit(AppState.welcome());
@@ -68,7 +69,7 @@ class AppCubit extends Cubit<AppState> {
   }
 
   Future<void> completeOnboarding() async {
-    await _preferences.setBool('onboarded', true);
+    await _preferences.setBool(_onboardingKey, true);
     emit(AppState.welcome());
   }
 
@@ -85,6 +86,7 @@ class AppCubit extends Cubit<AppState> {
   Future<void> logout() async {
     await _tokenRepository.clearTokens();
     await _loginLocalDataSource.clearUser();
+    await _preferences.remove(_onboardingKey);
     emit(AppState.welcome());
   }
 
@@ -97,13 +99,18 @@ class AppCubit extends Cubit<AppState> {
       await _loginLocalDataSource.clearUser();
       await _loginLocalDataSource.persistUser(user);
 
+      if (!user.isVerified) {
+        emit(AppState.verifyAccount(user));
+        return;
+      }
+
       if (!user.transactionPin) {
         emit(AppState.createPin());
         return;
       }
 
-      if (!user.isVerified) {
-        emit(AppState.verifyAccount(user));
+      if (user.isAnonymous) {
+        emit(AppState.unauthenticated());
         return;
       }
 
@@ -111,6 +118,14 @@ class AppCubit extends Cubit<AppState> {
     } catch (_) {
       emit(AppState.unauthenticated());
     }
+  }
+
+  void createPin(AppUser user) {
+    emit(state.copyWith(status: AppStatus2.createPin, user: user));
+  }
+
+  void verifyAccount(AppUser user) {
+    emit(state.copyWith(status: AppStatus2.verifyAccount, user: user));
   }
 
   void referralType() {

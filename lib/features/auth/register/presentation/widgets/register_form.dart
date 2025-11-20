@@ -1,6 +1,9 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:super_cash/app/cubit/app_cubit.dart';
+import 'package:super_cash/core/app_strings/app_string.dart';
 
 import '../../../../../app/app.dart';
 import '../presentation.dart';
@@ -36,11 +39,23 @@ class _RegisterFormState extends State<RegisterForm> {
           );
         }
         if (state.status.isSuccess) {
-          openSnackbar(
-            SnackbarMessage.success(
-              title: 'Registration successful! Please verify your email.',
-            ),
-            clearIfQueue: true,
+          final user = state.user;
+          final sanitizedFullName = user.fullName.trim().isNotEmpty
+              ? user.fullName.trim()
+              : '${user.firstName} ${user.lastName}'.trim();
+          final displayName = sanitizedFullName.isNotEmpty
+              ? sanitizedFullName
+              : 'there';
+
+          context.showConfirmationBottomSheet(
+            title: 'Congratulations, $displayName!',
+            okText: AppStrings.proceed,
+            description:
+                'Your account has been created successfully. Tap below to continue.',
+            onDone: () {
+              context.pop();
+              context.read<AppCubit>().referralType();
+            },
           );
         }
       },

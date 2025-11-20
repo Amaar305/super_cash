@@ -1,4 +1,5 @@
 import 'package:app_ui/app_ui.dart';
+import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/app/init/init.dart';
 import 'package:super_cash/core/app_strings/app_string.dart';
 import 'package:super_cash/features/auth/auth.dart';
@@ -27,7 +28,7 @@ class CreatePinView extends StatelessWidget {
   const CreatePinView({super.key});
 
   void _confirmGoBack(BuildContext context) => context.confirmAction(
-    fn: () => Navigator.pop(context),
+    fn: context.read<AppCubit>().logout,
     title: AppStrings.goBackTitle,
     content: AppStrings.goBackDescrption,
     noText: AppStrings.cancel,
