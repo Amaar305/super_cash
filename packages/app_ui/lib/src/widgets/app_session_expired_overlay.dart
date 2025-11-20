@@ -1,3 +1,5 @@
+// ignore_for_file: public_member_api_docs
+
 import 'package:flutter/material.dart';
 
 /// A simple, reusable overlay widget to show when a user's session has expired.
@@ -12,7 +14,7 @@ import 'package:flutter/material.dart';
 /// );
 /// ```
 class AppSessionExpiredOverlay extends StatelessWidget {
-  // ignore: public_member_api_docs
+
   const AppSessionExpiredOverlay({
     required this.onPrimaryPressed,
     super.key,
@@ -56,6 +58,7 @@ class AppSessionExpiredOverlay extends StatelessWidget {
       barrierColor: barrierColor,
       transitionDuration: transitionDuration,
       pageBuilder: (ctx, animation, secondaryAnimation) {
+        // ignore: deprecated_member_use
         return WillPopScope(
           onWillPop: () async => barrierDismissible,
           child: SafeArea(
@@ -77,8 +80,9 @@ class AppSessionExpiredOverlay extends StatelessWidget {
                           ? null
                           : () {
                               Navigator.of(innerCtx, rootNavigator: true).pop();
-                              if (onSecondaryPressed != null)
+                              if (onSecondaryPressed != null) {
                                 onSecondaryPressed();
+                              }
                             },
                       barrierDismissible: barrierDismissible,
                     ),

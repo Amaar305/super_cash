@@ -1,4 +1,4 @@
-import 'package:super_cash/core/error/exception.dart';
+import 'package:super_cash/core/error/api_error_handle.dart';
 import 'package:super_cash/core/error/failure.dart';
 import 'package:super_cash/core/network/network_info.dart';
 import 'package:fpdart/fpdart.dart';
@@ -8,12 +8,12 @@ import '../../home.dart';
 
 class HomeUserRepositoryImpl implements HomeUserRepository {
   final HomeUserRemoteDataSource homeUserRemoteDataSource;
-  // final ApiErrorHandler apiErrorHandler;
+  final ApiErrorHandler apiErrorHandler;
 
   const HomeUserRepositoryImpl({
     required this.homeUserRemoteDataSource,
     required this.networkInfo,
-    // required this.apiErrorHandler,
+    required this.apiErrorHandler,
   });
 
   final NetworkInfo networkInfo;
@@ -27,8 +27,8 @@ class HomeUserRepositoryImpl implements HomeUserRepository {
       final res = await homeUserRemoteDataSource.fetchUserDetails();
 
       return right(res);
-    } on ServerException catch (error) {
-      return left(ServerFailure(error.message));
+    } catch (error){
+      return left(apiErrorHandler.handleError(error));
     }
   }
 
@@ -49,8 +49,8 @@ class HomeUserRepositoryImpl implements HomeUserRepository {
       );
 
       return right(res);
-    } on ServerException catch (error) {
-      return left(ServerFailure(error.message));
+    } catch (error){
+      return left(apiErrorHandler.handleError(error));
     }
   }
 }

@@ -1,5 +1,5 @@
 import 'package:app_ui/app_ui.dart';
-import 'package:super_cash/core/fonts/app_text_style.dart';
+import 'package:super_cash/core/common/common.dart';
 import 'package:super_cash/features/vtupass/vtupass.dart';
 import 'package:flutter/material.dart';
 
@@ -18,15 +18,11 @@ class ManageBeneficiaryListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (beneficiaries.isEmpty) {
-      return Center(
-        child: Text(
-          'No beneficiaries found',
-          style: poppinsTextStyle(
-            color: AppColors.grey,
-            fontSize: 14,
-            fontWeight: AppFontWeight.regular,
-          ),
-        ),
+      return const AppEmptyState(
+        title: 'No beneficiaries yet',
+        description:
+            'Save frequently used accounts here to make future transfers faster.',
+        icon: Icons.groups_2_outlined,
       );
     }
     return ListView.separated(

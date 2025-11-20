@@ -10,7 +10,7 @@ class HistoryRepositoriesImpl implements HistoryRepositories {
   final ApiErrorHandler apiErrorHandler;
   final NetworkInfo networkInfo;
 
-  HistoryRepositoriesImpl({
+ const HistoryRepositoriesImpl({
     required this.historyRemoteDataSource,
     required this.apiErrorHandler,
     required this.networkInfo,

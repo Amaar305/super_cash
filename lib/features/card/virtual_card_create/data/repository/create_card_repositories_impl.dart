@@ -7,7 +7,7 @@ class CreateCardRepositoriesImpl implements CreateCardRepositories {
   final CreateCardRemoteDataSource createCardRemoteDataSource;
   final ApiErrorHandler apiErrorHandle;
 
-  CreateCardRepositoriesImpl({
+ const CreateCardRepositoriesImpl({
     required this.createCardRemoteDataSource,
     required this.apiErrorHandle,
   });

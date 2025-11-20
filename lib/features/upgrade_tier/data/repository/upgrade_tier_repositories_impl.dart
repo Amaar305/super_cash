@@ -7,7 +7,7 @@ class UpgradeTierRepositoriesImpl implements UpgradeTierRepositories {
   final UpgradeTierRemoteDataSource upgradeTierRemoteDataSource;
   final ApiErrorHandler apiErrorHandler;
 
-  UpgradeTierRepositoriesImpl({
+ const  UpgradeTierRepositoriesImpl({
     required this.upgradeTierRemoteDataSource,
     required this.apiErrorHandler,
   });

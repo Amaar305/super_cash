@@ -4,7 +4,6 @@ import 'package:app_client/app_client.dart';
 import 'package:shared/shared.dart';
 import 'package:super_cash/core/error/exception.dart';
 import 'package:super_cash/features/referal/referal.dart';
-import 'package:token_repository/token_repository.dart';
 
 abstract interface class ReferalRemoteDataSource {
   Future<List<ReferralUserModel>> fetchMyReferrals();
@@ -24,7 +23,7 @@ class ReferalRemoteDataSourceImpl implements ReferalRemoteDataSource {
     required List<String> refereeIds,
     required String idms,
   }) async {
-    try {
+   
       final request = await apiClient.request(
         method: 'POST',
         path: 'referrals/claim/',
@@ -39,16 +38,12 @@ class ReferalRemoteDataSourceImpl implements ReferalRemoteDataSource {
       }
 
       return ReferralResultModel.fromJson(request.body);
-    } on RefreshTokenException catch (_) {
-      rethrow;
-    } catch (e) {
-      throw ServerException(e.toString());
-    }
+    
   }
 
   @override
   Future<List<ReferralUserModel>> fetchMyReferrals() async {
-    try {
+    
       final request = await apiClient.request(
         method: 'GET',
         path: 'referrals/mine/',
@@ -63,10 +58,6 @@ class ReferalRemoteDataSourceImpl implements ReferalRemoteDataSource {
       logD(response);
 
       return response.map((e) => ReferralUserModel.fromMap(e)).toList();
-    } on RefreshTokenException catch (_) {
-      rethrow;
-    } catch (e) {
-      throw ServerException(e.toString());
-    }
+   
   }
 }

@@ -1,4 +1,4 @@
-import 'package:super_cash/app/bloc/app_bloc.dart';
+import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/features/vtupass/vtupass.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -57,8 +57,9 @@ class _ElectricityPhoneFieldState extends State<ElectricityPhoneField> {
   }
 
   void _onForMyselfTapped() {
-    final user = context.read<AppBloc>().state.user;
-    if (user == AppUser.anonymous) return;
+     final user = context.read<AppCubit>().state.user;
+
+    if (user == null || user.isAnonymous) return;
     _controller.text = user.phone;
   }
 

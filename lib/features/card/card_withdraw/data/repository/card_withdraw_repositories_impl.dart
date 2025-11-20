@@ -8,7 +8,7 @@ class CardWithdrawRepositoriesImpl implements CardWithdrawRepositories {
   final CardWithdrawRemoteDataSource cardWithdrawRemoteDataSource;
   final ApiErrorHandler apiErrorHandler;
 
-  CardWithdrawRepositoriesImpl({
+const  CardWithdrawRepositoriesImpl({
     required this.cardWithdrawRemoteDataSource,
     required this.apiErrorHandler,
   });

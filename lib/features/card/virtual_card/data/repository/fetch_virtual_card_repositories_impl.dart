@@ -9,7 +9,7 @@ class FetchVirtualCardRepositoriesImpl implements FetchVirtualCardRepositories {
   final FetchVirtualCardRemoteDataSource fetchVirtualCardRemoteDataSource;
   final ApiErrorHandler apiErrorHandle;
 
-  FetchVirtualCardRepositoriesImpl({
+ const FetchVirtualCardRepositoriesImpl({
     required this.fetchVirtualCardRemoteDataSource,
     required this.apiErrorHandle,
   });

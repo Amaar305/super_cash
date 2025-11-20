@@ -1,16 +1,18 @@
-import 'package:super_cash/core/error/exception.dart';
+import 'package:super_cash/core/error/api_error_handle.dart';
 import 'package:super_cash/core/error/failure.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:shared/shared.dart';
 
-import 'package:token_repository/token_repository.dart';
 
 import '../../../vtupass.dart';
 
 class ElectricityRepositoryImpl implements ElectricityRepository {
   final ElectricityRemoteDataSource electricityRemoteDataSource;
+    final ApiErrorHandler apiErrorHandler;
 
-  ElectricityRepositoryImpl({required this.electricityRemoteDataSource});
+ const ElectricityRepositoryImpl({required this.electricityRemoteDataSource, required this.apiErrorHandler});
+
+
 
   @override
   Future<Either<Failure, TransactionResponse>> buyPlan({
@@ -30,10 +32,8 @@ class ElectricityRepositoryImpl implements ElectricityRepository {
       );
 
       return right(response);
-    } on RefreshTokenException catch (e) {
-      return left(RefreshTokenFailure(e.message));
-    } on ServerException catch (e) {
-      return left(ServerFailure(e.message));
+    }catch(error){
+      return left(apiErrorHandler.handleError(error));
     }
   }
 
@@ -43,10 +43,8 @@ class ElectricityRepositoryImpl implements ElectricityRepository {
       final response = await electricityRemoteDataSource.getPlans();
 
       return right(response);
-    } on RefreshTokenException catch (e) {
-      return left(RefreshTokenFailure(e.message));
-    } on ServerException catch (e) {
-      return left(ServerFailure(e.message));
+    }catch(error){
+      return left(apiErrorHandler.handleError(error));
     }
   }
 
@@ -64,10 +62,8 @@ class ElectricityRepositoryImpl implements ElectricityRepository {
       );
 
       return right(response);
-    } on RefreshTokenException catch (e) {
-      return left(RefreshTokenFailure(e.message));
-    } on ServerException catch (e) {
-      return left(ServerFailure(e.message));
+    }catch(error){
+      return left(apiErrorHandler.handleError(error));
     }
   }
 }

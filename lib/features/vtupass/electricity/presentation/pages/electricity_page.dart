@@ -16,14 +16,27 @@ class ElectricityPage extends StatelessWidget {
         getElectricityPlansUseCase: serviceLocator(),
         purchaseElectricityPlanUseCase: serviceLocator(),
         validateElectricityPlanUseCase: serviceLocator(),
-      )..onStart(),
+      ),
       child: ElectricityView(),
     );
   }
 }
 
-class ElectricityView extends StatelessWidget {
+class ElectricityView extends StatefulWidget {
   const ElectricityView({super.key});
+
+  @override
+  State<ElectricityView> createState() => _ElectricityViewState();
+}
+
+class _ElectricityViewState extends State<ElectricityView> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      context.read<ElectricityCubit>().onStart();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

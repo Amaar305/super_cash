@@ -8,7 +8,7 @@ class ChangeCardPinRepositoriesImpl implements ChangeCardPinRepositories {
   final ChangeCardPinRemoteDataSource changeCardPinRemoteDataSource;
   final ApiErrorHandler apiErrorHandler;
 
-  ChangeCardPinRepositoriesImpl({
+const  ChangeCardPinRepositoriesImpl({
     required this.changeCardPinRemoteDataSource,
     required this.apiErrorHandler,
   });

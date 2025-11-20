@@ -9,7 +9,7 @@ class CardTransactionsRepositoriesImpl implements CardTransactionsRepositories {
   final CardTransactionsRemoteDataSource cardTransactionsRemoteDataSource;
   final ApiErrorHandler apiErrorHandler;
 
-  CardTransactionsRepositoriesImpl({
+  const CardTransactionsRepositoriesImpl({
     required this.cardTransactionsRemoteDataSource,
     required this.apiErrorHandler,
   });

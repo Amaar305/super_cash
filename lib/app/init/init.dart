@@ -51,7 +51,7 @@ Future<void> _initFingerprint(SharedPreferences storage) async {
 Future<void> initDependencies() async {
   // Init sharedPreferences
   final sharedPreferences = await SharedPreferences.getInstance();
-  
+
   await _initFingerprint(sharedPreferences);
 
   final LocalAuthentication auth = LocalAuthentication();
@@ -159,7 +159,10 @@ void _bonus() {
     )
     // Repository
     ..registerFactory<BonusRepository>(
-      () => BonusRepositoryImpl(bonusRemoteDataSource: serviceLocator()),
+      () => BonusRepositoryImpl(
+        bonusRemoteDataSource: serviceLocator(),
+        apiErrorHandler: serviceLocator(),
+      ),
     )
     // Use cases
     ..registerFactory(
@@ -574,6 +577,7 @@ void _electricity() {
       () => ElectricityRepositoryImpl(
         electricityRemoteDataSource:
             serviceLocator<ElectricityRemoteDataSource>(),
+        apiErrorHandler: serviceLocator(),
       ),
     )
     // Usecases
@@ -604,6 +608,7 @@ void _data() {
     ..registerFactory<DataRepository>(
       () => DataRepositoryImpl(
         dataRemoteDataSource: serviceLocator<DataRemoteDataSource>(),
+        apiErrorHandler: serviceLocator(),
       ),
     )
     // Usecases
@@ -625,6 +630,7 @@ void _home() {
       () => HomeUserRepositoryImpl(
         homeUserRemoteDataSource: serviceLocator(),
         networkInfo: serviceLocator(),
+        apiErrorHandler: serviceLocator(),
       ),
     )
     // Usecases
@@ -765,6 +771,7 @@ void _airtime() {
     ..registerFactory<AirtimeRepository>(
       () => AirtimeRepositoryImpl(
         remoteDataSource: serviceLocator<AirtimeRemoteDataSource>(),
+        apiErrorHandler: serviceLocator(),
       ),
     )
     // Usecases
@@ -783,6 +790,7 @@ void _cable() {
     ..registerFactory<CableRepository>(
       () => CableRepositoryImpl(
         cableRemoteDataSource: serviceLocator<CableRemoteDataSource>(),
+        apiErrorHandler: serviceLocator(),
       ),
     )
     // Usecases

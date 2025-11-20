@@ -53,7 +53,12 @@ class _HistoryListViewState extends State<HistoryListView> {
   @override
   Widget build(BuildContext context) {
     if (widget.transactions.isEmpty) {
-      return Center(child: Text('empty'));
+      return const AppEmptyState(
+        title: 'No transactions yet',
+        description:
+            'Your payments, transfers and bills will show up here once you start transacting.',
+        icon: Icons.receipt_long_outlined,
+      );
     }
     return ListView.builder(
       scrollDirection: Axis.vertical,

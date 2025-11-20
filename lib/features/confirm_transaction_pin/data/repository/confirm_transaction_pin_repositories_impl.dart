@@ -10,7 +10,7 @@ class ConfirmTransactionPinRepositoriesImpl
 
   final ApiErrorHandler apiErrorHandler;
 
-  ConfirmTransactionPinRepositoriesImpl({
+ const ConfirmTransactionPinRepositoriesImpl({
     required this.confirmTransactionPinRemoteDataSource,
     required this.apiErrorHandler,
   });

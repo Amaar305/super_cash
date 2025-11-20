@@ -1,7 +1,7 @@
-import 'package:super_cash/app/bloc/app_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/shared.dart';
+import 'package:super_cash/app/cubit/app_cubit.dart';
 
 import '../../../widgets/widgets.dart';
 import '../cubit/data_cubit.dart';
@@ -58,9 +58,9 @@ class _DataPhoneFieldState extends State<DataPhoneField> {
   }
 
   void _onForMyselfTapped() {
-    final user = context.read<AppBloc>().state.user;
+    final user = context.read<AppCubit>().state.user;
 
-    if (user == AppUser.anonymous) return;
+    if (user == null || user.isAnonymous) return;
     _controller.text = user.phone;
   }
 

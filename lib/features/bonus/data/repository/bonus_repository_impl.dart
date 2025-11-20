@@ -1,19 +1,24 @@
 import 'package:fpdart/fpdart.dart';
-import 'package:super_cash/core/error/exception.dart';
+import 'package:super_cash/core/error/api_error_handle.dart';
 import 'package:super_cash/core/error/failure.dart';
 import 'package:super_cash/features/bonus/bonus.dart';
 
 class BonusRepositoryImpl implements BonusRepository {
   final BonusRemoteDataSource bonusRemoteDataSource;
+  final ApiErrorHandler apiErrorHandler;
 
-  const BonusRepositoryImpl({required this.bonusRemoteDataSource});
+  const BonusRepositoryImpl({
+    required this.bonusRemoteDataSource,
+    required this.apiErrorHandler,
+  });
+
   @override
   Future<Either<Failure, List<Bank>>> getBankLists() async {
     try {
       final result = await bonusRemoteDataSource.fetchBanks();
       return right(result);
-    } on ServerException catch (error) {
-      return left(Failure(error.message));
+    } catch (error) {
+      return left(apiErrorHandler.handleError(error));
     }
   }
 
@@ -32,8 +37,8 @@ class BonusRepositoryImpl implements BonusRepository {
         accountName: accountName,
       );
       return right(result);
-    } on ServerException catch (error) {
-      return left(Failure(error.message));
+    } catch (error) {
+      return left(apiErrorHandler.handleError(error));
     }
   }
 
@@ -48,8 +53,8 @@ class BonusRepositoryImpl implements BonusRepository {
         bankCode: bankCode,
       );
       return right(result);
-    } on ServerException catch (error) {
-      return left(Failure(error.message));
+    } catch (error) {
+      return left(apiErrorHandler.handleError(error));
     }
   }
 
@@ -60,8 +65,8 @@ class BonusRepositoryImpl implements BonusRepository {
     try {
       final result = await bonusRemoteDataSource.withdrawBonus(amount: amount);
       return right(result);
-    } on ServerException catch (error) {
-      return left(Failure(error.message));
+    } catch (error) {
+      return left(apiErrorHandler.handleError(error));
     }
   }
 }

@@ -1,4 +1,5 @@
 import 'package:app_ui/app_ui.dart';
+import 'package:super_cash/core/common/common.dart';
 import 'package:super_cash/core/fonts/app_text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,7 +23,13 @@ class DataPlansSection extends StatelessWidget {
       (DataCubit cubit) => cubit.state.selectedIndex,
     );
 
-    if (plans.isEmpty) return SizedBox();
+    if (plans.isEmpty) {
+      return const AppEmptyState(
+        title: 'No data plans available',
+        description: 'Kindly try a different network or refresh to continue.',
+        icon: Icons.signal_cellular_nodata_outlined,
+      );
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,12 +46,6 @@ class DataPlansSection extends StatelessWidget {
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
           itemCount: plans.length,
-          // gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          //   crossAxisCount: 4,
-          //   childAspectRatio: 1 / 1.5,
-          //   mainAxisSpacing: 20,
-          //   crossAxisSpacing: 15,
-          // ),
           itemBuilder: (context, index) => _buildListvVewPlanItem(
             isLoading: isLoading,
             plans: plans[index],

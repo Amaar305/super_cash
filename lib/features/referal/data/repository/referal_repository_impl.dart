@@ -7,7 +7,7 @@ class ReferalRepositoryImpl implements ReferalRepository {
   final ReferalRemoteDataSource referalRemoteDataSource;
   final ApiErrorHandler apiErrorHandler;
 
-  ReferalRepositoryImpl({
+ const ReferalRepositoryImpl({
     required this.referalRemoteDataSource,
     required this.apiErrorHandler,
   });

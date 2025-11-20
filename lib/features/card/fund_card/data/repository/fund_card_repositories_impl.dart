@@ -8,7 +8,7 @@ class FundCardRepositoriesImpl implements FundCardRepositories {
   final FundCardRemoteDataSource fundCardRemoteDataSource;
   final ApiErrorHandler apiErrorHandler;
 
-  FundCardRepositoriesImpl({
+ const FundCardRepositoriesImpl({
     required this.fundCardRemoteDataSource,
     required this.apiErrorHandler,
   });

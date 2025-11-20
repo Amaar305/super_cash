@@ -9,7 +9,7 @@ class NotificationRepositoriesImpl implements NotificationRepositories {
   final NotificationRemoteDataSource notificationRemoteDataSource;
   final ApiErrorHandler apiErrorHandler;
 
-  NotificationRepositoriesImpl({
+ const NotificationRepositoriesImpl({
     required this.notificationRemoteDataSource,
     required this.apiErrorHandler,
   });
