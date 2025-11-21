@@ -109,6 +109,8 @@ class SaveUpdateBeneficiaryCubit extends Cubit<SaveUpdateBeneficiaryState> {
         ),
       );
 
+      if (isClosed) return;
+
       result.fold(
         (failure) {
           emit(
@@ -128,18 +130,18 @@ class SaveUpdateBeneficiaryCubit extends Cubit<SaveUpdateBeneficiaryState> {
           );
           onSaved?.call(beneficiary);
           // Optionally, you can reset the form fields after saving
-          emit(SaveUpdateBeneficiaryState.initial());
+          // emit(SaveUpdateBeneficiaryState.initial());
         },
       );
     } catch (error, stackTrace) {
+      logE("Error saving beneficiary", error: error, stackTrace: stackTrace);
+      if (isClosed) return;
       emit(
         state.copyWith(
           status: SaveUpdateBeneficiaryStatus.failure,
           message: "Failed to save beneficiary. Please try again.",
         ),
       );
-
-      logE("Error saving beneficiary", error: error, stackTrace: stackTrace);
     }
   }
 

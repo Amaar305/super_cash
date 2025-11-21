@@ -490,14 +490,17 @@ class GoRouterAppBlocRefreshStream extends ChangeNotifier {
 }
 
 extension NavX on BuildContext {
-  FutureOr<Null> goNamedSafe(
+  Future<T?> goNamedSafe<T extends Object?>(
     String name, {
     Map<String, String>? pathParams,
     Map<String, String>? queryParams,
     Object? extra,
   }) {
-    if (name.isEmpty) Null;
-    return pushNamed(
+    if (name.isEmpty) {
+      return Future<T?>.value(null);
+    }
+
+    return pushNamed<T>(
       name,
       pathParameters: pathParams ?? const {},
       queryParameters: queryParams ?? const {},

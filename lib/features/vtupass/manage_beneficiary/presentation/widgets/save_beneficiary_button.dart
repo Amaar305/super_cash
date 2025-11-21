@@ -14,21 +14,26 @@ class SaveBeneficiaryButton extends StatelessWidget {
     final isLoading = context.select(
       (SaveUpdateBeneficiaryCubit cubit) => cubit.state.status.isLoading,
     );
+    final cubit = context.read<SaveUpdateBeneficiaryCubit>();
+
+    void navigateBack() {
+      if (context.mounted) {
+        context.pop(true);
+      }
+    }
 
     return PrimaryButton(
       isLoading: isLoading,
       label: beneficiary == null ? AppStrings.save : AppStrings.update,
-      onPressed: () {
-        if (beneficiary == null) {
-          context.read<SaveUpdateBeneficiaryCubit>().saveBeneficiary((_) {
-            context.pop(true);
-          });
-        } else {
-          context.read<SaveUpdateBeneficiaryCubit>().updateBeneficiary((_) {
-            context.pop(true);
-          });
-        }
-      },
+      onPressed: isLoading
+          ? null
+          : () {
+              if (beneficiary == null) {
+                cubit.saveBeneficiary((_) => navigateBack());
+              } else {
+                cubit.updateBeneficiary((_) => navigateBack());
+              }
+            },
     );
   }
 }

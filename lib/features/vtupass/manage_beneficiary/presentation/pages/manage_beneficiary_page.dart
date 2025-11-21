@@ -14,22 +14,36 @@ class ManageBeneficiaryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
-      value: serviceLocator<ManageBeneficiaryCubit>()..fetchBeneficiaries(),
+      value: serviceLocator<ManageBeneficiaryCubit>(),
       child: ManageBeneficiaryView(fromBeneficiary: fromBeneficiary),
     );
   }
 }
 
-class ManageBeneficiaryView extends StatelessWidget {
+class ManageBeneficiaryView extends StatefulWidget {
   const ManageBeneficiaryView({super.key, this.fromBeneficiary = false});
   final bool fromBeneficiary;
+
+  @override
+  State<ManageBeneficiaryView> createState() => _ManageBeneficiaryViewState();
+}
+
+class _ManageBeneficiaryViewState extends State<ManageBeneficiaryView> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      context.read<ManageBeneficiaryCubit>().fetchBeneficiaries();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
       appBar: _appBar(context),
       body: Padding(
         padding: EdgeInsets.all(AppSpacing.lg),
-        child: ManageBeneficiaryBody(fromBeneficiary: fromBeneficiary),
+        child: ManageBeneficiaryBody(fromBeneficiary: widget.fromBeneficiary),
       ),
     );
   }
@@ -38,7 +52,7 @@ class ManageBeneficiaryView extends StatelessWidget {
     return AppBar(
       title: AppAppBarTitle(AppStrings.manageBeneficiary),
       actions: [
-        if (!fromBeneficiary)
+        if (!widget.fromBeneficiary)
           IconButton(
             onPressed: () => context.goNamedSafe(RNames.saveBeneficiary),
             icon: Icon(Icons.add, size: 24),
