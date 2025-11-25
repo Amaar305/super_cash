@@ -9,7 +9,7 @@ class ChangePasswordRepositoryImpl implements ChangePasswordRepository {
   final ChangePasswordRemoteDataSource changePasswordRemoteDataSource;
   final ApiErrorHandler apiErrorHandler;
 
-  ChangePasswordRepositoryImpl({
+  const ChangePasswordRepositoryImpl({
     required this.changePasswordRemoteDataSource,
     required this.apiErrorHandler,
   });

@@ -1,6 +1,7 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:super_cash/core/app_strings/app_string.dart';
 import 'package:super_cash/features/account/account.dart';
 
 class ResetTransactionPinButton extends StatelessWidget {
@@ -15,9 +16,17 @@ class ResetTransactionPinButton extends StatelessWidget {
       isLoading: isLoading,
       label: 'Reset',
       onPressed: () {
-        context.read<ResetTransactionPinCubit>().submit(() {
-          Navigator.pop(context);
-          Navigator.pop(context);
+        context.read<ResetTransactionPinCubit>().submit((m) {
+          if (!context.mounted) return;
+          context.showConfirmationBottomSheet(
+            title: 'Transaction PIN Reset!',
+            description: m,
+            okText: AppStrings.done,
+            onDone: () {
+              Navigator.pop(context);
+              Navigator.pop(context);
+            },
+          );
         });
       },
     );

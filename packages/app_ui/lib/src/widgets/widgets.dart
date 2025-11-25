@@ -6,6 +6,7 @@ export 'app_counter_number.dart';
 export 'app_divider.dart';
 export 'app_dropdown_field.dart';
 export 'app_leading_appbar_widget.dart';
+export 'app_loading_overlay.dart';
 export 'app_loading_progress.dart';
 export 'app_logo.dart';
 export 'app_mini_button.dart';

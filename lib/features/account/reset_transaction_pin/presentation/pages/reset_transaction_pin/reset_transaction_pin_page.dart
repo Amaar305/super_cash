@@ -25,7 +25,7 @@ class ResetTransactionPinPage extends StatelessWidget {
         requestTransactionPinOtpUseCase: serviceLocator(),
         user: context.read<AppCubit>().state.user ?? AppUser.anonymous,
       ),
-      child: ResetTransactionPinView(),
+      child: ResetPinTransactionView(),
     );
   }
 }

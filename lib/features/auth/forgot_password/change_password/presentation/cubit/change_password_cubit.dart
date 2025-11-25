@@ -10,21 +10,24 @@ part 'change_password_state.dart';
 
 class ChangePasswordCubit extends Cubit<ChangePasswordState> {
   final ChangePasswordUseCase _changePasswordUseCase;
-  ChangePasswordCubit({
-    required ChangePasswordUseCase changePasswordUseCase,
-  })  : _changePasswordUseCase = changePasswordUseCase,
-        super(ChangePasswordState.initial());
+  ChangePasswordCubit({required ChangePasswordUseCase changePasswordUseCase})
+    : _changePasswordUseCase = changePasswordUseCase,
+      super(ChangePasswordState.initial());
+
+  String _confirmPasswordError({
+    required String password,
+    required String confirmPassword,
+  }) {
+    if (confirmPassword.isEmpty) return '';
+    return password == confirmPassword ? '' : 'Password does not match';
+  }
 
   /// Changes password visibility, making it visible or not.
   void changePasswordVisibility({bool confirmPass = false}) {
     if (confirmPass) {
-      emit(
-        state.copyWith(showConfirmPassword: !state.showConfirmPassword),
-      );
+      emit(state.copyWith(showConfirmPassword: !state.showConfirmPassword));
     } else {
-      emit(
-        state.copyWith(showPassword: !state.showPassword),
-      );
+      emit(state.copyWith(showPassword: !state.showPassword));
     }
   }
 
@@ -38,12 +41,8 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
     final previousOtpState = previousScreenState.otp;
     final previousOtpValue = previousOtpState.value;
 
-    final newOtpState = Otp2.dirty(
-      previousOtpValue,
-    );
-    final newScreenState = previousScreenState.copyWith(
-      otp: newOtpState,
-    );
+    final newOtpState = Otp2.dirty(previousOtpValue);
+    final newScreenState = previousScreenState.copyWith(otp: newOtpState);
     emit(newScreenState);
   }
 
@@ -53,16 +52,10 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
     final previousOtpState = previousScreenState.otp;
     final shouldValidate = previousOtpState.invalid;
     final newOtpState = shouldValidate
-        ? Otp2.dirty(
-            newValue,
-          )
-        : Otp2.pure(
-            newValue,
-          );
+        ? Otp2.dirty(newValue)
+        : Otp2.pure(newValue);
 
-    final newScreenState = state.copyWith(
-      otp: newOtpState,
-    );
+    final newScreenState = state.copyWith(otp: newOtpState);
 
     emit(newScreenState);
   }
@@ -75,15 +68,17 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
     final previousPasswordState = previousScreenState.password;
     final shouldValidate = previousPasswordState.invalid;
     final newPasswordState = shouldValidate
-        ? Password.dirty(
-            newValue,
-          )
-        : Password.pure(
-            newValue,
-          );
+        ? Password.dirty(newValue)
+        : Password.pure(newValue);
+
+    final confirmPasswordError = _confirmPasswordError(
+      password: newPasswordState.value,
+      confirmPassword: previousScreenState.confirmPassword.value,
+    );
 
     final newScreenState = state.copyWith(
       password: newPasswordState,
+      confirmPasswordError: confirmPasswordError,
     );
 
     emit(newScreenState);
@@ -94,9 +89,7 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
     final previousPasswordState = previousScreenState.password;
     final previousPasswordValue = previousPasswordState.value;
 
-    final newPasswordState = Password.dirty(
-      previousPasswordValue,
-    );
+    final newPasswordState = Password.dirty(previousPasswordValue);
     final newScreenState = previousScreenState.copyWith(
       password: newPasswordState,
     );
@@ -110,19 +103,19 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
     final previousScreenState = state;
     final previousConfirmPasswordState = previousScreenState.confirmPassword;
     final shouldValidate = previousConfirmPasswordState.invalid;
-    final didMatched = newValue == previousScreenState.password.value;
 
     final newPasswordState = shouldValidate
-        ? Password.dirty(
-            newValue,
-          )
-        : Password.pure(
-            newValue,
-          );
+        ? Password.dirty(newValue)
+        : Password.pure(newValue);
+
+    final confirmPasswordError = _confirmPasswordError(
+      password: previousScreenState.password.value,
+      confirmPassword: newPasswordState.value,
+    );
 
     final newScreenState = state.copyWith(
       confirmPassword: newPasswordState,
-      confirmPasswordError: !didMatched ? 'Password does not match' : null,
+      confirmPasswordError: confirmPasswordError,
     );
 
     emit(newScreenState);
@@ -133,37 +126,35 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
     final previousConfirmPasswordState = previousScreenState.confirmPassword;
     final previousPasswordValue = previousConfirmPasswordState.value;
 
-    final newPasswordState = Password.dirty(
-      previousPasswordValue,
-    );
+    final newPasswordState = Password.dirty(previousPasswordValue);
     final newScreenState = previousScreenState.copyWith(
       confirmPassword: newPasswordState,
     );
     emit(newScreenState);
   }
 
-
-
-
   void submit({VoidCallback? onSuccess, required String email}) async {
     final password = Password.dirty(state.password.value);
     final password2 = Password.dirty(state.confirmPassword.value);
     final otp = Otp2.dirty(state.otp.value);
-    final didMatched = password.value == password2.value;
 
-    final isFormValid =
-        FormzValid([password, password2, otp]).isFormValid && didMatched;
+    final isFormValid = FormzValid([password, password2, otp]).isFormValid;
+
+    final passwordsMatch = password.value == password2.value;
 
     final newState = state.copyWith(
       password: password,
       confirmPassword: password2,
       otp: otp,
-      status: isFormValid ? ChangePasswordStatus.loading : null,
+      confirmPasswordError: passwordsMatch ? '' : 'Password does not match',
+      status: isFormValid && passwordsMatch
+          ? ChangePasswordStatus.loading
+          : null,
     );
 
     emit(newState);
 
-    if (!isFormValid) return;
+    if (!isFormValid || !passwordsMatch) return;
 
     final res = await _changePasswordUseCase(
       ChangePasswordParams(
@@ -177,13 +168,11 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
     if (isClosed) return;
 
     res.fold(
-      (l) => emit(state.copyWith(
-          status: ChangePasswordStatus.error, message: l.message)),
+      (l) => emit(
+        state.copyWith(status: ChangePasswordStatus.error, message: l.message),
+      ),
       (r) {
-        emit(state.copyWith(
-          status: ChangePasswordStatus.success,
-          response: r,
-        ));
+        emit(state.copyWith(status: ChangePasswordStatus.success, response: r));
         onSuccess?.call();
       },
     );
@@ -198,6 +187,4 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
     //   _errorFormatter(error, stackTrace);
     // }
   }
-
-
 }

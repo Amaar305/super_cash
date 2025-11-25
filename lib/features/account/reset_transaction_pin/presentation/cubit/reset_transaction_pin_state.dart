@@ -16,17 +16,20 @@ class ResetTransactionPinState extends Equatable {
   final ResetTransactionPinStatus status;
   final Otp newPin;
   final Otp confirmPin;
-  final Otp2 otp;
+  final Password password;
   final String message;
   final String? confirmPinMessage;
+  final bool showPassword;
 
   const ResetTransactionPinState._({
     required this.status,
     required this.newPin,
     required this.confirmPin,
     required this.message,
-    required this.otp,
+    required this.password,
+    required this.showPassword,
     this.confirmPinMessage,
+
   });
   const ResetTransactionPinState.initial()
     : this._(
@@ -34,7 +37,8 @@ class ResetTransactionPinState extends Equatable {
         newPin: const Otp.pure(),
         confirmPin: const Otp.pure(),
         message: '',
-        otp: const Otp2.pure(),
+        password: const Password.pure(),
+        showPassword: false,
       );
   @override
   List<Object?> get props => [
@@ -43,24 +47,27 @@ class ResetTransactionPinState extends Equatable {
     confirmPin,
     message,
     confirmPinMessage,
-    otp,
+    password,
+    showPassword,
   ];
 
   ResetTransactionPinState copyWith({
     ResetTransactionPinStatus? status,
     Otp? newPin,
     Otp? confirmPin,
-    Otp2? otp,
+    Password? password,
     String? message,
     String? confirmPinMessage,
+    bool? showPassword,
   }) {
     return ResetTransactionPinState._(
       status: status ?? this.status,
       newPin: newPin ?? this.newPin,
       confirmPin: confirmPin ?? this.confirmPin,
-      otp: otp ?? this.otp,
+      password: password ?? this.password,
       message: message ?? this.message,
       confirmPinMessage: confirmPinMessage ?? this.confirmPinMessage,
+      showPassword: showPassword??this.showPassword,
     );
   }
 }

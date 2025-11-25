@@ -26,7 +26,7 @@ class Referral extends FormzInput<String, ReferralValidationError>
 
   @override
   ReferralValidationError? validator(String value) {
-    // if (value.isEmpty) return ReferralValidationError.empty;
+    if (value.isEmpty) return null;
     if (!_referralRegex.hasMatch(value)) return ReferralValidationError.invalid;
     return null;
   }

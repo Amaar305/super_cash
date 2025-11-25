@@ -17,6 +17,11 @@ class LoginFormSwitcher extends StatelessWidget {
     return BlocListener<LoginCubit, LoginState>(
       listenWhen: (previous, current) => current.status != previous.status,
       listener: (context, state) {
+         if (state.status.isLoading) {
+          showLoadingOverlay(context);
+        } else {
+          hideLoadingOverlay();
+        }
         if (state.status.isError) {
           openSnackbar(
             SnackbarMessage.error(title: state.message),

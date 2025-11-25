@@ -15,13 +15,18 @@ class LastName extends FormzInput<String, LastNameValidationError>
 
   /// {@macro full_name.dirty}
   const LastName.dirty(super.value) : super.dirty();
-
-  static final _nameRegex = RegExp(r'^([a-zA-Z])+$');
+  static final _namePartRegex = RegExp(r'^[A-Za-z]+$');
 
   @override
   LastNameValidationError? validator(String value) {
-    if (value.isEmpty) return LastNameValidationError.empty;
-    if (!_nameRegex.hasMatch(value)) return LastNameValidationError.invalid;
+    final trimmedValue = value.trim();
+    if (trimmedValue.isEmpty) return LastNameValidationError.empty;
+
+    final parts = trimmedValue.split(RegExp(r'\s+'));
+    if (parts.length > 2) return LastNameValidationError.invalid;
+    if (!parts.every(_namePartRegex.hasMatch)) {
+      return LastNameValidationError.invalid;
+    }
     return null;
   }
 

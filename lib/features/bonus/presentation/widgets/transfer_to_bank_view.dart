@@ -13,8 +13,11 @@ class TransferToBankView extends StatelessWidget {
       spacing: AppSpacing.lg,
       children: [
         TransferToBankForm(),
+
+        const EarningContainerInfo('Min: NGN 50 | Max: NGN 50,000'),
+
         TransferToBankButton(),
-        UserBonusOverview(),
+        // UserBonusOverview(),
       ],
     );
   }

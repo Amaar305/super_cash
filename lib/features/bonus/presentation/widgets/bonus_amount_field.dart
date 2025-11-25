@@ -72,6 +72,9 @@ class _BonusAmountFieldState extends State<BonusAmountField> {
     final isLoading = context.select(
       (BonusCubit cubit) => cubit.state.status.isLoading,
     );
+    final isBonus = context.select(
+      (BonusCubit cubit) => cubit.state.isBonusWithdrawn,
+    );
     return Column(
       spacing: AppSpacing.sm,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -106,15 +109,28 @@ class _BonusAmountFieldState extends State<BonusAmountField> {
                 ),
                 onPressed: () {
                   final bonus =
-                      context.read<AppCubit>().state.user?.wallet.bonus ?? '';
+                      context.read<AppCubit>().state.user?.wallet.bonus ?? '0';
+
                   final sanitizedBonus = bonus.split('.').first;
+
                   if (sanitizedBonus.isEmpty) return;
-                  _controller
-                    ..text = sanitizedBonus
-                    ..selection = TextSelection.collapsed(
-                      offset: sanitizedBonus.length,
-                    );
-                  _cubit.onAmountChanged(sanitizedBonus);
+
+                  if (isBonus) {
+                    _controller
+                      ..text = sanitizedBonus
+                      ..selection = TextSelection.collapsed(
+                        offset: sanitizedBonus.length,
+                      );
+                    _cubit.onAmountChanged(sanitizedBonus);
+                  } else {
+                    final amt = double.parse(sanitizedBonus) - 25;
+                    final sn = amt.toInt().toString();
+
+                    _controller
+                      ..text = sn
+                      ..selection = TextSelection.collapsed(offset: sn.length);
+                    _cubit.onAmountChanged(sn);
+                  }
                 },
                 child: Text(
                   'Max',
@@ -124,6 +140,7 @@ class _BonusAmountFieldState extends State<BonusAmountField> {
             ),
           ),
         ),
+        EarningBonusOverview(),
       ],
     );
   }

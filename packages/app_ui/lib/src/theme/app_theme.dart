@@ -134,7 +134,8 @@ class AppDarkTheme extends AppTheme {
   @override
   ThemeData get theme => FlexThemeData.dark(
         scheme: FlexScheme.custom,
-        darkIsTrueBlack: true,
+        // darkIsTrueBlack: true,
+        scaffoldBackground: AppColors.background2,
         colors: FlexSchemeColor.from(
           brightness: brightness,
           primary: primary,

@@ -7,7 +7,7 @@ import 'package:shared/shared.dart';
 class GetDollarRateUseCase implements UseCase<DollarRate, NoParam> {
   final CardRepositories cardRepositories;
 
-  GetDollarRateUseCase({required this.cardRepositories});
+const  GetDollarRateUseCase({required this.cardRepositories});
 
   @override
   Future<Either<Failure, DollarRate>> call(NoParam param) async {

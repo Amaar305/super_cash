@@ -61,7 +61,7 @@ class ChangeTransactionPinCubit extends Cubit<ChangeTransactionPinState> {
 
 
 
-  Future<void> submit() async {
+  Future<void> submit(void Function(String result) onSuccess) async {
     final currentPin = Otp.dirty(state.currentPin.value);
     final newPin = Otp.dirty(state.newPin.value);
     final confirmPin = Otp.dirty(state.confirmPin.value);
@@ -88,6 +88,7 @@ class ChangeTransactionPinCubit extends Cubit<ChangeTransactionPinState> {
           confirmPin: confirmPin.value,
         ),
       );
+      if(isClosed)return;
 
       res.fold(
         (failure) {
@@ -105,6 +106,7 @@ class ChangeTransactionPinCubit extends Cubit<ChangeTransactionPinState> {
               status: ChangeTransactionPinStatus.success,
             ),
           );
+          onSuccess(success);
         },
       );
     } catch (error, stackTrace) {

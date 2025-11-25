@@ -1,5 +1,6 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:super_cash/app/init/init.dart';
 import 'package:super_cash/core/app_strings/app_string.dart';
 import 'package:flutter/material.dart';
@@ -60,7 +61,19 @@ class ChangeTransactionPinButton extends StatelessWidget {
       isLoading: isLoading,
       label: AppStrings.change,
       onPressed: () {
-        context.read<ChangeTransactionPinCubit>().submit();
+        context.read<ChangeTransactionPinCubit>().submit((result) {
+          context.showConfirmationBottomSheet(
+            title: 'Transaction PIN Changed!',
+            okText: 'Done',
+            description: result,
+
+            onDone: () {
+              context
+                ..pop()
+                ..pop();
+            },
+          );
+        });
       },
     );
   }

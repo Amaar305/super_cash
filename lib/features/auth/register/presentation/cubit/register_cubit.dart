@@ -257,7 +257,7 @@ class RegisterCubit extends Cubit<RegisterState> {
     final firstName = FirstName.dirty(state.firstName.value);
     final lastName = LastName.dirty(state.lastName.value);
     final phone = Phone.dirty(state.phone.value);
-    // final referral = Referral.dirty(state.referral.value);
+    final referral = Referral.dirty(state.referral.value);
     final isFormValid = FormzValid([
       email,
       password,
@@ -265,6 +265,7 @@ class RegisterCubit extends Cubit<RegisterState> {
       firstName,
       lastName,
       phone,
+      referral,
       // referral,
     ]).isFormValid;
     final passwordsMatch = password.value == password2.value;
@@ -276,11 +277,9 @@ class RegisterCubit extends Cubit<RegisterState> {
       firstName: firstName,
       lastName: lastName,
       phone: phone,
-      confirmPasswordError:
-          passwordsMatch ? '' : 'Password does not match',
-      status: isFormValid && passwordsMatch
-          ? RegisterStatus.inProgress
-          : null,
+      confirmPasswordError: passwordsMatch ? '' : 'Password does not match',
+      status: isFormValid && passwordsMatch ? RegisterStatus.inProgress : null,
+      referral: referral,
     );
 
     emit(newState);
@@ -295,10 +294,11 @@ class RegisterCubit extends Cubit<RegisterState> {
         lastName: lastName.value,
         password: password.value,
         confirmPassword: password2.value,
-        referral: state.referral.value.isEmpty ? null : state.referral.value,
+
+        referral: referral.value.isEmpty ? null : referral.value,
       ),
     );
-
+    if (isClosed) return;
     res.fold(
       (l) => emit(
         state.copyWith(status: RegisterStatus.error, errorMessage: l.message),

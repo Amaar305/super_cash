@@ -53,7 +53,7 @@ class _ChangePasswordOtpFieldState extends State<ChangePasswordOtpField> {
       children: [
         // AppTextFieldLabel(AppStrings.code),
         AppTextField.underlineBorder(
-          hintText: AppStrings.code,
+          hintText: AppStrings.otp,
           prefixIcon: const Icon(
             Icons.password_outlined,
             size: 24,

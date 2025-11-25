@@ -1,5 +1,6 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:super_cash/app/routes/routes.dart';
+import 'package:super_cash/app/view/view.dart';
 import 'package:super_cash/core/app_strings/app_string.dart';
 import 'package:super_cash/core/fonts/app_text_style.dart';
 import 'package:flutter/material.dart';
@@ -75,10 +76,12 @@ class ProfileView extends StatelessWidget {
                     NewWidget(
                       label: AppStrings.legalAndOthers,
                       icon: Iconsax.activity,
+                      onTap: () => showCurrentlyUnavailableFeature(),
                     ),
                     NewWidget(
                       label: AppStrings.myReferrals,
                       icon: Iconsax.people,
+                      onTap: () => context.goNamedSafe(RNames.referFriend),
                     ),
                     NewWidget(
                       label: AppStrings.deleteAccount,

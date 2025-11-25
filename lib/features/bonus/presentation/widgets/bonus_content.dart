@@ -1,6 +1,7 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shared/shared.dart';
 import 'package:super_cash/app/view/app.dart';
 import 'package:super_cash/features/bonus/presentation/presentation.dart';
@@ -25,11 +26,18 @@ class BonusContent extends StatelessWidget {
         }
 
         if (state.status.isWithdrawn) {
+          if (!context.mounted) return;
+
           context.showConfirmationBottomSheet(
             title: 'Successfully withdrawn',
             okText: 'Done',
             description:
                 'You have successfully withdrawn ${state.amount.value} Naira to wallet balance.',
+            onDone: () {
+              context
+                ..pop() //Remove the bottom sheet
+                ..pop(); //Navigate to Home
+            },
           );
         }
         if (state.status.isTransferred) {
@@ -38,6 +46,11 @@ class BonusContent extends StatelessWidget {
             okText: 'Done',
             description:
                 'You have successfully transferred ${state.amount.value} Naira to ${state.bankValidationResult?.accountName} ${state.selectedBank?.bankName}.',
+            onDone: () {
+              context
+                ..pop() //Remove the bottom sheet
+                ..pop(); //Navigate to Home
+            },
           );
         }
       },

@@ -22,16 +22,36 @@ class ResetTransactionPinCubit extends Cubit<ResetTransactionPinState> {
 
   final AppUser _user;
 
-  void onOtpChanged(String value) {
+  void changePasswordVisibility() =>
+      emit(state.copyWith(showPassword: !state.showPassword));
+
+  void onPasswordChanged(String value) {
     final previousScreenState = state;
-    final previousPinState = previousScreenState.otp;
-    final shouldValidate = previousPinState.invalid;
+    final previousPasswordState = previousScreenState.password;
+    final shouldValidate = previousPasswordState.invalid;
 
-    final newPinState = shouldValidate ? Otp2.dirty(value) : Otp2.dirty(value);
+    final newPasswordValue = shouldValidate
+        ? Password.dirty(value)
+        : Password.pure(value);
 
-    final newScreenState = previousScreenState.copyWith(otp: newPinState);
-
+    final newScreenState = previousScreenState.copyWith(
+      password: newPasswordValue,
+    );
     emit(newScreenState);
+  }
+
+  void onPasswordUnfocused() {
+    final previousScreenState = state;
+    final previousPasswordState = previousScreenState.password;
+    final previousPasswordValue = previousPasswordState.value;
+
+    final newPasswordState = Password.dirty(previousPasswordValue);
+
+    final newPasswordScreen = previousScreenState.copyWith(
+      password: newPasswordState,
+    );
+
+    emit(newPasswordScreen);
   }
 
   void onNewPinChanged(String value) {
@@ -90,14 +110,14 @@ class ResetTransactionPinCubit extends Cubit<ResetTransactionPinState> {
     }
   }
 
-  Future<void> submit(VoidCallback onSubmit) async {
+  Future<void> submit(void Function(String message) onSubmit) async {
     final newPin = Otp.dirty(state.newPin.value);
-    final otp = Otp2.dirty(state.otp.value);
+    final password = Password.dirty(state.password.value);
     final confirmPin = Otp.dirty(state.confirmPin.value);
     final didMatched = newPin.value == confirmPin.value;
 
     final isFormValid =
-        FormzValid([newPin, confirmPin, otp]).isFormValid && didMatched;
+        FormzValid([newPin, confirmPin, password]).isFormValid && didMatched;
 
     final newState = state.copyWith(
       newPin: newPin,
@@ -111,8 +131,7 @@ class ResetTransactionPinCubit extends Cubit<ResetTransactionPinState> {
     try {
       final res = await _resetTransactionPinUseCase(
         ResetTransactionPinParam(
-          email: _user.email,
-          otp: otp.value,
+          password: password.value,
           pin: newPin.value,
           confirmPin: confirmPin.value,
         ),
@@ -128,11 +147,12 @@ class ResetTransactionPinCubit extends Cubit<ResetTransactionPinState> {
           );
         },
         (r) {
+          final message = r['message']??'Transaction PIN has been reset successfully.';
           state.copyWith(
             status: ResetTransactionPinStatus.success,
-            message: 'Transaction PIN has been reset successfully.',
+            message: message,
           );
-          onSubmit.call();
+          onSubmit(message);
         },
       );
     } catch (e) {

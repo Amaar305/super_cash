@@ -48,7 +48,7 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
         if (state.status.isSuccess) {
           openSnackbar(
             SnackbarMessage.success(
-              title: state.response?['message'] ?? 'Success',
+              title: 'OTP has been sent successfully',
             ),
             clearIfQueue: true,
           );

@@ -13,7 +13,7 @@ class WithdrawBonusView extends StatelessWidget {
       children: const [
         BonusAmountField(),
         WithdrawBonusButton(),
-        UserBonusOverview(),
+        // UserBonusOverview(),
       ],
     );
   }

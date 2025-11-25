@@ -1,33 +1,36 @@
 import 'package:app_ui/app_ui.dart';
-import 'package:super_cash/config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/shared.dart';
+import 'package:super_cash/config.dart';
+import 'package:super_cash/core/app_strings/app_string.dart';
 
-import '../../../../../core/app_strings/app_string.dart';
-import '../../../auth.dart';
+import '../cubit/reset_transaction_pin_cubit.dart';
 
-class LoginPasswordField extends StatefulWidget {
-  const LoginPasswordField({super.key});
+class ResetTransactionPassword extends StatefulWidget {
+  const ResetTransactionPassword({super.key});
 
   @override
-  State<LoginPasswordField> createState() => _LoginPasswordFieldState();
+  State<ResetTransactionPassword> createState() =>
+      _ResetTransactionPasswordState();
 }
 
-class _LoginPasswordFieldState extends State<LoginPasswordField> {
-  late final LoginCubit _cubit;
-  final _debouncer = Debouncer();
-  final _focusNode = FocusNode();
+class _ResetTransactionPasswordState extends State<ResetTransactionPassword> {
+  late final ResetTransactionPinCubit _cubit;
+  late final Debouncer _debouncer;
+  late final FocusNode _focusNode;
 
   @override
   void initState() {
     super.initState();
-    _cubit = context.read<LoginCubit>();
-    _focusNode.addListener(() {
-      if (!_focusNode.hasFocus) {
-        _cubit.onPasswordUnfocused();
-      }
-    });
+    _cubit = context.read<ResetTransactionPinCubit>();
+    _debouncer = Debouncer();
+    _focusNode = FocusNode()
+      ..addListener(() {
+        if (!_focusNode.hasFocus) {
+          _cubit.onPasswordUnfocused();
+        }
+      });
   }
 
   @override
@@ -40,20 +43,27 @@ class _LoginPasswordFieldState extends State<LoginPasswordField> {
   @override
   Widget build(BuildContext context) {
     final isLoading = context.select(
-      (LoginCubit cubit) => cubit.state.status.isLoading,
-    );
-    final showPassword = context.select(
-      (LoginCubit cubit) => cubit.state.showPassword,
-    );
-    final passwordErrorMessage = context.select(
-      (LoginCubit cubit) => cubit.state.password.errorMessage,
+      (ResetTransactionPinCubit element) => element.state.status.isLoading,
     );
 
+    final showPassword = context.select(
+      (ResetTransactionPinCubit cubit) => cubit.state.showPassword,
+    );
+    final passwordErrorMessage = context.select(
+      (ResetTransactionPinCubit cubit) => cubit.state.password.errorMessage,
+    );
     return Column(
+      spacing: AppSpacing.md,
       crossAxisAlignment: CrossAxisAlignment.start,
-      spacing: 8,
+
       children: [
-        // AppTextFieldLabel(AppStrings.password),
+        Text(
+          AppStrings.password,
+          style: TextStyle(
+            fontSize: AppSpacing.md,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
         AppTextField.underlineBorder(
           hintText: 'Enter ${AppStrings.password.toLowerCase()}',
           prefixIcon: const Icon(

@@ -33,10 +33,11 @@ class LoginRepositoryImpl implements LoginRepository {
         username: username,
         password: password,
       );
-
-      tokenRepository
-        ..saveAccessToken(user.tokens!.access)
-        ..saveRefreshToken(user.tokens!.refresh);
+      if (user.tokens != null) {
+        tokenRepository
+          ..saveAccessToken(user.tokens!.access)
+          ..saveRefreshToken(user.tokens!.refresh);
+      }
 
       await loginLocalDataSource.persistUser(user);
 

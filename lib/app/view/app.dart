@@ -55,6 +55,34 @@ void openSnackbar(
   );
 }
 
+AppLoadingOverlayController? _loadingOverlayController;
+
+void showLoadingOverlay(
+  BuildContext context, {
+  String? title,
+  String? message,
+}) {
+  if (_loadingOverlayController?.isShowing ?? false) return;
+
+  final colorScheme = Theme.of(context).colorScheme;
+
+  _loadingOverlayController = showAppLoadingOverlay(
+    context,
+    title: title ?? 'Hang tight...',
+    message: message ?? 'We are syncing your experience.',
+    primary: colorScheme.primary,
+    secondary: colorScheme.secondary,
+  );
+}
+
+void hideLoadingOverlay() {
+  final controller = _loadingOverlayController;
+  if (controller == null) return;
+
+  controller.close();
+  _loadingOverlayController = null;
+}
+
 void toggleLoadingIndeterminate({bool enable = true, bool autoHide = false}) =>
     loadingIndeterminateKey.currentState?.setVisibility(
       visible: enable,

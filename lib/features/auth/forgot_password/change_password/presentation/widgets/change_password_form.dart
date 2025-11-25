@@ -46,7 +46,7 @@ class _ChangePasswordFormState extends State<ChangePasswordForm> {
             isDismissible: false,
             enableDrag: false,
             builder: (context) => ResetPasswordBottomSheet(
-              successMsg: state.response?['message'],
+              successMsg: state.response?['message'] ?? '',
             ),
           );
         }
@@ -66,10 +66,7 @@ class _ChangePasswordFormState extends State<ChangePasswordForm> {
 }
 
 class ResetPasswordBottomSheet extends StatelessWidget {
-  const ResetPasswordBottomSheet({
-    super.key,
-    this.successMsg,
-  });
+  const ResetPasswordBottomSheet({super.key, this.successMsg});
 
   final String? successMsg;
 
@@ -85,14 +82,8 @@ class ResetPasswordBottomSheet extends StatelessWidget {
             spacing: AppSpacing.md,
             children: [
               Gap.v(AppSpacing.sm),
-              Assets.images.circleCheck.image(
-                width: 77,
-                height: 77,
-              ),
-              Text(
-                AppStrings.passwordReset,
-                style: context.titleMedium,
-              ),
+              Assets.images.circleCheck.image(width: 77, height: 77),
+              Text(AppStrings.passwordReset, style: context.titleMedium),
               Text(
                 successMsg ?? AppStrings.passwordResetSuccess,
                 textAlign: TextAlign.center,
@@ -106,7 +97,7 @@ class ResetPasswordBottomSheet extends StatelessWidget {
                 isLoading: false,
                 label: 'Done',
                 onPressed: () => context.pushReplacement(AppRoutes.auth),
-              )
+              ),
             ],
           ),
         ),

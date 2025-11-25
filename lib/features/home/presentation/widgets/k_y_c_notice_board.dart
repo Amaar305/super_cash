@@ -1,4 +1,5 @@
 import 'package:app_ui/app_ui.dart';
+import 'package:super_cash/app/app.dart';
 import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/core/fonts/app_text_style.dart';
 import 'package:flutter/material.dart';
@@ -25,11 +26,14 @@ class KYCNoticeBoard extends StatelessWidget {
       child: DecoratedBox(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [AppColors.deepBlue, AppColors.green.shade400],
+            colors: [
+              AppColors.deepBlue,
+              AppColors.black.withValues(alpha: 0.81),
+            ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
-          borderRadius: BorderRadius.circular(AppSpacing.xlg),
+          borderRadius: BorderRadius.circular(AppSpacing.md),
           boxShadow: [
             BoxShadow(
               color: AppColors.black.withValues(alpha: 0.25),
@@ -72,7 +76,7 @@ class KYCNoticeBoard extends StatelessWidget {
                     child: Icon(
                       Icons.verified_user_outlined,
                       color: AppColors.white,
-                      size: 32,
+                      size: 28,
                     ),
                   ),
                   SizedBox(width: AppSpacing.md),
@@ -90,7 +94,7 @@ class KYCNoticeBoard extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          'Verify your identity now to unlock seamless transfers, higher limits, and rewards tailored for you.',
+                          'Verify your account now.',
                           style: poppinsTextStyle(
                             fontSize: 12,
                             fontWeight: AppFontWeight.medium,
@@ -107,7 +111,7 @@ class KYCNoticeBoard extends StatelessWidget {
 
                     child: InkWell(
                       borderRadius: BorderRadius.circular(AppSpacing.md),
-                      onTap: () {},
+                      onTap: () => _navigate(context),
                       child: Padding(
                         padding: EdgeInsets.symmetric(
                           horizontal: AppSpacing.md,
@@ -132,6 +136,9 @@ class KYCNoticeBoard extends StatelessWidget {
       ),
     );
   }
+
+  void _navigate(BuildContext context) =>
+      context.goNamedSafe(RNames.upgradeTier);
 }
 
 class _AccentCircle extends StatelessWidget {

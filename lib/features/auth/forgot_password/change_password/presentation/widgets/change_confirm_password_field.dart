@@ -45,7 +45,7 @@ class _ChangeConfirmPasswordFieldState
       (ChangePasswordCubit cubit) => cubit.state.confirmPassword.errorMessage,
     );
     final passwordConfirmError = context.select(
-      (ChangePasswordCubit cubit) => cubit.state.confirmPasswordError,
+      (ChangePasswordCubit cubit) => cubit.state.confirmPasswordError ?? '',
     );
     final showPassword = context.select(
       (ChangePasswordCubit cubit) => cubit.state.showConfirmPassword,
@@ -75,7 +75,9 @@ class _ChangeConfirmPasswordFieldState
           autofillHints: const [AutofillHints.password],
           onChanged: (v) =>
               _debouncer.run(() => _cubit.onConfirmPasswordChanged(v)),
-          errorText: passwordConfirmError ?? passwordError,
+          errorText: passwordConfirmError.isNotEmpty
+              ? passwordConfirmError
+              : passwordError,
           suffixIcon: Tappable.faded(
             backgroundColor: AppColors.transparent,
             onTap: () => isLoading

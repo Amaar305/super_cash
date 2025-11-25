@@ -2,6 +2,7 @@ import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/app/init/init.dart';
 import 'package:super_cash/features/bonus/presentation/presentation.dart';
 
@@ -71,9 +72,26 @@ class _BonusViewState extends State<BonusView> {
 
         child: Column(
           spacing: AppSpacing.lg,
-          children: [BonusTabType(), BonusTitle(), BonusContent()],
+          children: [
+            BonusTabType(),
+            BonusTitle(),
+            EarningBonusWidget(),
+            BonusContent(),
+          ],
         ),
       ),
     );
+  }
+}
+
+class EarningBonusWidget extends StatelessWidget {
+  const EarningBonusWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final bonus = context.select(
+      (AppCubit element) => element.state.user?.wallet.bonus ?? '0',
+    );
+    return EarningContainerInfo('Bonus Balance: N$bonus');
   }
 }

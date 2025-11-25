@@ -14,12 +14,12 @@ class BonusTabType extends StatelessWidget {
     return AppTab(
       children: [
         AppTabItem(
-          label: 'Withdraw Bonus',
+          label: 'Bonus to Wallet',
           activeTab: tabValue,
           onTap: () => context.read<BonusCubit>().switchType(withdraw: true),
         ),
         AppTabItem(
-          label: 'Transfer to Bank',
+          label: 'Bonus to Bank',
           activeTab: !tabValue,
           onTap: () => context.read<BonusCubit>().switchType(withdraw: false),
         ),

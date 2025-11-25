@@ -1,5 +1,5 @@
 import 'package:app_ui/app_ui.dart';
-import 'package:super_cash/app/bloc/app_bloc.dart';
+import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/app/routes/routes.dart';
 import 'package:super_cash/core/fonts/app_text_style.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +12,7 @@ class Bonus extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final wallet = context.select((AppBloc bloc) => bloc.state.user).wallet;
+    final wallet = context.select((AppCubit bloc) => bloc.state.user)?.wallet;
     final showBalance = context.select(
       (HomeCubit bloc) => bloc.state.showBalance,
     );
@@ -42,7 +42,7 @@ class Bonus extends StatelessWidget {
             alignment: Alignment.center,
             child: FittedBox(
               child: Text(
-                !showBalance ? '***' : 'N${wallet.bonus}',
+                !showBalance ? '***' : 'N${wallet?.bonus ?? 0}',
                 style: poppinsTextStyle(
                   fontSize: 12,
                   fontWeight: AppFontWeight.bold,

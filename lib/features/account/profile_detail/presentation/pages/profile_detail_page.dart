@@ -53,7 +53,7 @@ class ProfileDetailView extends StatelessWidget {
                   ],
                 ),
                 alignment: Alignment(0, 0),
-                child: Details(),
+                child: const Details(),
               ),
             ],
           ),

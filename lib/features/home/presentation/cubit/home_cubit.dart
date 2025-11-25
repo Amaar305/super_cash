@@ -42,7 +42,11 @@ class HomeCubit extends HydratedCubit<HomeState> {
       // Data already available and we're not forcing refresh
       return;
     }
+
+    emit(state.copyWith(status: HomeStatus.loading));
     final res = await _fetchUserUseCase(NoParam());
+
+    if (isClosed) return;
 
     res.fold(
       (l) =>

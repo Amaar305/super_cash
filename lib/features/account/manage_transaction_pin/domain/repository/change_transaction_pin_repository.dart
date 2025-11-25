@@ -11,8 +11,7 @@ abstract interface class ChangeTransactionPinRepository {
   Future<Either<Failure, Map>> requestOtpWithEmail(String email);
 
   Future<Either<Failure, Map>> resetTransactionPin({
-    required String email,
-    required String otp,
+    required String password,
     required String pin,
     required String confirmPin,
   });

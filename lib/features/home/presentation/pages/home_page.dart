@@ -4,6 +4,7 @@ import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/shared.dart';
+import 'package:super_cash/app/view/app.dart';
 import 'package:super_cash/core/helper/app_url_launcher.dart';
 import 'package:super_cash/features/card/card_repo/cubit/card_repo_cubit.dart';
 import 'package:super_cash/features/home/home.dart';
@@ -24,7 +25,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       unawaited(context.read<CardRepoCubit>().fetchDollarRate());
-      unawaited(context.read<HomeCubit>().fetchAppSettings());
+      context.read<HomeCubit>().fetchAppSettings();
     });
   }
 
@@ -36,6 +37,11 @@ class _HomePageState extends State<HomePage> {
       body: BlocListener<HomeCubit, HomeState>(
         listenWhen: (previous, current) => previous.status != current.status,
         listener: (context, state) {
+          if (state.status.isLoading) {
+            showLoadingOverlay(context);
+          } else {
+            hideLoadingOverlay();
+          }
           final update = state.homeSettings?.appUpdate;
           if (update != null) {
             _maybeShowAppUpdateDialog(context, update);
@@ -57,8 +63,8 @@ class _HomePageState extends State<HomePage> {
                   child: ListView(
                     padding: EdgeInsets.only(top: 74, bottom: 16),
                     children: [
-                      NewWallet(),
-                      Gap.v(32),
+                      const NewWallet(),
+                      const Gap.v(32),
                       Stack(
                         fit: StackFit.passthrough,
                         clipBehavior: Clip.none,
@@ -73,14 +79,15 @@ class _HomePageState extends State<HomePage> {
                                 top: Radius.circular(16),
                               ),
                               child: Column(
-                                children: [
-                                  SizedBox(height: 75),
+                                children: const [
+                                  Gap.v(75),
                                   HomeScrollText(),
-                                  KYCNoticeBoard(),
-                                  SizedBox(height: 8),
-
-                                  HomeServicesSection(),
+                                  Gap.v(8),
                                   HomeImageSlider(),
+                                  Gap.v(8),
+
+                                  KYCNoticeBoard(),
+                                  HomeServicesSection(),
                                   // HomeRecentTransactionSection(),
                                 ],
                               ),
@@ -114,7 +121,6 @@ class _HomePageState extends State<HomePage> {
         appUpdate.forceUpdate && appUpdate.priority >= _highPriorityThreshold;
 
     _handledUpdateId = appUpdate.id;
-
     showDialog<void>(
       context: context,
       barrierDismissible: !isCritical,

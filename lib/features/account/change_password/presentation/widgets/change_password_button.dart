@@ -1,4 +1,5 @@
 import 'package:app_ui/app_ui.dart';
+import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/core/app_strings/app_string.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,11 +22,12 @@ class ChangePasswordButton extends StatelessWidget {
         context.read<ChangePasswordCubit>().submit((success) {
           context.showConfirmationBottomSheet(
             title: 'Password Changed!',
-            okText: AppStrings.done,
+            okText: AppStrings.reLogin,
             description: success,
             onDone: () {
               context.pop();
-              context.pop();
+              context.read<AppCubit>().logout();
+              // context.pop();
             },
           );
         });

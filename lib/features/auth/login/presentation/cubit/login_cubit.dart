@@ -8,7 +8,6 @@ import 'package:form_fields/form_fields.dart';
 import 'package:shared/shared.dart';
 import 'package:token_repository/token_repository.dart';
 
-
 import '../../domain/domain.dart';
 
 part 'login_state.dart';
@@ -92,7 +91,7 @@ class LoginCubit extends Cubit<LoginState> {
 
   void onPasswordChanged(String value) {
     final previousScreenState = state;
-    final previousPasswordState = previousScreenState.email;
+    final previousPasswordState = previousScreenState.password;
     final shouldValidate = previousPasswordState.invalid;
 
     final newPasswordValue = shouldValidate

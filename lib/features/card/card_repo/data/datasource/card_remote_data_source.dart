@@ -21,7 +21,7 @@ class CardRemoteDataSourceImpl implements CardRemoteDataSource {
       final response = await apiClient.request(
         method: 'GET',
         path: 'card/dollar-rate/',
-        body: jsonEncode({}),
+       
       );
       Map<String, dynamic> res = jsonDecode(response.body);
       if (response.statusCode != 200) {

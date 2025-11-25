@@ -13,8 +13,7 @@ class ResetTransactionPinUseCase
   @override
   Future<Either<Failure, Map>> call(ResetTransactionPinParam param) async {
     return await changeTransactionPinRepository.resetTransactionPin(
-      email: param.email,
-      otp: param.otp,
+      password: param.password,
       pin: param.pin,
       confirmPin: param.confirmPin,
     );
@@ -22,14 +21,12 @@ class ResetTransactionPinUseCase
 }
 
 class ResetTransactionPinParam {
-  final String email;
-  final String otp;
+  final String password;
   final String pin;
   final String confirmPin;
 
   const ResetTransactionPinParam({
-    required this.email,
-    required this.otp,
+    required this.password,
     required this.pin,
     required this.confirmPin,
   });

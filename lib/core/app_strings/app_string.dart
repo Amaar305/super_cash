@@ -379,4 +379,8 @@ class AppStrings {
   static const String appCardName = 'Cool Card';
 
   static const String accountTier = 'User Tier';
+
+  static const String otp = 'OTP';
+
+  static String reLogin = 'Re-login';
 }

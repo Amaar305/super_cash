@@ -11,7 +11,7 @@ class ChangeTransactionPinRepositoryImpl
   changeTransactionPinRemoteDataSource;
   final ApiErrorHandler apiErrorHandler;
 
-  ChangeTransactionPinRepositoryImpl({
+  const ChangeTransactionPinRepositoryImpl({
     required this.changeTransactionPinRemoteDataSource,
     required this.apiErrorHandler,
   });
@@ -48,16 +48,14 @@ class ChangeTransactionPinRepositoryImpl
 
   @override
   Future<Either<Failure, Map>> resetTransactionPin({
-    required String email,
-    required String otp,
+    required String password,
     required String pin,
     required String confirmPin,
   }) async {
     try {
       final result = await changeTransactionPinRemoteDataSource
           .resetTransactionPin(
-            email: email,
-            otp: otp,
+            password: password,
             pin: pin,
             confirmPin: confirmPin,
           );

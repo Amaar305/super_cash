@@ -35,8 +35,8 @@ class Otp2 extends FormzInput<String, Otp2ValidationError>
         Otp2ValidationError.empty:
             'OTP cannot be empty. Please enter your code.',
         Otp2ValidationError.invalid:
-            'Invalid OTP. Please check and re-enter the code.',
-        Otp2ValidationError.incomplete: 'Invalid OTP. Otp must be 6 digits.',
+            'Incorrect OTP. Please check and re-enter the code.',
+        Otp2ValidationError.incomplete: 'Incorrect OTP. Otp must be 6 digits.',
         null: null,
       };
 
