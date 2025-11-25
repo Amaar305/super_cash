@@ -16,7 +16,7 @@ class ReferralTypeState extends Equatable {
   final ReferralTypeStatus status;
   final bool? isIndividual;
   final ReferralTypeResult? referralTypeResult;
-  final ReferralTypeModel? selectedCampaign;
+  final ReferralCampaign? selectedCampaign;
   final bool termsContidition;
   final String message;
 
@@ -51,7 +51,7 @@ class ReferralTypeState extends Equatable {
     bool? isIndividual,
     String? message,
     ReferralTypeResult? referralTypeResult,
-    ReferralTypeModel? selectedCampaign,
+    ReferralCampaign? selectedCampaign,
     bool? termsContidition,
   }) {
     return ReferralTypeState._(

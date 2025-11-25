@@ -16,7 +16,7 @@ class ReferralPage extends StatelessWidget {
       create: (context) => ReferalCubit(
         claimMyRewardsUseCase: serviceLocator(),
         fetchMyRerralsUseCase: serviceLocator(),
-      )..fetchMyReferrals(),
+      )..claimMyReward(),
       child: ReferralView(),
     );
   }
@@ -34,9 +34,9 @@ class ReferralView extends StatelessWidget {
       ),
       body: RefreshIndicator.adaptive(
         onRefresh: () async {
-          context.read<ReferalCubit>().fetchMyReferrals();
+          context.read<ReferalCubit>().claimMyReward();
         },
-        child: AppConstrainedScrollView(
+        child: SingleChildScrollView(
           padding: EdgeInsets.all(AppSpacing.lg),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,8 +62,10 @@ class ReferralList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final results = context.select(
-      (ReferalCubit element) => element.state.referralUsers,
+      (ReferalCubit element) =>
+          element.state.referralResult?.invitees ?? const [],
     );
+
     return StatusTableCard(users: results);
   }
 }

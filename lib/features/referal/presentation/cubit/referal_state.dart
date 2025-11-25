@@ -15,14 +15,16 @@ enum ReferalStatus {
 class ReferalState extends Equatable {
   final ReferalStatus status;
   final String message;
-  final List<ReferralUser> referralUsers;
+  final ReferralResult? referralResult;
   final bool showReferralList;
+  final List<ReferralUser> referralUsers;
 
   const ReferalState({
     required this.status,
     required this.message,
-    required this.referralUsers,
     required this.showReferralList,
+    required this.referralUsers,
+    this.referralResult,
   });
 
   const ReferalState.initial()
@@ -33,38 +35,28 @@ class ReferalState extends Equatable {
         showReferralList: true,
       );
 
-  ///Total reward counts
-  int get totalCount => referralUsers.length;
 
-  ///Total active count
-  int get totalActive => referralUsers.filter((t) => t.active).length;
-
-  ///Total verified counts
-  int get totalVerified => referralUsers.filter((t) => t.active).length;
-
-  ///Total amounts
-  double get totalAmount {
-    double d = 0;
-
-    for (var referral in referralUsers) {
-      d += referral.rewardAmount;
-    }
-
-    return d;
-  }
 
   @override
-  List<Object> get props => [status, message, referralUsers, showReferralList];
+  List<Object?> get props => [
+    status,
+    message,
+    referralResult,
+    referralUsers,
+    showReferralList,
+  ];
 
   ReferalState copyWith({
     ReferalStatus? status,
     String? message,
-    List<ReferralUser>? referralUsers,
     bool? showReferralList,
+    ReferralResult? referralResult,
+    List<ReferralUser>? referralUsers,
   }) {
     return ReferalState(
       status: status ?? this.status,
       message: message ?? this.message,
+      referralResult: referralResult ?? this.referralResult,
       referralUsers: referralUsers ?? this.referralUsers,
       showReferralList: showReferralList ?? this.showReferralList,
     );

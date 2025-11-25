@@ -2,7 +2,7 @@ import 'package:super_cash/features/auth/referral_type/domain/entities/entities.
 
 class ReferralTypeResult {
   final bool enabled;
-  final List<ReferralTypeModel> campaigns;
+  final List<ReferralCampaign> campaigns;
 
   const ReferralTypeResult({required this.enabled, required this.campaigns});
 
@@ -11,9 +11,9 @@ class ReferralTypeResult {
 
     return ReferralTypeResult(
       enabled: json['enabled'] as bool? ?? false,
-      campaigns: List<ReferralTypeModel>.generate(
+      campaigns: List<ReferralCampaign>.generate(
         campaignList.length,
-        (index) => ReferralTypeModel.fromJson(
+        (index) => ReferralCampaign.fromJson(
           campaignList[index] as Map<String, dynamic>,
         ),
         growable: false,
@@ -24,8 +24,9 @@ class ReferralTypeResult {
   Map<String, dynamic> toJson() {
     return {
       'enabled': enabled,
-      'campaigns':
-          campaigns.map((campaign) => campaign.toJson()).toList(growable: false),
+      'campaigns': campaigns
+          .map((campaign) => campaign.toJson())
+          .toList(growable: false),
     };
   }
 }

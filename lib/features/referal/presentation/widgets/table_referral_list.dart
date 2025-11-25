@@ -5,7 +5,7 @@ import 'package:super_cash/features/referal/referal.dart';
 class StatusTableCard extends StatelessWidget {
   const StatusTableCard({super.key, required this.users});
 
-  final List<ReferralUser> users;
+  final List<ReferralInvitee> users;
 
   // Compact layout constants
   static const double _nameColW = 80;
@@ -102,7 +102,12 @@ class StatusTableCard extends StatelessWidget {
     );
   }
 
-  Widget _dataRow(ReferralUser u, {required bool isLast}) {
+  Widget _dataRow(ReferralInvitee invitee, {required bool isLast}) {
+    final referredUser = invitee.referredUser;
+    final displayName = _inviteeName(invitee, referredUser);
+    final isActive = referredUser?.isKycActive ?? false;
+    final isVerified = referredUser?.isVerified ?? false;
+    final isSuspended = referredUser?.isSuspended ?? false;
     return Container(
       height: _rowH,
       decoration: BoxDecoration(
@@ -123,18 +128,14 @@ class StatusTableCard extends StatelessWidget {
               padding: _cellPad,
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: Text(
-                  u.username,
-                  style: _cellTextStyle,
-                  overflow: TextOverflow.ellipsis,
-                ),
+                child: Text(displayName, style: _cellTextStyle, overflow: TextOverflow.ellipsis),
               ),
             ),
           ),
           // ACTIVE
-          _statusCell(ok: u.active),
+          _statusCell(ok: isActive),
           // VERIFIED
-          _statusCell(ok: u.verified),
+          _statusCell(ok: isVerified),
           // REWARD STATUS
           SizedBox(
             width: _rewardColW,
@@ -142,7 +143,10 @@ class StatusTableCard extends StatelessWidget {
               padding: _cellPad,
               child: Center(
                 child: Text(
-                  _rewardStatusText(u),
+                  _rewardStatusText(
+                    invitee,
+                    isSuspended: isSuspended,
+                  ),
                   style: _cellTextStyle,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -155,54 +159,53 @@ class StatusTableCard extends StatelessWidget {
   }
 
   // ----- Reward/Eligibility logic -----
-  static String _rewardStatusText(ReferralUser u, {String symbol = '₦'}) {
-    // build amount string (if any)
-    final hasAmount = u.rewardAmount > 0;
-    final amt = hasAmount ? '$symbol${_formatAmount(u.rewardAmount)}' : '';
-
-    // Highest-priority states first
-    if (u.suspended) {
-      // Suspended takes precedence
+  static String _rewardStatusText(
+    ReferralInvitee invitee, {
+    required bool isSuspended,
+  }) {
+    if (isSuspended) {
       return 'Suspended';
     }
 
-    if (u.rewarded) {
-      // Claimed already
-      final when = _formatDate(u.rewardClaimedAt);
-      return hasAmount
-          ? (when.isNotEmpty ? 'CLAIMED $amt • $when' : 'CLAIMED $amt')
-          : (when.isNotEmpty ? 'CLAIMED • $when' : 'CLAIMED');
+    final status = invitee.status.trim();
+    final statusLabel = status.isEmpty ? '-' : status.toUpperCase();
+
+    final expiry = _formatDateString(invitee.expiresAt);
+    if (expiry.isNotEmpty && status.toLowerCase() == 'expired') {
+      return '$statusLabel • $expiry';
     }
 
-    if (u.expired) {
-      final when = _formatDate(u.expiredAt);
-      return when.isNotEmpty ? 'Expired • $when' : 'Expired';
+    final firstAction = _formatDateString(invitee.firstActionAt);
+    if (firstAction.isNotEmpty) {
+      return '$statusLabel • $firstAction';
     }
 
-    if (u.eligible) {
-      final ttl = u.expiresInDays;
-      final ttlText = ttl <= 0 ? 'Expires today' : 'Expires in ${ttl}d';
-      return hasAmount ? 'Eligible $amt • $ttlText' : 'Eligible • $ttlText';
+    final signedUp = _formatDateString(invitee.signedUpAt);
+    if (signedUp.isNotEmpty) {
+      return '$statusLabel • $signedUp';
     }
 
-    // If not eligible/expired/rewarded/suspended, show neutral/pending state
-    return hasAmount ? '$amt • Pending' : '-';
+    return statusLabel;
   }
 
-  // Formats numbers like 1,234 or 1,234.50 without requiring intl
-  static String _formatAmount(double amount) {
-    final isWhole = amount.truncateToDouble() == amount;
-    final fixed = isWhole
-        ? amount.toStringAsFixed(0)
-        : amount.toStringAsFixed(2);
-    final parts = fixed.split('.');
-    final intPart = parts[0];
-    final frac = parts.length > 1 ? parts[1] : null;
-    final intWithCommas = intPart.replaceAllMapped(
-      RegExp(r'(\d)(?=(\d{3})+(?!\d))'),
-      (m) => '${m[1]},',
-    );
-    return frac == null ? intWithCommas : '$intWithCommas.$frac';
+  static String _inviteeName(
+    ReferralInvitee invitee,
+    ReferredUser? referredUser,
+  ) {
+    if (referredUser != null) {
+      final name = '${referredUser.firstName} ${referredUser.lastInitial}'.trim();
+      if (name.isNotEmpty) return name;
+      if (referredUser.emailHint.isNotEmpty) return referredUser.emailHint;
+      if (referredUser.phoneHint.isNotEmpty) return referredUser.phoneHint;
+    }
+    return 'Invite ${invitee.inviteId}';
+  }
+
+  static String _formatDateString(String? value) {
+    if (value == null || value.isEmpty) return '';
+    final parsed = DateTime.tryParse(value);
+    if (parsed == null) return '';
+    return _formatDate(parsed);
   }
 
   static String _formatDate(DateTime? dt) {

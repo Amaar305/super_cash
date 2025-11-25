@@ -1,15 +1,104 @@
+import 'dart:io';
+import 'dart:ui' as ui;
+
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:go_router/go_router.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:shared/shared.dart';
 
 class HistoryDetailsPage extends StatelessWidget {
-  const HistoryDetailsPage({
+  HistoryDetailsPage({
     super.key,
     required this.transaction,
-  });
+  }) : _receiptKey = GlobalKey();
 
   final TransactionResponse transaction;
+  final GlobalKey _receiptKey;
+
+  Future<void> _downloadReceipt(BuildContext context) async {
+    try {
+      // Android 13+ allows writing to app directories without storage permission.
+      if (Platform.isAndroid) {
+        final sdkMatch =
+            RegExp(r'SDK (?<sdk>\d+)').firstMatch(Platform.operatingSystemVersion);
+        final sdkInt = int.tryParse(sdkMatch?.namedGroup('sdk') ?? '');
+        if (sdkInt == null || sdkInt < 33) {
+          final permissionStatus = await Permission.storage.request();
+          if (!permissionStatus.isGranted) {
+            if (context.mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Storage permission denied')),
+              );
+            }
+            return;
+          }
+        }
+      }
+
+      final boundary = _receiptKey.currentContext?.findRenderObject()
+          as RenderRepaintBoundary?;
+      if (boundary == null) return;
+
+      final ui.Image image = await boundary.toImage(pixelRatio: 3);
+      final byteData =
+          await image.toByteData(format: ui.ImageByteFormat.png);
+      if (byteData == null) return;
+
+      final directory = await getApplicationDocumentsDirectory();
+      final sanitizedReference =
+          transaction.reference.replaceAll(RegExp(r'[^a-zA-Z0-9]'), '_');
+      final filePath = '${directory.path}/receipt_$sanitizedReference.png';
+      final file = File(filePath);
+      await file.writeAsBytes(byteData.buffer.asUint8List());
+
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Receipt saved to $filePath')),
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Failed to download receipt')),
+        );
+      }
+    }
+  }
+
+  Future<void> _shareReceipt(BuildContext context) async {
+    try {
+      final boundary = _receiptKey.currentContext?.findRenderObject()
+          as RenderRepaintBoundary?;
+      if (boundary == null) return;
+
+      final ui.Image image = await boundary.toImage(pixelRatio: 3);
+      final byteData =
+          await image.toByteData(format: ui.ImageByteFormat.png);
+      if (byteData == null) return;
+
+      final directory = await getTemporaryDirectory();
+      final sanitizedReference =
+          transaction.reference.replaceAll(RegExp(r'[^a-zA-Z0-9]'), '_');
+      final filePath = '${directory.path}/receipt_$sanitizedReference.png';
+      final file = File(filePath);
+      await file.writeAsBytes(byteData.buffer.asUint8List());
+
+      await Share.shareXFiles(
+        [XFile(filePath)],
+        text: 'Receipt ${transaction.reference}',
+      );
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Failed to share receipt')),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,19 +107,28 @@ class HistoryDetailsPage extends StatelessWidget {
         title: AppAppBarTitle('Transaction Details'),
         leading: AppLeadingAppBarWidget(onTap: context.pop),
       ),
-      body: AppConstrainedScrollView(
-        padding: EdgeInsets.all(AppSpacing.lg),
-        child: Column(
-          children: [
-            HistoryDetailHeader(transaction: transaction),
-            Gap.v(AppSpacing.xlg),
-            HistoryTransactionStatusDetail(transaction: transaction),
-            Gap.v(AppSpacing.xlg),
-            TransactionDetails(transaction: transaction),
-            HistoryActionButtons(),
-            Gap.v(AppSpacing.lg),
-            HistoryReportButton()
-          ],
+      body: ColoredBox(
+        color: Colors.white,
+        child: RepaintBoundary(
+          key: _receiptKey,
+          child: AppConstrainedScrollView(
+            padding: EdgeInsets.all(AppSpacing.lg),
+            child: Column(
+              children: [
+                HistoryDetailHeader(transaction: transaction),
+                Gap.v(AppSpacing.xlg),
+                HistoryTransactionStatusDetail(transaction: transaction),
+                Gap.v(AppSpacing.xlg),
+                TransactionDetails(transaction: transaction),
+                HistoryActionButtons(
+                  onDownload: () => _downloadReceipt(context),
+                  onShare: () => _shareReceipt(context),
+                ),
+                Gap.v(AppSpacing.lg),
+                HistoryReportButton()
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -54,7 +152,12 @@ class HistoryReportButton extends StatelessWidget {
 class HistoryActionButtons extends StatelessWidget {
   const HistoryActionButtons({
     super.key,
+    required this.onDownload,
+    required this.onShare,
   });
+
+  final VoidCallback onDownload;
+  final VoidCallback onShare;
 
   @override
   Widget build(BuildContext context) {
@@ -64,13 +167,13 @@ class HistoryActionButtons extends StatelessWidget {
         Expanded(
           child: OutlineHistoryActionButton(
             title: 'Download',
-            onPressed: () {},
+            onPressed: onDownload,
           ),
         ),
         Expanded(
           child: OutlineHistoryActionButton(
             title: 'Share',
-            onPressed: () {},
+            onPressed: onShare,
           ),
         ),
       ],

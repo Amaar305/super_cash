@@ -1,5 +1,6 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:super_cash/app/app.dart';
 import 'package:super_cash/core/fonts/app_text_style.dart';
 
 class ReferralWithdrawEraningsButton extends StatelessWidget {
@@ -8,7 +9,7 @@ class ReferralWithdrawEraningsButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Tappable.faded(
-      onTap: () {},
+      onTap: () => context.goNamedSafe(RNames.bonus),
       child: Container(
         width: 159,
         height: 46,

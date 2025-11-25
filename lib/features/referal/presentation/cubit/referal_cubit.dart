@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fpdart/fpdart.dart';
 import 'package:shared/shared.dart';
 import 'package:super_cash/core/usecase/use_case.dart';
 import 'package:super_cash/features/referal/referal.dart';
@@ -31,9 +30,7 @@ class ReferalCubit extends Cubit<ReferalState> {
 
     try {
       emit(state.copyWith(status: ReferalStatus.loading, message: ''));
-
       final res = await _fetchMyReferralsUseCase(NoParam());
-
       res.fold(
         (failure) {
           emit(
@@ -47,18 +44,18 @@ class ReferalCubit extends Cubit<ReferalState> {
           emit(
             state.copyWith(
               status: ReferalStatus.success,
-              message: 'Successfully fetched user referrals.',
+              message: 'Successfully fetched referrals.',
               referralUsers: success,
             ),
           );
         },
       );
     } catch (error, stackTrace) {
-      logE('Failed to fetch user referrals $error', stackTrace: stackTrace);
+      logE('Failed to fetch referral data $error', stackTrace: stackTrace);
       emit(
         state.copyWith(
           status: ReferalStatus.failure,
-          message: 'Failed to fetch user referrals',
+          message: 'Failed to fetch referral data',
         ),
       );
     }
@@ -86,6 +83,7 @@ class ReferalCubit extends Cubit<ReferalState> {
             state.copyWith(
               status: ReferalStatus.success,
               message: 'Successfully claimed referral rewards.',
+              referralResult: success,
             ),
           );
           onSuccess?.call(success);

@@ -1,6 +1,4 @@
-
-
-class ReferralTypeModel {
+class ReferralCampaign {
   final String id;
   final int? maxReferees;
   final int conversionWindowDays;
@@ -9,7 +7,7 @@ class ReferralTypeModel {
   final ReferralTypeModelStatus status;
   final String description;
 
-  const ReferralTypeModel({
+  const ReferralCampaign({
     this.id = '',
     this.conversionWindowDays = 7,
     this.status = ReferralTypeModelStatus.active,
@@ -24,15 +22,16 @@ class ReferralTypeModel {
 
   bool get hasLimitedReferees => maxReferees != null;
 
-  factory ReferralTypeModel.fromJson(Map<String, dynamic> json) {
-    return ReferralTypeModel(
+  factory ReferralCampaign.fromJson(Map<String, dynamic> json) {
+    return ReferralCampaign(
       id: json['id'] as String? ?? '',
       maxReferees: (json['max_referees'] as num?)?.toInt(),
       conversionWindowDays:
           (json['conversion_window_days'] as num?)?.toInt() ?? 7,
-      perRefereeReward: double.tryParse((json['per_referee_reward'] as String?)??'0')?? 0,
+      perRefereeReward:
+          double.tryParse((json['per_referee_reward'] as String?) ?? '0') ?? 0,
       name: json['name'] as String? ?? '',
-      status: ReferralTypeModel._statusFromJson(json['status'] as String?),
+      status: ReferralCampaign._statusFromJson(json['status'] as String?),
       description: json['description'] as String? ?? '',
     );
   }

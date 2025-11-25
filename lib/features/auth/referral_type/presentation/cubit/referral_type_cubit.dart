@@ -101,7 +101,7 @@ class ReferralTypeCubit extends Cubit<ReferralTypeState> {
     }
   }
 
-  void onCampaignSelected(ReferralTypeModel campaign) {
+  void onCampaignSelected(ReferralCampaign campaign) {
     if (state.selectedCampaign?.id == campaign.id) return;
     emit(state.copyWith(selectedCampaign: campaign));
   }

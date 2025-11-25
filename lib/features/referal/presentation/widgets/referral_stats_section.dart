@@ -9,6 +9,17 @@ class ReferralStatsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final state = context.select((ReferalCubit element) => element.state);
+    final referralUsers = state.referralUsers;
+    final totals = state.referralResult?.referraalTotal;
+    final totalReferrals = totals?.invited ?? referralUsers.length;
+    final totalRewards = totals?.totalCollectedAmount ??
+        referralUsers
+            .fold<double>(0, (sum, user) => sum + user.rewardAmount)
+            .toStringAsFixed(2);
+    final totalActive =
+        totals?.active ?? referralUsers.where((user) => user.active).length;
+    final totalVerified = totals?.verified ??
+        referralUsers.where((user) => user.verified).length;
     return Column(
       spacing: AppSpacing.lg,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -18,11 +29,11 @@ class ReferralStatsSection extends StatelessWidget {
           children: [
             ReferralStatContainer(
               title: 'Total Referral',
-              subtitle: '(${state.totalCount})',
+              subtitle: '($totalReferrals)',
             ),
             ReferralStatContainer(
               title: 'Total Rewards',
-              subtitle: 'NGN${state.totalAmount}',
+              subtitle: 'NGN$totalRewards',
             ),
           ].map((item) => Expanded(child: item)).toList(),
         ),
@@ -31,12 +42,12 @@ class ReferralStatsSection extends StatelessWidget {
           children: [
             ReferralStatContainer(
               title: 'Active',
-              subtitle: '(${state.totalActive})',
+              subtitle: '($totalActive)',
               color: AppColors.green,
             ),
             ReferralStatContainer(
               title: 'Verified',
-              subtitle: '(${state.totalVerified})',
+              subtitle: '($totalVerified)',
               color: Color(0xff3B6AED),
             ),
           ].map((item) => Expanded(child: item)).toList(),
