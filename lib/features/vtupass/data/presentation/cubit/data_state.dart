@@ -23,7 +23,6 @@ class DataState extends Equatable {
     required this.status,
     required this.dataPlans,
     required this.selectedDataType,
-    required this.filteredPlans,
     required this.selectedIndex,
     required this.instantData,
     required this.selectedDuration,
@@ -35,7 +34,6 @@ class DataState extends Equatable {
           phone: const Phone.pure(),
           status: DataStatus.initial,
           dataPlans: const [],
-          filteredPlans: const [],
           selectedNetwork: null,
           selectedDataType: null,
           selectedIndex: null,
@@ -45,7 +43,6 @@ class DataState extends Equatable {
 
   final DataStatus status;
   final List<DataPlan> dataPlans;
-  final List<DataPlan> filteredPlans; // Display only filtered plans
 
   final Phone phone;
   final String message;
@@ -63,10 +60,17 @@ class DataState extends Equatable {
       status: status,
       dataPlans: dataPlans,
       selectedDataType: null,
-      filteredPlans: filteredPlans,
       selectedIndex: null,
       instantData: instantData,
       selectedDuration: 'all',
+    );
+  }
+
+  List<DataPlan> get filteredPlans {
+    return _filterPlans(
+      plans: dataPlans,
+      selectedType: selectedDataType,
+      duration: selectedDuration,
     );
   }
 
@@ -78,10 +82,10 @@ class DataState extends Equatable {
         selectedNetwork,
         selectedDataType,
         dataPlans,
-        filteredPlans,
         selectedIndex,
         selectedDuration,
         instantData,
+        filteredPlans,
       ];
   factory DataState.fromJson(Map<String, dynamic> json) =>
       _$DataStateFromJson(json);
@@ -90,7 +94,6 @@ class DataState extends Equatable {
   DataState copyWith({
     DataStatus? status,
     List<DataPlan>? dataPlans,
-    List<DataPlan>? filteredPlans,
     Phone? phone,
     String? message,
     String? selectedDataType,
@@ -102,7 +105,6 @@ class DataState extends Equatable {
     return DataState(
       status: status ?? this.status,
       dataPlans: dataPlans ?? this.dataPlans,
-      filteredPlans: filteredPlans ?? this.filteredPlans,
       phone: phone ?? this.phone,
       message: message ?? this.message,
       selectedDataType: selectedDataType ?? this.selectedDataType,
@@ -111,5 +113,30 @@ class DataState extends Equatable {
       selectedNetwork: selectedNetwork ?? this.selectedNetwork,
       instantData: instantData ?? this.instantData,
     );
+  }
+
+  List<DataPlan> _filterPlans({
+    required List<DataPlan> plans,
+    required String? selectedType,
+    required String? duration,
+  }) {
+    final type = selectedType?.toLowerCase();
+    final period = duration?.toLowerCase();
+
+    return plans.where((plan) {
+      final matchesType = type == null || plan.planType.toLowerCase().contains(type);
+
+      final validity = int.tryParse(plan.planValidity.split(' ').first);
+      if (period == null || period == 'all' || validity == null) return matchesType;
+
+      final matchesDuration = switch (period) {
+        'daily' => validity < 7,
+        'weekly' => validity == 7,
+        'monthly' => validity > 7 && validity <= 30,
+        _ => validity > 1,
+      };
+
+      return matchesType && matchesDuration;
+    }).toList();
   }
 }

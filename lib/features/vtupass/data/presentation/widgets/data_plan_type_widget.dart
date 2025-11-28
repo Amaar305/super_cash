@@ -62,8 +62,8 @@ class LinePlanType extends StatelessWidget {
             fontWeight: AppFontWeight.semiBold,
           ),
         ),
-        SizedBox(
-          // width: double.infinity,
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
           child: Row(
             spacing: 12,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

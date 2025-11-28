@@ -15,6 +15,7 @@ import 'package:super_cash/features/card/card.dart';
 import 'package:super_cash/features/card/card_repo/cubit/card_repo_cubit.dart';
 import 'package:super_cash/features/confirm_transaction_pin/confirm_transaction_pin.dart';
 import 'package:super_cash/features/history/history.dart';
+import 'package:super_cash/features/live_chat/live_chat.dart';
 import 'package:super_cash/features/notification/notification.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
@@ -70,7 +71,8 @@ Future<void> initDependencies() async {
       () => AuthClient(
         client: http.Client(),
         tokenRepository: serviceLocator(),
-        baseUrl: 'http://167.71.92.9/api/v1',
+        baseUrl: 'http://127.0.0.1:8000/api/v1',
+        // 'http://167.71.92.9/api/v1',
       ),
     )
     ..registerLazySingleton<DeviceRegistrar>(
@@ -106,6 +108,7 @@ Future<void> initDependencies() async {
   _cooldown();
   _confirmTransactionPin();
   _home();
+  _liveSuppors();
   _cardDollarRate();
   _airtime();
   _notifications();
@@ -127,6 +130,25 @@ Future<void> initDependencies() async {
   _referralSystem();
   _referralType();
   _bonus();
+}
+
+void _liveSuppors() {
+  // Datasource
+  serviceLocator
+    ..registerFactory<LiveChatRemoteDataSource>(
+      () => LiveChatRemoteDataSourceImpl(apiClient: serviceLocator()),
+    )
+    // Repository
+    ..registerFactory<LiveChatRepository>(
+      () => LiveChatRepositoryImpl(
+        liveChatRemoteDataSource: serviceLocator(),
+        apiErrorHandler: serviceLocator(),
+      ),
+    )
+    // Usecase
+    ..registerFactory(
+      () => FetchSupportsUseCase(liveChatRepository: serviceLocator()),
+    );
 }
 
 void _referralType() {

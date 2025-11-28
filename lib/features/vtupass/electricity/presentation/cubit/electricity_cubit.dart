@@ -30,14 +30,33 @@ class ElectricityCubit extends Cubit<ElectricityState> {
   }
 
   void onStart() async {
-    final res = await _getElectricityPlansUseCase(NoParam());
+    if (isClosed) return;
+    emit(state.copyWith(status: ElectricityStatus.loading));
+    try {
+      final res = await _getElectricityPlansUseCase(NoParam());
 
-    res.fold(
-      (l) => emit(
-        state.copyWith(status: ElectricityStatus.failure, message: l.message),
-      ),
-      (r) => emit(state.copyWith(plans: r, status: ElectricityStatus.success)),
-    );
+      if (isClosed) return;
+
+      res.fold(
+        (l) => emit(
+          state.copyWith(status: ElectricityStatus.failure, message: l.message),
+        ),
+        (r) =>
+            emit(state.copyWith(plans: r, status: ElectricityStatus.success)),
+      );
+    } catch (error, stackTrace) {
+      logE('Failed to fetch plans $error', stackTrace: stackTrace);
+      if (isClosed) return;
+      final res = await _getElectricityPlansUseCase(NoParam());
+
+      res.fold(
+        (l) => emit(
+          state.copyWith(status: ElectricityStatus.failure, message: l.message),
+        ),
+        (r) =>
+            emit(state.copyWith(plans: r, status: ElectricityStatus.success)),
+      );
+    }
   }
 
   void onPlanSelection(Electricity plan) =>
@@ -126,7 +145,8 @@ class ElectricityCubit extends Cubit<ElectricityState> {
     final phone = Phone.dirty(state.phone.value);
     final amount = Amount.dirty(state.amount.value);
     final hasPlan = state.selectedPlan != null;
-    final isFormValid = hasPlan && FormzValid([meter, phone, amount]).isFormValid;
+    final isFormValid =
+        hasPlan && FormzValid([meter, phone, amount]).isFormValid;
 
     emit(
       state.copyWith(
@@ -143,7 +163,9 @@ class ElectricityCubit extends Cubit<ElectricityState> {
     await onValidated();
   }
 
-  Future<void> onElectricityValidation({void Function(Map)? onVerified}) async {
+  Future<void> onElectricityValidation({
+    void Function(ElectricityValidationResult)? onVerified,
+  }) async {
     await validateFields(() async {
       final selectedPlan = state.selectedPlan!;
       final meterValue = state.meter.value;
@@ -164,7 +186,12 @@ class ElectricityCubit extends Cubit<ElectricityState> {
           state.copyWith(message: l.message, status: ElectricityStatus.failure),
         ),
         (r) {
-          emit(state.copyWith(status: ElectricityStatus.success));
+          emit(
+            state.copyWith(
+              status: ElectricityStatus.validated,
+              electricityValidationResult: r,
+            ),
+          );
           onVerified?.call(r);
         },
       );
@@ -206,7 +233,7 @@ class ElectricityCubit extends Cubit<ElectricityState> {
         state.copyWith(status: ElectricityStatus.failure, message: l.message),
       ),
       (r) {
-        emit(state.copyWith(status: ElectricityStatus.success));
+        emit(state.copyWith(status: ElectricityStatus.purchased, transactionResponse: r));
         onPurchased?.call(r);
       },
     );

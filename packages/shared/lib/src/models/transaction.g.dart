@@ -10,25 +10,21 @@ TransactionResponse _$TransactionResponseFromJson(Map<String, dynamic> json) =>
     TransactionResponse(
       description: json['description'] as String,
       transactionType: $enumDecodeNullable(
-            _$TransactionTypeEnumMap,
-            json['transaction_type'],
-          ) ??
+              _$TransactionTypeEnumMap, json['transaction_type'],) ??
           TransactionType.others,
       transactionStatus: $enumDecodeNullable(
-            _$TransactionStatusEnumMap,
-            json['transaction_status'],
-          ) ??
+              _$TransactionStatusEnumMap, json['transaction_status'],) ??
           TransactionStatus.pending,
       amount: json['amount'] as String,
       balanceBefore: json['balance_before'] as String,
       balanceAfter: json['balance_after'] as String,
       reference: json['reference'] as String,
       createdAt: DateTime.parse(json['created_at'] as String),
+      token: json['token'] as String?,
     );
 
 Map<String, dynamic> _$TransactionResponseToJson(
-  TransactionResponse instance,
-) =>
+        TransactionResponse instance,) =>
     <String, dynamic>{
       'description': instance.description,
       'transaction_type': _$TransactionTypeEnumMap[instance.transactionType],
@@ -38,6 +34,7 @@ Map<String, dynamic> _$TransactionResponseToJson(
       'balance_before': instance.balanceBefore,
       'balance_after': instance.balanceAfter,
       'reference': instance.reference,
+      'token': instance.token,
       'created_at': instance.createdAt.toIso8601String(),
     };
 

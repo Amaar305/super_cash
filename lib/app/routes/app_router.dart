@@ -346,6 +346,11 @@ class AppRouter {
                     path: 'manage-transaction-pin',
                     builder: (_, __) => ManageTransactionPinPage(),
                   ),
+                  GoRoute(
+                    name: RNames.accountDeletion,
+                    path: 'account/delete',
+                    builder: (_, __) => AccountDeletionPage(),
+                  ),
                 ],
               ),
             ],

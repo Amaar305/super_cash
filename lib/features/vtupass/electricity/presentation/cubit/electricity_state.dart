@@ -5,11 +5,15 @@ enum ElectricityStatus {
   initial,
   loading,
   success,
+  validated,
+  purchased,
   failure;
 
   bool get isError => this == ElectricityStatus.failure;
   bool get isSucsess => this == ElectricityStatus.success;
   bool get isLoading => this == ElectricityStatus.loading;
+  bool get isPurchased => this == ElectricityStatus.purchased;
+  bool get isValidated => this == ElectricityStatus.validated;
 }
 
 class ElectricityState extends Equatable {
@@ -17,8 +21,10 @@ class ElectricityState extends Equatable {
   final ElectricityPlan plans;
   final Amount amount;
   final Decoder meter;
+  final TransactionResponse? transactionResponse;
   final Phone phone;
   final Electricity? selectedPlan;
+  final ElectricityValidationResult? electricityValidationResult;
   final String message;
   final bool prepaid;
 
@@ -31,30 +37,34 @@ class ElectricityState extends Equatable {
     required this.selectedPlan,
     required this.message,
     required this.prepaid,
+    this.electricityValidationResult,
+    this.transactionResponse,
   });
 
   const ElectricityState.initial()
-      : this._(
-          status: ElectricityStatus.initial,
-          plans: const ElectricityPlan.initial(),
-          amount: const Amount.pure(),
-          meter: const Decoder.pure(),
-          phone: const Phone.pure(),
-          selectedPlan: null,
-          message: '',
-          prepaid: true,
-        );
+    : this._(
+        status: ElectricityStatus.initial,
+        plans: const ElectricityPlan.initial(),
+        amount: const Amount.pure(),
+        meter: const Decoder.pure(),
+        phone: const Phone.pure(),
+        selectedPlan: null,
+        message: '',
+        prepaid: true,
+      );
   @override
   List<Object?> get props => [
-        status,
-        plans,
-        amount,
-        meter,
-        phone,
-        selectedPlan,
-        message,
-        prepaid,
-      ];
+    status,
+    plans,
+    amount,
+    meter,
+    phone,
+    selectedPlan,
+    message,
+    prepaid,
+    electricityValidationResult,
+    transactionResponse,
+  ];
 
   ElectricityState copyWith({
     ElectricityStatus? status,
@@ -63,8 +73,10 @@ class ElectricityState extends Equatable {
     Decoder? meter,
     Phone? phone,
     Electricity? selectedPlan,
+    ElectricityValidationResult? electricityValidationResult,
     String? message,
     bool? prepaid,
+    TransactionResponse?  transactionResponse,
   }) {
     return ElectricityState._(
       status: status ?? this.status,
@@ -75,6 +87,9 @@ class ElectricityState extends Equatable {
       selectedPlan: selectedPlan ?? this.selectedPlan,
       message: message ?? this.message,
       prepaid: prepaid ?? this.prepaid,
+      electricityValidationResult:
+          electricityValidationResult ?? this.electricityValidationResult,
+           transactionResponse: transactionResponse??this.transactionResponse,
     );
   }
 }

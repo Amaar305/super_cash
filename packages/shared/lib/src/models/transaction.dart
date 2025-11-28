@@ -15,6 +15,8 @@ class TransactionResponse {
     required this.balanceAfter,
     required this.reference,
     required this.createdAt,
+    this.token,
+    
   });
 
   factory TransactionResponse.fromJson(Map<String, dynamic> json) =>
@@ -30,6 +32,8 @@ class TransactionResponse {
   @JsonKey(name: 'balance_after')
   final String balanceAfter;
   final String reference;
+
+  final String? token;
 
   @JsonKey(name: 'created_at')
   final DateTime createdAt;

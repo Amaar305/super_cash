@@ -15,9 +15,6 @@ DataState _$DataStateFromJson(Map<String, dynamic> json) => DataState(
           .map((e) => DataPlan.fromJson(e as Map<String, dynamic>))
           .toList(),
       selectedDataType: json['selectedDataType'] as String?,
-      filteredPlans: (json['filteredPlans'] as List<dynamic>)
-          .map((e) => DataPlan.fromJson(e as Map<String, dynamic>))
-          .toList(),
       selectedIndex: (json['selectedIndex'] as num?)?.toInt(),
       instantData: json['instantData'] as bool,
       selectedDuration: json['selectedDuration'] as String?,
@@ -26,7 +23,6 @@ DataState _$DataStateFromJson(Map<String, dynamic> json) => DataState(
 Map<String, dynamic> _$DataStateToJson(DataState instance) => <String, dynamic>{
       'status': _$DataStatusEnumMap[instance.status]!,
       'dataPlans': instance.dataPlans,
-      'filteredPlans': instance.filteredPlans,
       'phone': instance.phone,
       'message': instance.message,
       'selectedDataType': instance.selectedDataType,

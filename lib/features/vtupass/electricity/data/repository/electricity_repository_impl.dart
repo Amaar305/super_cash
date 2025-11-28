@@ -49,7 +49,7 @@ class ElectricityRepositoryImpl implements ElectricityRepository {
   }
 
   @override
-  Future<Either<Failure, Map>> validatePlan({
+  Future<Either<Failure, ElectricityValidationResult>> validatePlan({
     required String billersCode,
     required String serviceID,
     required String type,

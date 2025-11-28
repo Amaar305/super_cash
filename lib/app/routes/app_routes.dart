@@ -13,6 +13,7 @@ class AppRoutes {
   static const String profile = '/profile';
   static const String profileDetails = '$profile/profile-details';
   static const String manageTransactionPin = '$profile/manage-transaction-pin';
+  static const String accountDeletion = '$profile/account/delete';
   static const String settings = '/settings';
   static const String notifications = '/notifications';
   static const String notFound = '/404';
@@ -97,4 +98,5 @@ class RNames {
   static const String generateAccount = 'generateAccount';
   static const String transfer = 'transfer';
   static const String bonus = 'bonus';
+  static const String accountDeletion= 'accountDeletion';
 }

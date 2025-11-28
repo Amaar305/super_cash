@@ -134,6 +134,75 @@ extension DialogExtension on BuildContext {
     );
   }
 
+  /// Shows a standard failure bottom sheet with retry/back actions.
+  Future<T?> showFailureBottomSheet<T>({
+    String title = 'Transaction failed',
+    String? message,
+    Widget? details,
+    String primaryLabel = 'Retry',
+    VoidCallback? onPrimary,
+    String secondaryLabel = 'Go Back',
+    VoidCallback? onSecondary,
+    bool dismissible = true,
+  }) {
+    return showModalBottomSheet<T>(
+      context: this,
+      isDismissible: dismissible,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(24),
+          topRight: Radius.circular(24),
+        ),
+      ),
+      builder: (sheetContext) {
+        return SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            spacing: AppSpacing.md,
+            children: [
+              const Icon(
+                Icons.error_outline,
+                color: AppColors.red,
+                size: AppSpacing.xxxlg,
+              ),
+              Text(title, style: sheetContext.titleMedium),
+              if (message != null && message.isNotEmpty)
+                Text(
+                  message,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: AppColors.emphasizeGrey,
+                    fontSize: 13,
+                  ),
+                ),
+              if (details != null) details,
+              PrimaryButton(
+                label: primaryLabel,
+                onPressed: () {
+                  sheetContext.pop();
+                  onPrimary?.call();
+                },
+              ),
+              SizedBox(
+                width: double.infinity,
+                child: AppOutlinedButton(
+                  isLoading: false,
+                  label: secondaryLabel,
+                  onPressed: () {
+                    sheetContext.pop();
+                    onSecondary?.call();
+                  },
+                ),
+              ),
+              const Gap.v(AppSpacing.spaceUnit),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   /// Shows the bottom sheet for saving beneficiiary with the confirmation
   ///  of the `action`.
   Future<bool?> showBeneficiaryConfirmationBottomSheet({

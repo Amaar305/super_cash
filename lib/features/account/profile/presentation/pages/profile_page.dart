@@ -86,6 +86,7 @@ class ProfileView extends StatelessWidget {
                     NewWidget(
                       label: AppStrings.deleteAccount,
                       icon: Iconsax.user_add,
+                      onTap: () => context.goNamedSafe(RNames.accountDeletion),
                     ),
                   ],
                 ),

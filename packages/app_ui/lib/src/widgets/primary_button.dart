@@ -11,12 +11,14 @@ class PrimaryButton extends StatelessWidget {
     super.key,
     this.onPressed,
     this.child,
+    this.backgroundColor,
   });
 
   final bool isLoading;
   final String label;
   final VoidCallback? onPressed;
   final Widget? child;
+  final Color? backgroundColor;
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +29,7 @@ class PrimaryButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
         ),
       ),
+      backgroundColor: WidgetStatePropertyAll(backgroundColor),
     );
 
     final childWidget = switch (isLoading) {
@@ -45,7 +48,7 @@ class PrimaryButton extends StatelessWidget {
           loading: true,
           textStyle: GoogleFonts.exo(color: AppColors.white),
           style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.primary2,
+            backgroundColor: backgroundColor ?? AppColors.primary2,
             fixedSize: const Size.fromHeight(50),
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(12)),

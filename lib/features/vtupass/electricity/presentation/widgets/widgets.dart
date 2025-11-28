@@ -6,3 +6,4 @@ export 'electricity_meter_number_field.dart';
 export 'electricity_plan_dropdown.dart';
 export 'electricity_phone_field.dart';
 export 'electricity_type_tab.dart';
+export 'electricity_validation_summary.dart';

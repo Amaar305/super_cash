@@ -7,3 +7,4 @@ export 'card_transaction_fee_text_widget.dart';
 export 'loader.dart';
 export 'transaction_tile.dart';
 export 'field_label_title.dart';
+export 'validation_summary_container.dart';

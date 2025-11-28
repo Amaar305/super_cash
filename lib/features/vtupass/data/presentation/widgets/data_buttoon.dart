@@ -23,12 +23,16 @@ class DataButton extends StatelessWidget {
     final selectedPlanIndex = context.select(
       (DataCubit cubit) => cubit.state.selectedIndex,
     );
-    final phone = context.select((DataCubit cubit) => cubit.state.phone.value);
+    final phoneState = context.select((DataCubit cubit) => cubit.state.phone);
+    final phone = phoneState.value;
 
     return PrimaryButton(
       label: AppStrings.proceed,
       isLoading: isLoading,
-      onPressed: selectedPlanIndex == null || selectedNetwork == null
+      onPressed:
+          selectedPlanIndex == null ||
+              selectedNetwork == null ||
+              !phoneState.valid
           ? null
           : () async {
               final plan = context
@@ -48,12 +52,12 @@ class DataButton extends StatelessWidget {
 
               if (result != null && result && context.mounted) {
                 context.read<DataCubit>().onBuyData((res) {
-                  context.showBeneficiaryConfirmationBottomSheet(
-                    title: 'Airtime Purchase Successful!',
+                  context.showConfirmationBottomSheet(
+                    title: 'Data Purchase Successful!',
                     okText: 'Done',
                     description: res.description,
                     cancelText: 'Cancel',
-                    onSaved: () {},
+                    // onSaved: () {},
                   );
                 });
               }

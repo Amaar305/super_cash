@@ -2,10 +2,11 @@ import 'dart:convert';
 
 import 'package:app_client/app_client.dart';
 import 'package:shared/shared.dart';
+import '../models/electricity_validation_result.dart';
 
 abstract class ElectricityRemoteDataSource {
   Future<ElectricityPlan> getPlans();
-  Future<Map> validatePlan({
+  Future<ElectricityValidationResult> validatePlan({
     required String billersCode,
     required String serviceID,
     required String type,
@@ -41,7 +42,7 @@ class ElectricityRemoteDataSourceImpl implements ElectricityRemoteDataSource {
     });
     final response = await authClient.request(
       method: 'POST',
-      path: 'vtu/electricity-purrchase/',
+      path: 'vtu/electricity-purchase/',
       body: body,
     );
 
@@ -61,7 +62,7 @@ class ElectricityRemoteDataSourceImpl implements ElectricityRemoteDataSource {
   }
 
   @override
-  Future<Map> validatePlan({
+  Future<ElectricityValidationResult> validatePlan({
     required String billersCode,
     required String serviceID,
     required String type,
@@ -77,8 +78,8 @@ class ElectricityRemoteDataSourceImpl implements ElectricityRemoteDataSource {
       body: body,
     );
 
-    Map<String, dynamic> res = jsonDecode(response.body);
-
-    return res;
+    final Map<String, dynamic> res = jsonDecode(response.body);
+    logD(res);
+    return ElectricityValidationResult.fromJson(res);
   }
 }

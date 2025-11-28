@@ -4,13 +4,13 @@ import 'package:super_cash/features/vtupass/vtupass.dart';
 import 'package:fpdart/fpdart.dart';
 
 class ValidateElectricityPlanUseCase
-    implements UseCase<Map, ValidateElectricityPlanParams> {
+    implements UseCase<ElectricityValidationResult, ValidateElectricityPlanParams> {
   final ElectricityRepository electricityRepository;
 
   ValidateElectricityPlanUseCase({required this.electricityRepository});
 
   @override
-  Future<Either<Failure, Map>> call(ValidateElectricityPlanParams param) async {
+  Future<Either<Failure, ElectricityValidationResult>> call(ValidateElectricityPlanParams param) async {
     return await electricityRepository.validatePlan(
       billersCode: param.billersCode,
       serviceID: param.serviceID,

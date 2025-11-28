@@ -1,3 +1,4 @@
+export 'account_deletion/account_deletion.dart';
 export 'change_transaction_pin/change_transaction_pin.dart';
 export 'manage_transaction_pin/manage_transaction_pin.dart';
 export 'profile/profile.dart';

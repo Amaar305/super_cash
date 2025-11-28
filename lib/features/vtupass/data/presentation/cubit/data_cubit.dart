@@ -42,7 +42,6 @@ class DataCubit extends Cubit<DataState> {
         (r) {
           emit(
             state.copyWith(
-              filteredPlans: r.plans,
               dataPlans: r.plans,
               status: DataStatus.success,
               selectedNetwork: network,
@@ -83,7 +82,6 @@ class DataCubit extends Cubit<DataState> {
         emit(
           state.copyWith(
             dataPlans: r.plans,
-            filteredPlans: r.plans,
             status: DataStatus.success,
             selectedNetwork: network,
             selectedDataType: r.plans.firstOrNull?.planType,
@@ -125,21 +123,7 @@ class DataCubit extends Cubit<DataState> {
     }
     if (dataType == null) return;
 
-    try {
-      final plans = List<DataPlan>.from(state.dataPlans);
-
-      final results = plans.where((element) {
-        return element.planType.toLowerCase().contains(dataType);
-      }).toList();
-      emit(state.copyWith(filteredPlans: results, selectedDataType: dataType));
-    } catch (e) {
-      emit(
-        state.copyWith(
-          status: DataStatus.failure,
-          message: 'Fail to filter plans by plan data type',
-        ),
-      );
-    }
+    emit(state.copyWith(selectedDataType: dataType));
   }
 
   void onPlanSelected(int index) {
@@ -149,37 +133,12 @@ class DataCubit extends Cubit<DataState> {
   }
 
   void onDurationChanged(String? duration) {
-    if (state.selectedDataType?.toLowerCase() == duration?.toLowerCase()) {
+    if (state.selectedDuration?.toLowerCase() == duration?.toLowerCase()) {
       return;
     }
     if (duration == null) return;
 
-    List<DataPlan> results = [];
-
-    try {
-      final plans = List<DataPlan>.from(state.dataPlans);
-
-      duration = duration.toLowerCase();
-
-      results = plans.where((element) {
-        final validity = element.planValidity.split(' ').first;
-        final conditions = switch (duration) {
-          'daily' => int.parse(validity) < 7,
-          'weekly' => int.parse(validity) == 7,
-          'monthly' => int.parse(validity) > 7 && int.parse(validity) <= 30,
-          _ => int.parse(validity) > 1,
-        };
-        return conditions;
-      }).toList();
-      emit(state.copyWith(filteredPlans: results, selectedDuration: duration));
-    } catch (e) {
-      emit(
-        state.copyWith(
-          status: DataStatus.failure,
-          message: 'Fail to filter plans by plan duration',
-        ),
-      );
-    }
+    emit(state.copyWith(selectedDuration: duration.toLowerCase()));
   }
 
   void onBuyData([void Function(TransactionResponse)? onSuccess]) async {
