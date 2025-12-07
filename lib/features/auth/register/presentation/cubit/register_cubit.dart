@@ -304,8 +304,14 @@ class RegisterCubit extends Cubit<RegisterState> {
         state.copyWith(status: RegisterStatus.error, errorMessage: l.message),
       ),
       (r) {
-        emit(state.copyWith(status: RegisterStatus.success, user: r));
-        onSuccess?.call(r);
+        emit(
+          state.copyWith(
+            status: RegisterStatus.success,
+            user: r.user,
+            errorMessage: r.message,
+          ),
+        );
+        onSuccess?.call(r.user);
       },
     );
   }

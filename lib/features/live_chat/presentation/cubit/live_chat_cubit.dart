@@ -11,9 +11,11 @@ class LiveChatCubit extends HydratedCubit<LiveChatState> {
     : _fetchSupportsUseCase = fetchSupportsUseCase,
       super(LiveChatState.initial());
 
-  Future<void> fetchSupports() async {
+  Future<void> fetchSupports({bool forceRefresh = false}) async {
     if (isClosed) return;
-    if (state.channels.isNotEmpty && state.status == LiveChatStatus.success) {
+    if (state.channels.isNotEmpty &&
+        state.status == LiveChatStatus.success &&
+        !forceRefresh) {
       return;
     }
 

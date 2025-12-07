@@ -1,16 +1,15 @@
-import 'package:shared/shared.dart';
 import 'package:super_cash/core/error/failure.dart';
 import 'package:super_cash/core/usecase/use_case.dart';
 import 'package:fpdart/fpdart.dart';
 
 import '../domain.dart';
 
-class RegisterUseCase implements UseCase<AppUser, RegisterParam> {
+class RegisterUseCase implements UseCase<AuthResponse, RegisterParam> {
   final RegisterRepository registerRepository;
 
   RegisterUseCase({required this.registerRepository});
   @override
-  Future<Either<Failure, AppUser>> call(RegisterParam param) async {
+  Future<Either<Failure, AuthResponse>> call(RegisterParam param) async {
     return await registerRepository.register(
       email: param.email,
       phone: param.phone,

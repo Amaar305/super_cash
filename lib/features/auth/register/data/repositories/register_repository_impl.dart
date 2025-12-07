@@ -1,4 +1,3 @@
-import 'package:shared/shared.dart';
 import 'package:super_cash/core/error/failure.dart';
 
 import 'package:fpdart/fpdart.dart';
@@ -21,7 +20,7 @@ class RegisterRepositoryImpl implements RegisterRepository {
   });
 
   @override
-  Future<Either<Failure, AppUser>> register({
+  Future<Either<Failure, AuthResponse>> register({
     required String email,
     required String phone,
     required String firstName,
@@ -31,7 +30,7 @@ class RegisterRepositoryImpl implements RegisterRepository {
     required String? referral,
   }) async {
     try {
-      final user = await registerRemoteDataSource.register(
+      final result = await registerRemoteDataSource.register(
         email: email,
         phone: phone,
         firstName: firstName,
@@ -40,12 +39,13 @@ class RegisterRepositoryImpl implements RegisterRepository {
         confirmPassword: confirmPassword,
         referral: referral,
       );
+      final user = result.user;
       tokenRepository
         ..saveAccessToken(user.tokens!.access)
         ..saveRefreshToken(user.tokens!.refresh);
 
       await loginLocalDataSource.persistUser(user);
-      return right(user);
+      return right(result);
     } on ServerException catch (e) {
       return left(Failure(e.message));
     }

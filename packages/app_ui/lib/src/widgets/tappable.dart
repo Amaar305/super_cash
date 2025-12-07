@@ -641,6 +641,7 @@ class _ThrottledButtonState extends State<ThrottledButton> {
   late Throttler _throttler;
 
   late ValueNotifier<bool> _isThrottled;
+  Timer? _resetThrottleTimer;
 
   @override
   void initState() {
@@ -651,6 +652,7 @@ class _ThrottledButtonState extends State<ThrottledButton> {
 
   @override
   void dispose() {
+    _resetThrottleTimer?.cancel();
     _throttler.dispose();
     _isThrottled.dispose();
     super.dispose();
@@ -668,13 +670,17 @@ class _ThrottledButtonState extends State<ThrottledButton> {
                   () {
                     _isThrottled.value = true;
                     widget.onTap?.call();
-                    Future<void>.delayed(
+                    _resetThrottleTimer?.cancel();
+                    _resetThrottleTimer = Timer(
                       Duration(
                         milliseconds: widget.throttleDuration ??
                             _throttler.milliseconds ??
                             350,
                       ),
-                      () => _isThrottled.value = false,
+                      () {
+                        if (!mounted) return;
+                        _isThrottled.value = false;
+                      },
                     );
                   },
                 );

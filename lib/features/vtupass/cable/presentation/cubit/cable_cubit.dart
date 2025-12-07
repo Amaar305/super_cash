@@ -24,7 +24,11 @@ class CableCubit extends Cubit<CableState> {
     if (state.selectedProvider == provider) return;
 
     emit(
-      state.copyWith(selectedProvider: provider, status: CableStatus.loading),
+      state.copyWith(
+        selectedProvider: provider,
+        status: CableStatus.loading,
+        forcePlanD: true,
+      ),
     );
 
     final res = await _fetchCablePlanUseCase(
@@ -151,7 +155,7 @@ class CableCubit extends Cubit<CableState> {
 
       res.fold(
         (l) {
-          emit(state.copyWith(status: CableStatus.loading, message: l.message));
+          emit(state.copyWith(status: CableStatus.failure, message: l.message));
         },
         (r) {
           emit(state.copyWith(status: CableStatus.success));
@@ -166,8 +170,7 @@ class CableCubit extends Cubit<CableState> {
   void onPlanSection(Map<String, dynamic> plan) =>
       emit(state.copyWith(plan: plan));
   void onValidateCable({
-    // Map? plan,
-    Function(Map)? onVerified,
+    void Function(Map<String, dynamic> result)? onVerified,
   }) async {
     // final amount = Amount.dirty(state.amount.value);
     final phone = Phone.dirty(state.phone.value);
@@ -175,7 +178,7 @@ class CableCubit extends Cubit<CableState> {
     final plan = state.plan;
     final provider = state.selectedProvider;
 
-    final isFormValid = FormzValid([phone]).isFormValid;
+    final isFormValid = FormzValid([phone, decoder]).isFormValid;
 
     if (plan == null) {
       final newState = state.copyWith(
@@ -214,10 +217,10 @@ class CableCubit extends Cubit<CableState> {
 
     res.fold(
       (l) =>
-          emit(state.copyWith(status: CableStatus.loading, message: l.message)),
+          emit(state.copyWith(status: CableStatus.failure, message: l.message)),
       (r) {
         emit(state.copyWith(status: CableStatus.validated));
-        onVerified?.call(r);
+        onVerified?.call(Map.from(r));
       },
     );
 

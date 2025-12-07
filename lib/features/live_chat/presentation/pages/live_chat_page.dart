@@ -29,9 +29,13 @@ class LiveChatView extends StatelessWidget {
         title: const AppAppBarTitle('Chat With Us'),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(AppSpacing.lg),
-        child: LiveChatListView(),
+      body: RefreshIndicator.adaptive(
+        onRefresh: () =>
+            context.read<LiveChatCubit>().fetchSupports(forceRefresh: true),
+        child: Padding(
+          padding: const EdgeInsets.all(AppSpacing.lg),
+          child: LiveChatListView(),
+        ),
       ),
     );
   }

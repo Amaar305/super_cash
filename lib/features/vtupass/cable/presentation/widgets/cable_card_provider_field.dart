@@ -45,7 +45,6 @@ class _CableCardProviderFieldState extends State<CableCardProviderField> {
       ],
     );
   }
-
   void _showCablePlansSheet(BuildContext context, List plans) {
     context.showExtraBottomSheet(
       title: 'Select Cable Provider',
@@ -56,7 +55,7 @@ class _CableCardProviderFieldState extends State<CableCardProviderField> {
               onTap: () {
                 _cubit.onPlanSection(plan);
                 context.pop();
-                // Navigator.of(context, rootNavigator: true).pop();
+               
               },
             ),
           )

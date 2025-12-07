@@ -4,9 +4,10 @@ import 'package:app_client/app_client.dart';
 import 'package:super_cash/core/device/device_info.dart';
 import 'package:super_cash/core/error/exception.dart';
 import 'package:shared/shared.dart';
+import 'package:super_cash/features/auth/register/register.dart';
 
 abstract interface class RegisterRemoteDataSource {
-  Future<AppUser> register({
+  Future<AuthResponse> register({
     required String email,
     required String phone,
     required String firstName,
@@ -26,7 +27,7 @@ class RegisterRemoteDataSourceImpl implements RegisterRemoteDataSource {
     required this.fingerprint,
   });
   @override
-  Future<AppUser> register({
+  Future<AuthResponse> register({
     required String email,
     required String phone,
     required String firstName,
@@ -55,7 +56,10 @@ class RegisterRemoteDataSourceImpl implements RegisterRemoteDataSource {
 
       final decoded = jsonDecode(res.body);
       if (decoded is Map<String, dynamic>) {
-        return AppUser.fromMap(decoded);
+        return AuthResponse(
+          user: AppUser.fromMap(decoded),
+          message: decoded['message']?.toString(),
+        );
       }
 
       throw ServerException('Unexpected response format.');

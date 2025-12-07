@@ -41,30 +41,30 @@ class CableState extends Equatable {
   });
 
   const CableState.initial()
-      : this._(
-          status: CableStatus.initial,
-          message: '',
-          cardProvider: '',
-          phone: const Phone.pure(),
-          cardNumber: const Decoder.pure(),
-          amount: const Amount.pure(),
-          selectedProvider: null,
-          plans: null,
-          plan: null,
-        );
+    : this._(
+        status: CableStatus.initial,
+        message: '',
+        cardProvider: '',
+        phone: const Phone.pure(),
+        cardNumber: const Decoder.pure(),
+        amount: const Amount.pure(),
+        selectedProvider: null,
+        plans: null,
+        plan: null,
+      );
 
   @override
   List<Object?> get props => [
-        status,
-        message,
-        cardProvider,
-        phone,
-        cardNumber,
-        amount,
-        selectedProvider,
-        plans,
-        plan,
-      ];
+    status,
+    message,
+    cardProvider,
+    phone,
+    cardNumber,
+    amount,
+    selectedProvider,
+    plans,
+    plan,
+  ];
 
   CableState copyWith({
     CableStatus? status,
@@ -76,6 +76,7 @@ class CableState extends Equatable {
     Amount? amount,
     Map? plans,
     Map? plan,
+    bool forcePlanD=false,
   }) {
     return CableState._(
       status: status ?? this.status,
@@ -86,7 +87,7 @@ class CableState extends Equatable {
       cardNumber: cardNumber ?? this.cardNumber,
       amount: amount ?? this.amount,
       plans: plans ?? this.plans,
-      plan: plan ?? this.plan,
+      plan: forcePlanD ? null : plan ?? this.plan,
     );
   }
 }

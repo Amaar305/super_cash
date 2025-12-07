@@ -19,7 +19,7 @@ abstract interface class CableRemoteDataSource {
 class CableRemoteDataSourceImpl implements CableRemoteDataSource {
   final AuthClient authClient;
 
- const CableRemoteDataSourceImpl({required this.authClient});
+  const CableRemoteDataSourceImpl({required this.authClient});
   @override
   Future<Map> buyCable({
     required String provider,
@@ -28,7 +28,7 @@ class CableRemoteDataSourceImpl implements CableRemoteDataSource {
     required String phone,
   }) async {
     final body = jsonEncode({
-      "provider": provider,
+      "provider": provider.toLowerCase(),
       "variation_code": variationCode,
       "phone": phone,
       "smartcard_number": smartcardNumber,
@@ -65,9 +65,10 @@ class CableRemoteDataSourceImpl implements CableRemoteDataSource {
     required String smartcardNumber,
   }) async {
     final body = jsonEncode({
-      "provider": provider,
+      "provider": provider.toLowerCase(),
       "smartcard_number": smartcardNumber,
     });
+
     final response = await authClient.request(
       method: 'POST',
       path: 'vtu/cable-verification/',
@@ -77,6 +78,8 @@ class CableRemoteDataSourceImpl implements CableRemoteDataSource {
     // flutter: {phone: [Ensure this field has no more than 11 characters.]}
 
     Map res = jsonDecode(response.body);
+
+    // logD(res);
 
     return res;
   }

@@ -46,12 +46,13 @@ class _RegisterFormState extends State<RegisterForm> {
           final displayName = sanitizedFullName.isNotEmpty
               ? sanitizedFullName
               : 'there';
-
+          final message = state.errorMessage;
           context.showConfirmationBottomSheet(
             title: 'Congratulations, $displayName!',
             okText: AppStrings.proceed,
-            description:
-                'Your account has been created successfully. Tap below to continue.',
+            description: message.isNotEmpty
+                ? message
+                : 'Your account has been created successfully. Tap below to continue.',
             onDone: () {
               context.pop();
               context.read<AppCubit>().referralType();
