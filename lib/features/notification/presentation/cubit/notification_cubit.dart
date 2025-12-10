@@ -17,6 +17,12 @@ class NotificationCubit extends Cubit<NotificationState> {
        _updateNotificationUseCase = updateNotificationUseCase,
        super(NotificationState.initial());
 
+  void showRecent(bool showRecent) {
+    if (showRecent == state.recent) return;
+
+    emit(state.copyWith(recent: showRecent));
+  }
+
   Future<void> fetchInitialNotification() async {
     if (isClosed) return;
 

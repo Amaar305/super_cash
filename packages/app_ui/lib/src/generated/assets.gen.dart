@@ -381,6 +381,18 @@ class $AssetsImagesGen {
   /// File path: assets/images/netflix.png
   AssetGenImage get netflix => const AssetGenImage('assets/images/netflix.png');
 
+  /// File path: assets/images/onboarding1.png
+  AssetGenImage get onboarding1 =>
+      const AssetGenImage('assets/images/onboarding1.png');
+
+  /// File path: assets/images/onboarding2.png
+  AssetGenImage get onboarding2 =>
+      const AssetGenImage('assets/images/onboarding2.png');
+
+  /// File path: assets/images/onboarding3.png
+  AssetGenImage get onboarding3 =>
+      const AssetGenImage('assets/images/onboarding3.png');
+
   /// File path: assets/images/pattern3.jpg
   AssetGenImage get pattern3 =>
       const AssetGenImage('assets/images/pattern3.jpg');
@@ -479,6 +491,9 @@ class $AssetsImagesGen {
         nabteb,
         neco,
         netflix,
+        onboarding1,
+        onboarding2,
+        onboarding3,
         pattern3,
         pattern5,
         placeholder,

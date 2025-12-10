@@ -17,6 +17,7 @@ class HomeScrollText extends StatelessWidget {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(AppSpacing.sm),
+      margin: EdgeInsets.only(bottom: 8),
       height: 36,
       decoration: BoxDecoration(
         color: AppColors.blue.withValues(alpha: 0.1),

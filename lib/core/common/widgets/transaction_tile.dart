@@ -72,36 +72,37 @@ class TransactionTile extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            width: 58,
+            width: 50,
             height: 48,
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: transactionGradient,
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
+              // gradient: LinearGradient(
+              //   colors: transactionGradient,
+              //   begin: Alignment.topLeft,
+              //   end: Alignment.bottomRight,
+              // ),
+              color: AppColors.black.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(AppSpacing.lg),
-              boxShadow: [
-                BoxShadow(
-                  color: transactionGradient.last.withValues(alpha:0.35),
-                  blurRadius: 12,
-                  offset: const Offset(0, 6),
-                ),
-              ],
+              // boxShadow: [
+              //   BoxShadow(
+              //     color: transactionGradient.last.withValues(alpha:0.35),
+              //     blurRadius: 12,
+              //     offset: const Offset(0, 6),
+              //   ),
+              // ],
             ),
             child: Center(
               child: Container(
                 padding: const EdgeInsets.all(AppSpacing.xs),
                 decoration: BoxDecoration(
-                  color: AppColors.white.withValues(alpha:0.14),
+                  color: AppColors.white.withValues(alpha: 0.14),
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: AppColors.white.withValues(alpha:0.18),
+                    color: AppColors.white.withValues(alpha: 0.18),
                   ),
                 ),
                 child: transactionIcon.svg(
-                  width: 22,
-                  height: 22,
+                  width: 18,
+                  height: 18,
                   colorFilter: const ColorFilter.mode(
                     AppColors.white,
                     BlendMode.srcIn,

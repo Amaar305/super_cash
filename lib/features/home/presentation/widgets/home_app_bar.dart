@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app_ui/app_ui.dart';
 import 'package:super_cash/app/app.dart';
+import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/core/fonts/app_text_style.dart';
 import 'package:super_cash/features/home/home.dart';
 
@@ -102,7 +103,7 @@ void _showSideMenu(BuildContext context) {
               onClose: () => Navigator.of(dialogContext).pop(),
               onLogout: () {
                 Navigator.of(dialogContext).pop();
-                dialogContext.read<HomeCubit>().onLogout();
+                dialogContext.read<AppCubit>().logout();
               },
             ),
           ),
@@ -219,11 +220,9 @@ class _SideMenu extends StatelessWidget {
                   color: AppColors.red,
                   size: 22,
                 ),
-                onTap: () {
-                  onLogout();
-                },
+                onTap: onLogout,
               ),
-              onTap: () {},
+              onTap: onLogout,
               accentColor: AppColors.red.shade50,
               textColor: AppColors.red.shade700,
             ),

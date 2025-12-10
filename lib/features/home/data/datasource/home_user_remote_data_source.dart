@@ -49,6 +49,7 @@ class HomeUserRemoteDataSourceImpl implements HomeUserRemoteDataSource {
     );
 
     final decoded = jsonDecode(response.body);
+    logD(decoded);
     if (decoded is Map<String, dynamic>) {
       if (decoded['data'] is Map<String, dynamic>) {
         return HomeSettings.fromJson(decoded['data'] as Map<String, dynamic>);

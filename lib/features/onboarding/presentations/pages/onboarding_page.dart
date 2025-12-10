@@ -29,19 +29,19 @@ class _OnboardingViewState extends State<OnboardingView> {
       title: AppStrings.appName,
       description:
           'Welcome to ${AppStrings.appName} App.\nEnjoy seamless features and fast transactions at a very user friendly cost',
-      image: Assets.images.appLogo.image(),
+      image: Assets.images.onboarding1.image(fit: BoxFit.cover),
     ),
     OnboardingData(
       title: 'Super Fast Transaction',
       description:
-          'Welcome to ${AppStrings.appName} App.\nEnjoy seamless features and fast transactions at a very user friendly cost',
-      image: Assets.images.appLogo.image(),
+          'Send and receive money instantly with secure, lightning-fast processing anytime, anywhere.',
+      image: Assets.images.onboarding2.image(fit: BoxFit.cover),
     ),
     OnboardingData(
       title: 'Super Earn',
       description:
           'Welcome to ${AppStrings.appName} App.\nEnjoy seamless features and fast transactions at a very user friendly cost',
-      image: Assets.images.appLogo.image(),
+      image: Assets.images.onboarding3.image(fit: BoxFit.cover),
     ),
   ];
   int currentIndex = 0;

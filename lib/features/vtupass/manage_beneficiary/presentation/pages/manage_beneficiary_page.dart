@@ -14,7 +14,8 @@ class ManageBeneficiaryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
-      value: serviceLocator<ManageBeneficiaryCubit>(),
+      value: serviceLocator<ManageBeneficiaryCubit>()
+        ..fetchBeneficiaries(forceReload: true),
       child: ManageBeneficiaryView(fromBeneficiary: fromBeneficiary),
     );
   }
@@ -29,13 +30,13 @@ class ManageBeneficiaryView extends StatefulWidget {
 }
 
 class _ManageBeneficiaryViewState extends State<ManageBeneficiaryView> {
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      context.read<ManageBeneficiaryCubit>().fetchBeneficiaries();
-    });
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+  //     context.read<ManageBeneficiaryCubit>().fetchBeneficiaries();
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {

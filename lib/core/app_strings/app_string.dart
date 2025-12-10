@@ -2,6 +2,7 @@ class AppStrings {
   AppStrings._();
 
   static const String appName = 'Super Cash';
+  static const String appTagline = 'Secure payments made simple.';
   static const String createAccount = 'Create an Account';
   static const String verifyAccount = 'Verification';
   static const String verifyAccountInstruction =

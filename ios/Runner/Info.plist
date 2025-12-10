@@ -7,6 +7,14 @@
 		<string>fetch</string>
 		<string>remote-notification</string>
 	</array>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Save receipts to your photo library</string>
+
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We need to access your photo library for verification</string>
+
+	<key>NSCameraUsageDescription</key>
+	<string>We need to access your camera for verification</string>
 
 	<key>NSUserNotificationUsageDescription</key>
 	<string>This app uses notifications to remind you about your reminders sessions.</string>

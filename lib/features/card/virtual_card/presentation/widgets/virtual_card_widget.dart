@@ -1,4 +1,5 @@
 import 'package:app_ui/app_ui.dart';
+import 'package:go_router/go_router.dart';
 import 'package:super_cash/app/routes/routes.dart';
 import 'package:super_cash/core/app_strings/app_string.dart';
 import 'package:flutter/material.dart';
@@ -18,8 +19,16 @@ class VirtualCardWidget extends StatelessWidget {
         context.goNamedSafe(RNames.virtualCardWithdraw, extra: card.cardId);
     void cardTransactions() =>
         context.goNamedSafe(RNames.virtualCardTransactions, extra: card.cardId);
-    void viewCardDetails() =>
+
+    void viewCardDetails() async {
+      final isConfirmed =
+          await context.goNamedSafe<bool?>(RNames.confirmationDialog) ?? false;
+
+      if (isConfirmed && context.mounted) {
         context.goNamedSafe(RNames.virtualCardDetail, extra: card.cardId);
+      }
+    }
+
     return Container(
       width: double.infinity,
       margin: EdgeInsets.only(bottom: AppSpacing.lg),

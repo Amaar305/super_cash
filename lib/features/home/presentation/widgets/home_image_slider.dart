@@ -26,6 +26,8 @@ class _HomeImageSliderState extends State<HomeImageSlider> {
     final sliders = context.select(
       (HomeCubit cubit) => cubit.state.homeSettings?.imageSliders ?? [],
     );
+
+    if (sliders.isEmpty) return SizedBox.shrink();
     return CarouselSlider.builder(
       itemCount: sliders.length,
       itemBuilder: (context, index, realIndex) {

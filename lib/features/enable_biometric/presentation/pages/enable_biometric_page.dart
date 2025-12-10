@@ -124,10 +124,10 @@ class EnableBiometricPage extends StatelessWidget {
       onAuthenticated: () {
         serviceLocator<TokenRepository>().setBiometricEnabled(enable: true);
 
-        if (!user.isVerified) {
-          context.read<AppCubit>().verifyAccount(user);
-          return;
-        }
+        // if (!user.isVerified) {
+        //   context.read<AppCubit>().verifyAccount(user);
+        //   return;
+        // }
 
         if (!user.transactionPin) {
           context.read<AppCubit>().createPin(user);
@@ -143,31 +143,5 @@ class EnableBiometricPage extends StatelessWidget {
     serviceLocator<TokenRepository>().setBiometricEnabled(enable: false);
 
     context.read<AppCubit>().userLoggedIn(user);
-  }
-}
-
-class _BenefitRow extends StatelessWidget {
-  const _BenefitRow(this.label);
-
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(Icons.check_circle_rounded, size: 18, color: colorScheme.primary),
-        const SizedBox(width: AppSpacing.sm),
-        Flexible(
-          child: Text(
-            label,
-            style: context.bodyMedium,
-            textAlign: TextAlign.center,
-          ),
-        ),
-      ],
-    );
   }
 }

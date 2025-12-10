@@ -1,5 +1,5 @@
 import 'package:app_ui/app_ui.dart';
-import 'package:super_cash/app/bloc/app_bloc.dart';
+import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/app/routes/routes.dart';
 import 'package:super_cash/core/app_strings/app_string.dart';
 import 'package:super_cash/features/card/virtual_card/virtual_card.dart';
@@ -13,7 +13,7 @@ class NoCreditCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = context.select((AppBloc bloc) => bloc.state.user);
+    final user = context.select((AppCubit bloc) => bloc.state.user);
 
     return Center(
       child: Column(
@@ -33,7 +33,7 @@ class NoCreditCardWidget extends StatelessWidget {
 
   void _handleVirtualCardCreation(BuildContext context, AppUser? user) {
     if (user == null) {
-      context.read<AppBloc>().add(UserLoggedOut());
+      context.read<AppCubit>().logout();
       return;
     }
     if (user.isSuspended) {
@@ -96,7 +96,7 @@ class _SuspensionDialog extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () {
-              context.read<AppBloc>().add(UserLoggedOut());
+              context.read<AppCubit>().logout();
             },
             child: const Text('Logout', style: TextStyle(color: Colors.red)),
           ),

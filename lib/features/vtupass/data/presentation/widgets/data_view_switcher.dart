@@ -7,8 +7,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/shared.dart';
 
-class DataViewSwitcher extends StatelessWidget {
+class DataViewSwitcher extends StatefulWidget {
   const DataViewSwitcher({super.key});
+
+  @override
+  State<DataViewSwitcher> createState() => _DataViewSwitcherState();
+}
+
+class _DataViewSwitcherState extends State<DataViewSwitcher> {
+  @override
+  void dispose() {
+    hideLoadingOverlay();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,18 +58,12 @@ class DataViewSwitcher extends StatelessWidget {
                         label: 'Network',
                         value: state.selectedNetwork ?? 'Not set',
                       ),
-                      _SummaryRow(
-                        label: 'Plan',
-                        value: selectedPlan.planName,
-                      ),
+                      _SummaryRow(label: 'Plan', value: selectedPlan.planName),
                       _SummaryRow(
                         label: 'Amount',
                         value: 'N${selectedPlan.planAmount}',
                       ),
-                      _SummaryRow(
-                        label: 'Recipient',
-                        value: state.phone.value,
-                      ),
+                      _SummaryRow(label: 'Recipient', value: state.phone.value),
                     ],
                   ),
                 );

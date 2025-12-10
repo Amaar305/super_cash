@@ -27,6 +27,11 @@ class CardCreateButton extends StatelessWidget {
               title: 'Successfully Created',
               okText: AppStrings.done,
               description: 'Congratulations!. User Card has been created.',
+              onDone: () {
+                context
+                  ..pop()
+                  ..goNamed(RNames.dashboard);
+              },
             );
           });
         }

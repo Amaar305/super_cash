@@ -18,6 +18,7 @@ class NotificationState extends Equatable {
     required this.notifications,
     required this.data,
     required this.message,
+    required this.recent,
   });
 
   const NotificationState.initial()
@@ -26,12 +27,22 @@ class NotificationState extends Equatable {
           notifications: const [],
           message: '',
           status: NotificationStatus.initial,
+          recent: true,
         );
 
   final NotificationStatus status;
   final List<Notification> notifications;
   final List<Notification> data;
   final String message;
+  final bool recent;
+
+  List<Notification> get recentNotifications {
+    final cutoffDate = DateTime.now().subtract(const Duration(days: 7));
+
+    return notifications
+        .where((notification) => !notification.createdAt.isBefore(cutoffDate))
+        .toList(growable: false);
+  }
 
   @override
   List<Object> get props => [
@@ -39,6 +50,7 @@ class NotificationState extends Equatable {
         notifications,
         data,
         message,
+        recent,
       ];
 
   NotificationState copyWith({
@@ -46,12 +58,14 @@ class NotificationState extends Equatable {
     List<Notification>? notifications,
     List<Notification>? data,
     String? message,
+    bool? recent,
   }) {
     return NotificationState(
       status: status ?? this.status,
       notifications: notifications ?? this.notifications,
       data: data ?? this.data,
       message: message ?? this.message,
+      recent: recent??this.recent,
     );
   }
 }

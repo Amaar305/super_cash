@@ -16,8 +16,13 @@ class Onboarding extends StatelessWidget {
           width: 299,
           height: 333,
           decoration: BoxDecoration(
+            // Image goes here
             borderRadius: BorderRadius.circular(18),
             color: AppColors.brightGrey,
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(18),
+            child: onboardingData.image,
           ),
         ),
         Gap.v(AppSpacing.xxlg),

@@ -38,6 +38,8 @@ class _AppPinFormState extends State<AppPinForm> {
   }
 
   void _onNumberPressed(String value) {
+    if (!widget.enabled) return;
+
     if (_currentIndex < widget.length) {
       setState(() {
         _otpValues[_currentIndex] = value;
@@ -55,6 +57,8 @@ class _AppPinFormState extends State<AppPinForm> {
   }
 
   void _onBackspacePressed() {
+    if (!widget.enabled) return;
+
     if (_currentIndex > 0) {
       setState(() {
         _currentIndex--;
@@ -71,40 +75,105 @@ class _AppPinFormState extends State<AppPinForm> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        // OTP Fields
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          spacing: AppSpacing.md,
-          children: List.generate(widget.length, (index) {
-            return AnimatedContainer(
-              duration: 200.ms,
-              width: 54,
-              height: 54,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: widget.error
-                      ? AppColors.red
-                      : _currentIndex == index
-                          ? AppColors.blue
-                          : AppColors.brightGrey,
-                ),
-                borderRadius: BorderRadius.circular(AppSpacing.xs),
-              ),
-              child: Text(
-                widget.obscured && _otpValues[index].isNotEmpty
-                    ? '*'
-                    : _otpValues[index],
-                style: const TextStyle(fontSize: AppSpacing.lg + 2),
-              ),
-            );
-          }),
-        ),
-        const SizedBox(height: 20),
-
-        // Custom Keyboard
+        _buildOtpFields(),
+        const SizedBox(height: 24),
         _buildKeyboard(),
       ],
+    );
+  }
+
+  Widget _buildOtpFields() {
+    final hasError = widget.error;
+    final shadow = [
+      BoxShadow(
+        color: Colors.black.withOpacity(0.05),
+        blurRadius: 14,
+        offset: const Offset(0, 8),
+      ),
+    ];
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+      decoration: BoxDecoration(
+        color: AppColors.lightBlueFilled,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color:
+              hasError ? AppColors.red : AppColors.brightGrey.withOpacity(0.6),
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        spacing: AppSpacing.md,
+        children: List.generate(widget.length, (index) {
+          final active = _currentIndex == index;
+          final filled = _otpValues[index].isNotEmpty;
+
+          return AnimatedContainer(
+            duration: 180.ms,
+            width: 58,
+            height: 64,
+            decoration: BoxDecoration(
+              gradient: hasError || !active
+                  ? null
+                  : const LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        AppColors.white,
+                        Color(0xFFE8F6FF),
+                      ],
+                    ),
+              color: hasError
+                  ? AppColors.red.shade50
+                  : active
+                      ? null
+                      : AppColors.white,
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(
+                color: hasError
+                    ? AppColors.red
+                    : active
+                        ? AppColors.blue
+                        : AppColors.brightGrey,
+                width: active ? 1.4 : 1,
+              ),
+              boxShadow: active || filled ? shadow : null,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                AnimatedDefaultTextStyle(
+                  duration: 150.ms,
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 0.2,
+                    color: hasError ? AppColors.red : AppColors.black,
+                  ),
+                  child: Text(
+                    widget.obscured && filled ? '•' : _otpValues[index],
+                  ),
+                ),
+                AnimatedContainer(
+                  duration: 150.ms,
+                  margin: const EdgeInsets.only(top: 6),
+                  height: 3,
+                  width: active ? 18 : 10,
+                  decoration: BoxDecoration(
+                    color: hasError
+                        ? AppColors.red
+                        : active
+                            ? AppColors.blue
+                            : Colors.transparent,
+                    borderRadius: BorderRadius.circular(999),
+                  ),
+                ),
+              ],
+            ),
+          );
+        }),
+      ),
     );
   }
 
@@ -113,40 +182,56 @@ class _AppPinFormState extends State<AppPinForm> {
     final text = Text(
       digit,
       style: const TextStyle(
-        fontSize: 20,
-        fontWeight: FontWeight.w500,
+        fontSize: 22,
+        fontWeight: FontWeight.w600,
       ),
     );
     return Expanded(
-      child: Container(
-        // width: 130,
-        height: 88,
-        // padding: EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(2),
-        ),
-        child: InkWell(
-          onTap: () => _onNumberPressed(digit),
-          borderRadius: BorderRadius.circular(2),
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: option == null
-                  ? text
-                  : Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        text,
-                        Text(
-                          option,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.grey,
-                          ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+        child: Material(
+          color: Colors.transparent,
+          child: Ink(
+            height: 74,
+            decoration: BoxDecoration(
+              color: AppColors.white,
+              borderRadius: BorderRadius.circular(18),
+              border: Border.all(color: AppColors.brightGrey.withOpacity(0.7)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.03),
+                  blurRadius: 10,
+                  offset: const Offset(0, 6),
+                ),
+              ],
+            ),
+            child: InkWell(
+              onTap: widget.enabled ? () => _onNumberPressed(digit) : null,
+              borderRadius: BorderRadius.circular(18),
+              splashColor: AppColors.blue.withOpacity(0.12),
+              highlightColor: AppColors.blue.withOpacity(0.05),
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: option == null
+                      ? text
+                      : Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            text,
+                            const SizedBox(height: 4),
+                            Text(
+                              option,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.grey,
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                ),
+              ),
             ),
           ),
         ),
@@ -156,28 +241,45 @@ class _AppPinFormState extends State<AppPinForm> {
 
   Expanded _buildFingerprintButton() {
     return Expanded(
-      child: Container(
-        height: 88,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(2),
-        ),
-        child: InkWell(
-          onTap: widget.onFingerprintAuthentication,
-          borderRadius: BorderRadius.circular(2),
-          child: const Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              spacing: 5,
-              children: [
-                Icon(Icons.fingerprint_outlined),
-                Text(
-                  'Fingerprints',
-                  style: TextStyle(
-                    color: Color(0xff171B2A),
-                    fontSize: 12,
-                  ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+        child: Material(
+          color: Colors.transparent,
+          child: Ink(
+            height: 74,
+            decoration: BoxDecoration(
+              color: AppColors.white,
+              borderRadius: BorderRadius.circular(18),
+              border: Border.all(color: AppColors.brightGrey.withOpacity(0.7)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.03),
+                  blurRadius: 10,
+                  offset: const Offset(0, 6),
                 ),
               ],
+            ),
+            child: InkWell(
+              onTap: widget.onFingerprintAuthentication,
+              borderRadius: BorderRadius.circular(18),
+              splashColor: AppColors.blue.withOpacity(0.12),
+              child: const Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  spacing: 6,
+                  children: [
+                    Icon(Icons.fingerprint_outlined),
+                    Text(
+                      'Fingerprint',
+                      style: TextStyle(
+                        color: Color(0xff171B2A),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         ),
@@ -187,21 +289,37 @@ class _AppPinFormState extends State<AppPinForm> {
 
   Widget _buildBackSpaceButton() {
     return Expanded(
-      child: Container(
-        height: 88,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(2),
-        ),
-        child: InkWell(
-          onTap: _onBackspacePressed,
-          borderRadius: BorderRadius.circular(2),
-          child: const Center(
-            child: Padding(
-              padding: EdgeInsets.all(20),
-              child: Icon(
-                Icons.backspace_outlined,
-                size: 21,
-                color: AppColors.grey,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+        child: Material(
+          color: Colors.transparent,
+          child: Ink(
+            height: 74,
+            decoration: BoxDecoration(
+              color: AppColors.white,
+              borderRadius: BorderRadius.circular(18),
+              border: Border.all(color: AppColors.brightGrey.withOpacity(0.7)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.03),
+                  blurRadius: 10,
+                  offset: const Offset(0, 6),
+                ),
+              ],
+            ),
+            child: InkWell(
+              onTap: widget.enabled ? _onBackspacePressed : null,
+              borderRadius: BorderRadius.circular(18),
+              splashColor: AppColors.blue.withOpacity(0.12),
+              child: const Center(
+                child: Padding(
+                  padding: EdgeInsets.all(18),
+                  child: Icon(
+                    Icons.backspace_outlined,
+                    size: 22,
+                    color: AppColors.grey,
+                  ),
+                ),
               ),
             ),
           ),
@@ -212,36 +330,53 @@ class _AppPinFormState extends State<AppPinForm> {
 
   Column _buildKeyboard() => Column(
         children: [
-          const Divider(thickness: 0.5),
-          Row(
-            children: [
-              _buildNumberPad('1'),
-              _buildNumberPad('2'),
-              _buildNumberPad('3'),
-            ],
-          ),
-          Row(
-            children: [
-              _buildNumberPad('4'),
-              _buildNumberPad('5'),
-              _buildNumberPad('6'),
-            ],
-          ),
-          const Divider(thickness: 0.5),
-          Row(
-            children: [
-              _buildNumberPad('7'),
-              _buildNumberPad('8'),
-              _buildNumberPad('9'),
-            ],
-          ),
-          const Divider(thickness: 0.5),
-          Row(
-            children: [
-              _buildBackSpaceButton(),
-              _buildNumberPad('0', option: '+'),
-              _buildFingerprintButton(),
-            ],
+          Container(
+            decoration: BoxDecoration(
+              color: AppColors.lightBlueFilled,
+              borderRadius: BorderRadius.circular(22),
+              border: Border.all(
+                color: AppColors.brightGrey.withOpacity(0.6),
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.04),
+                  blurRadius: 14,
+                  offset: const Offset(0, 10),
+                ),
+              ],
+            ),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    _buildNumberPad('1'),
+                    _buildNumberPad('2'),
+                    _buildNumberPad('3'),
+                  ],
+                ),
+                Row(
+                  children: [
+                    _buildNumberPad('4'),
+                    _buildNumberPad('5'),
+                    _buildNumberPad('6'),
+                  ],
+                ),
+                Row(
+                  children: [
+                    _buildNumberPad('7'),
+                    _buildNumberPad('8'),
+                    _buildNumberPad('9'),
+                  ],
+                ),
+                Row(
+                  children: [
+                    _buildBackSpaceButton(),
+                    _buildNumberPad('0', option: '+'),
+                    _buildFingerprintButton(),
+                  ],
+                ),
+              ],
+            ),
           ),
         ],
       );

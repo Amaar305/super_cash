@@ -82,10 +82,7 @@ class _HomePageState extends State<HomePage> {
                                 children: const [
                                   Gap.v(75),
                                   HomeScrollText(),
-                                  Gap.v(8),
                                   HomeImageSlider(),
-                                  Gap.v(8),
-
                                   KYCNoticeBoard(),
                                   HomeServicesSection(),
                                   // HomeRecentTransactionSection(),
