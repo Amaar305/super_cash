@@ -1,6 +1,7 @@
 import 'package:app_ui/app_ui.dart';
+import 'package:shared/shared.dart';
+import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/app/routes/routes.dart';
-import 'package:super_cash/app/view/view.dart';
 import 'package:super_cash/core/app_strings/app_string.dart';
 import 'package:super_cash/core/fonts/app_text_style.dart';
 import 'package:flutter/material.dart';
@@ -48,11 +49,7 @@ class ProfileView extends StatelessWidget {
                       icon: Iconsax.user,
                       onTap: () => context.goNamedSafe(RNames.profileDetails),
                     ),
-                    NewWidget(
-                      label: AppStrings.accountVerification,
-                      icon: Iconsax.location,
-                      onTap: () => context.goNamedSafe(RNames.upgradeTier),
-                    ),
+                    _AccountVerificationSection(),
                     NewWidget(
                       label: AppStrings.changePassword,
                       icon: Iconsax.arrow_swap,
@@ -73,11 +70,6 @@ class ProfileView extends StatelessWidget {
               ProfileSettingsContainer(
                 child: Column(
                   children: [
-                    NewWidget(
-                      label: AppStrings.legalAndOthers,
-                      icon: Iconsax.activity,
-                      onTap: () => showCurrentlyUnavailableFeature(),
-                    ),
                     NewWidget(
                       label: AppStrings.myReferrals,
                       icon: Iconsax.people,
@@ -125,6 +117,27 @@ class ProfileView extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _AccountVerificationSection extends StatelessWidget {
+  const _AccountVerificationSection();
+
+  @override
+  Widget build(BuildContext context) {
+    final isVerified = context.select(
+      (AppCubit element) => element.state.user?.isKycVerified ?? false,
+    );
+    return AnimatedSwitcher(
+      duration: 200.ms,
+      child: isVerified
+          ? SizedBox.fromSize()
+          : NewWidget(
+              label: AppStrings.accountVerification,
+              icon: Iconsax.location,
+              onTap: () => context.goNamedSafe(RNames.upgradeTier),
+            ),
     );
   }
 }

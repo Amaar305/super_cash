@@ -5,8 +5,9 @@ import '../../../../../core/app_strings/app_string.dart';
 
 class CardTermsOfUsageSection extends StatelessWidget {
   const CardTermsOfUsageSection({
-    super.key,
+    super.key, required this.isPlatinum,
   });
+  final bool isPlatinum;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,10 @@ class CardTermsOfUsageSection extends StatelessWidget {
                 ),
                 Flexible(
                   child: Text(
-                    terms,
+                    terms.replaceAll(
+                      'CARDLIMIT',
+                      isPlatinum ? '\$10,000' : '\$5,000',
+                    ),
                     style: MonaSansTextStyle.label(
                       fontSize: AppSpacing.md - 1,
                       fontWeight: AppFontWeight.semiBold,

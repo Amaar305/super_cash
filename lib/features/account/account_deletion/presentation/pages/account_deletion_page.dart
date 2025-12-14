@@ -5,7 +5,6 @@ import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/app/init/init.dart';
 import 'package:super_cash/app/view/view.dart';
 import 'package:super_cash/features/account/account_deletion/account_deletion.dart';
-
 class AccountDeletionPage extends StatelessWidget {
   const AccountDeletionPage({super.key});
 
@@ -46,7 +45,7 @@ class AccountDeletionView extends StatelessWidget {
         }
         if (state.status.isSuccess && state.message.isNotEmpty) {
           context.showConfirmationBottomSheet(
-            title: 'Account deactivated',
+            title: 'Account deletion started',
             okText: 'Got it',
             description: state.message,
           );
@@ -55,7 +54,14 @@ class AccountDeletionView extends StatelessWidget {
       child: AppScaffold(
         releaseFocus: true,
         appBar: AppBar(
-          title: const AppAppBarTitle('Delete account'),
+          title: const Text(
+            'Delete account',
+            style: TextStyle(
+              fontWeight: AppFontWeight.semiBold,
+              fontSize: 16,
+              fontFamily: 'Poppins',
+            ),
+          ),
           leading: AppLeadingAppBarWidget(onTap: () => Navigator.pop(context)),
         ),
         body: AppConstrainedScrollView(
@@ -128,19 +134,25 @@ class _DeletionHero extends StatelessWidget {
               ),
               Gap.h(AppSpacing.md),
               Text(
-                'Deactivate & delete',
+                'Delete account',
                 style: const TextStyle(
                   color: Colors.white,
                   fontWeight: AppFontWeight.semiBold,
                   fontSize: 18,
+                  fontFamily: 'Poppins',
                 ),
               ),
             ],
           ),
           const Text(
-            'We will deactivate your account today and start a 90-day countdown '
+            'We start deleting your account today and begin a 90-day countdown '
             'before permanently erasing your details from our systems.',
-            style: TextStyle(color: Colors.white, fontSize: 13, height: 1.5),
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 13,
+              height: 1.5,
+              fontFamily: 'Poppins',
+            ),
           ),
           Container(
             margin: EdgeInsets.only(top: AppSpacing.sm),
@@ -155,11 +167,12 @@ class _DeletionHero extends StatelessWidget {
                 Gap.h(AppSpacing.sm),
                 Expanded(
                   child: Text(
-                    'Changed your mind? Talk to us within those 90 days and we can reactivate your account.',
+                    'Changed your mind? Talk to us within those 90 days and we can cancel the deletion and restore your account.',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 13,
                       height: 1.4,
+                      fontFamily: 'Poppins',
                     ),
                   ),
                 ),
@@ -203,15 +216,20 @@ class _RetentionCard extends StatelessWidget {
             children: [
               const Icon(Icons.auto_awesome, color: AppColors.emphasizeGrey),
               Gap.h(AppSpacing.sm),
-              Text('Before you go', style: context.titleMedium),
+              Text(
+                'Before you go',
+                style: context.titleMedium?.copyWith(fontFamily: 'Poppins') ??
+                    const TextStyle(fontFamily: 'Poppins'),
+              ),
             ],
           ),
           const Text(
-            'This is a sensitive action. We’ll keep your account safely inactive, and permanently remove all data after 90 days.',
+            'This is a sensitive action. We’ll lock your account while deletion is in progress, and permanently remove all data after 90 days.',
             style: TextStyle(
               fontSize: 13,
               color: AppColors.emphasizeGrey,
               height: 1.4,
+              fontFamily: 'Poppins',
             ),
           ),
           Column(
@@ -219,8 +237,7 @@ class _RetentionCard extends StatelessWidget {
             children: const [
               _InfoRow(
                 icon: Icons.safety_check_rounded,
-                text:
-                    'Your wallet, cards and history will be paused immediately.',
+                text: 'Your wallet, cards and history stop working immediately.',
               ),
               _InfoRow(
                 icon: Icons.timer_outlined,
@@ -230,7 +247,7 @@ class _RetentionCard extends StatelessWidget {
               _InfoRow(
                 icon: Icons.support_agent_outlined,
                 text:
-                    'Need to return? Reach out during the countdown to reactivate.',
+                    'Need to return? Reach out during the countdown to cancel deletion.',
               ),
             ],
           ),
@@ -254,7 +271,14 @@ class _InfoRow extends StatelessWidget {
         Icon(icon, size: 18, color: Theme.of(context).colorScheme.primary),
         Gap.h(AppSpacing.sm),
         Expanded(
-          child: Text(text, style: const TextStyle(fontSize: 13, height: 1.4)),
+          child: Text(
+            text,
+            style: const TextStyle(
+              fontSize: 13,
+              height: 1.4,
+              fontFamily: 'Poppins',
+            ),
+          ),
         ),
       ],
     );
@@ -308,6 +332,7 @@ class _ReasonFieldState extends State<_ReasonField> {
           style: TextStyle(
             fontSize: AppSpacing.md,
             fontWeight: FontWeight.w600,
+            fontFamily: 'Poppins',
           ),
         ),
         AppTextField.underlineBorder(
@@ -329,7 +354,11 @@ class _ReasonFieldState extends State<_ReasonField> {
         ),
         const Text(
           'This won’t be shared. It simply helps us understand what to fix.',
-          style: TextStyle(fontSize: 12, color: AppColors.emphasizeGrey),
+          style: TextStyle(
+            fontSize: 12,
+            color: AppColors.emphasizeGrey,
+            fontFamily: 'Poppins',
+          ),
         ),
       ],
     );
@@ -351,7 +380,7 @@ class _DeletionCTA extends StatelessWidget {
         PrimaryButton(
           isLoading: isLoading,
           backgroundColor: AppColors.red,
-          label: 'Deactivate now',
+          label: 'Delete now',
           onPressed: isLoading ? null : () => _confirmDeletion(context),
         ),
         AppOutlinedButton(
@@ -379,7 +408,7 @@ class _DeletionCTA extends StatelessWidget {
       fn: () => cubit.submit(onSuccess: context.read<AppCubit>().logout),
       title: 'Confirm account deletion',
       content:
-          'We will deactivate your account immediately. After 90 days your data is wiped. You can contact us anytime before then to reactivate.',
+          'We start deleting your account immediately. After 90 days your data is wiped. You can contact us anytime before then to cancel the deletion.',
       noText: 'Cancel',
       yesText: 'Yes, delete it',
     );

@@ -1,13 +1,15 @@
-import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/shared.dart';
+import 'package:super_cash/features/card/card_details/presentation/widgets/card_detail_title_value.dart';
 
 class CardDetailsBillingAddress extends StatelessWidget {
   final BillingAddress? billingAddress;
+  final CardDetails? cardDetails;
 
   const CardDetailsBillingAddress({
     super.key,
-    required this.billingAddress,
+    this.billingAddress,
+    this.cardDetails,
   });
 
   @override
@@ -18,58 +20,55 @@ class CardDetailsBillingAddress extends StatelessWidget {
         physics: const ClampingScrollPhysics(),
         padding: EdgeInsets.zero,
         children: [
-          _buildDetailTile('Address', billingAddress?.billingAddress1),
-          _buildDetailTile('City', billingAddress?.billingCity),
-          _buildDetailTile('Country', billingAddress?.billingCountry),
-          _buildDetailTile('Zip Code', billingAddress?.billingZipCode),
-          _buildDetailTile('Country Code', billingAddress?.countryCode),
-          _buildDetailTile('State', billingAddress?.state),
-          _buildDetailTile('State Code', billingAddress?.stateCode),
+          if (billingAddress != null) ...[
+            CardDetailTitleWithValue(
+              title: 'Address',
+              value: billingAddress?.billingAddress1,
+            ),
+            CardDetailTitleWithValue(
+              title: 'City',
+              value: billingAddress?.billingCity,
+            ),
+
+            CardDetailTitleWithValue(
+              title: 'Country',
+              value: billingAddress?.billingCountry,
+            ),
+            CardDetailTitleWithValue(
+              title: 'Country Code',
+              value: billingAddress?.countryCode,
+            ),
+            CardDetailTitleWithValue(
+              title: 'Zip Code',
+              value: billingAddress?.billingZipCode,
+            ),
+
+            CardDetailTitleWithValue(
+              title: 'State',
+              value: billingAddress?.state,
+            ),
+            CardDetailTitleWithValue(
+              title: 'State Code',
+              value: billingAddress?.stateCode,
+            ),
+          ] else if (cardDetails != null) ...[
+            CardDetailTitleWithValue(
+              title: 'Card Name',
+              value: cardDetails?.cardName,
+            ),
+            CardDetailTitleWithValue(
+              title: 'Card Number',
+              value: cardDetails?.cardNumber,
+            ),
+
+            CardDetailTitleWithValue(
+              title: 'Expiring Date',
+              value: cardDetails?.formattedExpiryDate,
+            ),
+            CardDetailTitleWithValue(title: 'CVV', value: cardDetails?.cvv),
+          ],
         ],
       ),
     );
-  }
-
-  Widget _buildDetailTile(String title, String? value) {
-    return Builder(builder: (context) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: AppSpacing.md + 1,
-                    fontWeight: AppFontWeight.light,
-                  ),
-                ),
-                const Spacer(),
-                Text(
-                  value ?? '',
-                  style: const TextStyle(
-                    fontSize: AppSpacing.md,
-                    fontWeight: AppFontWeight.light,
-                  ),
-                ),
-                const Gap.h(AppSpacing.sm),
-                // ignore: deprecated_member_use
-                Tappable.faded(
-                    onTap: () {
-                      copyText(context, value ?? '', '$title copied');
-                    },
-                    child: Assets.icons.copy.svg(
-                      // ignore: deprecated_member_use
-                      color: AppColors.buttonColor,
-                    )),
-              ],
-            ),
-            const Divider(thickness: 0.3),
-          ],
-        ),
-      );
-    });
   }
 }

@@ -17,7 +17,9 @@ class CardDetailsSection extends StatelessWidget {
       (CardDetailCubit cubit) => cubit.state.cardDetails,
     );
 
-    final color = AppColors.blue.withValues(alpha: 0.097);
+    final color = isExpanded
+        ? AppColors.blue
+        : AppColors.blue.withValues(alpha: 0.097);
 
     return Tappable.faded(
       onTap: context.read<CardDetailCubit>().onCardDetailsExpanded,
@@ -46,9 +48,7 @@ class CardDetailsSection extends StatelessWidget {
             ),
             if (isExpanded) ...[
               CardBorderedContainer(
-                child: CardDetailsBillingAddress(
-                  billingAddress: cardDetails?.billingAddress,
-                ),
+                child: CardDetailsBillingAddress(cardDetails: cardDetails),
               ),
             ],
           ],

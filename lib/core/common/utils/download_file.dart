@@ -57,6 +57,8 @@ Future<void> saveToDownloads(
       final tempFile = File('${dir.path}/$fileName');
       await tempFile.writeAsBytes(bytes);
 
+      if (!context.mounted) return;
+
       // Use share sheet for user to choose location
       await Share.shareXFiles(
         [XFile(tempFile.path)],
@@ -75,34 +77,5 @@ Future<void> saveToDownloads(
     }
   } catch (e) {
     rethrow;
-  }
-}
-
-// Fallback method for app directory storage
-Future<void> _saveToAppDirectory(
-  ByteData byteData,
-  String fileName,
-  BuildContext context,
-) async {
-  final dir = await getApplicationDocumentsDirectory();
-  final file = File('${dir.path}/$fileName');
-  await file.writeAsBytes(byteData.buffer.asUint8List());
-
-  if (context.mounted) {
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text('Receipt saved to app documents')));
-  }
-}
-
-// Android-specific file scanning
-Future<void> _scanFile(File file) async {
-  if (Platform.isAndroid) {
-    try {
-      const channel = MethodChannel('your_channel_name');
-      await channel.invokeMethod('scanFile', {'path': file.path});
-    } catch (e) {
-      debugPrint('Failed to scan file: $e');
-    }
   }
 }

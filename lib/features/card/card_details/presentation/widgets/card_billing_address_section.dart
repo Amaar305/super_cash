@@ -15,8 +15,11 @@ class CardBillingAddressSection extends StatelessWidget {
         final billingAddress = state.appleProduct
             ? state.appleBillingAddress
             : state.cardDetails?.billingAddress;
+        final expanded = state.isCardBillingAddressExpanded;
 
-        final color = AppColors.blue.withValues(alpha: 0.097);
+        final color = expanded
+            ? AppColors.blue
+            : AppColors.blue.withValues(alpha: 0.097);
 
         return Tappable.faded(
           onTap: cubit.onCardBillingAddressExpanded,

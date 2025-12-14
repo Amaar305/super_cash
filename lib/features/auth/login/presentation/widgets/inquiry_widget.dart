@@ -39,7 +39,9 @@ class InquiryWidget extends StatelessWidget {
           imagePath: 'tiktok.png',
           child: Assets.images.tiktok.image(color: AppColors.white),
           onTap: () {
-            // TODO: launch tiktok link  https://www.tiktok.com/@ibro.comedy86?_r=1&_t=ZS-921l3yoJtWa
+            launchLink(
+              'https://www.tiktok.com/@ibro.comedy86?_r=1&_t=ZS-921l3yoJtWa',
+            );
           },
         ),
       ],

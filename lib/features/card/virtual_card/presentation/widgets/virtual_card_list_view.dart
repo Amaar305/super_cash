@@ -42,13 +42,13 @@ class VirtualCardListView extends StatelessWidget {
       child: Column(
         spacing: AppSpacing.md,
         children: [
-          Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: AppSpacing.lg,
-              vertical: AppSpacing.sm,
-            ),
-            child: VirtualCardTypeTab(),
-          ),
+          // Padding(
+          //   padding: EdgeInsets.symmetric(
+          //     horizontal: AppSpacing.lg,
+          //     vertical: AppSpacing.sm,
+          //   ),
+          //   child: VirtualCardTypeTab(),
+          // ),
           Expanded(
             child: ListView.builder(
               shrinkWrap: true,

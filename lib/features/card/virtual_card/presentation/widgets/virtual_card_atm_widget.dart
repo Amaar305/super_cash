@@ -161,7 +161,7 @@ class VirtualATMCreateCard extends StatelessWidget {
           spacing: AppSpacing.sm,
           children: [
             Text(
-              'Cool Card',
+              AppStrings.appCardName,
               style: TextStyle(
                 fontSize: AppSpacing.md + 0.19 - 2,
                 fontWeight: AppFontWeight.black,
@@ -244,7 +244,7 @@ class VirtualPlatinumCard extends StatelessWidget {
           spacing: AppSpacing.sm,
           children: [
             Text(
-              'Cool Card',
+              AppStrings.appCardName,
               style: TextStyle(
                 fontSize: AppSpacing.md + 0.19 - 2,
                 fontWeight: AppFontWeight.black,

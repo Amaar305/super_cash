@@ -5,7 +5,13 @@ import 'package:flutter/material.dart';
 
 void copyText(BuildContext context, String text, String message) {
   FlutterClipboard.copy(text).then(
-    (value) {},
+    (value) {
+      // Snack hereBar or Toast can be shown to indicate success
+      if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(message)),
+      );}
+    },
   );
 }
 

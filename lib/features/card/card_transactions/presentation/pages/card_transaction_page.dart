@@ -43,9 +43,10 @@ class CardTransactionView extends StatelessWidget {
           spacing: AppSpacing.lg,
           children: [
             CardTransactionSearchField(),
-            CardTransactionFilterButton(),
+            // CardTransactionFilterButton()
+            
             CardTransactionsBody(),
-            CardTransactionsFooter(),
+            // CardTransactionsFooter(),
           ],
         ),
       ),

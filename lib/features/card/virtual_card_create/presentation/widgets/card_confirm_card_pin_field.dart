@@ -35,9 +35,9 @@ class _CardConfirmCardPinFieldState extends State<CardConfirmCardPinField> {
     final isLoading = context.select(
       (CreateVirtualCardCubit cubit) => cubit.state.status.isLoading,
     );
-    final showPin = context.select(
-      (CreateVirtualCardCubit cubit) => cubit.state.showPin,
-    );
+    // final showPin = context.select(
+    //   (CreateVirtualCardCubit cubit) => cubit.state.showPin,
+    // );
     final pinError = context.select(
       (CreateVirtualCardCubit cubit) => cubit.state.confirmCardPin.errorMessage,
     );
@@ -56,7 +56,7 @@ class _CardConfirmCardPinFieldState extends State<CardConfirmCardPinField> {
         ),
         AppOtpForm(
           enabled: !isLoading,
-          obscured: showPin,
+          // obscured: showPin,
           onCompleted: (otp) {},
           onChange: (otp) =>
               _debouncer.run(() => _cubit.onConfirmPinChanged(otp)),

@@ -266,6 +266,7 @@ void _addFund() {
       () => AddFundRepositoryImpl(
         remoteDataSource: serviceLocator(),
         apiErrorHandler: serviceLocator(),
+        networkInfo: serviceLocator(),
       ),
     )
     // Usecases

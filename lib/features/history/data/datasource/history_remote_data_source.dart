@@ -1,12 +1,9 @@
 import 'dart:convert';
 
 import 'package:app_client/app_client.dart';
-import 'package:super_cash/core/error/exception.dart';
 import 'package:intl/intl.dart';
 import 'package:shared/shared.dart';
-import 'package:token_repository/token_repository.dart';
-
-import '../../history.dart';
+import 'package:super_cash/features/history/history.dart';
 
 abstract interface class HistoryRemoteDataSource {
   Future<HistoryResponse> fetchTransactions(
@@ -31,31 +28,18 @@ class HistoryRemoteDataSourceImpl implements HistoryRemoteDataSource {
     TransactionStatus? status,
     TransactionType? transactionType,
   }) async {
-    try {
-      final path = buildTransactionQueryPath(
-        page: page,
-        start: start,
-        end: end,
-        status: status,
-        transactionType: transactionType,
-      );
+    final path = buildTransactionQueryPath(
+      page: page,
+      start: start,
+      end: end,
+      status: status,
+      transactionType: transactionType,
+    );
 
-      final response = await apiClient.request(
-        method: 'GET',
-        path: path,
-        body: jsonEncode({}),
-      );
+    final response = await apiClient.request(method: 'GET', path: path);
 
-      if (response.statusCode != 200) {
-        throw ServerException('Something went wrong. Try again later');
-      }
-      Map<String, dynamic> res = jsonDecode(response.body);
-      return HistoryResponse.fromMap(res);
-    } on RefreshTokenException catch (_) {
-      rethrow;
-    } catch (error) {
-      throw ServerException(error.toString());
-    }
+    Map<String, dynamic> res = jsonDecode(response.body);
+    return HistoryResponse.fromMap(res);
   }
 
   String buildTransactionQueryPath({

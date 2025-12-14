@@ -155,6 +155,10 @@ class CardCreationFeeWidget extends StatelessWidget {
       (CardRepoCubit cubit) => cubit.state.dollarRate?.dollarRate ?? 1,
     );
 
+    final isPlatinum = context.select(
+      (CreateVirtualCardCubit element) => element.state.platinum,
+    );
+
     return Column(
       spacing: AppSpacing.md,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -195,8 +199,9 @@ class CardCreationFeeWidget extends StatelessWidget {
                   cardTransactionDescSmallText(
                     '\$${(cardCreationFee / dollarRate).toStringAsFixed(0)} ≈ N$cardCreationFee',
                   ),
+
                   cardTransactionDescSmallText(
-                    '\$${(cardCreationFee / dollarRate).toStringAsFixed(0)} ≈ N$cardCreationFee',
+                    isPlatinum ? '\$10,000' : '\$5,000',
                   ),
                 ],
               ),

@@ -99,6 +99,7 @@ void showCurrentlyUnavailableFeature({bool clearIfQueue = true}) =>
         description:
             'We are trying our best to implement it as fast as possible.',
         icon: Icons.error_outline,
+        
       ),
       clearIfQueue: clearIfQueue,
     );

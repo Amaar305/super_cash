@@ -93,36 +93,37 @@ class _AppOtpFormState extends State<AppOtpForm> {
             children: List.generate(
               widget.numberOfInputs,
               (index) {
-                return Container(
-                  width: 55,
-                  height: 35,
-                  decoration: BoxDecoration(
-                    // borderRadius: BorderRadius.circular(8),
-                    border: Border(
-                      bottom: BorderSide(
-                        color: AppColors.blue.withValues(alpha: .8),
+                return KeyboardListener(
+                  focusNode: FocusNode(), // Needed for backspace detection
+                  onKeyEvent: (event) => _onKeyPress(event, index),
+                  child: AppTextField.underlineBorder(
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        color: widget.errorText != null
+                            ? AppColors.red
+                            : AppColors.grey.withValues(alpha: 0.5),
                       ),
                     ),
-                  ),
-                  child: Center(
-                    child: KeyboardListener(
-                      focusNode: FocusNode(), // Needed for backspace detection
-                      onKeyEvent: (event) => _onKeyPress(event, index),
-                      child: AppTextField(
-                        textController: _controllers[index],
-                        focusNode: _focusNodes[index],
-                        enabled: widget.enabled,
-                        textAlign: TextAlign.center,
-                        textInputType: TextInputType.number,
-                        obscureText: widget.obscured,
-                        obscuringCharacter: '*',
-                        maxLength: 1,
-                        style: const TextStyle(
-                          fontWeight: AppFontWeight.semiBold,
-                        ),
-                        onChanged: (value) => _onChanged(value, index),
-                      ),
+
+                    textController: _controllers[index],
+                    focusNode: _focusNodes[index],
+                    enabled: widget.enabled,
+                    textAlign: TextAlign.center,
+                    textInputType: TextInputType.number,
+                    obscureText: widget.obscured,
+                    obscuringCharacter: '*',
+                    maxLength: 1,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
+                    constraints: const BoxConstraints(
+                      maxHeight: 35,
+                      maxWidth: 35,
                     ),
+                    style: const TextStyle(
+                      fontWeight: AppFontWeight.semiBold,
+                    ),
+                    onChanged: (value) => _onChanged(value, index),
                   ),
                 );
               },

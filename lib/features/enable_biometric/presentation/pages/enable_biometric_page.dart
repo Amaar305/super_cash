@@ -3,6 +3,7 @@ import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/app/init/init.dart';
 import 'package:super_cash/app/view/app.dart';
 import 'package:super_cash/core/helper/fingerprint_authentication.dart';
+import 'package:super_cash/core/fonts/app_text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/shared.dart';
@@ -20,16 +21,7 @@ class EnableBiometricPage extends StatelessWidget {
     return AppScaffold(
       body: SafeArea(
         child: DecoratedBox(
-          decoration: BoxDecoration(
-            // gradient: LinearGradient(
-            //   begin: Alignment.topCenter,
-            //   end: Alignment.bottomCenter,
-            //   colors: [
-            //     colorScheme.primary.withValues(alpha: 0.06),
-            //     colorScheme.surface,
-            //   ],
-            // ),
-          ),
+          decoration: BoxDecoration(),
           child: Padding(
             padding: const EdgeInsets.all(AppSpacing.xlg),
             child: Column(
@@ -40,7 +32,14 @@ class EnableBiometricPage extends StatelessWidget {
                   alignment: Alignment.centerRight,
                   child: TextButton(
                     onPressed: () => _skip(context),
-                    child: const Text('Skip'),
+                    child: Text(
+                      'Skip',
+                      style: poppinsTextStyle(
+                        color: colorScheme.primary,
+                        fontSize: textTheme.labelLarge?.fontSize,
+                        fontWeight: textTheme.labelLarge?.fontWeight,
+                      ),
+                    ),
                   ),
                 ),
                 Expanded(
@@ -80,14 +79,19 @@ class EnableBiometricPage extends StatelessWidget {
                           ),
                           Text(
                             'Set up biometric unlock',
-                            style: textTheme.titleLarge?.copyWith(
+                            style: poppinsTextStyle(
+                              fontSize: textTheme.titleLarge?.fontSize,
                               fontWeight: FontWeight.w700,
+                              color: textTheme.titleLarge?.color ??
+                                  colorScheme.onSurface,
                             ),
                             textAlign: TextAlign.center,
                           ),
                           Text(
                             'Use your fingerprint to sign in instantly and keep your account secure.',
-                            style: textTheme.bodyMedium?.copyWith(
+                            style: poppinsTextStyle(
+                              fontSize: textTheme.bodyMedium?.fontSize,
+                              fontWeight: textTheme.bodyMedium?.fontWeight,
                               color: colorScheme.onSurfaceVariant,
                             ),
                             textAlign: TextAlign.center,
@@ -103,7 +107,9 @@ class EnableBiometricPage extends StatelessWidget {
                 ),
                 Text(
                   'We only store your biometric preference on this device.',
-                  style: textTheme.bodySmall?.copyWith(
+                  style: poppinsTextStyle(
+                    fontSize: textTheme.bodySmall?.fontSize,
+                    fontWeight: textTheme.bodySmall?.fontWeight,
                     color: colorScheme.onSurfaceVariant,
                   ),
                   textAlign: TextAlign.center,

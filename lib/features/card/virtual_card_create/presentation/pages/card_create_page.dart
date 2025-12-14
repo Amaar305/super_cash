@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared/shared.dart';
+import 'package:super_cash/core/app_strings/app_string.dart';
+import 'package:super_cash/features/card/card.dart';
 
-import '../../../../../core/app_strings/app_string.dart';
-import '../../../card.dart';
+
 
 class CardCreatePage extends StatelessWidget {
   const CardCreatePage({super.key});
@@ -80,6 +81,9 @@ class _NewWidgetState extends State<NewWidget> {
     final color = _expanded
         ? AppColors.blue
         : AppColors.blue.withValues(alpha: 0.097);
+    final isPlatinum = context.select(
+      (CreateVirtualCardCubit element) => element.state.platinum,
+    );
     return Tappable.faded(
       onTap: () => setExpanded(!_expanded),
       child: AnimatedContainer(
@@ -107,7 +111,7 @@ class _NewWidgetState extends State<NewWidget> {
               ),
               if (_expanded) ...[
                 Gap.v(AppSpacing.lg),
-                CardTermsOfUsageSection(),
+                CardTermsOfUsageSection(isPlatinum: isPlatinum),
                 Gap.v(AppSpacing.lg),
               ],
             ],

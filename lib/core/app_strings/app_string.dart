@@ -146,7 +146,7 @@ class AppStrings {
     'A card without a transaction for three (3) months will eventually get deleted.',
     'The card will be deactivated if the monthly maintenance charge is not paid.',
     '1% Transaction fee applies with a minimum of \$1 and maximum of \$5.',
-    'The monthly spending limit for this card is \$5,000',
+    'The monthly spending limit for this card is CARDLIMIT',
   ];
 
   static const String enterAmountToFundCard =
@@ -180,7 +180,7 @@ class AppStrings {
   static const String unfreezeCardDescription =
       'Are you sure you want to unfreeze your Card? By unfreezing your card you will be able to make payments with it again.';
 
-  static const String freezCard = 'Freeze Card';
+  static const String freezCard = 'Freeze / Unfreeze Card';
   static const String unFreezCard = 'Unfreeze Card';
 
   static const String done = 'Done';
@@ -377,11 +377,15 @@ class AppStrings {
   static const String filterNotImplemented =
       'Filter feature is not yet implemented';
 
-  static const String appCardName = 'Cool Card';
+  static const String appCardName = '$appName Card';
 
   static const String accountTier = 'User Tier';
 
   static const String otp = 'OTP';
 
-  static String reLogin = 'Re-login';
+  static const String reLogin = 'Re-login';
+
+  static const String cardBalance = 'Card Balance';
+
+  static const String currentBalance = 'Spendable Balance';
 }

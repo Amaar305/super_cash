@@ -8,3 +8,5 @@ export 'card_details_section.dart';
 export 'card_drop_icon_button.dart';
 export 'card_quick_action_tile.dart';
 export 'freeze_card_tile_widget.dart';
+export 'card_balance_section.dart';
+export'card_detail_title_value.dart';

@@ -69,10 +69,6 @@ class CardDetailsBody extends StatelessWidget {
       );
     }
 
-    void onCalculateTransactionTapped() {
-      Navigator.push(context, CardTransactionCalculatorPage.route());
-    }
-
     return BlocListener<CardDetailCubit, CardDetailState>(
       listenWhen: (previous, current) => previous.status != current.status,
       listener: (context, state) {
@@ -88,17 +84,17 @@ class CardDetailsBody extends StatelessWidget {
         children: [
           VirtaulCardDetails(cardDetails: cardDetails),
           Gap.v(AppSpacing.lg),
-          // CardDetailNotes(),
-          // Gap.v(AppSpacing.lg),
+          CardBalanceSection(),
+          Gap.v(AppSpacing.lg),
           CardDetailsSection(),
           Gap.v(AppSpacing.md),
           CardBillingAddressSection(),
           Gap.v(AppSpacing.md),
-          CardQuickActionTile(
-            leading: Assets.icons.iconWallet.svg(),
-            title: AppStrings.calculateTransactionFee,
-            onTap: onCalculateTransactionTapped,
-          ),
+          //  CardQuickActionTile(
+          //     leading: Assets.icons.iconWallet.svg(),
+          //     title: AppStrings.calculateTransactionFee,
+          //     onTap: onCalculateTransactionTapped,
+          //   ),
           CardQuickActionTile(
             leading: Assets.icons.iconSettingEye.svg(),
             title: AppStrings.changeCardPin,

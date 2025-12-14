@@ -86,7 +86,7 @@ class _AppPinFormState extends State<AppPinForm> {
     final hasError = widget.error;
     final shadow = [
       BoxShadow(
-        color: Colors.black.withOpacity(0.05),
+        color: Colors.black.withValues(alpha: 0.05),
         blurRadius: 14,
         offset: const Offset(0, 8),
       ),
@@ -98,8 +98,9 @@ class _AppPinFormState extends State<AppPinForm> {
         color: AppColors.lightBlueFilled,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color:
-              hasError ? AppColors.red : AppColors.brightGrey.withOpacity(0.6),
+          color: hasError
+              ? AppColors.red
+              : AppColors.brightGrey.withValues(alpha: 0.6),
         ),
       ),
       child: Row(
@@ -196,10 +197,12 @@ class _AppPinFormState extends State<AppPinForm> {
             decoration: BoxDecoration(
               color: AppColors.white,
               borderRadius: BorderRadius.circular(18),
-              border: Border.all(color: AppColors.brightGrey.withOpacity(0.7)),
+              border: Border.all(
+                color: AppColors.brightGrey.withValues(alpha: 0.7),
+              ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.03),
+                  color: Colors.black.withValues(alpha: 0.03),
                   blurRadius: 10,
                   offset: const Offset(0, 6),
                 ),
@@ -208,8 +211,8 @@ class _AppPinFormState extends State<AppPinForm> {
             child: InkWell(
               onTap: widget.enabled ? () => _onNumberPressed(digit) : null,
               borderRadius: BorderRadius.circular(18),
-              splashColor: AppColors.blue.withOpacity(0.12),
-              highlightColor: AppColors.blue.withOpacity(0.05),
+              splashColor: AppColors.blue.withValues(alpha: 0.12),
+              highlightColor: AppColors.blue.withValues(alpha: 0.05),
               child: Center(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -250,10 +253,12 @@ class _AppPinFormState extends State<AppPinForm> {
             decoration: BoxDecoration(
               color: AppColors.white,
               borderRadius: BorderRadius.circular(18),
-              border: Border.all(color: AppColors.brightGrey.withOpacity(0.7)),
+              border: Border.all(
+                color: AppColors.brightGrey.withValues(alpha: 0.7),
+              ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.03),
+                  color: Colors.black.withValues(alpha: 0.03),
                   blurRadius: 10,
                   offset: const Offset(0, 6),
                 ),
@@ -262,7 +267,7 @@ class _AppPinFormState extends State<AppPinForm> {
             child: InkWell(
               onTap: widget.onFingerprintAuthentication,
               borderRadius: BorderRadius.circular(18),
-              splashColor: AppColors.blue.withOpacity(0.12),
+              splashColor: AppColors.blue.withValues(alpha: 0.12),
               child: const Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -298,10 +303,12 @@ class _AppPinFormState extends State<AppPinForm> {
             decoration: BoxDecoration(
               color: AppColors.white,
               borderRadius: BorderRadius.circular(18),
-              border: Border.all(color: AppColors.brightGrey.withOpacity(0.7)),
+              border: Border.all(
+                color: AppColors.brightGrey.withValues(alpha: 0.7),
+              ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.03),
+                  color: Colors.black.withValues(alpha: 0.03),
                   blurRadius: 10,
                   offset: const Offset(0, 6),
                 ),
@@ -310,7 +317,7 @@ class _AppPinFormState extends State<AppPinForm> {
             child: InkWell(
               onTap: widget.enabled ? _onBackspacePressed : null,
               borderRadius: BorderRadius.circular(18),
-              splashColor: AppColors.blue.withOpacity(0.12),
+              splashColor: AppColors.blue.withValues(alpha: 0.12),
               child: const Center(
                 child: Padding(
                   padding: EdgeInsets.all(18),
@@ -335,11 +342,11 @@ class _AppPinFormState extends State<AppPinForm> {
               color: AppColors.lightBlueFilled,
               borderRadius: BorderRadius.circular(22),
               border: Border.all(
-                color: AppColors.brightGrey.withOpacity(0.6),
+                color: AppColors.brightGrey.withValues(alpha: 0.6),
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.04),
+                  color: Colors.black.withValues(alpha: 0.04),
                   blurRadius: 14,
                   offset: const Offset(0, 10),
                 ),

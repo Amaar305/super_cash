@@ -25,9 +25,9 @@ class LoginRepositoryImpl implements LoginRepository {
     String username,
     String password,
   ) async {
-    // if (!await networkInfo.isConnected) {
-    //   return left(NetworkFailure("No internet connection."));
-    // }
+    if (!await networkInfo.isConnected) {
+      return left(NetworkFailure("No internet connection."));
+    }
     try {
       final user = await loginRemoteDataSource.login(
         username: username,

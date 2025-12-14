@@ -25,21 +25,12 @@ class AirtimeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isVtuSell = context.select((AirtimeCubit c) => c.state.vtuSell);
     return AppScaffold(
       releaseFocus: true,
       appBar: _appBar(context),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(AppSpacing.lg),
-        child: Column(
-          children: [
-            AirtimeTabType(),
-            if (isVtuSell)
-              AirtimeVtuSellPage(key: ValueKey('vtusell'))
-            else
-              AirtimeShareAndSellPage(key: ValueKey('sharesell')),
-          ],
-        ),
+        child: AirtimeVtuSellPage(),
       ),
     );
   }
