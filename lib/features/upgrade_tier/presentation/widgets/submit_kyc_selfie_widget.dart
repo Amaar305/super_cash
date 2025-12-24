@@ -86,7 +86,7 @@ class _SubmitKycSelfieWidgetState extends State<SubmitKycSelfieWidget> {
     try {
       // TODO: Handle permission denied errors
       final result = await MediaPickerHelper.pickMedia(
-        mediaType: MediaType.image,
+        mediaType: MediaType.camera,
       );
       _cubit.onSelfieTake(result?.file);
     } catch (e) {

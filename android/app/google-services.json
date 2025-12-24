@@ -7,6 +7,25 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:170234334876:android:76a21c2fbacd2e9c6be759",
+        "android_client_info": {
+          "package_name": "com.devusman.supercash"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbRg8tqmcQot45GWVZyh-2Ci_yCN1Ln6U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:170234334876:android:4d5ed499d78a3b526be759",
         "android_client_info": {
           "package_name": "com.example.cash_app"

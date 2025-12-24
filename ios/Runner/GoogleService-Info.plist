@@ -9,7 +9,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.superCash</string>
+	<string>com.devusman.supercash</string>
 	<key>PROJECT_ID</key>
 	<string>card-pay-64324</string>
 	<key>STORAGE_BUCKET</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:170234334876:ios:12342131ef8f5fdc6be759</string>
+	<string>1:170234334876:ios:ce40890b81ad531f6be759</string>
 </dict>
 </plist>

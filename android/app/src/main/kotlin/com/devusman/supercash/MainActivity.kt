@@ -1,4 +1,4 @@
-package com.example.super_cash
+package com.devusman.supercash
 
 import io.flutter.embedding.android.FlutterFragmentActivity
 

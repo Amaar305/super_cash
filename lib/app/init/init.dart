@@ -71,7 +71,7 @@ Future<void> initDependencies() async {
       () => AuthClient(
         client: http.Client(),
         tokenRepository: serviceLocator(),
-        baseUrl: 'http://167.71.92.9/api/v1',
+        baseUrl: 'https://supercash.com.ng/api/v1',
         // baseUrl: 'http://127.0.0.1:8000/api/v1',
         // 'http://127.0.0.1:8000/api/v1',
       ),
