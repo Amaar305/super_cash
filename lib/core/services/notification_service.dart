@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:app_client/app_client.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:super_cash/app/init/init.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -193,6 +194,33 @@ class NotificationService {
         await _sendTokenToServer(token);
       }
     } catch (e, stackTrace) {
+      if (e is FirebaseException && e.code == 'apns-token-not-set') {
+        logD('APNS token not set yet. Retrying FCM token fetch.');
+        const retryDelay = Duration(milliseconds: 500);
+        for (var attempt = 0; attempt < 3; attempt++) {
+          await Future.delayed(retryDelay);
+          try {
+            final apnsToken = await _firebaseMessaging.getAPNSToken();
+            if (apnsToken == null) {
+              continue;
+            }
+            final token = await _firebaseMessaging.getToken();
+            if (token != null) {
+              logD('Initial FCM Token: $token');
+              await _sendTokenToServer(token);
+            }
+            return;
+          } catch (innerE, innerStack) {
+            if (innerE is FirebaseException &&
+                innerE.code == 'apns-token-not-set') {
+              continue;
+            }
+            logE(innerE, stackTrace: innerStack);
+            return;
+          }
+        }
+        return;
+      }
       logE(e, stackTrace: stackTrace);
     }
   }
