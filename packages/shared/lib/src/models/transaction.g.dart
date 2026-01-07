@@ -23,7 +23,7 @@ TransactionResponse _$TransactionResponseFromJson(Map<String, dynamic> json) =>
       balanceBefore: json['balance_before'] as String? ?? '0.0',
       balanceAfter: json['balance_after'] as String? ?? '0',
       reference: json['reference'] as String,
-      createdAt: DateTime.parse(json['created_at'] as String),
+      createdAt: DateTime.parse(json['created_at'] as String).toLocal(),
       token: json['token'] as String?,
     );
 

@@ -84,7 +84,6 @@ class _SubmitKycSelfieWidgetState extends State<SubmitKycSelfieWidget> {
 
   void _onSelfieTaked() async {
     try {
-      // TODO: Handle permission denied errors
       final result = await MediaPickerHelper.pickMedia(
         mediaType: MediaType.camera,
       );

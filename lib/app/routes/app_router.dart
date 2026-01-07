@@ -234,6 +234,11 @@ class AppRouter {
                 CardWithdrawPage(cardId: state.extra as String),
           ),
           GoRoute(
+            name: RNames.accountDeletion,
+            path: 'account/delete',
+            builder: (_, __) => AccountDeletionPage(),
+          ),
+          GoRoute(
             name: RNames.virtualCardTransactions,
             path: 'card-transactions',
             builder: (context, state) =>
@@ -320,6 +325,7 @@ class AppRouter {
               ),
             ],
           ),
+          
           StatefulShellBranch(
             routes: [
               GoRoute(
@@ -346,11 +352,7 @@ class AppRouter {
                     path: 'manage-transaction-pin',
                     builder: (_, __) => ManageTransactionPinPage(),
                   ),
-                  GoRoute(
-                    name: RNames.accountDeletion,
-                    path: 'account/delete',
-                    builder: (_, __) => AccountDeletionPage(),
-                  ),
+                  
                 ],
               ),
             ],
@@ -359,49 +361,8 @@ class AppRouter {
       ),
     ],
 
-    // Same hardened redirect you tested; returns only absolute non-empty paths or null.
     redirect: guardRedirect,
 
-    //  (context, state) {
-    //   final status = appBloc.state.status;
-    //   final onboarded = launch.onboarded;
-    //   final welcome = launch.welcomePending;
-    //   final current = state.matchedLocation.isEmpty
-    //       ? AppRoutes.splash
-    //       : state.matchedLocation;
-
-    //   String? goIfDifferent(String target) => current == target ? null : target;
-
-    //   if (onboarded == null) return goIfDifferent(AppRoutes.splash);
-    //   if (onboarded == false) return goIfDifferent(AppRoutes.onboarding);
-    //   if (welcome) return goIfDifferent(AppRoutes.welcome);
-
-    //   switch (status) {
-    //     case AppStatus.unknown:
-    //       return goIfDifferent(AppRoutes.splash);
-    //     case AppStatus.unauthenticated:
-    //     case AppStatus.resumed:
-    //       if ([
-    //         AppRoutes.auth,
-    //         AppRoutes.onboarding,
-    //         AppRoutes.welcome,
-    //       ].contains(current)) {
-    //         return null;
-    //       }
-    //       return goIfDifferent(AppRoutes.auth);
-    //     case AppStatus.authenticated:
-    //     case AppStatus.updated:
-    //       if ([
-    //         AppRoutes.splash,
-    //         AppRoutes.auth,
-    //         AppRoutes.onboarding,
-    //         AppRoutes.welcome,
-    //       ].contains(current)) {
-    //         return goIfDifferent(AppRoutes.dashboard);
-    //       }
-    //       return null;
-    //   }
-    // },
     refreshListenable: GoRouterAppBlocRefreshStream(app.stream),
   );
 

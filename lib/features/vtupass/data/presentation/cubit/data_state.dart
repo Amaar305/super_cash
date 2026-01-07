@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'data_cubit.dart';
 
 enum DataStatus {
@@ -29,17 +28,17 @@ class DataState extends Equatable {
   });
 
   const DataState.initial()
-      : this(
-          message: '',
-          phone: const Phone.pure(),
-          status: DataStatus.initial,
-          dataPlans: const [],
-          selectedNetwork: null,
-          selectedDataType: null,
-          selectedIndex: null,
-          selectedDuration: 'all',
-          instantData: true,
-        );
+    : this(
+        message: '',
+        phone: const Phone.pure(),
+        status: DataStatus.initial,
+        dataPlans: const [],
+        selectedNetwork: null,
+        selectedDataType: null,
+        selectedIndex: null,
+        selectedDuration: 'all',
+        instantData: true,
+      );
 
   final DataStatus status;
   final List<DataPlan> dataPlans;
@@ -48,7 +47,7 @@ class DataState extends Equatable {
   final String message;
   final String? selectedDataType;
   final String? selectedDuration;
-  final int? selectedIndex;
+  final int? selectedIndex; 
   final String? selectedNetwork;
   final bool instantData;
 
@@ -74,23 +73,27 @@ class DataState extends Equatable {
     );
   }
 
+  List<String> get filteredDataTypes {
+    return dataPlans.map((e) => e.planType).toSet().toList();
+  }
+
   @override
   List<Object?> get props => [
-        status,
-        phone,
-        message,
-        selectedNetwork,
-        selectedDataType,
-        dataPlans,
-        selectedIndex,
-        selectedDuration,
-        instantData,
-        filteredPlans,
-      ];
+    status,
+    phone,
+    message,
+    selectedNetwork,
+    selectedDataType,
+    dataPlans,
+    selectedIndex,
+    selectedDuration,
+    instantData,
+    filteredPlans,
+  ];
   factory DataState.fromJson(Map<String, dynamic> json) =>
       _$DataStateFromJson(json);
   Map<String, dynamic> toJson() => _$DataStateToJson(this);
-  
+
   DataState copyWith({
     DataStatus? status,
     List<DataPlan>? dataPlans,
@@ -124,11 +127,14 @@ class DataState extends Equatable {
     final period = duration?.toLowerCase();
 
     return plans.where((plan) {
-      final matchesType = type == null || plan.planType.toLowerCase().contains(type);
+      final matchesType = type == null || plan.planType.toLowerCase() == type;
 
       final validity = int.tryParse(plan.planValidity.split(' ').first);
-      if (period == null || period == 'all' || validity == null) return matchesType;
 
+      if (period == null || period == 'all' || validity == null) {
+        return matchesType;
+      }
+  
       final matchesDuration = switch (period) {
         'daily' => validity < 7,
         'weekly' => validity == 7,

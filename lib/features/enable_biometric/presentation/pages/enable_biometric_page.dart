@@ -130,10 +130,10 @@ class EnableBiometricPage extends StatelessWidget {
       onAuthenticated: () {
         serviceLocator<TokenRepository>().setBiometricEnabled(enable: true);
 
-        // if (!user.isVerified) {
-        //   context.read<AppCubit>().verifyAccount(user);
-        //   return;
-        // }
+        if (!user.isVerified) {
+          context.read<AppCubit>().verifyAccount(user);
+          return;
+        }
 
         if (!user.transactionPin) {
           context.read<AppCubit>().createPin(user);

@@ -1,10 +1,12 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/app/init/init.dart';
 import 'package:super_cash/app/view/view.dart';
 import 'package:super_cash/features/account/account_deletion/account_deletion.dart';
+
 class AccountDeletionPage extends StatelessWidget {
   const AccountDeletionPage({super.key});
 
@@ -218,7 +220,8 @@ class _RetentionCard extends StatelessWidget {
               Gap.h(AppSpacing.sm),
               Text(
                 'Before you go',
-                style: context.titleMedium?.copyWith(fontFamily: 'Poppins') ??
+                style:
+                    context.titleMedium?.copyWith(fontFamily: 'Poppins') ??
                     const TextStyle(fontFamily: 'Poppins'),
               ),
             ],
@@ -237,7 +240,8 @@ class _RetentionCard extends StatelessWidget {
             children: const [
               _InfoRow(
                 icon: Icons.safety_check_rounded,
-                text: 'Your wallet, cards and history stop working immediately.',
+                text:
+                    'Your wallet, cards and history stop working immediately.',
               ),
               _InfoRow(
                 icon: Icons.timer_outlined,
@@ -386,7 +390,7 @@ class _DeletionCTA extends StatelessWidget {
         AppOutlinedButton(
           isLoading: false,
           label: 'Keep my account',
-          onPressed: isLoading ? null : () => Navigator.pop(context),
+          onPressed: isLoading ? null : () => context.pop(),
         ),
       ],
     );

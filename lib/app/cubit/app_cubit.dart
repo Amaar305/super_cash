@@ -99,10 +99,10 @@ class AppCubit extends Cubit<AppState> {
       await _loginLocalDataSource.clearUser();
       await _loginLocalDataSource.persistUser(user);
 
-      // if (!user.isVerified) {
-      //   emit(AppState.verifyAccount(user));
-      //   return;
-      // }
+      if (!user.isVerified) {
+        emit(AppState.verifyAccount(user));
+        return;
+      }
 
       if (!user.transactionPin) {
         emit(AppState.createPin());

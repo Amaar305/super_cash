@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app_client/app_client.dart';
+import 'package:env/env.dart';
 import 'package:super_cash/app/bloc/app_bloc.dart';
 import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/core/cooldown/cooldown_repository.dart';
@@ -49,7 +50,7 @@ Future<void> _initFingerprint(SharedPreferences storage) async {
   }
 }
 
-Future<void> initDependencies() async {
+Future<void> initDependencies({required bool development}) async {
   // Init sharedPreferences
   final sharedPreferences = await SharedPreferences.getInstance();
 
@@ -71,9 +72,7 @@ Future<void> initDependencies() async {
       () => AuthClient(
         client: http.Client(),
         tokenRepository: serviceLocator(),
-        baseUrl: 'https://supercash.com.ng/api/v1',
-        // baseUrl: 'http://127.0.0.1:8000/api/v1',
-        // 'http://127.0.0.1:8000/api/v1',
+        baseUrl: development ? EnvDev.appBaseUrl : EnvProd.appBaseUrl,
       ),
     )
     ..registerLazySingleton<DeviceRegistrar>(

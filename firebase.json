@@ -1,1 +1,30 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"card-pay-64324","appId":"1:170234334876:android:76a21c2fbacd2e9c6be759","fileOutput":"android/app/google-services.json"}},"ios":{"default":{"projectId":"card-pay-64324","appId":"1:170234334876:ios:ce40890b81ad531f6be759","uploadDebugSymbols":false,"fileOutput":"ios/Runner/GoogleService-Info.plist"}},"dart":{"lib/firebase_options.dart":{"projectId":"card-pay-64324","configurations":{"android":"1:170234334876:android:76a21c2fbacd2e9c6be759","ios":"1:170234334876:ios:ce40890b81ad531f6be759"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "card-pay-64324",
+          "appId": "1:170234334876:android:76a21c2fbacd2e9c6be759",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "ios": {
+        "default": {
+          "projectId": "card-pay-64324",
+          "appId": "1:170234334876:ios:ce40890b81ad531f6be759",
+          "uploadDebugSymbols": false,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "card-pay-64324",
+          "configurations": {
+            "android": "1:170234334876:android:76a21c2fbacd2e9c6be759",
+            "ios": "1:170234334876:ios:ce40890b81ad531f6be759"
+          }
+        }
+      }
+    }
+  }
+}

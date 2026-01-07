@@ -1,6 +1,12 @@
 import 'package:app_ui/app_ui.dart';
+import 'package:env/env.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:shared/shared.dart';
+import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/core/fonts/app_text_style.dart';
+import 'package:super_cash/core/helper/app_url_launcher.dart';
 import 'package:super_cash/features/card/card_details/presentation/widgets/card_drop_icon_button.dart';
 import 'package:super_cash/features/referal/referal.dart';
 
@@ -45,6 +51,9 @@ class ReferralShareCodeItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final phone = context.select(
+      (AppCubit element) => element.state.user?.phone ?? '',
+    );
     return Stack(
       alignment: Alignment.bottomRight,
       children: [
@@ -83,34 +92,38 @@ class ReferralShareCodeItem extends StatelessWidget {
                         borderRadius: BorderRadius.circular(AppSpacing.xs),
                         border: Border.all(width: 0.5),
                       ),
-                      child: Text('share.makanrealty/ref-013'),
+                      child: Text(phone),
                     ),
-                    Container(
-                      // height: 37,
-                      padding: EdgeInsets.symmetric(
-                        vertical: 10,
-                        horizontal: 19,
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(AppSpacing.xs),
-                        border: Border.all(width: 0.5),
-                      ),
+                    Tappable.faded(
+                      onTap: () {
+                        copyText(context, phone, 'Copied');
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 10,
+                          horizontal: 19,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(AppSpacing.xs),
+                          border: Border.all(width: 0.5),
+                        ),
 
-                      child: Icon(
-                        Icons.copy_outlined,
-                        size: 20,
-                        color: AppColors.grey,
+                        child: Icon(
+                          Icons.copy_outlined,
+                          size: 20,
+                          color: AppColors.grey,
+                        ),
                       ),
                     ),
                   ],
                 ),
                 NewWidget(
                   title: 'Android invite link:',
-                  link: 'https://app/playstore/share/invite',
+                  link: EnvProd.playStoreUrl,
                 ),
                 NewWidget(
                   title: 'Apple invite link:',
-                  link: 'https://app/playstore/share/invite',
+                  link: EnvProd.appStoreUrl,
                 ),
                 Text(
                   'Share your referrel code via',
@@ -124,12 +137,29 @@ class ReferralShareCodeItem extends StatelessWidget {
                     ReferralShareButton(
                       label: 'Whatsapp',
                       backgroudColor: Color(0xff51A530),
-                      onPressed: () {},
+                      onPressed: () {
+                        if (phone.trim().isEmpty) {
+                          return;
+                        }
+                        final message = 'Use my referral code: $phone';
+                        final encodedMessage = Uri.encodeComponent(message);
+                        launchLink('https://wa.me/?text=$encodedMessage');
+                      },
                     ),
                     ReferralShareButton(
                       label: 'Others',
                       backgroudColor: Color(0xff00326D),
-                      onPressed: () {},
+                      onPressed: () {
+                        if (phone.trim().isEmpty) {
+                          return;
+                        }
+                        final message = [
+                          'Use my referral code: $phone',
+                          'Android: ${EnvProd.playStoreUrl}',
+                          'iOS: ${EnvProd.appStoreUrl}',
+                        ].join('\n');
+                        Share.share(message, subject: 'Referral Code');
+                      },
                     ),
                   ],
                 ),
@@ -181,9 +211,13 @@ class NewWidget extends StatelessWidget {
                       color: AppColors.grey,
                       size: AppSpacing.lg,
                     ),
-                    Text(
-                      link,
-                      style: poppinsTextStyle(fontSize: AppSpacing.md),
+                    Flexible(
+                      child: Text(
+                        link,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: poppinsTextStyle(fontSize: AppSpacing.md),
+                      ),
                     ),
                   ],
                 ),
@@ -194,7 +228,9 @@ class NewWidget extends StatelessWidget {
                   color: AppColors.white,
                   fontSize: AppSpacing.md,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  copyText(context, link, 'Copied');
+                },
                 style: ElevatedButton.styleFrom(
                   fixedSize: Size(69, 40),
                   shape: RoundedRectangleBorder(

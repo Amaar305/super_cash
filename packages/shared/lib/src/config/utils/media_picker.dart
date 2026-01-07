@@ -38,7 +38,7 @@ class MediaPickerResult {
   File? get file => files.isNotEmpty ? files.first : null;
 
   /// Convenience getter for single path
-  String? get path => paths?.isNotEmpty == true ? paths?.first : null;
+  String? get path => paths?.isNotEmpty ?? false ? paths?.first : null;
 }
 
 /// Helper class for picking media files with clean and extensible architecture

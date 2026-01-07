@@ -34,7 +34,7 @@ class DataCubit extends Cubit<DataState> {
       final res = await _fetchDataPlanUseCase(
         FetchDataPlanParam(network: network),
       );
-
+      if (isClosed) return;
       res.fold(
         (l) => emit(
           state.copyWith(status: DataStatus.failure, message: l.message),
@@ -50,6 +50,8 @@ class DataCubit extends Cubit<DataState> {
         },
       );
     } catch (e) {
+      if (isClosed) return;
+
       emit(
         state.copyWith(
           status: DataStatus.failure,
@@ -63,6 +65,7 @@ class DataCubit extends Cubit<DataState> {
     if (state.selectedNetwork == network || isClosed) return;
 
     final newState = state.resetChanges();
+
     emit(
       newState.copyWith(status: DataStatus.loading, selectedNetwork: network),
     );
@@ -118,12 +121,22 @@ class DataCubit extends Cubit<DataState> {
   }
 
   void onDataTypeChanged(String? dataType) {
-    if (state.selectedDataType?.toLowerCase() == dataType?.toLowerCase()) {
+    if (dataType == null) return;
+    if (state.selectedDataType?.toLowerCase() == dataType.toLowerCase()) {
       return;
     }
-    if (dataType == null) return;
-
-    emit(state.copyWith(selectedDataType: dataType));
+    final newState = DataState(
+      message: state.message,
+      phone: state.phone,
+      selectedNetwork: state.selectedNetwork,
+      status: state.status,
+      dataPlans: state.dataPlans,
+      selectedDataType: dataType,
+      selectedIndex: null,
+      instantData: state.instantData,
+      selectedDuration: state.selectedDuration,
+    );
+    emit(newState);
   }
 
   void onPlanSelected(int index) {
@@ -133,12 +146,23 @@ class DataCubit extends Cubit<DataState> {
   }
 
   void onDurationChanged(String? duration) {
-    if (state.selectedDuration?.toLowerCase() == duration?.toLowerCase()) {
+    if (duration == null) return;
+    if (state.selectedDuration?.toLowerCase() == duration.toLowerCase()) {
       return;
     }
-    if (duration == null) return;
 
-    emit(state.copyWith(selectedDuration: duration.toLowerCase()));
+    final newState = DataState(
+      message: state.message,
+      phone: state.phone,
+      selectedNetwork: state.selectedNetwork,
+      status: state.status,
+      dataPlans: state.dataPlans,
+      selectedDataType: state.selectedDataType,
+      selectedIndex: null,
+      instantData: state.instantData,
+      selectedDuration: duration.toLowerCase(),
+    );
+    emit(newState);
   }
 
   void onBuyData([void Function(TransactionResponse)? onSuccess]) async {

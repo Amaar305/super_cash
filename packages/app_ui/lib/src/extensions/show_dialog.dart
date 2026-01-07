@@ -66,6 +66,7 @@ extension DialogExtension on BuildContext {
                     label: okText,
                     onPressed: onCancel ?? onDone ?? () => pop(true),
                   ),
+                  const Gap.v(AppSpacing.spaceUnit / 2),
                 ],
               ),
             ),

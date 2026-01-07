@@ -15,7 +15,7 @@ Card _$CardFromJson(Map<String, dynamic> json) => Card(
       cardBrand: json['card_brand'] as String,
       isActive: json['is_active'] as bool,
       isDeleted: json['is_delete'] as bool,
-      createdAt: DateTime.parse(json['created_at'] as String),
+      createdAt: DateTime.parse(json['created_at'] as String).toLocal(),
       updatedAt: DateTime.parse(json['updated_at'] as String),
     );
 

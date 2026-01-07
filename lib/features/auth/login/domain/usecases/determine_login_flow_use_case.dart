@@ -31,9 +31,9 @@ class DetermineLoginFlowUseCase implements UseCase<LoginFlowDecision, AppUser> {
     //   return Right(const LoginFlowDecision(LoginFlowAction.requestTransactionPin));
     // }
 
-    // if (!user.isVerified) {
-    //   return Right(const LoginFlowDecision(LoginFlowAction.requestVerification));
-    // }
+    if (!user.isVerified) {
+      return Right(const LoginFlowDecision(LoginFlowAction.requestVerification));
+    }
 
     final biometricEnabled = _tokenRepository.getBiometric() ?? false;
     if (biometricEnabled) {

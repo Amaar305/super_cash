@@ -12,7 +12,9 @@ class DataPlanTypeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final plans = context.select((DataCubit cubit) => cubit.state.dataPlans);
+    final filteredDataTypes = context.select(
+      (DataCubit cubit) => cubit.state.filteredDataTypes,
+    );
 
     final selectedDataType = context.select(
       (DataCubit cubit) => cubit.state.selectedDataType,
@@ -22,7 +24,7 @@ class DataPlanTypeWidget extends StatelessWidget {
       (DataCubit cubit) => cubit.state.status.isLoading,
     );
 
-    if (plans.isEmpty) {
+    if (filteredDataTypes.isEmpty) {
       return SizedBox.shrink();
     }
 
@@ -30,7 +32,7 @@ class DataPlanTypeWidget extends StatelessWidget {
       isLoading: isLoading,
       selectedDataType: selectedDataType,
       onChanged: context.read<DataCubit>().onDataTypeChanged,
-      datatypes: plans.map((e) => e.planType).toSet().toList(),
+      datatypes: filteredDataTypes,
     );
   }
 }
@@ -81,11 +83,9 @@ class LinePlanType extends StatelessWidget {
                       datatypes[index]
                           .toLowerCase()
                           .replaceAll('airtel', '')
+                          .replaceAll('mtn', ' ')
                           .toUpperCase(),
-                      style: poppinsTextStyle(
-                        // fontSize: 12,
-                        fontWeight: AppFontWeight.medium,
-                      ),
+                      style: poppinsTextStyle(fontWeight: AppFontWeight.medium),
                     ),
                     AnimatedContainer(
                       duration: 200.ms,

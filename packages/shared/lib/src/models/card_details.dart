@@ -78,7 +78,7 @@ class CardDetails {
       cardholderId: json['cardholder_id'] as String,
       createdAt: DateTime.fromMillisecondsSinceEpoch(
         (json['created_at'] as int) * 1000,
-      ),
+      ).toLocal(),
       issuingAppId: json['issuing_app_id'] as String,
       cardType: json['card_type'] as String,
       isActive: json['is_active'] as bool,
