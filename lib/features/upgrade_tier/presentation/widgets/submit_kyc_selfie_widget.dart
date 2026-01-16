@@ -73,7 +73,7 @@ class _SubmitKycSelfieWidgetState extends State<SubmitKycSelfieWidget> {
                     ],
                   ),
                 ),
-                Text('(Max. File size: 25 MB)', style: context.bodySmall),
+                Text('(Max. File size: 0.5 MB)', style: context.bodySmall),
               ],
             ),
           ),

@@ -38,6 +38,8 @@ class HistoryRemoteDataSourceImpl implements HistoryRemoteDataSource {
 
     final response = await apiClient.request(method: 'GET', path: path);
 
+    logD(response.body);
+
     Map<String, dynamic> res = jsonDecode(response.body);
     return HistoryResponse.fromMap(res);
   }
@@ -63,7 +65,7 @@ class HistoryRemoteDataSourceImpl implements HistoryRemoteDataSource {
               '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}',
         )
         .join('&');
-    logI('transaction/app-transactions/?$queryString');
+
     return 'transaction/app-transactions/?$queryString';
   }
 }

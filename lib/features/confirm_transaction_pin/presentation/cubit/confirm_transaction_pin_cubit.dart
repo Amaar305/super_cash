@@ -64,6 +64,8 @@ class ConfirmTransactionPinCubit extends Cubit<ConfirmTransactionPinState> {
         },
       );
     } catch (e) {
+      if (isClosed) return;
+
       emit(
         state.copyWith(
           status: ConfirmTransactionPinStatus.failure,

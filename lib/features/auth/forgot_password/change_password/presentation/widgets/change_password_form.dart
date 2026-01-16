@@ -1,7 +1,7 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
+import 'package:super_cash/app/cubit/app_cubit.dart';
 
 import '../../../../../../app/app.dart';
 import '../../../../../../core/app_strings/app_string.dart';
@@ -33,11 +33,7 @@ class _ChangePasswordFormState extends State<ChangePasswordForm> {
       listener: (context, state) {
         if (state.status.isError) {
           openSnackbar(
-            SnackbarMessage.error(
-              title: changePasswordStatusMessage[state.status]!.title,
-              description:
-                  changePasswordStatusMessage[state.status]?.description,
-            ),
+            SnackbarMessage.error(title: state.message),
             clearIfQueue: true,
           );
         } else if (state.status.isSuccess) {
@@ -96,7 +92,9 @@ class ResetPasswordBottomSheet extends StatelessWidget {
               PrimaryButton(
                 isLoading: false,
                 label: 'Done',
-                onPressed: () => context.pushReplacement(AppRoutes.auth),
+                onPressed: () => context
+                    .read<AppCubit>()
+                    .logout(), // Logout the user to the auth screen
               ),
             ],
           ),

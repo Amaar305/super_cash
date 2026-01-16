@@ -1,6 +1,8 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:super_cash/app/app.dart';
 import 'package:super_cash/core/app_strings/app_string.dart';
+import 'package:super_cash/features/confirm_transaction_pin/domain/entities/purchase_detail.dart';
+import 'package:super_cash/features/confirm_transaction_pin/domain/entities/purchase_type.dart';
 import 'package:super_cash/features/vtupass/cable/presentation/presentation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -52,7 +54,16 @@ class CableButton extends StatelessWidget {
       ..onPhoneFocused();
 
     if (isValidated) {
-      final result = await context.push<bool?>(AppRoutes.confirmationDialog);
+      final result = await context.push<bool?>(
+        AppRoutes.confirmationDialog,
+        extra: PurchaseDetail(
+          amount: cubit.state.amount.value,
+          title: 'Purchase Cable',
+          description:
+              'You are purchasing ${cubit.state.amount.value} cable to ${cubit.state.cardNumber.value}',
+          purchaseType: PurchaseType.cableTv,
+        ),
+      );
 
       if (result == true && context.mounted) {
         cubit.onPurchaseCable((description) {

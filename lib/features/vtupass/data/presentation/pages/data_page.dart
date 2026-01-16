@@ -36,7 +36,10 @@ class DataView extends StatelessWidget {
       resizeToAvoidBottomInset: true,
       body: SingleChildScrollView(
         padding: EdgeInsets.all(AppSpacing.lg),
-        child: DataViewSwitcher(),
+        child: Column(
+          spacing: AppSpacing.lg,
+          children: [DataTabType(), DataViewSwitcher()],
+        ),
       ),
     );
   }

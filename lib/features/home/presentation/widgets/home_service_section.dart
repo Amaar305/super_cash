@@ -44,6 +44,16 @@ class HomeServicesSection extends StatelessWidget {
         icon: Assets.icons.refer.svg(),
         onTap: () => context.goNamedSafe(RNames.referFriend),
       ),
+      HomeServiceActionButton(
+        'Exam Pin',
+        icon: Assets.icons.exam.svg(),
+        onTap: () => context.goNamedSafe(RNames.examPin),
+      ),
+      HomeServiceActionButton(
+        'Smile',
+        icon: Assets.icons.smile.svg(),
+        onTap: () => context.goNamedSafe(RNames.smile),
+      ),
     ];
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),

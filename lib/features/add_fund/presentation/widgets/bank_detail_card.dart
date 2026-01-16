@@ -35,11 +35,10 @@ class BankDetailCard extends StatelessWidget {
                 Tappable.scaled(
                   throttle: true,
                   onTap: () {
-                    copyAccountNumber(context, bankDetail.accountNumber);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Account number copied to clipboard'),
-                      ),
+                    copyText(
+                      context,
+                      bankDetail.accountNumber,
+                      'Account number copied to clipboard',
                     );
                   },
                   child: Icon(Icons.copy_outlined, size: AppSpacing.lg - 1),

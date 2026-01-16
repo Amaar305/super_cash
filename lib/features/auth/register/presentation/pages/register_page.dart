@@ -30,7 +30,10 @@ class RegisterView extends StatelessWidget {
       body: AppConstrainedScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-          child: RegisterForm(),
+          child: Column(
+            spacing: AppSpacing.lg,
+            children: [RegisterType(), RegisterForm()],
+          ),
         ),
       ),
     );

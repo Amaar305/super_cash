@@ -19,7 +19,10 @@ class NotificationTile extends StatelessWidget {
       ),
       title: Text(
         notification.title,
-        style: poppinsTextStyle(fontWeight: AppFontWeight.semiBold),
+        style: poppinsTextStyle(
+          fontWeight: AppFontWeight.semiBold,
+          fontSize: 13,
+        ),
       ),
       subtitle: Text(
         notification.description,

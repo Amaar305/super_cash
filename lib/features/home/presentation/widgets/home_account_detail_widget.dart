@@ -1,7 +1,7 @@
 import 'package:app_ui/app_ui.dart';
+import 'package:shared/shared.dart';
 import 'package:super_cash/core/fonts/app_text_style.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class HomeAccountDetailWidget extends StatelessWidget {
   const HomeAccountDetailWidget({
@@ -47,9 +47,11 @@ class HomeAccountDetailWidget extends StatelessWidget {
             Tappable.scaled(
               onTap: () {
                 // Handle copy action
-                Clipboard.setData(ClipboardData(text: accountNumber));
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Account number copied to clipboard')),
+                
+                copyText(
+                  context,
+                  accountNumber,
+                  'Account number copied to clipboard',
                 );
               },
               child: SizedBox.square(

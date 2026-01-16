@@ -30,7 +30,11 @@ class AirtimeView extends StatelessWidget {
       appBar: _appBar(context),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(AppSpacing.lg),
-        child: AirtimeVtuSellPage(),
+        child: Column(
+          spacing: AppSpacing.lg,
+
+          children: [AirtimeTabType(), AirtimeSwitcher()],
+        ),
       ),
     );
   }
@@ -40,6 +44,18 @@ class AirtimeView extends StatelessWidget {
       leading: AppLeadingAppBarWidget(onTap: context.pop),
       title: AppAppBarTitle(AppStrings.buyAirtime),
     );
+  }
+}
+
+class AirtimeSwitcher extends StatelessWidget {
+  const AirtimeSwitcher({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final isVTU = context.select(
+      (AirtimeCubit element) => element.state.vtuSell,
+    );
+    return isVTU ? AirtimeVtuSellPage() : AirtimeShareAndSellPage();
   }
 }
 

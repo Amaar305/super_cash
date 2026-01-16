@@ -115,6 +115,9 @@ class LiveChatChannelTile extends StatelessWidget {
                   icon: const Icon(Icons.open_in_new_rounded),
                   label: Text(channel.isEnabled ? 'Open channel' : 'Disabled'),
                   style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                     padding: const EdgeInsets.symmetric(vertical: 12),
                     backgroundColor: channel.isEnabled ? statusColor : null,
                     foregroundColor: channel.isEnabled
@@ -147,7 +150,6 @@ class LiveChatChannelTile extends StatelessWidget {
     }
   }
 }
-
 
 class _StatusPill extends StatelessWidget {
   const _StatusPill({required this.isEnabled});

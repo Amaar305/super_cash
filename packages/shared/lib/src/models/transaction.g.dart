@@ -8,7 +8,7 @@ part of 'transaction.dart';
 
 TransactionResponse _$TransactionResponseFromJson(Map<String, dynamic> json) =>
     TransactionResponse(
-      description: json['description'] as String,
+      description: json['description'] as String? ??'',
       transactionType: $enumDecodeNullable(
             _$TransactionTypeEnumMap,
             json['transaction_type'],

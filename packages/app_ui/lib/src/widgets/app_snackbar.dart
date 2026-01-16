@@ -33,10 +33,12 @@ class SnackbarMessage {
   }) : this(
           title: title,
           description: description,
-          icon: Icons.done,
+          icon: Icons.check_circle_outlined,
           // backgroundColor: const Color.fromARGB(255, 41, 166, 64),
-          backgroundColor: AppColors.blue,
+          backgroundColor: AppColors.green,
+          iconColor: AppColors.white,
           timeout: timeout,
+
         );
 
   /// {@macro snackbar_message_error}
@@ -357,7 +359,7 @@ class AppSnackbarState extends State<AppSnackbar>
                       }
                       animateOut();
                     },
-                    borderRadius: BorderRadius.circular(13),
+                    borderRadius: BorderRadius.circular(8),
                     // color: context.theme.colorScheme.secondaryContainer,
                     backgroundColor:
                         currentMessage?.backgroundColor ?? AppColors.blue,

@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/core/usecase/use_case.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,7 +25,11 @@ class UpgradeTierCubit extends Cubit<UpgradeTierState> {
   }) : _upgradeAccountUseCase = upgradeAccountUseCase,
        _checkUpgradeStatusUseCase = checkUpgradeStatusUseCase,
        _appBloc = appBloc,
-       super(UpgradeTierState.inital(currentUser: appBloc.state.user??AppUser.anonymous));
+       super(
+         UpgradeTierState.inital(
+           currentUser: appBloc.state.user ?? AppUser.anonymous,
+         ),
+       );
 
   void nextStep() => emit(state.copyWith(currentStep: state.currentStep + 1));
 
@@ -432,6 +438,8 @@ class UpgradeTierCubit extends Cubit<UpgradeTierState> {
     emit(newState);
 
     if (!isFormValid) return;
+    final compressedSelfie = await _compressSelfie(selfie);
+    final uploadSelfie = compressedSelfie ?? selfie;
 
     final UpgradeAccountProps props = UpgradeAccountProps(
       firstName: firstName.value,
@@ -446,7 +454,7 @@ class UpgradeTierCubit extends Cubit<UpgradeTierState> {
       postalCode: postalCode.value,
       idType: state.selectedIdType,
       bvnNumber: bvn.value,
-      selfieFile: selfie,
+      selfieFile: uploadSelfie,
     );
 
     final res = await _upgradeAccountUseCase(props);
@@ -463,6 +471,25 @@ class UpgradeTierCubit extends Cubit<UpgradeTierState> {
     );
   }
 
+  Future<File?> _compressSelfie(File? selfie) async {
+    if (selfie == null) return null;
+    const maxBytes = 600 * 1024;
+    final originalSize = await selfie.length();
+    if (originalSize <= maxBytes) return selfie;
+    final tempDir = await getTemporaryDirectory();
+    final targetPath =
+        '${tempDir.path}${Platform.pathSeparator}selfie_${DateTime.now().millisecondsSinceEpoch}.jpg';
+    final result = await FlutterImageCompress.compressAndGetFile(
+      selfie.path,
+      targetPath,
+      quality: 75,
+      minWidth: 1280,
+      minHeight: 1280,
+      format: CompressFormat.jpeg,
+    );
+    return File(result?.path ?? selfie.path);
+  }
+
   void onUpgradeConfirm() async {
     if (isClosed) return;
     try {
@@ -477,7 +504,7 @@ class UpgradeTierCubit extends Cubit<UpgradeTierState> {
           emit(state.copyWith(status: UpgradeTierStatus.upgraded));
           // Update user model
 
-          final user = _appBloc.state.user??AppUser.anonymous;
+          final user = _appBloc.state.user ?? AppUser.anonymous;
           if (user != AppUser.anonymous) {
             final newUser = user.copyWith(isKycVerified: true);
             _appBloc.updateUser(newUser);

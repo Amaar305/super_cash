@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:super_cash/app/routes/app_routes.dart';
 import 'package:super_cash/core/app_strings/app_string.dart';
+import 'package:super_cash/features/confirm_transaction_pin/domain/entities/purchase_detail.dart';
+import 'package:super_cash/features/confirm_transaction_pin/domain/entities/purchase_type.dart';
 import 'package:super_cash/features/vtupass/vtupass.dart';
 
 class ElectricityValidationSummary extends StatelessWidget {
@@ -63,6 +65,13 @@ class ElectricityValidationSummary extends StatelessWidget {
           onPressed: () async {
             final result = await context.push<bool?>(
               AppRoutes.confirmationDialog,
+              extra: PurchaseDetail(
+                amount: amount,
+                title: 'Electricity Subscription',
+                description:
+                    'You are purchasing electricity for $customerName with meter number $meterNumber',
+                purchaseType: PurchaseType.electricity,
+              ),
             );
 
             if (result == true && context.mounted) {
@@ -84,7 +93,6 @@ class ElectricityValidationSummary extends StatelessWidget {
     );
   }
 }
-
 
 class _DetailRow extends StatelessWidget {
   const _DetailRow({required this.title, required this.value});

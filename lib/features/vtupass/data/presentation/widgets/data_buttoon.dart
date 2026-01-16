@@ -1,4 +1,6 @@
 import 'package:app_ui/app_ui.dart';
+import 'package:super_cash/features/confirm_transaction_pin/domain/entities/purchase_detail.dart';
+import 'package:super_cash/features/confirm_transaction_pin/domain/entities/purchase_type.dart';
 import 'package:super_cash/features/vtupass/vtupass.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -42,11 +44,12 @@ class DataButton extends StatelessWidget {
 
               final result = await context.push<bool?>(
                 AppRoutes.confirmationDialog,
-                extra: VeryPurchaseInfo(
-                  amount: plan.planName,
-                  number: phone,
-                  text1: 'You are sending ',
-                  text2: 'data to ',
+                extra: PurchaseDetail(
+                  amount: plan.planAmount.toDouble().toString(),
+                  title: 'Purchase Data',
+                  description:
+                      'You are purchasing ${plan.planName} data to $phone',
+                  purchaseType: PurchaseType.data,
                 ),
               );
 

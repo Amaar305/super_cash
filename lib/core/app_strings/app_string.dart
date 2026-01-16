@@ -388,4 +388,6 @@ class AppStrings {
   static const String cardBalance = 'Card Balance';
 
   static const String currentBalance = 'Spendable Balance';
+  static String authPaymentText({bool isAndroid = true}) =>
+      isAndroid ? 'Use Fingerprint' : 'Use Face ID';
 }

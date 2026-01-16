@@ -34,7 +34,12 @@ class AddFundView extends StatelessWidget {
       ),
       body: Padding(
         padding: EdgeInsets.all(AppSpacing.lg),
-        child: SingleChildScrollView(child: BankTransferSection()),
+        child: SingleChildScrollView(
+          child: Column(
+            spacing: AppSpacing.lg,
+            children: [NewWidget(), FundingDetailsSection()],
+          ),
+        ),
       ),
     );
   }

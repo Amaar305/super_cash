@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs
 
+import 'package:app_ui/app_ui.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 
@@ -8,9 +9,10 @@ void copyText(BuildContext context, String text, String message) {
     (value) {
       // Snack hereBar or Toast can be shown to indicate success
       if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(message)),
-      );}
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(message), backgroundColor: AppColors.green),
+        );
+      }
     },
   );
 }

@@ -1,4 +1,5 @@
 import 'package:app_ui/app_ui.dart';
+import 'package:super_cash/app/app.dart';
 import 'package:super_cash/app/view/app.dart';
 import 'package:super_cash/core/app_strings/app_string.dart';
 import 'package:super_cash/core/helper/fingerprint_authentication.dart';
@@ -6,14 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared/shared.dart';
-
-import '../presentation.dart';
-
-typedef ConfirmTransactionPurchaseDetail = Widget;
+import 'package:super_cash/features/account/reset_transaction_pin/reset_transaction_pin.dart';
+import 'package:super_cash/features/confirm_transaction_pin/confirm_transaction_pin.dart';
 
 class ConfirmTransactionPinPage extends StatefulWidget {
-  const ConfirmTransactionPinPage({super.key, this.transactionPurchaseDetail});
-  final ConfirmTransactionPurchaseDetail? transactionPurchaseDetail;
+  const ConfirmTransactionPinPage({super.key, this.purchaseDetail});
+
+  final PurchaseDetail? purchaseDetail;
 
   @override
   State<ConfirmTransactionPinPage> createState() =>
@@ -48,9 +48,6 @@ class _ConfirmTransactionPinPageState extends State<ConfirmTransactionPinPage> {
 
   @override
   Widget build(BuildContext context) {
-    // final isLoading = context.select(
-    //   (ConfirmTransactionPinCubit cubit) => cubit.state.status.isLoading,
-    // );
     return AppScaffold(
       appBar: AppBar(
         leading: AppLeadingAppBarWidget(onTap: () => confirmGoBack(context)),
@@ -58,6 +55,19 @@ class _ConfirmTransactionPinPageState extends State<ConfirmTransactionPinPage> {
       ),
       releaseFocus: true,
       resizeToAvoidBottomInset: true,
+      bottomSheet: ConfirmBottomFingerprint(
+        onVerified: () async {
+          await fingerprintAuthentication(
+            onAuthenticated: () => _onVerified(true),
+            onUnAuthenticated: (reason) {
+              openSnackbar(
+                SnackbarMessage.error(title: reason),
+                clearIfQueue: true,
+              );
+            },
+          );
+        },
+      ),
       body:
           BlocListener<ConfirmTransactionPinCubit, ConfirmTransactionPinState>(
             listenWhen: (previous, current) =>
@@ -77,11 +87,17 @@ class _ConfirmTransactionPinPageState extends State<ConfirmTransactionPinPage> {
               child: Padding(
                 padding: EdgeInsets.all(AppSpacing.lg),
                 child: Column(
-                  spacing: AppSpacing.spaceUnit,
+                  spacing: AppSpacing.lg,
                   children: [
-                    VeryPurchaseWidget(),
-                    if (widget.transactionPurchaseDetail != null)
-                      widget.transactionPurchaseDetail as Widget,
+                    // Details
+                    if (widget.purchaseDetail != null)
+                      PurchaseConfirmation(
+                        amount: widget.purchaseDetail!.amount,
+                        title: widget.purchaseDetail!.title,
+                        description: widget.purchaseDetail!.description,
+                        purchaseType: widget.purchaseDetail!.purchaseType,
+                      ),
+
                     BlocBuilder<
                       ConfirmTransactionPinCubit,
                       ConfirmTransactionPinState
@@ -97,17 +113,28 @@ class _ConfirmTransactionPinPageState extends State<ConfirmTransactionPinPage> {
                             onCompleted: (pin) {
                               _onVerified();
                             },
-                            onFingerprintAuthentication: !state.status.isLoading
-                                ? () async {
-                                    await fingerprintAuthentication(
-                                      onAuthenticated: _onVerified,
-                                    );
-                                  }
-                                : null,
+                            onForgotPinPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ResetTransactionPinPage(),
+                              ),
+                            ),
+                            onFingerprintAuthentication: () async {
+                              await fingerprintAuthentication(
+                                onAuthenticated: () => _onVerified(true),
+                                onUnAuthenticated: (reason) {
+                                  openSnackbar(
+                                    SnackbarMessage.error(title: reason),
+                                    clearIfQueue: true,
+                                  );
+                                },
+                              );
+                            },
                           );
                         }
                       },
                     ),
+                    SizedBox(height: AppSpacing.xxxlg),
                   ],
                 ),
               ),
@@ -116,7 +143,11 @@ class _ConfirmTransactionPinPageState extends State<ConfirmTransactionPinPage> {
     );
   }
 
-  void _onVerified() {
+  void _onVerified([bool withFingerprintAuthentication = false]) {
+    if (withFingerprintAuthentication) {
+      context.pop<bool?>(true);
+      return;
+    }
     _cubit.onVerifyPin(
       onVerified: (p0) {
         context.pop<bool?>(true);

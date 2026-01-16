@@ -91,6 +91,7 @@ class ReferalCubit extends Cubit<ReferalState> {
       );
     } catch (error, stackTrace) {
       logE('Failed to claim referral reward $error', stackTrace: stackTrace);
+      if (isClosed) return;
       emit(
         state.copyWith(
           status: ReferalStatus.failure,

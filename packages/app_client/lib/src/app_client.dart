@@ -83,7 +83,7 @@ class AuthClient {
         body: body,
         timeout: timeout ?? _defaultTimeout,
       );
-
+      
       if (first.statusCode != 401 || !withToken) {
         _throwOnHttpError(first);
         return first;

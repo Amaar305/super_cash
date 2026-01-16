@@ -43,7 +43,7 @@ class AppRouter {
   GoRouter get router => GoRouter(
     initialLocation: AppRoutes.splash,
     navigatorKey: _rootNavigatorKey,
-    debugLogDiagnostics: true,
+    // debugLogDiagnostics: true,
     errorBuilder: (context, state) => const NotFoundPage(),
 
     routes: [
@@ -189,7 +189,7 @@ class AppRouter {
         pageBuilder: (context, state) => MaterialPage(
           fullscreenDialog: true,
           child: ConfirmTransactionPinPage(
-            transactionPurchaseDetail: state.extra as Widget?,
+            purchaseDetail: state.extra as PurchaseDetail?,
           ),
         ),
       ),
@@ -325,7 +325,7 @@ class AppRouter {
               ),
             ],
           ),
-          
+
           StatefulShellBranch(
             routes: [
               GoRoute(
@@ -352,7 +352,6 @@ class AppRouter {
                     path: 'manage-transaction-pin',
                     builder: (_, __) => ManageTransactionPinPage(),
                   ),
-                  
                 ],
               ),
             ],
