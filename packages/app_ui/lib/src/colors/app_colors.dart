@@ -126,4 +126,7 @@ abstract class AppColors {
 
   ///
   static const Color orange = Colors.orange;
+///
+  static const Color warning= Color(0xFFFF6B6B)
+;
 }

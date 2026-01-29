@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
+
 import 'package:super_cash/features/auth/referral_type/referral_type.dart';
 
 class ReferralResult extends Equatable {
@@ -131,7 +132,7 @@ class ReferredUser {
       'email_hint': emailHint,
       'phone_hint': phoneHint,
       'is_verified': isVerified,
-      'is_kyc_active': isKycActive,
+      'is_kyc_verified': isKycActive,
       'is_suspended': isSuspended,
     };
   }
@@ -141,6 +142,7 @@ class ReferredUser {
 
   // Factory constructor to create instance from Map
   factory ReferredUser.fromMap(Map<String, dynamic> map) {
+   
     return ReferredUser(
       id: map['id'] ?? '',
       firstName: map['first_name'] ?? '',
@@ -148,7 +150,7 @@ class ReferredUser {
       emailHint: map['email_hint'] ?? '',
       phoneHint: map['phone_hint'] ?? '',
       isVerified: map['is_verified'] ?? false,
-      isKycActive: map['is_kyc_active'] ?? false,
+      isKycActive: map['is_kyc_verified'] ?? false,
       isSuspended: map['is_suspended'] ?? false,
     );
   }

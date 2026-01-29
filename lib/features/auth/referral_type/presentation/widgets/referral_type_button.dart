@@ -32,8 +32,13 @@ class ReferralTypeButton extends StatelessWidget {
                   ),
                 );
               } else {
-                // Proceed with business referral flow
-                context.read<AppCubit>().userStarted(true);
+                // Process with automatic enrollment
+
+                context.read<ReferralTypeCubit>().automaticEnrollment(
+                  onEnrolled: (_) {
+                    context.read<AppCubit>().userStarted(true);
+                  },
+                );
               }
             },
     );

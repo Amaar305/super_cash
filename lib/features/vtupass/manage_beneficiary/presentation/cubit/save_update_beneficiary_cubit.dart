@@ -79,7 +79,7 @@ class SaveUpdateBeneficiaryCubit extends Cubit<SaveUpdateBeneficiaryState> {
     emit(newState.copyWith(network: network));
   }
 
-  Future<void> saveBeneficiary([void Function(Beneficiary)? onSaved]) async {
+  Future<void> saveBeneficiary([void Function(Beneficiary beneficiary)? onSaved]) async {
     if (state.status.isLoading || isClosed) return;
 
     final network = state.network;
@@ -146,7 +146,7 @@ class SaveUpdateBeneficiaryCubit extends Cubit<SaveUpdateBeneficiaryState> {
   }
 
   Future<void> updateBeneficiary([
-    void Function(Beneficiary)? onUpdated,
+    void Function(Beneficiary beneficiary)? onUpdated,
   ]) async {
     if (state.status.isLoading || isClosed) return;
 

@@ -24,11 +24,13 @@ class SaveBeneficiaryButton extends StatelessWidget {
 
     return PrimaryButton(
       isLoading: isLoading,
-      label: beneficiary == null ? AppStrings.save : AppStrings.update,
+      label: beneficiary == null || beneficiary!.id.isEmpty
+          ? AppStrings.save
+          : AppStrings.update,
       onPressed: isLoading
           ? null
           : () {
-              if (beneficiary == null) {
+              if (beneficiary == null || beneficiary!.id.isEmpty) {
                 cubit.saveBeneficiary((_) => navigateBack());
               } else {
                 cubit.updateBeneficiary((_) => navigateBack());

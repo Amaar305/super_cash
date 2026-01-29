@@ -47,9 +47,17 @@ class DataState extends Equatable {
   final String message;
   final String? selectedDataType;
   final String? selectedDuration;
-  final int? selectedIndex; 
+  final int? selectedIndex;
   final String? selectedNetwork;
   final bool instantData;
+
+  DataPlan? get selectedPlan {
+    final index = selectedIndex;
+    if (index == null) return null;
+    final plans = filteredPlans;
+    if (index < 0 || index >= plans.length) return null;
+    return plans[index];
+  }
 
   DataState resetChanges() {
     return DataState(

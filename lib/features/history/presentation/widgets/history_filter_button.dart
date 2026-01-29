@@ -46,14 +46,23 @@ class HistoryFilterButton extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.sort, size: 12),
-              Text(
-                AppStrings.filter,
-                style: Theme.of(context).textTheme.labelSmall,
+              Expanded(
+                child: Row(
+                  spacing: AppSpacing.xs,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.sort, size: 12),
+                    Text(
+                      AppStrings.filter,
+                      style: Theme.of(context).textTheme.labelSmall,
+                    ),
+                  ],
+                ),
               ),
               Container(
-                width: 20,
-                height: 20,
+                width: 18,
+                height: 18,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: AppColors.deepBlue,

@@ -53,6 +53,7 @@ class _RegisterFormState extends State<RegisterForm> {
             description: message.isNotEmpty
                 ? message
                 : 'Your account has been created successfully. Tap below to continue.',
+            descriptionColor: message.isNotEmpty ? AppColors.orange : null,
             onDone: () {
               context.pop();
               context.read<AppCubit>().referralType();

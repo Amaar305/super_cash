@@ -22,6 +22,8 @@ class ReferralCampaign {
 
   bool get hasLimitedReferees => maxReferees != null;
 
+  double get estimatedRewardAmount => perRefereeReward * (maxReferees ?? 0);
+
   factory ReferralCampaign.fromJson(Map<String, dynamic> json) {
     return ReferralCampaign(
       id: json['id'] as String? ?? '',

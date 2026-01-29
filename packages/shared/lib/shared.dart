@@ -4,3 +4,4 @@ library;
 export 'src/animations/animations.dart';
 export 'src/config/config.dart';
 export 'src/models/models.dart';
+

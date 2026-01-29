@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/shared.dart';
 import 'package:super_cash/core/common/widgets/widgets.dart';
 import 'package:super_cash/features/vtupass/electricity/electricity.dart';
+
 class ElectricityValidatedContentSection extends StatelessWidget {
   const ElectricityValidatedContentSection({super.key});
 
@@ -59,9 +60,11 @@ class ElectricityValidatedContentSection extends StatelessWidget {
                     color: AppColors.green,
                   ),
                   const AppDivider(),
+                  ValidationDetailRow(title: 'Address', value: address),
+                  const AppDivider(),
                   ValidationDetailRow(
-                    title: 'Address',
-                    value: address,
+                    title: 'Charges',
+                    value: "N${validatedDetails.charges}",
                   ),
                 ],
               ),

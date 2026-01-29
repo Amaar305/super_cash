@@ -22,8 +22,8 @@ class DataButton extends StatelessWidget {
       (DataCubit cubit) => cubit.state.selectedNetwork,
     );
 
-    final selectedPlanIndex = context.select(
-      (DataCubit cubit) => cubit.state.selectedIndex,
+    final selectedPlan = context.select(
+      (DataCubit cubit) => cubit.state.selectedPlan,
     );
     final phoneState = context.select((DataCubit cubit) => cubit.state.phone);
     final phone = phoneState.value;
@@ -32,15 +32,12 @@ class DataButton extends StatelessWidget {
       label: AppStrings.proceed,
       isLoading: isLoading,
       onPressed:
-          selectedPlanIndex == null ||
+          selectedPlan == null ||
               selectedNetwork == null ||
               !phoneState.valid
           ? null
           : () async {
-              final plan = context
-                  .read<DataCubit>()
-                  .state
-                  .filteredPlans[selectedPlanIndex];
+              final plan = selectedPlan;
 
               final result = await context.push<bool?>(
                 AppRoutes.confirmationDialog,

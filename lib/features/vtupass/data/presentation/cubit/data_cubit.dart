@@ -167,24 +167,24 @@ class DataCubit extends Cubit<DataState> {
 
   void onBuyData([void Function(TransactionResponse)? onSuccess]) async {
     final network = state.selectedNetwork;
-    final selectedIndex = state.selectedIndex;
+    final selectedPlan = state.selectedPlan;
     final phone = Phone.dirty(state.phone.value);
     final isFormValid = FormzValid([phone]).isFormValid;
 
     final phoneNumber = state.phone.value;
 
-    if (network == null || selectedIndex == null || !isFormValid) return;
+    if (network == null || selectedPlan == null || !isFormValid) return;
 
     final newState = state.copyWith(
       phone: phone,
       selectedNetwork: network,
-      selectedIndex: selectedIndex,
+      selectedIndex: state.selectedIndex,
       status: isFormValid ? DataStatus.loading : null,
     );
 
     emit(newState);
 
-    final planId = state.dataPlans[selectedIndex].id;
+    final planId = selectedPlan.id;
     final res = await _buyDataPlanUseCase(
       BuyDataPlanParam(
         network: network,

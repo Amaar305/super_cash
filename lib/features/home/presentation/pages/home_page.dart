@@ -8,6 +8,7 @@ import 'package:super_cash/app/view/app.dart';
 import 'package:super_cash/core/helper/app_url_launcher.dart';
 import 'package:super_cash/features/card/card_repo/cubit/card_repo_cubit.dart';
 import 'package:super_cash/features/home/home.dart';
+import 'package:super_cash/features/home/presentation/widgets/home_low_wallet_alert.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -17,7 +18,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  static const _highPriorityThreshold = 7;
+  static const _highPriorityThreshold = 20;
   String? _handledUpdateId;
 
   @override
@@ -81,6 +82,7 @@ class _HomePageState extends State<HomePage> {
                               child: Column(
                                 children: const [
                                   Gap.v(75),
+                                  HomeLowWalletAlert(),
                                   HomeScrollText(),
                                   HomeImageSlider(),
                                   KYCNoticeBoard(),
@@ -129,7 +131,7 @@ class _HomePageState extends State<HomePage> {
           appUpdate: appUpdate,
           isCritical: isCritical,
           onUpdateNow: () {
-            _popDialog(dialogContext);
+            // _popDialog(dialogContext);
             if (appUpdate.storeUrl.isNotEmpty) {
               launchLink(appUpdate.storeUrl);
             }

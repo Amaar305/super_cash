@@ -54,13 +54,16 @@ class CableButton extends StatelessWidget {
       ..onPhoneFocused();
 
     if (isValidated) {
+      final payload = cubit.state.plan ?? {};
+     
+
       final result = await context.push<bool?>(
         AppRoutes.confirmationDialog,
         extra: PurchaseDetail(
-          amount: cubit.state.amount.value,
+          amount: (payload['total'] ?? 0.0).toString(),
           title: 'Purchase Cable',
           description:
-              'You are purchasing ${cubit.state.amount.value} cable to ${cubit.state.cardNumber.value}',
+              'You are purchasing ${cubit.state.plan?['name']} ${cubit.state.amount.value} cable to ${cubit.state.cardNumber.value}',
           purchaseType: PurchaseType.cableTv,
         ),
       );
@@ -97,9 +100,17 @@ void _showValidationSheet(BuildContext context, Map<String, dynamic> payload) {
           payload: payload,
           onPurchased: () async {
             context.pop();
+            final cubit = context.read<CableCubit>();
 
             final result = await context.push<bool?>(
               AppRoutes.confirmationDialog,
+              extra: PurchaseDetail(
+                amount: getTotalCharges(payload),
+                title: 'Purchase Cable',
+                description:
+                    'You are purchasing ${cubit.state.plan?['name']} cable to ${cubit.state.cardNumber.value}',
+                purchaseType: PurchaseType.cableTv,
+              ),
             );
 
             if (result == true && context.mounted) {
@@ -131,6 +142,7 @@ class SuccessValidationSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     final customerName = '${payload['Customer_Name'] ?? ''}'.trim();
     final cardNumber = '${payload['Customer_Number'] ?? ''}'.trim();
+    final charges = '${payload['charges'] ?? ''}'.trim();
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -148,7 +160,7 @@ class SuccessValidationSheet extends StatelessWidget {
                 title: 'Card Number',
                 subtitle: cardNumber.isEmpty ? 'N/A' : cardNumber,
               ),
-              const DetailTile(title: 'Charges', subtitle: 'N50'),
+              DetailTile(title: 'Charges', subtitle: 'N$charges'),
             ],
           ),
         ),
@@ -177,4 +189,32 @@ class DetailTile extends StatelessWidget {
       ],
     );
   }
+}
+
+String getTotalCharges(Map<String, dynamic> payload) {
+  double parseAmount(dynamic value) {
+    if (value == null) return 0.0;
+    if (value is num) return value.toDouble();
+    final raw = value.toString().trim();
+    if (raw.isEmpty) return 0.0;
+    final cleaned = raw.replaceAll(RegExp(r'[^0-9.\-]'), '');
+    if (cleaned.isEmpty || cleaned == '-' || cleaned == '.') return 0.0;
+    return double.tryParse(cleaned) ?? 0.0;
+  }
+
+  String formatAmount(double value) {
+    final rounded = value.roundToDouble();
+    return value == rounded ? value.toStringAsFixed(0) : value.toString();
+  }
+
+  final total = parseAmount(payload['total']);
+  if (total > 0) {
+    return formatAmount(total);
+  }
+
+  final amount = parseAmount(
+    payload['variation_amount'] ?? payload['amount'] ?? payload['Amount'],
+  );
+  final charges = parseAmount(payload['charges']);
+  return formatAmount(amount + charges);
 }

@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:gal/gal.dart';
 
 // Platform-specific implementation
 Future<void> saveToDownloads(
@@ -16,40 +16,18 @@ Future<void> saveToDownloads(
     final bytes = byteData.buffer.asUint8List();
 
     if (Platform.isAndroid) {
-      // Request proper storage access before writing to the Downloads folder
-      var permissionStatus = await Permission.manageExternalStorage.request();
-      if (!permissionStatus.isGranted) {
-        permissionStatus = await Permission.storage.request();
-      }
+      final directory = await getTemporaryDirectory();
 
-      if (!permissionStatus.isGranted) {
-        if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text(
-                'Storage permission is required to save the receipt. Please enable it in Settings.',
-              ),
-            ),
-          );
-        }
-        return;
-      }
+      final file = File(
+        '${directory.path}/attendance_qr_${DateTime.now().millisecondsSinceEpoch}.png',
+      );
+      await file.writeAsBytes(bytes);
 
-      final dir = await getExternalStorageDirectory();
-      if (dir != null) {
-        final downloadsDir = Directory('${dir.path}/Download');
-        if (!await downloadsDir.exists()) {
-          await downloadsDir.create(recursive: true);
-        }
-
-        final file = File('${downloadsDir.path}/$fileName');
-        await file.writeAsBytes(bytes);
-
-        if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Receipt saved to Downloads/$fileName')),
-          );
-        }
+      await Gal.putImage(file.path);
+      if (context.mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('QR saved to ${file.path}')));
       }
     } else if (Platform.isIOS) {
       // For iOS, use share sheet or save to photo library

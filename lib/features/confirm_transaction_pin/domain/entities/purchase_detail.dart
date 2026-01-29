@@ -7,11 +7,13 @@ class PurchaseDetail {
   final String title;
   final String description;
   final PurchaseType purchaseType;
+  final Map<String, dynamic>? extra;
 
   const PurchaseDetail({
     required this.amount,
     required this.title,
     required this.description,
     required this.purchaseType,
+    this.extra,
   });
 }

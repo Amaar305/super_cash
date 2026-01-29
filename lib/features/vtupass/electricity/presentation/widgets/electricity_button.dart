@@ -2,6 +2,7 @@ import 'package:app_ui/app_ui.dart';
 import 'package:go_router/go_router.dart';
 import 'package:super_cash/app/routes/app_routes.dart';
 import 'package:super_cash/core/app_strings/app_string.dart';
+import 'package:super_cash/features/confirm_transaction_pin/confirm_transaction_pin.dart';
 import 'package:super_cash/features/vtupass/vtupass.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -51,8 +52,25 @@ class ElectricityButton extends StatelessWidget {
               if (!isFormValid) return;
 
               if (isValidated) {
+                final amount = cubit.state.amount.value;
+                final charges =
+                    cubit.state.electricityValidationResult?.charges ?? 0.0;
+                final parsedAmount = double.tryParse(amount.trim()) ?? 0.0;
+                final totalValue = parsedAmount + charges;
+                final total = totalValue == totalValue.roundToDouble()
+                    ? totalValue.toStringAsFixed(0)
+                    : totalValue.toString();
+
+
                 final result = await context.push<bool?>(
                   AppRoutes.confirmationDialog,
+                  extra: PurchaseDetail(
+                    amount: total,
+                    title: 'Purchase Electricity',
+                    description:
+                        'You are purchasing ${cubit.state.selectedPlan?.discoName}  electricity to ${cubit.state.meter.value}',
+                    purchaseType: PurchaseType.electricity,
+                  ),
                 );
 
                 if (result == true && context.mounted) {

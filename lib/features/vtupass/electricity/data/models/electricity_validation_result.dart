@@ -2,15 +2,18 @@ class ElectricityValidationResult {
   final String? message;
   final ElectricityValidationContent? content;
   final Map<String, dynamic> raw;
+  final double? charges;
 
   ElectricityValidationResult({
     this.message,
     this.content,
     required this.raw,
+    required this.charges,
   });
 
   factory ElectricityValidationResult.fromJson(Map<String, dynamic> json) {
     final contentJson = json['content'];
+    final charges = ElectricityValidationContent._toDouble(json['charges']);
 
     return ElectricityValidationResult(
       message: json['message']?.toString(),
@@ -20,6 +23,7 @@ class ElectricityValidationResult {
             )
           : null,
       raw: Map<String, dynamic>.from(json),
+      charges: charges,
     );
   }
 }

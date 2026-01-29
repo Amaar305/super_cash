@@ -15,7 +15,7 @@ class ReferralTypeRepositoryImpl implements ReferralTypeRepository {
 
   @override
   Future<Either<Failure, ReferralTypeEnrolResult>> enrollCompain({
-    required String campaignId,
+     String? campaignId,
   }) async {
     try {
       // if (!await (networkInfo.isConnected)) {

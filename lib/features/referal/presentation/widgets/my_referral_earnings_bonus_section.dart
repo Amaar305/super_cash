@@ -1,4 +1,3 @@
-
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -110,6 +109,9 @@ class _ReferralTypeBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final r = context.select(
+      (ReferalCubit element) => element.state.referralResult?.campaign.name,
+    );
     return Container(
       padding: EdgeInsets.all(5),
       decoration: BoxDecoration(
@@ -118,7 +120,7 @@ class _ReferralTypeBadge extends StatelessWidget {
       ),
       alignment: const Alignment(0, 0),
       child: Text(
-        '5 for N100',
+        '$r',
         style: poppinsTextStyle(
           fontWeight: AppFontWeight.bold,
           fontSize: 13,
@@ -152,7 +154,7 @@ class _RewardClaimedColumn extends StatelessWidget {
       spacing: AppSpacing.sm,
       children: [
         Text(
-          'Reward Claimed',
+          'Referral Bonus',
           style: poppinsTextStyle(
             fontSize: AppSpacing.md,
             fontWeight: AppFontWeight.light,

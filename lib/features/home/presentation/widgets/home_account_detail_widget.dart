@@ -17,6 +17,7 @@ class HomeAccountDetailWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -47,7 +48,7 @@ class HomeAccountDetailWidget extends StatelessWidget {
             Tappable.scaled(
               onTap: () {
                 // Handle copy action
-                
+
                 copyText(
                   context,
                   accountNumber,

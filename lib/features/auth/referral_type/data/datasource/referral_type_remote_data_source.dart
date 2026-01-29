@@ -7,9 +7,7 @@ import 'package:token_repository/token_repository.dart';
 
 abstract interface class ReferralTypeRemoteDataSource {
   Future<ReferralTypeResult> fetchCompains();
-  Future<ReferralTypeEnrolResult> enrollCompain({
-    required String campaignId,
-  });
+  Future<ReferralTypeEnrolResult> enrollCompain({String? campaignId});
 }
 
 class ReferralTypeRemoteDataSourceImpl implements ReferralTypeRemoteDataSource {
@@ -44,14 +42,12 @@ class ReferralTypeRemoteDataSourceImpl implements ReferralTypeRemoteDataSource {
   }
 
   @override
-  Future<ReferralTypeEnrolResult> enrollCompain({
-    required String campaignId,
-  }) async {
+  Future<ReferralTypeEnrolResult> enrollCompain({String? campaignId}) async {
     try {
       final response = await apiClient.request(
         method: 'POST',
         path: _enrollPath,
-        body: jsonEncode({'campaign_id': campaignId}),
+        body: jsonEncode({if (campaignId != null) 'campaign_id': campaignId}),
       );
 
       final decoded = _decodeToMap(response.body);

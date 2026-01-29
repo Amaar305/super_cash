@@ -14,21 +14,22 @@ class ReferralListType extends StatelessWidget {
       (ReferalCubit element) => element.state.showReferralList,
     );
     return AppTab(
-      backgroundColor: AppColors.brightGrey,
+      backgroundColor: Color(0xff12213A),
       children: [
         AppTabItem(
           label: 'Referral List',
           activeTab: type,
-          activeColor: Color(0xff12213A),
-          activeTextColor: AppColors.white,
+          activeColor: AppColors.white,
+          // activeTextColor: AppColors.white,
           onTap: () => cubit.changeReferralType(true),
         ),
         AppTabItem(
           label: 'Invitees',
-          activeColor: Color(0xff12213A),
+          // activeColor: Color(0xff12213A),
+          activeColor: AppColors.white,
           activeTab: !type,
           onTap: () => cubit.changeReferralType(false),
-          activeTextColor: AppColors.white,
+          // activeTextColor: AppColors.white,
         ),
       ],
     );

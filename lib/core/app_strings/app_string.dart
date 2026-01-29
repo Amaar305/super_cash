@@ -306,7 +306,7 @@ class AppStrings {
   static const String saveAsBeneficiary = 'Save as Beneficiary';
   static const String updateAsBeneficiary = 'Update as Beneficiary';
 
-  static const String userName = 'User Name';
+  static const String userName = 'Beneficiary Name';
 
   static const String enterName = 'Enter Name';
 

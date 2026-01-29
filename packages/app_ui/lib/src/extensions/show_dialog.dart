@@ -23,6 +23,7 @@ extension DialogExtension on BuildContext {
     VoidCallback? onDone,
     bool showIcon = true,
     bool dismissible = false,
+    Color? descriptionColor,
   }) {
     return showModalBottomSheet(
       context: this,
@@ -56,9 +57,10 @@ extension DialogExtension on BuildContext {
                     Text(
                       description,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 13,
                         fontWeight: AppFontWeight.extraLight,
+                        color: descriptionColor,
                       ),
                     ),
                   const Gap.v(AppSpacing.spaceUnit / 2),
@@ -265,7 +267,7 @@ extension DialogExtension on BuildContext {
                     ],
                   ),
                   TextButton(
-                    onPressed: onSaved,
+                    onPressed: onRate,
                     child: const Text(
                       'Rate us',
                       style: TextStyle(

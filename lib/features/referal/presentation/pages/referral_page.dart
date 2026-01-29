@@ -44,8 +44,8 @@ class ReferralView extends StatelessWidget {
             children: [
               ReferralHeader(),
               MyReferralEarningsBonusSection(),
-              ReferralStatsSection(),
               ReferralShareCodeSection(),
+              ReferralStatsSection(),
               ReferralListType(),
               ReferralList(),
             ],

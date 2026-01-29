@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:super_cash/core/usecase/use_case.dart';
 import 'package:super_cash/features/auth/referral_type/domain/domain.dart';
+import 'package:shared/shared.dart';
 
 part 'referral_type_state.dart';
 
@@ -64,11 +65,18 @@ class ReferralTypeCubit extends Cubit<ReferralTypeState> {
       return;
     }
 
-    emit(state.copyWith(status: ReferralTypeStatus.loading, message: ''));
+    automaticEnrollment(onEnrolled: onEnrolled, campaignId: selected.id);
+  }
 
+  Future<void> automaticEnrollment({
+    String? campaignId,
+
+    required void Function(ReferralTypeEnrolResult result) onEnrolled,
+  }) async {
+    emit(state.copyWith(status: ReferralTypeStatus.loading, message: ''));
     try {
       final result = await _enrolCompainUseCase(
-        EnrolCompainParams(compainId: selected.id),
+        EnrolCompainParams(compainId: campaignId),
       );
 
       result.fold(
@@ -91,7 +99,9 @@ class ReferralTypeCubit extends Cubit<ReferralTypeState> {
           onEnrolled(success);
         },
       );
-    } catch (_) {
+    } catch (err, st) {
+      logE("Error Enrolling in campaign $err", stackTrace: st);
+      if (isClosed) return;
       emit(
         state.copyWith(
           status: ReferralTypeStatus.failure,

@@ -20,7 +20,7 @@ class NewWallet extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
-        // spacing: AppSpacing.sm,
+        spacing: AppSpacing.sm,
         children: [
           Text(
             'Wallet Balance',
@@ -30,7 +30,7 @@ class NewWallet extends StatelessWidget {
               fontWeight: AppFontWeight.bold,
             ),
           ),
-          Gap.v(AppSpacing.sm),
+
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -43,11 +43,11 @@ class NewWallet extends StatelessWidget {
               HomeShowBalanceIcon(),
             ],
           ),
-          Gap.v(AppSpacing.sm),
+
           Bonus(),
-          Gap.v(AppSpacing.sm),
+
           Divider(),
-          Gap.v(AppSpacing.sm),
+
           Text(
             AppStrings.accountNumber,
             style: poppinsTextStyle(
@@ -56,7 +56,7 @@ class NewWallet extends StatelessWidget {
               fontSize: 11,
             ),
           ),
-          Gap.v(AppSpacing.sm),
+
           WalletAccounts(),
         ],
       ),

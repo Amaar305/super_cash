@@ -11,15 +11,20 @@ class ReferralStatsSection extends StatelessWidget {
     final state = context.select((ReferalCubit element) => element.state);
     final referralUsers = state.referralUsers;
     final totals = state.referralResult?.referraalTotal;
+
     final totalReferrals = totals?.invited ?? referralUsers.length;
-    final totalRewards = totals?.totalCollectedAmount ??
+
+    final totalRewards =
+        totals?.totalCollectedAmount ??
         referralUsers
             .fold<double>(0, (sum, user) => sum + user.rewardAmount)
             .toStringAsFixed(2);
+
+    final totalActiveVerified =
+        totals?.active ??
+        referralUsers.where((user) => user.active && user.verified).length;
     final totalActive =
-        totals?.active ?? referralUsers.where((user) => user.active).length;
-    final totalVerified = totals?.verified ??
-        referralUsers.where((user) => user.verified).length;
+        totals?.verified ?? referralUsers.where((user) => user.active).length;
     return Column(
       spacing: AppSpacing.lg,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -32,7 +37,7 @@ class ReferralStatsSection extends StatelessWidget {
               subtitle: '($totalReferrals)',
             ),
             ReferralStatContainer(
-              title: 'Total Rewards',
+              title: 'Estimated Rewards',
               subtitle: 'NGN$totalRewards',
             ),
           ].map((item) => Expanded(child: item)).toList(),
@@ -41,13 +46,13 @@ class ReferralStatsSection extends StatelessWidget {
           spacing: AppSpacing.lg,
           children: [
             ReferralStatContainer(
-              title: 'Active',
-              subtitle: '($totalActive)',
+              title: 'Active & Verified',
+              subtitle: '($totalActiveVerified)',
               color: AppColors.green,
             ),
             ReferralStatContainer(
-              title: 'Verified',
-              subtitle: '($totalVerified)',
+              title: 'Active',
+              subtitle: '($totalActive)',
               color: Color(0xff3B6AED),
             ),
           ].map((item) => Expanded(child: item)).toList(),

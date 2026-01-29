@@ -34,24 +34,24 @@ class SaveUpdateBeneficiaryState extends Equatable {
 
   @override
   List<Object?> get props => [
-        status,
-        message,
-        beneficiary,
-        name,
-        phone,
-        network,
-        networkErrorMsg,
-      ];
+    status,
+    message,
+    beneficiary,
+    name,
+    phone,
+    network,
+    networkErrorMsg,
+  ];
 
   SaveUpdateBeneficiaryState.initial({Beneficiary? beneficiary})
-      : this(
-          status: SaveUpdateBeneficiaryStatus.initial,
-          message: '',
-          beneficiary: beneficiary,
-          name: FullName.pure(beneficiary?.name ?? ''),
-          phone: Phone.pure(beneficiary?.phone ?? ''),
-          network: _networkName(beneficiary?.network),
-        );
+    : this(
+        status: SaveUpdateBeneficiaryStatus.initial,
+        message: '',
+        beneficiary: beneficiary,
+        name: FullName.pure(beneficiary?.name ?? ''),
+        phone: Phone.pure(beneficiary?.phone ?? ''),
+        network: _networkName(beneficiary?.network),
+      );
 
   SaveUpdateBeneficiaryState copyWith({
     SaveUpdateBeneficiaryStatus? status,
@@ -77,11 +77,11 @@ class SaveUpdateBeneficiaryState extends Equatable {
     return newtwork == 'mtn'
         ? 'MTN'
         : newtwork == '9mobile'
-            ? '9Mobile'
-            : newtwork == 'airtel'
-                ? 'Airtel'
-                : newtwork == 'glo'
-                    ? 'Glo'
-                    : newtwork?.capitalize;
+        ? '9Mobile'
+        : newtwork == 'airtel'
+        ? 'Airtel'
+        : newtwork == 'glo'
+        ? 'Glo'
+        : newtwork?.capitalize;
   }
 }

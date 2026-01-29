@@ -5,17 +5,20 @@ String formatDateTime(DateTime dateTime) {
   final yesterday = DateTime(now.year, now.month, now.day - 1);
   final dateToCheck = DateTime(dateTime.year, dateTime.month, dateTime.day);
 
-  String dayPrefix;
-  if (dateToCheck == today) {
-    dayPrefix = 'Today';
-  } else if (dateToCheck == yesterday) {
-    dayPrefix = 'Yesterday';
-  } else {
-    // For older dates, you could format as 'Jun 25, 2023' or similar
-    // Here we'll just use the full date if it's not today or yesterday
-    dayPrefix =
-        '${_getMonthName(dateTime.month)} ${dateTime.day}, ${dateTime.year}';
-  }
+  final dayPrefix =
+      '${_getMonthName(dateTime.month)} ${dateTime.day}, ${dateTime.year}';
+
+  // String dayPrefix;
+  // if (dateToCheck == today) {
+  //   dayPrefix = 'Today';
+  // } else if (dateToCheck == yesterday) {
+  //   dayPrefix = 'Yesterday';
+  // } else {
+  //   // For older dates, you could format as 'Jun 25, 2023' or similar
+  //   // Here we'll just use the full date if it's not today or yesterday
+  //   dayPrefix =
+  //       '${_getMonthName(dateTime.month)} ${dateTime.day}, ${dateTime.year}';
+  // }
 
   // Format time in 12-hour format with AM/PM
   final hour = dateTime.hour % 12 == 0 ? 12 : dateTime.hour % 12;

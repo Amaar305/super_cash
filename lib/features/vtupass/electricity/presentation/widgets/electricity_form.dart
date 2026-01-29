@@ -1,4 +1,5 @@
 import 'package:app_ui/app_ui.dart';
+import 'package:shared/shared.dart';
 import 'package:super_cash/app/app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -144,11 +145,26 @@ class _ElectricityFormState extends State<ElectricityForm> {
                       label: 'Amount',
                       value: response.formattedAmount,
                     ),
-                    _SummaryRow(label: 'Reference', value: response.reference),
+
+                    // _SummaryRow(label: 'Reference', value: response.reference),
+                    Tappable.faded(
+                      onTap: () {
+                        copyText(
+                          context,
+                          tokens.join(''),
+                          'Token copied to clipboard',
+                        );
+                      },
+                      child: _SummaryRow(
+                        label: 'Tokens',
+                        value: response.token ?? '',
+                        copy: true,
+                      ),
+                    ),
                   ],
                 ),
               ),
-              if (tokens.isNotEmpty) _TokenSection(tokens: tokens),
+
               PrimaryButton(label: 'Done', onPressed: context.pop),
             ],
           );
@@ -171,10 +187,15 @@ class _ElectricityFormState extends State<ElectricityForm> {
 }
 
 class _SummaryRow extends StatelessWidget {
-  const _SummaryRow({required this.label, required this.value});
+  const _SummaryRow({
+    required this.label,
+    required this.value,
+    this.copy = false,
+  });
 
   final String label;
   final String value;
+  final bool copy;
 
   @override
   Widget build(BuildContext context) {
@@ -185,16 +206,27 @@ class _SummaryRow extends StatelessWidget {
           label,
           style: const TextStyle(color: AppColors.emphasizeGrey, fontSize: 12),
         ),
-        Flexible(
-          child: Text(
-            value,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.right,
-            style: const TextStyle(
-              fontWeight: AppFontWeight.semiBold,
-              fontSize: 12,
-            ),
+        FittedBox(
+          child: Row(
+            spacing: AppSpacing.sm,
+            children: [
+              Text(
+                value,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.right,
+                style: const TextStyle(
+                  fontWeight: AppFontWeight.semiBold,
+                  fontSize: 12,
+                ),
+              ),
+              if (copy)
+                Icon(
+                  Icons.copy_outlined,
+                  color: AppColors.deepBlue,
+                  size: AppSpacing.lg,
+                ),
+            ],
           ),
         ),
       ],

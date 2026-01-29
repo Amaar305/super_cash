@@ -35,11 +35,7 @@ class _DataViewSwitcherState extends State<DataViewSwitcher> {
           hideLoadingOverlay();
         }
         if (state.status.isError) {
-          final plans = state.filteredPlans;
-          final selectedPlan =
-              state.selectedIndex != null && state.selectedIndex! < plans.length
-              ? plans[state.selectedIndex!]
-              : null;
+          final selectedPlan = state.selectedPlan;
 
           final summary = selectedPlan == null
               ? null

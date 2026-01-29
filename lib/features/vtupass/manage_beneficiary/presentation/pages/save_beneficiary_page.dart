@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../widgets/app_network_provider_widget.dart';
 import '../../domain/entities/entities.dart';
 import '../presentation.dart';
 
@@ -52,47 +51,11 @@ class SaveBeneficiaryView extends StatelessWidget {
   AppBar _appBar(BuildContext context) {
     return AppBar(
       title: AppAppBarTitle(
-        beneficiary == null
+        beneficiary == null || beneficiary!.id.isEmpty
             ? AppStrings.saveAsBeneficiary
             : AppStrings.updateAsBeneficiary,
       ),
       leading: AppLeadingAppBarWidget(onTap: context.pop),
-    );
-  }
-}
-
-class SaveBeneficiaryNetworkProvider extends StatelessWidget {
-  const SaveBeneficiaryNetworkProvider({super.key, required this.beneficiary});
-
-  final Beneficiary? beneficiary;
-
-  @override
-  Widget build(BuildContext context) {
-    final selectedNetwork = context.select(
-      (SaveUpdateBeneficiaryCubit cubit) => cubit.state.network,
-    );
-    final isLoading = context.select(
-      (SaveUpdateBeneficiaryCubit cubit) => cubit.state.status.isLoading,
-    );
-    final networkErrorMsg = context.select(
-      (SaveUpdateBeneficiaryCubit cubit) => cubit.state.networkErrorMsg,
-    );
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      spacing: AppSpacing.sm,
-      children: [
-        AppNetworkProviderWidget(
-          onNetworkSelect: isLoading
-              ? null
-              : context.read<SaveUpdateBeneficiaryCubit>().onNetworkChanged,
-          selectedNetwork: selectedNetwork,
-        ),
-        if (networkErrorMsg != null && networkErrorMsg.isNotEmpty)
-          Text(
-            networkErrorMsg,
-            style: context.bodySmall?.copyWith(color: AppColors.red),
-          ),
-      ],
     );
   }
 }

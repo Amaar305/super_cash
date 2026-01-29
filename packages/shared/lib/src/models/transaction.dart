@@ -41,6 +41,12 @@ class TransactionResponse {
   Map<String, dynamic> toJson() => _$TransactionResponseToJson(this);
 
   String get formattedAmount => 'N$amount';
+
+  // Formatted date and time
+  // String get formattedDateTime {
+  //   final now = DateTime.now();
+
+  // }
 }
 
 enum TransactionType {

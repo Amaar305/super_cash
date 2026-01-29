@@ -17,9 +17,9 @@ class DataPlanDurationWidget extends StatelessWidget {
       (DataCubit cubit) => cubit.state.selectedDuration,
     );
 
-    final plans = context.select((DataCubit cubit) => cubit.state.dataPlans);
+    final isPlansEmpty = context.select((DataCubit cubit) => cubit.state.dataPlans.isEmpty);
 
-    if (plans.isEmpty) return SizedBox.shrink();
+    if (isPlansEmpty) return SizedBox.shrink();
 
     return DurationTabItem(
       isLoading: isLoading,

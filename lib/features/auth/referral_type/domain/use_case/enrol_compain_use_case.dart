@@ -20,7 +20,7 @@ class EnrolCompainUseCase
 }
 
 class EnrolCompainParams {
-  final String compainId;
+  final String? compainId;
 
-  const EnrolCompainParams({required this.compainId});
+  const EnrolCompainParams({ this.compainId});
 }
