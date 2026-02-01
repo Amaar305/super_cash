@@ -110,6 +110,32 @@ class _ElectricityFormState extends State<ElectricityForm> {
             description: response.description,
             icon: Assets.images.circleCheck.image(),
             children: [
+              Tappable.faded(
+                onTap: () {
+                  copyText(
+                    context,
+                    tokens.join(''),
+                    'Token copied to clipboard',
+                  );
+                },
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      response.token ?? '',
+                      style: poppinsTextStyle(
+                        fontSize: 16,
+                        fontWeight: AppFontWeight.bold,
+                        color: AppColors.deepBlue,
+                      ),
+                    ),
+
+                    Icon(Icons.copy, color: AppColors.deepBlue, size: 16),
+                  ],
+                ),
+              ),
               PurchaseContainerInfo(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -147,20 +173,6 @@ class _ElectricityFormState extends State<ElectricityForm> {
                     ),
 
                     // _SummaryRow(label: 'Reference', value: response.reference),
-                    Tappable.faded(
-                      onTap: () {
-                        copyText(
-                          context,
-                          tokens.join(''),
-                          'Token copied to clipboard',
-                        );
-                      },
-                      child: _SummaryRow(
-                        label: 'Tokens',
-                        value: response.token ?? '',
-                        copy: true,
-                      ),
-                    ),
                   ],
                 ),
               ),

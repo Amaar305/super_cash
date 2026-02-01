@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:super_cash/app/routes/app_routes.dart';
 import 'package:super_cash/core/app_strings/app_string.dart';
 import 'package:super_cash/features/bonus/bonus.dart';
-import 'package:super_cash/features/vtupass/airtime/presentation/pages/pages.dart';
+import 'package:super_cash/features/confirm_transaction_pin/confirm_transaction_pin.dart';
 
 class TransferToBankButton extends StatelessWidget {
   const TransferToBankButton({super.key});
@@ -29,12 +29,12 @@ class TransferToBankButton extends StatelessWidget {
             } else {
               final result = await context.push<bool?>(
                 AppRoutes.confirmationDialog,
-                extra: VeryPurchaseInfo(
-                  amount: 'N${state.amount.value}',
-                  number:
-                      '${state.selectedBank?.bankName} ${state.accountNumber.value} ',
-                  text1: 'You are withdrawing ',
-                  text2: 'bonus to ',
+                extra: PurchaseDetail(
+                  amount: state.amount.value,
+                  title: 'Purchase Data',
+                  description:
+                      'You are Transfering bonus to ${state.selectedBank?.bankName} ${state.accountNumber.value} ',
+                  purchaseType: PurchaseType.others,
                 ),
               );
 

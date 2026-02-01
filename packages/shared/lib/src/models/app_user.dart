@@ -17,6 +17,7 @@ class AppUser {
   final String userTier;
   final List<Account> accounts;
   final Tokens? tokens;
+  final HideHomeUI? hideHomeUI;
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -31,6 +32,7 @@ class AppUser {
       'transactionPin': transactionPin,
       'is_suspended': isSuspended,
       'user_tier': userTier,
+      'ui_details': hideHomeUI?.toJson(),
       'accounts': accounts
           .map(
             (e) => e.toMap(),
@@ -53,6 +55,7 @@ class AppUser {
     required this.tokens,
     this.accounts = const [],
     this.userTier = 'one',
+    this.hideHomeUI,
   });
 
   /// Whether the current user is anonymous.
@@ -74,6 +77,7 @@ class AppUser {
   );
   String get fullName => '$firstName  $lastName';
   factory AppUser.fromMap(Map<String, dynamic> map) {
+    logD(map);
     final user = map.containsKey('user')
         ? (map['user'] as Map?)?.cast<String, dynamic>() ?? {}
         : map;
@@ -83,6 +87,8 @@ class AppUser {
             .map((e) => e.cast<String, dynamic>())
             .toList() ??
         <Map<String, dynamic>>[];
+
+    // final uiDetails = (map['ui_details'] as Map?) ?? {};
 
     return AppUser(
       id: user['id']?.toString() ?? '',
@@ -102,6 +108,9 @@ class AppUser {
           ? Tokens.fromJson((map['tokens'] as Map).cast<String, dynamic>())
           : null,
       accounts: accountsList.map(Account.fromMap).toList(),
+      hideHomeUI: map['ui_details'] == null
+          ? null
+          : HideHomeUI.fromJson(map['ui_details'] as Map<String, dynamic>),
     );
   }
 
@@ -158,5 +167,33 @@ class Tokens {
   Map<String, dynamic> toJson() => {
         'access': access,
         'refresh': refresh,
+      };
+}
+
+class HideHomeUI {
+  const HideHomeUI({
+    required this.all,
+    required this.transfer,
+    required this.fund,
+    required this.virtualCard,
+  });
+
+  final bool all;
+  final bool transfer;
+  final bool fund;
+  final bool virtualCard;
+
+  factory HideHomeUI.fromJson(Map<String, dynamic> json) => HideHomeUI(
+        all: json['all'] as bool? ?? false,
+        fund: json['fund'] as bool? ?? false,
+        transfer: json['transfer'] as bool? ?? false,
+        virtualCard: json['virtual_card'] as bool? ?? false,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'all': all,
+        'virtual_card': virtualCard,
+        'transfer': transfer,
+        'fund': fund,
       };
 }

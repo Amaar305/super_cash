@@ -2,9 +2,9 @@ import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:super_cash/app/app.dart';
+import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/core/fonts/app_text_style.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:super_cash/features/home/presentation/cubit/home_cubit.dart';
 
 class HomeLowWalletAlert extends StatelessWidget {
   const HomeLowWalletAlert({super.key});
@@ -12,8 +12,8 @@ class HomeLowWalletAlert extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final balance = context.select(
-      (HomeCubit element) =>
-          double.tryParse(element.state.user.wallet.walletBalance) ?? 0,
+      (AppCubit cubit) =>
+          double.tryParse(cubit.state.user?.wallet.walletBalance ?? "0.0") ?? 0,
     );
 
     if (balance >= 100) {

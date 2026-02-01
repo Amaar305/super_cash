@@ -4,6 +4,7 @@ import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/shared.dart';
+import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/app/view/app.dart';
 import 'package:super_cash/core/helper/app_url_launcher.dart';
 import 'package:super_cash/features/card/card_repo/cubit/card_repo_cubit.dart';
@@ -32,6 +33,10 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final hideHomeUI = context.select(
+      (AppCubit element) => element.state.user?.hideHomeUI,
+    );
+
     return AppScaffold(
       safeArea: false,
       extendBodyBehindAppBar: true,
@@ -80,8 +85,9 @@ class _HomePageState extends State<HomePage> {
                                 top: Radius.circular(16),
                               ),
                               child: Column(
-                                children: const [
-                                  Gap.v(75),
+                                children: [
+                                  if (hideHomeUI != null && !hideHomeUI.all)
+                                    Gap.v(75),
                                   HomeLowWalletAlert(),
                                   HomeScrollText(),
                                   HomeImageSlider(),
@@ -92,6 +98,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                           ),
+
                           Positioned(
                             top: -40,
                             left: 0,

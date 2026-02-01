@@ -1,5 +1,7 @@
 import 'package:app_ui/app_ui.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:super_cash/app/app.dart';
+import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/core/app_strings/app_string.dart';
 import 'package:super_cash/core/fonts/app_text_style.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +12,14 @@ class HomeQuickActionSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final hideHomeUI = context.select(
+      (AppCubit element) => element.state.user?.hideHomeUI,
+    );
+
+    if (hideHomeUI == null || hideHomeUI.all) {
+      return SizedBox.shrink();
+    }
+
     return Container(
       width: double.infinity,
       height: 100,
@@ -31,23 +41,28 @@ class HomeQuickActionSection extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            HomeQuickActionButton(
-              AppStrings.fundWallet,
-              icon: Assets.icons.addOutline.svg(),
-              onTap: () => context.goNamedSafe(RNames.addFunds),
-            ),
-            _vertticalLine(),
-            HomeQuickActionButton(
-              AppStrings.transfer,
-              icon: Assets.icons.transferLine.svg(),
-              onTap: () => context.goNamedSafe(RNames.bonus),
-            ),
-            _vertticalLine(),
-            HomeQuickActionButton(
-              AppStrings.virtualCard,
-              icon: Assets.icons.creditCards.svg(),
-              onTap: () => context.goNamedSafe(RNames.virtualCard),
-            ),
+            if (!hideHomeUI.fund) ...[
+              HomeQuickActionButton(
+                AppStrings.fundWallet,
+                icon: Assets.icons.addOutline.svg(),
+                onTap: () => context.goNamedSafe(RNames.addFunds),
+              ),
+              _vertticalLine(),
+            ],
+            if (!hideHomeUI.transfer) ...[
+              HomeQuickActionButton(
+                AppStrings.transfer,
+                icon: Assets.icons.transferLine.svg(),
+                onTap: () => context.goNamedSafe(RNames.bonus),
+              ),
+              _vertticalLine(),
+            ],
+            if (!hideHomeUI.virtualCard)
+              HomeQuickActionButton(
+                AppStrings.virtualCard,
+                icon: Assets.icons.creditCards.svg(),
+                onTap: () => context.goNamedSafe(RNames.virtualCard),
+              ),
           ],
         ),
       ),

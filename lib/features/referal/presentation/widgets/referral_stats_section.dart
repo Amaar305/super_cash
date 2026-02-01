@@ -24,7 +24,7 @@ class ReferralStatsSection extends StatelessWidget {
         totals?.active ??
         referralUsers.where((user) => user.active && user.verified).length;
     final totalActive =
-        totals?.verified ?? referralUsers.where((user) => user.active).length;
+        totals?.active ?? referralUsers.where((user) => user.active).length;
     return Column(
       spacing: AppSpacing.lg,
       crossAxisAlignment: CrossAxisAlignment.start,
