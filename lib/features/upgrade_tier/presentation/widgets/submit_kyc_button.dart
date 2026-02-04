@@ -41,27 +41,38 @@ class _SubmitKycButtonState extends State<SubmitKycButton> {
       onPressed: () => _debouncer.run(
         () => _cubit.onSubmit(
           onSuccess: (p0) {
-            context.showExtraBottomSheet(
+            context.pop();
+
+            context.showConfirmationBottomSheet(
               title: 'Account upgrade in progress',
-              description: 'Confirm if it went successfull.',
-              children: [
-                BlocProvider.value(
-                  value: _cubit,
-                  child: CheckAccountUpgradeButton(),
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: AppOutlinedButton(
-                        isLoading: false,
-                        label: AppStrings.cancel,
-                        onPressed: context.pop,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+              okText: AppStrings.done,
+              description: 'Your account is being upgraded',
+              onDone: () => context
+                ..pop() //Remove the bottom sheet
+                ..pop(), //Navigate to Home
             );
+
+            // context.showExtraBottomSheet(
+            //   title: 'Account upgrade in progress',
+            //   description: 'Confirm if it went successfull.',
+            //   children: [
+            //     BlocProvider.value(
+            //       value: _cubit,
+            //       child: CheckAccountUpgradeButton(),
+            //     ),
+            //     Row(
+            //       children: [
+            //         Expanded(
+            //           child: AppOutlinedButton(
+            //             isLoading: false,
+            //             label: AppStrings.cancel,
+            //             onPressed: context.pop,
+            //           ),
+            //         ),
+            //       ],
+            //     ),
+            //   ],
+            // );
           },
         ),
       ),

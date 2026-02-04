@@ -1,8 +1,9 @@
 import 'package:super_cash/core/error/failure.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:super_cash/core/usecase/use_case.dart';
+import 'package:super_cash/features/vtupass/vtupass.dart';
 
-import '../../../../../core/usecase/use_case.dart';
-import '../../cable.dart';
+
 
 class FetchCablePlanUseCase implements UseCase<Map, CableParam> {
   final CableRepository repository;
@@ -18,5 +19,5 @@ class FetchCablePlanUseCase implements UseCase<Map, CableParam> {
 class CableParam {
   final String provider;
 
-  CableParam({required this.provider});
+ const CableParam({required this.provider});
 }

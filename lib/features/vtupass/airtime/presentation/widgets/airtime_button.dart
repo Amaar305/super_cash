@@ -32,6 +32,10 @@ class AirtimeButton extends StatelessWidget {
             okText: AppStrings.done,
             description: t.description,
             cancelText: 'Cancel',
+            onDone: () => context
+              ..pop() //Remove the bottom sheet
+              ..pop(), //Navigate to Home
+
             onRate: () {
               context.pop();
               launchLink(
@@ -40,6 +44,7 @@ class AirtimeButton extends StatelessWidget {
               );
             },
             onSaved: () {
+              context.pop();
               context.goNamedSafe(
                 RNames.saveBeneficiary,
                 extra: Beneficiary(

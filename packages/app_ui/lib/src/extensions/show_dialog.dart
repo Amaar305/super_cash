@@ -215,6 +215,7 @@ extension DialogExtension on BuildContext {
     String? cancelText,
     VoidCallback? onSaved,
     VoidCallback? onRate,
+    VoidCallback? onDone,
   }) {
     return showModalBottomSheet(
       context: this,
@@ -253,7 +254,7 @@ extension DialogExtension on BuildContext {
                   const Gap.v(AppSpacing.spaceUnit / 2),
                   PrimaryButton(
                     label: okText,
-                    onPressed: () => pop(true),
+                    onPressed: () => onDone ?? () => pop(true),
                   ),
                   Row(
                     children: [

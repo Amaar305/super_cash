@@ -76,7 +76,7 @@ class CableState extends Equatable {
     Amount? amount,
     Map? plans,
     Map? plan,
-    bool forcePlanD=false,
+    bool forcePlanD = false,
   }) {
     return CableState._(
       status: status ?? this.status,

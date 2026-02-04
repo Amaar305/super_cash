@@ -6,8 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:super_cash/core/fonts/app_text_style.dart';
 import 'package:super_cash/features/vtupass/electricity/presentation/widgets/electricity_validated_content_section.dart';
-
-import '../../../vtupass.dart';
+import 'package:super_cash/features/vtupass/vtupass.dart';
 
 class ElectricityForm extends StatefulWidget {
   const ElectricityForm({super.key});
@@ -27,6 +26,12 @@ class _ElectricityFormState extends State<ElectricityForm> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     context.read<ElectricityCubit>().resetState();
+  }
+
+  @override
+  void dispose() {
+    hideLoadingOverlay();
+    super.dispose();
   }
 
   @override
@@ -54,24 +59,24 @@ class _ElectricityFormState extends State<ElectricityForm> {
                           fontWeight: AppFontWeight.semiBold,
                         ),
                       ),
-                      _SummaryRow(label: 'Provider', value: plan.discoName),
-                      _SummaryRow(
+                      SummaryRow(label: 'Provider', value: plan.discoName),
+                      SummaryRow(
                         label: 'Type',
                         value: state.prepaid ? 'Prepaid' : 'Postpaid',
                       ),
-                      _SummaryRow(
+                      SummaryRow(
                         label: 'Meter',
                         value: state.meter.value.isEmpty
                             ? 'Not set'
                             : state.meter.value,
                       ),
-                      _SummaryRow(
+                      SummaryRow(
                         label: 'Amount',
                         value: state.amount.value.isEmpty
                             ? 'Not set'
                             : 'N${state.amount.value}',
                       ),
-                      _SummaryRow(
+                      SummaryRow(
                         label: 'Phone',
                         value: state.phone.value.isEmpty
                             ? 'Not set'
@@ -147,27 +152,27 @@ class _ElectricityFormState extends State<ElectricityForm> {
                         fontWeight: AppFontWeight.semiBold,
                       ),
                     ),
-                    _SummaryRow(
+                    SummaryRow(
                       label: 'Provider',
                       value: plan?.discoName ?? 'Not set',
                     ),
-                    _SummaryRow(
+                    SummaryRow(
                       label: 'Type',
                       value: state.prepaid ? 'Prepaid' : 'Postpaid',
                     ),
-                    _SummaryRow(
+                    SummaryRow(
                       label: 'Meter',
                       value: state.meter.value.isEmpty
                           ? 'Not set'
                           : state.meter.value,
                     ),
-                    _SummaryRow(
+                    SummaryRow(
                       label: 'Phone',
                       value: state.phone.value.isEmpty
                           ? 'Not set'
                           : state.phone.value,
                     ),
-                    _SummaryRow(
+                    SummaryRow(
                       label: 'Amount',
                       value: response.formattedAmount,
                     ),
@@ -176,7 +181,6 @@ class _ElectricityFormState extends State<ElectricityForm> {
                   ],
                 ),
               ),
-
               PrimaryButton(label: 'Done', onPressed: context.pop),
             ],
           );
@@ -187,8 +191,8 @@ class _ElectricityFormState extends State<ElectricityForm> {
         children: [
           ElectricityPlanDropdown(),
           ElectricityMeterNumberField(),
-
           ElectricityAmountField(),
+
           // SHow validated response here
           ElectricityValidatedContentSection(),
           ElectricityPhoneField(),
@@ -198,8 +202,9 @@ class _ElectricityFormState extends State<ElectricityForm> {
   }
 }
 
-class _SummaryRow extends StatelessWidget {
-  const _SummaryRow({
+class SummaryRow extends StatelessWidget {
+  const SummaryRow({
+    super.key,
     required this.label,
     required this.value,
     this.copy = false,
@@ -246,8 +251,8 @@ class _SummaryRow extends StatelessWidget {
   }
 }
 
-class _TokenSection extends StatelessWidget {
-  const _TokenSection({required this.tokens});
+class TokenSection extends StatelessWidget {
+  const TokenSection({super.key, required this.tokens});
 
   final List<String> tokens;
 

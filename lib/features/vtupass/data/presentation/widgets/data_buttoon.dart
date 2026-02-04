@@ -32,9 +32,7 @@ class DataButton extends StatelessWidget {
       label: AppStrings.proceed,
       isLoading: isLoading,
       onPressed:
-          selectedPlan == null ||
-              selectedNetwork == null ||
-              !phoneState.valid
+          selectedPlan == null || selectedNetwork == null || !phoneState.valid
           ? null
           : () async {
               final plan = selectedPlan;
@@ -58,6 +56,9 @@ class DataButton extends StatelessWidget {
                     description: res.description,
                     cancelText: 'Cancel',
                     // onSaved: () {},
+                    onDone: () => context
+                      ..pop() //Remove the bottom sheet
+                      ..pop(), //Navigate to Home
                   );
                 });
               }

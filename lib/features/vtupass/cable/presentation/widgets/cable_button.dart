@@ -1,4 +1,5 @@
 import 'package:app_ui/app_ui.dart';
+import 'package:shared/shared.dart';
 import 'package:super_cash/app/app.dart';
 import 'package:super_cash/core/app_strings/app_string.dart';
 import 'package:super_cash/features/confirm_transaction_pin/domain/entities/purchase_detail.dart';
@@ -55,7 +56,6 @@ class CableButton extends StatelessWidget {
 
     if (isValidated) {
       final payload = cubit.state.plan ?? {};
-     
 
       final result = await context.push<bool?>(
         AppRoutes.confirmationDialog,
@@ -74,6 +74,9 @@ class CableButton extends StatelessWidget {
             title: 'You have successfully subscribed Cable!',
             okText: 'Done',
             description: description,
+            onDone: () => context
+              ..pop() //Remove the bottom sheet
+              ..pop(), //Navigate to Home
           );
         });
       }
@@ -101,11 +104,12 @@ void _showValidationSheet(BuildContext context, Map<String, dynamic> payload) {
           onPurchased: () async {
             context.pop();
             final cubit = context.read<CableCubit>();
-
+            logD(payload);
             final result = await context.push<bool?>(
               AppRoutes.confirmationDialog,
               extra: PurchaseDetail(
-                amount: getTotalCharges(payload),
+                amount:
+                    payload['total']?.toString() ?? getTotalCharges(payload),
                 title: 'Purchase Cable',
                 description:
                     'You are purchasing ${cubit.state.plan?['name']} cable to ${cubit.state.cardNumber.value}',
@@ -119,6 +123,9 @@ void _showValidationSheet(BuildContext context, Map<String, dynamic> payload) {
                   title: 'You have successfully subscribed Cable!',
                   okText: 'Done',
                   description: description,
+                  onDone: () => context
+                    ..pop() //Remove the bottom sheet
+                    ..pop(), //Navigate to Home
                 );
               });
             }

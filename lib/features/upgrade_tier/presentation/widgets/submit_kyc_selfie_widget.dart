@@ -85,11 +85,11 @@ class _SubmitKycSelfieWidgetState extends State<SubmitKycSelfieWidget> {
   void _onSelfieTaked() async {
     try {
       final result = await MediaPickerHelper.pickMedia(
-        mediaType: MediaType.image,
+        mediaType: MediaType.camera,
       );
       _cubit.onSelfieTake(result?.file);
-    } catch (e) {
-      logE(e);
+    } catch (error, stackTrace) {
+      logE("Error taking selfie: $error", stackTrace: stackTrace);
     }
   }
 }

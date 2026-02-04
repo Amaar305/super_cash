@@ -19,7 +19,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Dependencies
-  await initDependencies(development: true);
+  await initDependencies(development: !false);
 
   // Firebase
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);

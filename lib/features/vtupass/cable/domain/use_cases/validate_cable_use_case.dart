@@ -13,13 +13,16 @@ class ValidateCableUsecase implements UseCase<Map, ValidateCableParam> {
     return await repository.validateCable(
       provider: param.provider,
       smartcardNumber: param.smartcardNumber,
+      variationCode: param.variationCode,
     );
   }
 }
 
 class ValidateCableParam {
   final String provider;
+  final String variationCode;
   final String smartcardNumber;
 
-  ValidateCableParam({required this.provider, required this.smartcardNumber});
+  ValidateCableParam({required this.provider, required this.smartcardNumber, required this.variationCode,
+  });
 }

@@ -7,6 +7,7 @@ abstract interface class CableRemoteDataSource {
   Future<Map> validateCable({
     required String provider,
     required String smartcardNumber,
+    required String variationCode,
   });
   Future<Map> buyCable({
     required String provider,
@@ -63,10 +64,12 @@ class CableRemoteDataSourceImpl implements CableRemoteDataSource {
   Future<Map> validateCable({
     required String provider,
     required String smartcardNumber,
+    required String variationCode,
   }) async {
     final body = jsonEncode({
       "provider": provider.toLowerCase(),
       "smartcard_number": smartcardNumber,
+      "variation_code": variationCode,
     });
 
     final response = await authClient.request(
@@ -75,11 +78,7 @@ class CableRemoteDataSourceImpl implements CableRemoteDataSource {
       body: body,
     );
 
-    // flutter: {phone: [Ensure this field has no more than 11 characters.]}
-
     Map res = jsonDecode(response.body);
-
-    // logD(res);
 
     return res;
   }

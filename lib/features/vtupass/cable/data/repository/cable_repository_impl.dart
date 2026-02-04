@@ -51,11 +51,13 @@ class CableRepositoryImpl implements CableRepository {
   Future<Either<Failure, Map>> validateCable({
     required String provider,
     required String smartcardNumber,
+    required String variationCode,
   }) async {
     try {
       final res = await cableRemoteDataSource.validateCable(
         provider: provider,
         smartcardNumber: smartcardNumber,
+        variationCode: variationCode
       );
       return right(res);
     } catch (error) {

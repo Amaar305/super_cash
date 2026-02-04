@@ -41,6 +41,7 @@ class CableCubit extends Cubit<CableState> {
       },
       (r) {
         emit(state.copyWith(status: CableStatus.fetched, plans: r));
+       
       },
     );
   }
@@ -177,6 +178,8 @@ class CableCubit extends Cubit<CableState> {
     final decoder = Decoder.dirty(state.cardNumber.value);
     final plan = state.plan;
     final provider = state.selectedProvider;
+    final variationCode = plan?['variation_code'];
+
 
     final isFormValid = FormzValid([phone, decoder]).isFormValid;
 
@@ -189,7 +192,7 @@ class CableCubit extends Cubit<CableState> {
       emit(newState);
       return;
     }
-    if (provider == null) {
+    if (provider == null || variationCode == null) {
       final newState = state.copyWith(
         status: CableStatus.failure,
         message: 'Please select Cable provider',
@@ -198,6 +201,7 @@ class CableCubit extends Cubit<CableState> {
       emit(newState);
       return;
     }
+    
     if (!isFormValid) return;
 
     final newState = state.copyWith(
@@ -210,7 +214,7 @@ class CableCubit extends Cubit<CableState> {
     emit(newState);
 
     final res = await _validateCableUsecase(
-      ValidateCableParam(provider: provider, smartcardNumber: decoder.value),
+      ValidateCableParam(provider: provider, smartcardNumber: decoder.value, variationCode: variationCode),
     );
 
     if (isClosed) return;
