@@ -1,31 +1,14 @@
 import 'package:app_ui/app_ui.dart';
-import 'package:super_cash/core/app_strings/app_string.dart';
-import 'package:super_cash/core/common/utils/show_transaction_filter_dialog.dart';
-import 'package:super_cash/features/history/presentation/cubit/history_cubit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:super_cash/core/app_strings/app_string.dart';
 
-class HistoryFilterButton extends StatelessWidget {
-  const HistoryFilterButton({super.key});
+class AppFilterButton extends StatelessWidget {
+  const AppFilterButton({super.key, required this.onFilterTapped});
+  final VoidCallback onFilterTapped;
 
   @override
   Widget build(BuildContext context) {
-    void onFilterTapped() {
-      showCustomFilterBottomSheet(
-        context: context,
-        onClear: () {
-          context.read<HistoryCubit>().refreshTransactions();
-        },
-        onApply: (start, end, status, type) {
-          context.read<HistoryCubit>().filterTransactions(
-            start: start,
-            end: end,
-            status: status,
-            type: type,
-          );
-        },
-      );
-    }
+  
 
     return Container(
       width: 102,

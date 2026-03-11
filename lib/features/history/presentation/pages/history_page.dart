@@ -1,6 +1,8 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:super_cash/app/app.dart';
 import 'package:super_cash/core/app_strings/app_string.dart';
+import 'package:super_cash/core/common/utils/show_transaction_filter_dialog.dart';
+import 'package:super_cash/core/common/widgets/app_filter_button.dart';
 import 'package:super_cash/features/history/history.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -48,7 +50,24 @@ class HistoryView extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    HistoryFilterButton(),
+                    AppFilterButton(
+                      onFilterTapped: () {
+                        showCustomFilterBottomSheet(
+                          context: context,
+                          onClear: () {
+                            context.read<HistoryCubit>().refreshTransactions();
+                          },
+                          onApply: (start, end, status, type) {
+                            context.read<HistoryCubit>().filterTransactions(
+                              start: start,
+                              end: end,
+                              status: status,
+                              type: type,
+                            );
+                          },
+                        );
+                      },
+                    ),
                     TextButton.icon(
                       onPressed: context
                           .read<HistoryCubit>()

@@ -6,6 +6,7 @@ part of 'dollar_rate.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+// ignore: unused_element
 DollarRate _$DollarRateFromJson(Map<String, dynamic> json) => DollarRate(
       cardCreationFee: (json['card_creation_fee'] as num).toDouble(),
       dollarRate: (json['dollar_rate'] as num).toDouble(),

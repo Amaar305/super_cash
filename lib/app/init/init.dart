@@ -15,6 +15,7 @@ import 'package:super_cash/features/bonus/bonus.dart';
 import 'package:super_cash/features/card/card.dart';
 import 'package:super_cash/features/card/card_repo/cubit/card_repo_cubit.dart';
 import 'package:super_cash/features/confirm_transaction_pin/confirm_transaction_pin.dart';
+import 'package:super_cash/features/giveaway/giveaway.dart';
 import 'package:super_cash/features/history/history.dart';
 import 'package:super_cash/features/live_chat/live_chat.dart';
 import 'package:super_cash/features/notification/notification.dart';
@@ -130,6 +131,43 @@ Future<void> initDependencies({required bool development}) async {
   _referralSystem();
   _referralType();
   _bonus();
+
+  _giveaways();
+}
+
+void _giveaways() {
+  // DataSource
+  serviceLocator
+    ..registerFactory<GiveawayRemoteDataSource>(
+      () => GiveawayRemoteDataSourceImpl(authClient: serviceLocator()),
+    )
+    // Repository
+    ..registerFactory<GiveawayRepository>(
+      () => GiveawayRepositoryImpl(
+        giveawayRemoteDataSource: serviceLocator(),
+        apiErrorHandler: serviceLocator(),
+        networkInfo: serviceLocator(),
+      ),
+    )
+    // Usecases
+    ..registerFactory(() => GetGiveawaysUseCase(serviceLocator()))
+    ..registerFactory(
+      () => GetGiveawayTypesUseCase(giveawayRepository: serviceLocator()),
+    )
+    ..registerFactory(
+      () => GetAirtimeGiveawayPinsUseCase(giveawayRepository: serviceLocator()),
+    )
+    ..registerFactory(
+      () =>
+          CheckGiveawayEligibilityUseCase(giveawayRepository: serviceLocator()),
+    )
+    ..registerFactory(
+      () => ClaimAirtimeGiveawayUseCase(giveawayRepository: serviceLocator()),
+    )
+    ..registerFactory(() => GetGiveawayHistoriesUseCase(serviceLocator()))
+    ..registerFactory(
+      () => GetGiveawayWinnersUseCase(giveawayRepository: serviceLocator()),
+    );
 }
 
 void _liveSuppors() {

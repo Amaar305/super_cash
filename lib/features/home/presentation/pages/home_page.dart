@@ -88,6 +88,7 @@ class _HomePageState extends State<HomePage> {
                                 children: [
                                   if (hideHomeUI != null && !hideHomeUI.all)
                                     Gap.v(75),
+                                  HomeTasks(),
                                   HomeLowWalletAlert(),
                                   HomeScrollText(),
                                   HomeImageSlider(),

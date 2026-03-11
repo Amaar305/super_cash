@@ -79,7 +79,7 @@ class LoginState extends Equatable {
 
   const LoginState.initial()
       : this._(
-          email: const Email.pure(),
+          email: const EmailOrPhone.pure(),
           password: const Password.pure(),
           showPassword: false,
           status: LoginStatus.idle,
@@ -92,7 +92,7 @@ class LoginState extends Equatable {
         );
 
   final LoginStatus status;
-  final Email email;
+  final EmailOrPhone email;
   final Password password;
   final bool showPassword;
   final bool isPasswordLogin;
@@ -122,7 +122,7 @@ class LoginState extends Equatable {
 
   LoginState copyWith({
     LoginStatus? status,
-    Email? email,
+    EmailOrPhone? email,
     Password? password,
     bool? showPassword,
     bool? isPasswordLogin,

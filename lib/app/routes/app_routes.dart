@@ -49,6 +49,16 @@ class AppRoutes {
   static const String generateAccount = '/generate-account';
   static const String liveChat = '/liveChat';
   static const String bonus = '/bonus';
+
+  // Giveaways
+  static const String giveaway = '/giveaway';
+  static const String airtimeGiveaway = '$giveaway/airtime-giveaway';
+  static const String dataGiveaway = '$giveaway/data-giveaway';
+  static const String cableGiveaway = '$giveaway/cable-giveaway';
+  static const String electricityGiveaway = '$giveaway/electricity-giveaway';
+
+  static const String giveawayHistory = '$giveaway/history';
+  static const String giveawayWinners = '$giveaway/winners';
 }
 
 // One place for route NAMES (no paths here)
@@ -98,5 +108,14 @@ class RNames {
   static const String generateAccount = 'generateAccount';
   static const String transfer = 'transfer';
   static const String bonus = 'bonus';
-  static const String accountDeletion= 'accountDeletion';
+  static const String accountDeletion = 'accountDeletion';
+
+  // Giveaway
+  static const String giveaway = 'giveaway';
+  static const String airtimeGiveaway = 'airtimeGiveaway';
+  static const String dataGiveaway = 'dataGiveaway';
+  static const String cableGiveaway = 'cableGiveaway';
+  static const String electricityGiveaway = 'electricityGiveaway';
+  static const String giveawayHistory = 'giveawayHistory';
+  static const String giveawayWinners = 'giveawayWinners';
 }

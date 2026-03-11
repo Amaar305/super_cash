@@ -69,8 +69,8 @@ class LoginCubit extends Cubit<LoginState> {
     final shouldValidate = previousEmailState.invalid;
 
     final newEmailState = shouldValidate
-        ? Email.dirty(value)
-        : Email.pure(value);
+        ? EmailOrPhone.dirty(value)
+        : EmailOrPhone.pure(value);
 
     final newScreenState = state.copyWith(email: newEmailState);
 
@@ -82,7 +82,7 @@ class LoginCubit extends Cubit<LoginState> {
     final previousEmailState = previousScreenState.email;
     final previousEmailValue = previousEmailState.value;
 
-    final newEmailState = Email.dirty(previousEmailValue);
+    final newEmailState = EmailOrPhone.dirty(previousEmailValue);
 
     final newScreenState = previousScreenState.copyWith(email: newEmailState);
 
@@ -168,7 +168,7 @@ class LoginCubit extends Cubit<LoginState> {
     void Function(AppUser user)? onEnableBiometric,
   }) async {
     // Validate the raw form values before hitting the network.
-    final email = Email.dirty(state.email.value);
+    final email = EmailOrPhone.dirty(state.email.value);
     final password = Password.dirty(state.password.value);
 
     final isFormValid = FormzValid([email, password]).isFormValid;

@@ -10,6 +10,7 @@ export 'home_recent_transaction_section.dart';
 export 'home_scroll_text.dart';
 export 'home_service_section.dart';
 export 'home_show_balance_icon.dart';
+export 'home_tasks.dart';
 export 'home_welcome_text.dart';
 export 'k_y_c_notice_board.dart';
 export 'new_wallet.dart';

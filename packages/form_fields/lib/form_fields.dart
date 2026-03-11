@@ -7,6 +7,7 @@ export 'src/bvn.dart';
 export 'src/city.dart';
 export 'src/decoder.dart';
 export 'src/email.dart';
+export 'src/email_or_phone.dart';
 export 'src/first_name.dart';
 export 'src/formz_valid.dart';
 export 'src/full_name.dart';

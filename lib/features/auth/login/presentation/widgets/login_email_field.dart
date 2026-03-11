@@ -51,7 +51,7 @@ class _LoginEmailFieldState extends State<LoginEmailField> {
       children: [
         // AppTextFieldLabel(AppStrings.emailAddress),
         AppTextField.underlineBorder(
-          hintText: AppStrings.emailAddress,
+          hintText: AppStrings.emailOrPhone,
           focusNode: _focusNode,
           prefixIcon: const Icon(
             Icons.email_outlined,

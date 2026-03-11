@@ -9,6 +9,7 @@ import 'package:super_cash/features/add_fund/add_fund.dart';
 import 'package:super_cash/features/auth/referral_type/referral_type.dart';
 import 'package:super_cash/features/bonus/presentation/presentation.dart';
 import 'package:super_cash/features/confirm_transaction_pin/confirm_transaction_pin.dart';
+import 'package:super_cash/features/giveaway/giveaway.dart';
 import 'package:super_cash/features/onboarding/onboarding.dart';
 import 'package:super_cash/features/referal/referal.dart';
 import 'package:super_cash/features/transfer/presentation/pages/transfer_page.dart';
@@ -43,7 +44,7 @@ class AppRouter {
   GoRouter get router => GoRouter(
     initialLocation: AppRoutes.splash,
     navigatorKey: _rootNavigatorKey,
-    // debugLogDiagnostics: true,
+    debugLogDiagnostics: true,
     errorBuilder: (context, state) => const NotFoundPage(),
 
     routes: [
@@ -265,6 +266,36 @@ class AppRouter {
         name: RNames.bonus,
         path: AppRoutes.bonus,
         builder: (_, __) => BonusPage(),
+      ),
+
+      // Giveaway
+      GoRoute(
+        name: RNames.giveaway,
+        path: AppRoutes.giveaway,
+        builder: (_, __) => GiveawaysPage(),
+
+        routes: [
+          GoRoute(
+            name: RNames.airtimeGiveaway,
+            path: 'airtime-giveaway/:giveaway_type_id',
+            builder: (_, state) {
+              final giveawayTypeId =
+                  state.pathParameters['giveaway_type_id'] ?? 'none';
+
+              return AirtimeGiveawayPage(giveawayTypeId: giveawayTypeId);
+            },
+          ),
+          GoRoute(
+            name: RNames.giveawayHistory,
+            path: 'history-giveaway',
+            builder: (_, __) => GiveawayHistoryPage(),
+          ),
+          GoRoute(
+            name: RNames.giveawayWinners,
+            path: 'winners-giveaway',
+            builder: (_, __) => GiveawayWinnersPage(),
+          ),
+        ],
       ),
 
       // ---- Shell (tabs) ----
