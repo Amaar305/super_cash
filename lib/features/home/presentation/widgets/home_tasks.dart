@@ -1,7 +1,9 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared/shared.dart';
+import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/app/routes/app_routes.dart';
 import 'package:super_cash/core/fonts/app_text_style.dart';
 
@@ -10,11 +12,18 @@ class HomeTasks extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final hideHomeUI = context.select(
+      (AppCubit element) => element.state.user?.hideHomeUI,
+    );
+    if (hideHomeUI == null || hideHomeUI.tasks) {
+      return SizedBox.shrink();
+    }
     final iconSize = 20.0;
     final items = [
       TaskItem(
         name: 'Tasks',
         icon: Icon(Icons.task_alt, size: iconSize),
+        onPressed: comingSoon,
       ),
       TaskItem(
         name: 'Giveaway',
@@ -24,6 +33,7 @@ class HomeTasks extends StatelessWidget {
       TaskItem(
         name: 'Leaderboard',
         icon: Icon(Icons.account_balance_wallet_outlined, size: iconSize),
+        onPressed: comingSoon,
       ),
     ];
 

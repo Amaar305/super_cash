@@ -55,11 +55,13 @@ class AirtimeGiveawayCard extends StatelessWidget {
             ),
           ),
           // Masked Airtime PIN Number
-          Text(
-            'PIN: ${giveawayPin.maskedPin}',
-            style: poppinsTextStyle(
-              fontSize: 12,
-              fontWeight: AppFontWeight.semiBold,
+          FittedBox(
+            child: Text(
+              'PIN: ${giveawayPin.maskedPin}',
+              style: poppinsTextStyle(
+                fontSize: 12,
+                fontWeight: AppFontWeight.semiBold,
+              ),
             ),
           ),
 

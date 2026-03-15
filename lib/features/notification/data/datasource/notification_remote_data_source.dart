@@ -22,8 +22,7 @@ class NotificationRemoteDataSourceImpl implements NotificationRemoteDataSource {
       path: 'core/user-notifications/',
     );
 
-    final res = jsonDecode(response.body);
-    logD(res);
+    final res = jsonDecode(response.body); 
     return List.from(res, growable: false).map((json) {
       return Notification.fromJson(Map<String, dynamic>.from(json));
     }).toList();

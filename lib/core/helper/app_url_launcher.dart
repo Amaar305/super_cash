@@ -14,8 +14,17 @@ void launchLink(String url, {LaunchMode? browserMode}) {
 
 void dialNumber(String number) {
   try {
-    launchLink('tel:$number');
+    _makePhoneCall(number);
   } catch (e, s) {
     logE('Failed to dial number, $e', stackTrace: s);
+  }
+}
+
+Future<void> _makePhoneCall(String phoneNumber) async {
+  final Uri launchUri = Uri(scheme: 'tel', path: phoneNumber);
+  if (await canLaunchUrl(launchUri)) {
+    await launchUrl(launchUri);
+  } else {
+    logE("Could not launch $launchUri");
   }
 }

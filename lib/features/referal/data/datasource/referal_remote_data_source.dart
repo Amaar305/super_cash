@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:app_client/app_client.dart';
-import 'package:shared/shared.dart';
 import 'package:super_cash/features/referal/referal.dart';
 
 abstract interface class ReferalRemoteDataSource {
@@ -39,7 +38,7 @@ class ReferalRemoteDataSourceImpl implements ReferalRemoteDataSource {
     );
 
     final response = jsonDecode(request.body) as List;
-    logD(response);
+
 
     return response.map((e) => ReferralUserModel.fromMap(e)).toList();
   }

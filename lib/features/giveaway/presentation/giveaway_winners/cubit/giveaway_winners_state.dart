@@ -49,6 +49,10 @@ class GiveawayWinnersState extends Equatable {
         return winners
             .where((winner) => winner.type.code.contains('data'))
             .toList();
+      case 'Product':
+        return winners
+            .where((winner) => winner.type.code.contains('product'))
+            .toList();
       default:
         return winners;
     }

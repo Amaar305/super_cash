@@ -1,5 +1,4 @@
 import 'package:app_ui/app_ui.dart';
-import 'package:shared/shared.dart';
 import 'package:super_cash/app/app.dart';
 import 'package:super_cash/core/app_strings/app_string.dart';
 import 'package:super_cash/features/confirm_transaction_pin/domain/entities/purchase_detail.dart';
@@ -104,7 +103,7 @@ void _showValidationSheet(BuildContext context, Map<String, dynamic> payload) {
           onPurchased: () async {
             context.pop();
             final cubit = context.read<CableCubit>();
-            logD(payload);
+          
             final result = await context.push<bool?>(
               AppRoutes.confirmationDialog,
               extra: PurchaseDetail(

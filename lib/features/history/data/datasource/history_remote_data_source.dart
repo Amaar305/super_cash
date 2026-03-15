@@ -38,7 +38,7 @@ class HistoryRemoteDataSourceImpl implements HistoryRemoteDataSource {
 
     final response = await apiClient.request(method: 'GET', path: path);
 
-    logD(response.body);
+    
 
     Map<String, dynamic> res = jsonDecode(response.body);
     return HistoryResponse.fromMap(res);

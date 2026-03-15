@@ -29,8 +29,12 @@ void copyUssdCode(BuildContext context, String number) {
   );
 }
 
-void copyReferralCode(BuildContext context, String code) {
-  FlutterClipboard.copy(code).then(
-    (value) {},
+void comingSoon(BuildContext ctx) {
+  ScaffoldMessenger.of(ctx).showSnackBar(
+    const SnackBar(
+      content: Text('This feature is under development'),
+      backgroundColor: AppColors.warning,
+      behavior: SnackBarBehavior.floating,
+    ),
   );
 }

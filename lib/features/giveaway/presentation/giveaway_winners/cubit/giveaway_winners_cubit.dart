@@ -33,52 +33,12 @@ class GiveawayWinnersCubit extends Cubit<GiveawayWinnersState> {
       },
       (winners) {
         emit(
-          state.copyWith(status: GiveawayWinnersStatus.success, winners: list),
+          state.copyWith(
+            status: GiveawayWinnersStatus.success,
+            winners: winners,
+          ),
         );
       },
     );
   }
 }
-
-final list = [
-  GiveawayWinner(
-    id: '1',
-    winner: 'John Doe',
-    amount: '1000',
-    createdAt: DateTime.now(),
-    type: GiveawayType(
-      id: 1,
-      name: 'Airtime PIN',
-      code: 'airtime-pin',
-      description: '',
-      // typeCode: GiveawayTypeCode.airtime,
-    ),
-  ),
-
-  GiveawayWinner(
-    id: '2',
-    winner: 'Janet Jackson',
-    amount: '2000',
-    createdAt: DateTime.now(),
-    type: GiveawayType(id: 2, name: 'Data', code: 'data-code', description: ''),
-  ),
-  GiveawayWinner(
-    id: '3',
-    winner: 'Auwal Jackson',
-    amount: '100',
-    createdAt: DateTime(2026, 2, 25),
-    type: GiveawayType(id: 2, name: 'Data', code: 'data-code', description: ''),
-  ),
-  GiveawayWinner(
-    id: '3',
-    winner: 'Super Cash',
-    amount: '100',
-    createdAt: DateTime(2026, 3, 2),
-    type: GiveawayType(
-      id: 2,
-      name: 'Airtime PIN',
-      code: 'airtime-pin',
-      description: '',
-    ),
-  ),
-];

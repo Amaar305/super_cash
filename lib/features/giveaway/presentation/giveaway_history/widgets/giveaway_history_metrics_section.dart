@@ -46,7 +46,7 @@ class GiveawayHistoryMetricsSection extends StatelessWidget {
           NewWidgetFirst(totalRewards: totalRewads),
 
           // Second
-          NewWidgetSecondChild(airtimeAmount: airtimeAmount, dataAmount: 32),
+          NewWidgetSecondChild(airtimeAmount: airtimeAmount, dataAmount: 0),
         ],
       ),
     );
@@ -81,7 +81,7 @@ class NewWidgetSecondChild extends StatelessWidget {
             label: 'Data',
             icon: Icons.signal_cellular_alt,
             isAirtime: false,
-            value: '85GB',
+            value: '${dataAmount.toStringAsFixed(0)}GB',
             metric: '+18.2%',
           ),
         ),

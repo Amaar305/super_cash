@@ -75,12 +75,14 @@ class GiveawayHistoryView extends StatelessWidget {
                   ),
                 )
               else
-                SliverList.separated(
-                  separatorBuilder: (context, index) => Gap.v(AppSpacing.md),
+                SliverList.builder(
                   itemCount: state.filteredData.length,
                   itemBuilder: (context, index) {
                     return Padding(
-                      padding: const EdgeInsets.all(AppSpacing.lg),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.lg,
+                        vertical: AppSpacing.sm,
+                      ),
                       child: GiveawayCard(
                         giveawayHistory: state.filteredData[index],
                       ),

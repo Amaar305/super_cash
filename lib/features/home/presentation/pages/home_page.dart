@@ -88,7 +88,8 @@ class _HomePageState extends State<HomePage> {
                               child: Column(
                                 children: [
                                   if (hideAll) Gap.v(75),
-                                  Padding(
+                                  AnimatedPadding(
+                                    duration: Durations.medium1,
                                     padding: EdgeInsets.only(
                                       top: !hideAll ? 8.0 : 0,
                                     ),

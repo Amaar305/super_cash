@@ -29,7 +29,7 @@ class AppNetworkProviderWidget extends StatelessWidget {
     super.key,
     this.selectedNetwork,
     this.onNetworkSelect,
-    this.networks = const ['9Mobile', 'Glo', 'Airtel', 'MTN'],
+    this.networks = const ['Glo', 'Airtel', 'MTN'], //'9Mobile',
   });
 
   final List<String> networks;
@@ -96,21 +96,36 @@ class AppNetworkProviderWidget extends StatelessWidget {
     );
   }
 
-
   final String? selectedNetwork;
   final void Function(String network)? onNetworkSelect;
 }
 
-
-Widget getNetworkImage(String network, {
-  double width =37,
-  double? height,
-}) {
+Widget getNetworkImage(String network, {double width = 37, double? height}) {
   return switch (network.toLowerCase()) {
-    'mtn' => Assets.images.mtn.image(width: width, height: height, fit: BoxFit.contain),
-    'airtel' => Assets.images.airtel.image(width: width, height: height, fit: BoxFit.contain),
-    '9mobile' => Assets.images.a9mobile.image(width: width, height: height, fit: BoxFit.contain),
-    'glo' => Assets.images.glo.image(width: width, height: height, fit: BoxFit.contain),
-    _ => Assets.images.mtn.image(width: width, height: height, fit: BoxFit.contain),
+    'mtn' => Assets.images.mtn.image(
+      width: width,
+      height: height,
+      fit: BoxFit.contain,
+    ),
+    'airtel' => Assets.images.airtel.image(
+      width: width,
+      height: height,
+      fit: BoxFit.contain,
+    ),
+    '9mobile' => Assets.images.a9mobile.image(
+      width: width,
+      height: height,
+      fit: BoxFit.contain,
+    ),
+    'glo' => Assets.images.glo.image(
+      width: width,
+      height: height,
+      fit: BoxFit.contain,
+    ),
+    _ => Assets.images.mtn.image(
+      width: width,
+      height: height,
+      fit: BoxFit.contain,
+    ),
   };
 }

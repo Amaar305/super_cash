@@ -10,8 +10,9 @@ class FeaturedGiveawayCard extends StatelessWidget {
   Widget build(BuildContext context) {
     const textDark = Color(0xFF0B1228);
     const subText = Color(0xFF878A8F);
-
     final giveaways = context.watch<GiveawayCubit>().state.upcomingGiveaways;
+
+    if (giveaways.isEmpty) return SizedBox.shrink();
 
     return FeaturedGiveawayContainer(
       child: ListView.separated(

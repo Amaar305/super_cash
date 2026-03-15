@@ -77,7 +77,7 @@ class AppUser {
   );
   String get fullName => '$firstName  $lastName';
   factory AppUser.fromMap(Map<String, dynamic> map) {
-    logD(map);
+    
     final user = map.containsKey('user')
         ? (map['user'] as Map?)?.cast<String, dynamic>() ?? {}
         : map;
@@ -176,18 +176,21 @@ class HideHomeUI {
     required this.transfer,
     required this.fund,
     required this.virtualCard,
+    required this.tasks,
   });
 
   final bool all;
   final bool transfer;
   final bool fund;
   final bool virtualCard;
+  final bool tasks;
 
   factory HideHomeUI.fromJson(Map<String, dynamic> json) => HideHomeUI(
         all: json['all'] as bool? ?? false,
         fund: json['fund'] as bool? ?? false,
         transfer: json['transfer'] as bool? ?? false,
         virtualCard: json['virtual_card'] as bool? ?? false,
+        tasks: json['tasks'] as bool? ?? false,
       );
 
   Map<String, dynamic> toJson() => {
@@ -195,5 +198,6 @@ class HideHomeUI {
         'virtual_card': virtualCard,
         'transfer': transfer,
         'fund': fund,
+        'tasks':tasks,
       };
 }

@@ -24,7 +24,7 @@ class GiveawayWinnersListView extends StatelessWidget {
     return Column(
       children: [
         GiveawayFilterSection(
-          types: ['All Categories', 'Airtime', 'Data'],
+          types: ['All Categories', 'Airtime', 'Data', 'Product'],
           onChanged: context.read<GiveawayWinnersCubit>().onFilterChanged,
         ),
         child,

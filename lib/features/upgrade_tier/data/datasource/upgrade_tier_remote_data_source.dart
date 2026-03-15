@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:app_client/app_client.dart';
-import 'package:shared/shared.dart';
 import 'package:super_cash/core/error/exception.dart';
 import 'package:super_cash/features/upgrade_tier/upgrade_tier.dart';
 
@@ -34,7 +33,7 @@ class UpgradeTierRemoteDataSourceImpl implements UpgradeTierRemoteDataSource {
     );
 
     final body = response.body;
-    logD(body);
+    
     final Map<String, dynamic> res = body.isNotEmpty
         ? jsonDecode(body) as Map<String, dynamic>
         : {};
@@ -62,7 +61,7 @@ class UpgradeTierRemoteDataSourceImpl implements UpgradeTierRemoteDataSource {
       fileField: 'file',
     );
     final body = response.body;
-    logD(body);
+  
 
     final data = jsonDecode(body);
     return data['url'] as String?;

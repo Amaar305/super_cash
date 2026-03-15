@@ -45,7 +45,11 @@ class GiveawayState extends Equatable {
   ];
 
   List<Giveaway> get upcomingGiveaways => giveaways
-      .where((element) => element.status == UpcomingGiveawayStatus.upcoming)
+      .where(
+        (element) =>
+            element.status == UpcomingGiveawayStatus.upcoming &&
+            !element.isActive,
+      )
       .toList();
 
   List<Giveaway> get otherGiveaways =>

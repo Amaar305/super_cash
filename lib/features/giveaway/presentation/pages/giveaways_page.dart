@@ -46,40 +46,47 @@ class _GiveawayViewState extends State<GiveawayView> {
         leading: AppLeadingAppBarWidget(onTap: () => context.pop()),
         centerTitle: false,
       ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(AppSpacing.lg),
-        child: BlocConsumer<GiveawayCubit, GiveawayState>(
-          listenWhen: (previous, current) => previous.status != current.status,
-          listener: (context, state) {
-            if (state.status.isLoading) {
-              showLoadingOverlay(context);
-            } else {
-              hideLoadingOverlay();
-            }
-            if (state.status.isFailure && state.errorMessage != null) {
-              openSnackbar(
-                SnackbarMessage.error(title: state.errorMessage ?? ''),
-                clearIfQueue: true,
-              );
-            }
-          },
-          buildWhen: (previous, current) => previous.types != current.types,
+      body: RefreshIndicator.adaptive(
+        onRefresh: context.read<GiveawayCubit>().getGiveaways,
+        child: SingleChildScrollView(
+          padding: EdgeInsets.all(AppSpacing.lg),
+          child: BlocConsumer<GiveawayCubit, GiveawayState>(
+            listenWhen: (previous, current) =>
+                previous.status != current.status,
+            listener: (context, state) {
+              if (state.status.isLoading) {
+                showLoadingOverlay(context);
+              } else {
+                hideLoadingOverlay();
+              }
+              if (state.status.isFailure && state.errorMessage != null) {
+                openSnackbar(
+                  SnackbarMessage.error(title: state.errorMessage ?? ''),
+                  clearIfQueue: true,
+                );
+              }
+            },
+            buildWhen: (previous, current) => previous.types != current.types,
 
-          builder: (context, state) {
-            return Column(
-              children: [
-                FeaturedGiveawayCard(),
-                Gap.v(14),
-                _HistoryWinnersRow(),
-                Gap.v(18),
-                GiveawayStatusLineWidget(),
-                Gap.v(16),
-                SectionHeader(title: "Live & Upcoming", actionText: "View All"),
-                Gap.v(12),
-                LiveAndUpcomingGiveaways(),
-              ],
-            );
-          },
+            builder: (context, state) {
+              return Column(
+                children: [
+                  FeaturedGiveawayCard(),
+                  Gap.v(14),
+                  _HistoryWinnersRow(),
+                  Gap.v(18),
+                  GiveawayStatusLineWidget(),
+                  Gap.v(16),
+                  SectionHeader(
+                    title: "Live & Upcoming",
+                    actionText: "View All",
+                  ),
+                  Gap.v(12),
+                  LiveAndUpcomingGiveaways(),
+                ],
+              );
+            },
+          ),
         ),
       ),
     );

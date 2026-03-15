@@ -14,7 +14,7 @@ class AirtimeGiveawayPin {
       id: json['id'],
       network: json['network'],
       amount: json['amount'].toDouble(),
-      maskedPin: json['pin'],
+      maskedPin: json['masked_pin'],
       status: json['status'],
       loadingCode: json['loading_code'] as String?,
     );
