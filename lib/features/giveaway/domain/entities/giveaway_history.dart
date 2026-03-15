@@ -17,11 +17,15 @@ class GiveawayHistory {
     required this.createdAt,
   });
 
+  String get network =>
+      ((meta?['network'] as String?) ?? 'airtel').toUpperCase();
+
   AirtimeGiveawayPin get giveawayPin {
     final planId = meta?['plan_id'] as String?;
     final network = meta?['network'] as String?;
     final pin = meta?['code'] as String?;
     final loadingCode = meta?['loading_code'] as String?;
+    // final code = meta?['code'] as String?;
 
     return AirtimeGiveawayPin(
       id: planId ?? '',
@@ -56,4 +60,22 @@ class GiveawayHistory {
     'meta': meta,
     'created_at': createdAt.toIso8601String(),
   };
+
+  GiveawayHistory copyWith({
+    String? id,
+    String? description,
+    String? amount,
+    GiveawayType? giveawayType,
+    Map<String, dynamic>? meta,
+    DateTime? createdAt,
+  }) {
+    return GiveawayHistory(
+      id: id ?? this.id,
+      amount: amount ?? this.amount,
+      description: description ?? this.description,
+      giveawayType: giveawayType ?? this.giveawayType,
+      meta: meta ?? this.meta,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
 }

@@ -13,6 +13,20 @@ class GiveawayHistoryCubit extends Cubit<GiveawayHistoryState> {
   }) : _getGiveawayHistoriesUseCase = getGiveawayHistoriesUseCase,
        super(GiveawayHistoryState.initial());
 
+  void applyFilters(
+    String? quickNetwork,
+    String? selectedType,
+    String? highAmount,
+  ) {
+    emit(
+      state.copyWith(
+        quickNetwork: quickNetwork,
+        selectedType: selectedType,
+        highAmount: highAmount,
+      ),
+    );
+  }
+
   Future<void> getHistories() async {
     emit(state.copyWith(status: GiveawayHistoryStatus.loading));
 
@@ -36,7 +50,16 @@ class GiveawayHistoryCubit extends Cubit<GiveawayHistoryState> {
   }
 
   Future<void> refreshTransactions() async {
-    emit(state.copyWith(status: GiveawayHistoryStatus.loading));
+    emit(
+      GiveawayHistoryState._(
+        message: '',
+        status: GiveawayHistoryStatus.loading,
+        highAmount: null,
+        quickNetwork: null,
+        selectedType: null,
+        data: [],
+      ),
+    );
     await getHistories();
   }
 }

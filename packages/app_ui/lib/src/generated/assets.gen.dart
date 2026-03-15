@@ -115,6 +115,10 @@ class $AssetsIconsGen {
   /// File path: assets/icons/fund.svg
   SvgGenImage get fund => const SvgGenImage('assets/icons/fund.svg');
 
+  /// File path: assets/icons/giveaway_history_award.svg
+  SvgGenImage get giveawayHistoryAward =>
+      const SvgGenImage('assets/icons/giveaway_history_award.svg');
+
   /// File path: assets/icons/history.svg
   SvgGenImage get history => const SvgGenImage('assets/icons/history.svg');
 
@@ -226,6 +230,7 @@ class $AssetsIconsGen {
         electricity,
         exam,
         fund,
+        giveawayHistoryAward,
         history,
         home,
         homeActive,

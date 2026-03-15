@@ -51,6 +51,7 @@ final list = [
       name: 'Airtime PIN',
       code: 'airtime-pin',
       description: '',
+      // typeCode: GiveawayTypeCode.airtime,
     ),
   ),
 

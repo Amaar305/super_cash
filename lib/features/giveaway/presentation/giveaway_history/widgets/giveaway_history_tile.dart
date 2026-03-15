@@ -61,3 +61,18 @@ class GiveawayHistoryTile extends StatelessWidget {
     );
   }
 }
+
+class GiveawayHistoryCard extends StatelessWidget {
+  const GiveawayHistoryCard({
+    super.key,
+    required this.giveawayHistory,
+    this.onTap,
+  });
+  final GiveawayHistory giveawayHistory;
+  final void Function(AirtimeGiveawayPin giveawayPin)? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}

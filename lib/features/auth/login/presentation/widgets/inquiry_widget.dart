@@ -16,7 +16,9 @@ class InquiryWidget extends StatelessWidget {
           color: AppColors.red,
           imagePath: 'youtube.png',
           child: Assets.images.youtube.image(color: AppColors.white),
-          onTap: () {},
+          onTap: () {
+            launchLink('https://youtube.com/@supercash-z6q?si=6dhi4a21FZWsv-1-');
+          },
         ),
         IconContainer(
           color: AppColors.green,

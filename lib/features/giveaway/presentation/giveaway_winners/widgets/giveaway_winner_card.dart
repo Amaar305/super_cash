@@ -1,5 +1,6 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:shared/shared.dart';
 import 'package:super_cash/core/fonts/app_text_style.dart';
 import 'package:super_cash/features/giveaway/giveaway.dart';
 
@@ -83,19 +84,5 @@ class GiveawayWinnerCard extends StatelessWidget {
     final a1 = sp.first[0];
     final a2 = sp.last[0];
     return '$a1$a2'.toUpperCase();
-  }
-}
-
-String dateAgo(DateTime createdAt) {
-  final now = DateTime.now();
-  final difference = now.difference(createdAt);
-  if (difference.inDays > 0) {
-    return '${difference.inDays}d ago';
-  } else if (difference.inHours > 0) {
-    return '${difference.inHours}h ago';
-  } else if (difference.inMinutes > 0) {
-    return '${difference.inMinutes}m ago';
-  } else {
-    return 'just now';
   }
 }

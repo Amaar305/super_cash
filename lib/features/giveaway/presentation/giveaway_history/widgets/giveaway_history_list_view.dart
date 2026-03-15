@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:super_cash/core/common/common.dart';
 import 'package:super_cash/features/giveaway/giveaway.dart';
 
 class GiveawayHistoryListView extends StatelessWidget {
@@ -13,12 +12,6 @@ class GiveawayHistoryListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (histories.isEmpty) {
-      return AppEmptyState(
-        title: 'No available history',
-        action: TextButton(onPressed: onLoadMore, child: Text('Refresh')),
-      );
-    }
     void onTapped(AirtimeGiveawayPin giveawayPin) {
       showAdaptiveDialog(
         context: context,
@@ -29,15 +22,15 @@ class GiveawayHistoryListView extends StatelessWidget {
       );
     }
 
-    return ListView.builder(
-      itemCount: histories.length,
-      itemBuilder: (context, index) {
-        // if (index == histories.length - 1) {}
-        return GiveawayHistoryTile(
+    return SliverList.builder(
+      itemBuilder: (context, index) => ListTile(
+        contentPadding: EdgeInsets.zero,
+        title: GiveawayCard(
           giveawayHistory: histories[index],
-          onTap: onTapped,
-        );
-      },
+          key: ValueKey(index),
+        ),
+      ),
+      itemCount: histories.length,
     );
   }
 }

@@ -1,24 +1,7 @@
 ///
 String formatDateTime(DateTime dateTime) {
-  final now = DateTime.now();
-  final today = DateTime(now.year, now.month, now.day);
-  final yesterday = DateTime(now.year, now.month, now.day - 1);
-  final dateToCheck = DateTime(dateTime.year, dateTime.month, dateTime.day);
-
   final dayPrefix =
       '${_getMonthName(dateTime.month)} ${dateTime.day}, ${dateTime.year}';
-
-  // String dayPrefix;
-  // if (dateToCheck == today) {
-  //   dayPrefix = 'Today';
-  // } else if (dateToCheck == yesterday) {
-  //   dayPrefix = 'Yesterday';
-  // } else {
-  //   // For older dates, you could format as 'Jun 25, 2023' or similar
-  //   // Here we'll just use the full date if it's not today or yesterday
-  //   dayPrefix =
-  //       '${_getMonthName(dateTime.month)} ${dateTime.day}, ${dateTime.year}';
-  // }
 
   // Format time in 12-hour format with AM/PM
   final hour = dateTime.hour % 12 == 0 ? 12 : dateTime.hour % 12;
@@ -45,4 +28,19 @@ String _getMonthName(int month) {
     'Dec',
   ];
   return monthNames[month - 1];
+}
+
+///
+String dateAgo(DateTime createdAt) {
+  final now = DateTime.now();
+  final difference = now.difference(createdAt);
+  if (difference.inDays > 0) {
+    return '${difference.inDays}d ago';
+  } else if (difference.inHours > 0) {
+    return '${difference.inHours}h ago';
+  } else if (difference.inMinutes > 0) {
+    return '${difference.inMinutes}m ago';
+  } else {
+    return 'just now';
+  }
 }

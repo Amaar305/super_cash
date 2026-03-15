@@ -3,12 +3,14 @@ class GiveawayType {
   final String code;
   final String name;
   final String description;
+ 
 
   const GiveawayType({
     required this.id,
     required this.code,
     required this.name,
     required this.description,
+    
   });
 
   static int _asInt(dynamic v, {int fallback = 0}) {
@@ -32,6 +34,7 @@ class GiveawayType {
       code: _asString(map['code']),
       name: _asString(map['name']),
       description: _asString(map['description']),
+      // typeCode: GiveawayTypeCode.airtime,
     );
   }
 
@@ -44,12 +47,24 @@ class GiveawayType {
     String? code,
     String? name,
     String? description,
+    // GiveawayTypeCode? typeCode,
   }) {
     return GiveawayType(
       id: id ?? this.id,
       code: code ?? this.code,
       name: name ?? this.name,
       description: description ?? this.description,
+      // typeCode: typeCode??this.typeCode,
     );
   }
+}
+
+enum GiveawayTypeCode {
+  airtime,
+  data,
+  product;
+
+  bool get isAirtime => this == GiveawayTypeCode.airtime;
+  bool get isData => this == GiveawayTypeCode.data;
+  bool get isProduct => this == GiveawayTypeCode.product;
 }

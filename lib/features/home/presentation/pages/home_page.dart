@@ -37,6 +37,7 @@ class _HomePageState extends State<HomePage> {
       (AppCubit element) => element.state.user?.hideHomeUI,
     );
 
+    var hideAll = hideHomeUI != null && !hideHomeUI.all;
     return AppScaffold(
       safeArea: false,
       extendBodyBehindAppBar: true,
@@ -86,9 +87,13 @@ class _HomePageState extends State<HomePage> {
                               ),
                               child: Column(
                                 children: [
-                                  if (hideHomeUI != null && !hideHomeUI.all)
-                                    Gap.v(75),
-                                  HomeTasks(),
+                                  if (hideAll) Gap.v(75),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      top: !hideAll ? 8.0 : 0,
+                                    ),
+                                    child: HomeTasks(),
+                                  ),
                                   HomeLowWalletAlert(),
                                   HomeScrollText(),
                                   HomeImageSlider(),
