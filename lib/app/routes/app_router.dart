@@ -44,7 +44,7 @@ class AppRouter {
   GoRouter get router => GoRouter(
     initialLocation: AppRoutes.splash,
     navigatorKey: _rootNavigatorKey,
-    debugLogDiagnostics: true,
+    debugLogDiagnostics: false,
     errorBuilder: (context, state) => const NotFoundPage(),
 
     routes: [
@@ -286,6 +286,35 @@ class AppRouter {
             },
           ),
           GoRoute(
+            name: RNames.dataGiveaway,
+            path: 'data-giveaway/:giveaway_type_id',
+            builder: (_, state) {
+              final giveawayTypeId =
+                  state.pathParameters['giveaway_type_id'] ?? 'none';
+
+              return DataGiveawayPage(giveawayTypeId: giveawayTypeId);
+            },
+          ),
+          GoRoute(
+            name: RNames.productGiveaway,
+            path: 'product-giveaway/:giveaway_type_id',
+            builder: (_, state) {
+              final giveawayTypeId =
+                  state.pathParameters['giveaway_type_id'] ?? 'none';
+
+              return ProductGiveawayPage(giveawayTypeId: giveawayTypeId);
+            },
+          ),
+          GoRoute(
+            name: RNames.productGiveawayDetails,
+            path: 'product-giveaway-details',
+            builder: (_, state) {
+              final giveaway = state.extra as Giveaway;
+
+              return ProductGiveawayDetailsPage(giveaway: giveaway);
+            },
+          ),
+          GoRoute(
             name: RNames.giveawayHistory,
             path: 'history-giveaway',
             builder: (_, __) => GiveawayHistoryPage(),
@@ -320,6 +349,7 @@ class AppRouter {
               ),
             ],
           ),
+
           StatefulShellBranch(
             routes: [
               GoRoute(

@@ -37,7 +37,10 @@ class _HomePageState extends State<HomePage> {
       (AppCubit element) => element.state.user?.hideHomeUI,
     );
 
-    var hideAll = hideHomeUI != null && !hideHomeUI.all;
+    var hideAll =
+        hideHomeUI == null ||
+        hideHomeUI.transfer && hideHomeUI.fund && hideHomeUI.virtualCard;
+
     return AppScaffold(
       safeArea: false,
       extendBodyBehindAppBar: true,
@@ -87,11 +90,11 @@ class _HomePageState extends State<HomePage> {
                               ),
                               child: Column(
                                 children: [
-                                  if (hideAll) Gap.v(75),
+                                  if (!hideAll) Gap.v(75),
                                   AnimatedPadding(
                                     duration: Durations.medium1,
                                     padding: EdgeInsets.only(
-                                      top: !hideAll ? 8.0 : 0,
+                                      top: hideAll ? 8.0 : 0,
                                     ),
                                     child: HomeTasks(),
                                   ),

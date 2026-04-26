@@ -9,7 +9,7 @@ class FetchBankListUseCase implements UseCase<List<Bank>, NoParam> {
   FetchBankListUseCase({required this.bonusRepository});
 
   @override
-  Future<Either<Failure, List<Bank>>> call(NoParam param) {
-    return bonusRepository.getBankLists();
+  Future<Either<Failure, List<Bank>>> call(NoParam param) async {
+    return await bonusRepository.getBankLists();
   }
 }

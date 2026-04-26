@@ -16,7 +16,8 @@ class HomeQuickActionSection extends StatelessWidget {
       (AppCubit element) => element.state.user?.hideHomeUI,
     );
 
-    if (hideHomeUI == null || hideHomeUI.all) {
+    if (hideHomeUI == null ||
+        hideHomeUI.transfer && hideHomeUI.fund && hideHomeUI.virtualCard) {
       return SizedBox.shrink();
     }
 

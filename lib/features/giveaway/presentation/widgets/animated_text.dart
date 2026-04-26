@@ -44,8 +44,8 @@ class AnimatedText extends StatelessWidget {
         value,
         key: ValueKey(value),
         style: TextStyle(
-          fontSize: 22,
-          fontWeight: FontWeight.w900,
+          fontSize: 20,
+          fontWeight: FontWeight.w700,
           color: highlight ? _primaryGreen : _textDark,
           height: 1,
         ),

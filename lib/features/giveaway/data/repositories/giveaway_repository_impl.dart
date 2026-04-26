@@ -42,7 +42,7 @@ class GiveawayRepositoryImpl implements GiveawayRepository {
     try {
       final isConnected = await networkInfo.isConnected;
       if (isConnected) {
-        final result = await giveawayRemoteDataSource.claimGiveaway(
+        final result = await giveawayRemoteDataSource.claimPINGiveaway(
           giveawayTypeId: giveawayTypeId,
           planid: planid,
         );
@@ -129,5 +129,130 @@ class GiveawayRepositoryImpl implements GiveawayRepository {
     } catch (error) {
       return Left(apiErrorHandler.handleError(error));
     }
+  }
+
+  @override
+  Future<Either<Failure, List<ProductGiveawayModel>>>
+  getProductsGiveaway() async {
+    try {
+      final isConnected = await networkInfo.isConnected;
+      if (isConnected) {
+        final result = await giveawayRemoteDataSource.getProductsGiveaway();
+        return Right(result);
+      } else {
+        return Left(NetworkFailure('No internet connection'));
+      }
+    } catch (error) {
+      return Left(apiErrorHandler.handleError(error));
+    }
+  }
+
+  @override
+  Future<Either<Failure, ProductGiveawayModel>> claimProductGiveaway({
+    required String productId,
+    required String giveawayTypeId,
+  }) async {
+    try {
+      if (!await networkInfo.isConnected) {
+        return Left(NetworkFailure('No internet connection!'));
+      }
+
+      final result = await giveawayRemoteDataSource.claimProductGiveaway(
+        productId: productId,
+        giveawayTypeId: giveawayTypeId,
+      );
+      return right(result);
+    } catch (error) {
+      return Left(apiErrorHandler.handleError(error));
+    }
+  }
+
+  @override
+  Future<Either<Failure, ProductClaimAddressModel>> addProductDeliveryAddress({
+    required String productId,
+    required String fullName,
+    required String phoneNumber,
+    required String address,
+  }) async {
+    try {
+      if (!await networkInfo.isConnected) {
+        return Left(NetworkFailure('No internet connection!'));
+      }
+      final result = await giveawayRemoteDataSource.addProductDeliveryAddress(
+        productId: productId,
+        fullName: fullName,
+        phoneNumber: phoneNumber,
+        address: address,
+      );
+      return right(result);
+    } catch (error) {
+      return left(apiErrorHandler.handleError(error));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<DataGiveawayItem>>> getDataGiveaways() async {
+    try {
+      final isConnected = await networkInfo.isConnected;
+      if (isConnected) {
+        final result = await giveawayRemoteDataSource.getDataGiveaways();
+        return Right(result);
+      } else {
+        return Left(NetworkFailure('No internet connection'));
+      }
+    } catch (error) {
+      return Left(apiErrorHandler.handleError(error));
+    }
+  }
+
+  @override
+  Future<Either<Failure, DataGiveawayItem>> claimDataGiveaway({
+    required String dataId,
+    required String giveawayTypeId,
+    required String phone,
+  }) async {
+    try {
+      final isConnected = await networkInfo.isConnected;
+      if (isConnected) {
+        final result = await giveawayRemoteDataSource.claimDataGiveaway(
+          dataId: dataId,
+          giveawayTypeId: giveawayTypeId,
+          phone: phone,
+        );
+        return Right(result);
+      } else {
+        return Left(NetworkFailure('No internet connection'));
+      }
+    } catch (error) {
+      return Left(apiErrorHandler.handleError(error));
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserCashAccountDetailModel>> addCashAccountDetails({
+    required String cashId,
+    required String accountName,
+    required String accountNumber,
+    required String bankName,
+    String? bankCode,
+    String? phoneNumber,
+  }) async{
+    // TODO: implement addCashAccountDetails
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, CashGiveawayItem>> claimCashGiveaway({
+    required String cashId,
+    required String giveawayTypeId,
+  }) {
+    // TODO: implement claimCashGiveaway
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, List<CashGiveawayItem>>> getCashGiveaways() {
+    // TODO: implement getCashGiveaways
+    throw UnimplementedError();
   }
 }

@@ -138,11 +138,11 @@ Future<void> initDependencies({required bool development}) async {
 void _giveaways() {
   // DataSource
   serviceLocator
-    ..registerFactory<GiveawayRemoteDataSource>(
+    ..registerLazySingleton<GiveawayRemoteDataSource>(
       () => GiveawayRemoteDataSourceImpl(authClient: serviceLocator()),
     )
     // Repository
-    ..registerFactory<GiveawayRepository>(
+    ..registerLazySingleton<GiveawayRepository>(
       () => GiveawayRepositoryImpl(
         giveawayRemoteDataSource: serviceLocator(),
         apiErrorHandler: serviceLocator(),
@@ -150,23 +150,40 @@ void _giveaways() {
       ),
     )
     // Usecases
-    ..registerFactory(() => GetGiveawaysUseCase(serviceLocator()))
-    ..registerFactory(
+    ..registerLazySingleton(() => GetGiveawaysUseCase(serviceLocator()))
+    ..registerLazySingleton(
       () => GetGiveawayTypesUseCase(giveawayRepository: serviceLocator()),
     )
-    ..registerFactory(
+    ..registerLazySingleton(
       () => GetAirtimeGiveawayPinsUseCase(giveawayRepository: serviceLocator()),
     )
-    ..registerFactory(
+    ..registerLazySingleton(
       () =>
           CheckGiveawayEligibilityUseCase(giveawayRepository: serviceLocator()),
     )
-    ..registerFactory(
+    ..registerLazySingleton(
       () => ClaimAirtimeGiveawayUseCase(giveawayRepository: serviceLocator()),
     )
-    ..registerFactory(() => GetGiveawayHistoriesUseCase(serviceLocator()))
-    ..registerFactory(
+    ..registerLazySingleton(() => GetGiveawayHistoriesUseCase(serviceLocator()))
+    ..registerLazySingleton(
+      () => GetProductsGiveawayUseCase(giveawayRepository: serviceLocator()),
+    )
+    ..registerLazySingleton(
       () => GetGiveawayWinnersUseCase(giveawayRepository: serviceLocator()),
+    )
+    ..registerLazySingleton(
+      () => ClaimProductGiveawayUseCase(giveawayRepository: serviceLocator()),
+    )
+    ..registerLazySingleton(
+      () => AddProductDeliveryAddressUseCase(
+        giveawayRepository: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton(
+      () => GetDataGiveawaysUseCase(giveawayRepository: serviceLocator()),
+    )
+    ..registerLazySingleton(
+      () => ClaimDataGiveawayUseCase(giveawayRepository: serviceLocator()),
     );
 }
 

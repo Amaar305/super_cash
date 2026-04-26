@@ -7,3 +7,4 @@ export 'section_header.dart';
 export 'animated_text.dart';
 export 'giveaway_countdown_box.dart';
 export 'upcoming_feaatured_giveaway.dart';
+export 'new_upcoming_giveaway_card.dart';

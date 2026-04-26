@@ -1,5 +1,6 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:super_cash/core/fonts/app_text_style.dart';
 
 class FeaturedGiveawayContainer extends StatelessWidget {
   const FeaturedGiveawayContainer({super.key, this.child});
@@ -15,10 +16,7 @@ class FeaturedGiveawayContainer extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [
-            AppColors.lightBlue.withValues(alpha: 0.8),
-            AppColors.lightBlue.withValues(alpha: 0.3),
-          ],
+          colors: [AppColors.black.withValues(alpha: 0.7), AppColors.black],
         ),
       ),
       child: Column(
@@ -26,7 +24,21 @@ class FeaturedGiveawayContainer extends StatelessWidget {
         spacing: 12,
         children: [
           // FEATURED UPCOMING pill
-          newMethod(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              newMethod(),
+
+              IconButton(
+                style: IconButton.styleFrom(
+                  foregroundColor: AppColors.white,
+                  backgroundColor: AppColors.white.withValues(alpha: 0.2),
+                ),
+                onPressed: () {},
+                icon: Icon(Icons.notifications_outlined),
+              ),
+            ],
+          ),
 
           child ?? SizedBox.shrink(),
         ],
@@ -44,16 +56,16 @@ class FeaturedGiveawayContainer extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.circle, size: 10, color: AppColors.deepBlue),
+          Icon(Icons.circle, size: 10, color: AppColors.lightBlueFilled),
           SizedBox(width: 8),
           Text(
             "FEATURED UPCOMING",
-            style: TextStyle(
+            style: poppinsTextStyle(
               fontSize: 10,
-              letterSpacing: .5,
+
               fontWeight: FontWeight.w800,
-              color: Color(0xFF1A2B2A),
-            ),
+              color: AppColors.brightGrey,
+            ).copyWith(letterSpacing: .5),
           ),
         ],
       ),

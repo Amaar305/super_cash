@@ -80,7 +80,7 @@ class CableForMySelfButton extends StatelessWidget {
     return AppMiniButton(
       isLoading: isLoading,
       label: AppStrings.beneficiary,
-      onPressed: () => context.read<CableCubit>().onPhoneChanged('07075179929'),
+      onPressed: () => context.read<CableCubit>().onPhoneChanged(''),
     );
   }
 }

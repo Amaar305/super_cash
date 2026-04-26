@@ -14,8 +14,8 @@ class GiveawayCountdownBox extends StatelessWidget {
   final String label;
   final bool highlight;
 
-  static const _textDark = Color(0xFF0B1228);
-  final _primaryGreen = AppColors.deepBlue;
+  static const _textDark = Colors.white70;
+  final _primaryGreen = AppColors.white;
 
   @override
   Widget build(BuildContext context) {
@@ -23,14 +23,13 @@ class GiveawayCountdownBox extends StatelessWidget {
       height: 64,
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       decoration: BoxDecoration(
-        color: const Color(0xFFEBFBF1),
-        borderRadius: BorderRadius.circular(16),
+        color: AppColors.white.withValues(alpha: 0.2),
+        borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           AnimatedText(
-            // key: ValueKey(value),
             value: value,
             highlight: highlight,
             primaryGreen: _primaryGreen,
@@ -39,11 +38,11 @@ class GiveawayCountdownBox extends StatelessWidget {
           const SizedBox(height: 6),
           Text(
             label,
-            style: const TextStyle(
-              fontSize: 11,
+            style: TextStyle(
+              fontSize: 9,
               letterSpacing: .8,
               fontWeight: FontWeight.w800,
-              color: Color(0xFF7C8A88),
+              color: AppColors.brightGrey,
               height: 1,
             ),
           ),

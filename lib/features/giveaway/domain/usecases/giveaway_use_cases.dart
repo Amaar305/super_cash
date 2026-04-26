@@ -5,3 +5,8 @@ export 'get_giveaway_histories_use_case.dart';
 export 'get_giveaway_types_use_case.dart';
 export 'get_giveaways_use_case.dart';
 export 'get_giveaway_winners_use_case.dart';
+export 'get_products_giveaway_use_case.dart';
+export 'claim_product_giveaway_use_case.dart';
+export 'add_product_delivery_address_use_case.dart';
+export 'get_data_giveaways_use_case.dart';
+export 'claim_data_giveaway_use_case.dart';

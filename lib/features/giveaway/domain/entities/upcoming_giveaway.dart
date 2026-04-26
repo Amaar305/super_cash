@@ -10,6 +10,7 @@ class Giveaway {
   final String image;
   final UpcomingGiveawayStatus status;
   final DateTime? startsAt;
+  final DateTime? endsAt;
   final bool isActive;
   final DateTime? createdAt;
 
@@ -23,6 +24,7 @@ class Giveaway {
     required this.image,
     required this.status,
     required this.startsAt,
+    required this.endsAt,
     required this.isActive,
     required this.createdAt,
   });
@@ -73,7 +75,8 @@ class Giveaway {
       numberOfUsers: _asString(map['number_of_users']),
       image: _asString(map['image']),
       status: UpcomingGiveawayStatus.fromString(_asString(map['status'])),
-      startsAt: _asDateTime(map['starts_at']),
+      startsAt: _asDateTime(map['ends_at']),
+      endsAt: _asDateTime(map['starts_at']),
       isActive: _asBool(map['is_active']),
       createdAt: _asDateTime(map['created_at']),
     );
@@ -90,6 +93,7 @@ class Giveaway {
       'image': image,
       'status': status.value,
       'starts_at': startsAt?.toIso8601String(),
+      'ends_at': startsAt?.toIso8601String(),
       'is_active': isActive,
       'created_at': createdAt?.toIso8601String(),
     };
@@ -105,6 +109,7 @@ class Giveaway {
     String? image,
     UpcomingGiveawayStatus? status,
     DateTime? startsAt,
+    DateTime? endsAt,
     bool? isActive,
     DateTime? createdAt,
   }) {
@@ -120,6 +125,7 @@ class Giveaway {
       startsAt: startsAt ?? this.startsAt,
       isActive: isActive ?? this.isActive,
       createdAt: createdAt ?? this.createdAt,
+      endsAt: endsAt ?? this.endsAt,
     );
   }
 }
@@ -132,6 +138,10 @@ enum UpcomingGiveawayStatus {
 
   final String value;
   const UpcomingGiveawayStatus(this.value);
+
+  bool get isCancelled=> this==UpcomingGiveawayStatus.cancelled;
+
+  bool get isCompleted=> this==UpcomingGiveawayStatus.completed;
 
   static UpcomingGiveawayStatus fromString(String? value) {
     if (value == null) return UpcomingGiveawayStatus.upcoming;

@@ -8,8 +8,9 @@ class FeaturedGiveawayCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const textDark = Color(0xFF0B1228);
-    const subText = Color(0xFF878A8F);
+    const textDark = Color(0xFFFFFFFF);
+    const subText = Color.fromARGB(255, 226, 226, 226);
+
     final giveaways = context.watch<GiveawayCubit>().state.upcomingGiveaways;
 
     if (giveaways.isEmpty) return SizedBox.shrink();

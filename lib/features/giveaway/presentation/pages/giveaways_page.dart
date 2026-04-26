@@ -71,17 +71,14 @@ class _GiveawayViewState extends State<GiveawayView> {
             builder: (context, state) {
               return Column(
                 children: [
-                  FeaturedGiveawayCard(),
-                  Gap.v(14),
                   _HistoryWinnersRow(),
+                  Gap.v(14),
+                  FeaturedGiveawayCard(),
+
                   Gap.v(18),
                   GiveawayStatusLineWidget(),
                   Gap.v(16),
-                  SectionHeader(
-                    title: "Live & Upcoming",
-                    actionText: "View All",
-                  ),
-                  Gap.v(12),
+
                   LiveAndUpcomingGiveaways(),
                 ],
               );
@@ -105,11 +102,27 @@ class LiveAndUpcomingGiveaways extends StatelessWidget {
     }
 
     void naviagte(BuildContext context, Giveaway giveaway) {
-      if (giveaway.status == UpcomingGiveawayStatus.cancelled) {
+      // context.pushNamed(RNames.productGiveawayDetails, extra: giveaway);
+      // return;
+      if (giveaway.status.isCancelled || giveaway.status.isCompleted) {
         return;
-      } else if (giveaway.giveawayType.code.contains('airtime')) {
+      }
+      // switch (giveaway.giveawayType.code) {
+      //   case value:
+
+      //     break;
+      //   default:
+      // }
+      if (giveaway.giveawayType.code.contains('airtime')) {
         context.pushNamed(
           RNames.airtimeGiveaway,
+          pathParameters: {
+            'giveaway_type_id': giveaway.giveawayType.id.toString(),
+          },
+        );
+      } else if (giveaway.giveawayType.code.contains('product')) {
+        context.pushNamed(
+          RNames.dataGiveaway,
           pathParameters: {
             'giveaway_type_id': giveaway.giveawayType.id.toString(),
           },
@@ -129,8 +142,12 @@ class LiveAndUpcomingGiveaways extends StatelessWidget {
           title: giveaway.giveawayType.name,
           subtitle: giveaway.description,
           status: giveaway.status,
-          isDisabled: giveaway.status == UpcomingGiveawayStatus.cancelled,
+          endsAt: giveaway.endsAt,
+
+          isDisabled:
+              giveaway.status.isCancelled || giveaway.status.isCompleted,
           onTap: () => naviagte(context, giveaway),
+          image: giveaway.image,
         );
       }).toList(),
     );

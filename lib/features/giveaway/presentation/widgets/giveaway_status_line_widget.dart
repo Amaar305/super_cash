@@ -1,7 +1,6 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared/shared.dart';
 import 'package:super_cash/core/fonts/app_text_style.dart';
 import 'package:super_cash/features/giveaway/giveaway.dart';
 
@@ -19,20 +18,29 @@ class GiveawayStatusLineWidget extends StatelessWidget {
 
     return Align(
       alignment: Alignment.centerLeft,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        physics: const BouncingScrollPhysics(),
+      child: Container(
+        width: double.infinity,
+        padding: EdgeInsets.all(AppSpacing.xs),
+        decoration: BoxDecoration(
+          color: Color.fromARGB(255, 235, 234, 234),
+          borderRadius: BorderRadius.circular(AppSpacing.md),
+          border: Border.all(color: Color(0xFFC5C6D0).withValues(alpha: 0.20)),
+        ),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          physics: const BouncingScrollPhysics(),
 
-        child: Row(
-          spacing: 26,
-          children: st.map((status) {
-            final selected = status == selectedStatus;
-            return _StatusChip(
-              selected: selected,
-              status: status,
-              onTap: context.read<GiveawayCubit>().filterbyStatus,
-            );
-          }).toList(),
+          child: Row(
+            spacing: AppSpacing.xs,
+            children: st.map((status) {
+              final selected = status == selectedStatus;
+              return _StatusChip(
+                selected: selected,
+                status: status,
+                onTap: context.read<GiveawayCubit>().filterbyStatus,
+              );
+            }).toList(),
+          ),
         ),
       ),
     );
@@ -50,23 +58,23 @@ class _StatusChip extends StatelessWidget {
   Widget build(BuildContext context) {
     return Tappable.scaled(
       onTap: () => onTap?.call(status),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        spacing: AppSpacing.sm,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(
-            status.name.capitalize,
-            style: poppinsTextStyle(fontWeight: AppFontWeight.medium),
+      child: AnimatedContainer(
+        duration: Durations.medium1,
+        width: 112,
+        height: 36,
+        padding: EdgeInsets.symmetric(vertical: 10, horizontal: AppSpacing.xlg),
+        decoration: BoxDecoration(
+          color: selected ? Colors.white : null,
+          borderRadius: !selected ? null : BorderRadius.circular(AppSpacing.sm),
+        ),
+        child: Text(
+          status.name.capitalize,
+          style: poppinsTextStyle(
+            fontWeight: AppFontWeight.bold,
+            fontSize: 12,
+            color: !selected ? Color(0xFF44464F) : AppColors.black,
           ),
-          AnimatedContainer(
-            duration: 200.ms,
-            curve: Curves.easeInOut,
-            width: 65,
-            height: 3,
-            color: selected ? AppColors.primary2 : AppColors.brightGrey,
-          ),
-        ],
+        ),
       ),
     );
   }

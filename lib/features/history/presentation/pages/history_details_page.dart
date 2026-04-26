@@ -95,7 +95,7 @@ class HistoryDetailsPage extends StatelessWidget {
         'Hello, I would like to report a receipt for transaction '
         '${transaction.reference}.',
       );
-      final uri = Uri.parse('https://wa.me/2347075179929?text=$encodedMessage');
+      final uri = Uri.parse('https://wa.me/2348143454468?text=$encodedMessage');
 
       final launched = await launchUrl(
         uri,
