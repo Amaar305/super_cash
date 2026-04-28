@@ -54,6 +54,18 @@ abstract interface class GiveawayRemoteDataSource {
     String? bankCode,
     String? phoneNumber,
   });
+
+  Future<List<DirectAirtimeModel>> getDirectAirtimesGiveaway();
+
+  Future<DirectAirtimeModel> claimDirectAirtimeGiveaway({
+    required String airtimeId,
+    required String giveawayTypeId,
+  });
+
+  Future<UserDirectAirtimePhoneModel> addPhoneForClaimedDirectAirtimeGiveaway({
+    required String airtimeId,
+    required String phoneNumber,
+  });
 }
 
 class GiveawayRemoteDataSourceImpl implements GiveawayRemoteDataSource {
@@ -340,7 +352,7 @@ class GiveawayRemoteDataSourceImpl implements GiveawayRemoteDataSource {
 
     final response = await authClient.request(
       method: 'POST',
-      path: 'giveaway/claim-cash-giveaway/account-details/',
+      path: 'giveaway/claim-cash-giveaway/account/',
       body: body,
     );
 
@@ -401,6 +413,83 @@ class GiveawayRemoteDataSourceImpl implements GiveawayRemoteDataSource {
 
     return cashJson
         .map((e) => CashGiveawayItem.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
+  @override
+  Future<UserDirectAirtimePhoneModel> addPhoneForClaimedDirectAirtimeGiveaway({
+    required String airtimeId,
+    required String phoneNumber,
+  }) async {
+    final body = jsonEncode({
+      'airtime_id': airtimeId,
+      'phone_number': phoneNumber,
+    });
+
+    final response = await authClient.request(
+      method: 'POST',
+      path: 'giveaway/claim-airtime-giveaway/phone-number/',
+      body: body,
+    );
+
+    final decoded = jsonDecode(response.body);
+    final data = decoded is Map<String, dynamic>
+        ? decoded
+        : (decoded as Map<String, dynamic>)['data'] as Map<String, dynamic>? ??
+              ['data'];
+
+    if (data is Map<String, dynamic>) {
+      return UserDirectAirtimePhoneModel.fromJson(data);
+    }
+
+    return UserDirectAirtimePhoneModel.fromJson(decoded);
+  }
+
+  @override
+  Future<DirectAirtimeModel> claimDirectAirtimeGiveaway({
+    required String airtimeId,
+    required String giveawayTypeId,
+  }) async {
+    final body = jsonEncode({
+      'airtime_id': airtimeId,
+      'giveaway_type_id': giveawayTypeId,
+    });
+
+    final response = await authClient.request(
+      method: 'POST',
+      path: 'giveaway/claim-airtime-giveaway/',
+      body: body,
+    );
+
+    final decoded = jsonDecode(response.body);
+    final data = decoded is Map<String, dynamic>
+        ? decoded
+        : (decoded as Map<String, dynamic>)['data'] as Map<String, dynamic>? ??
+              ['data'];
+
+    if (data is Map<String, dynamic>) {
+      return DirectAirtimeModel.fromJson(data);
+    }
+
+    return DirectAirtimeModel.fromJson(decoded);
+  }
+
+  @override
+  Future<List<DirectAirtimeModel>> getDirectAirtimesGiveaway() async {
+    final response = await authClient.request(
+      method: 'GET',
+      path: 'giveaway/airtimes-list/',
+    );
+
+    final decoded = jsonDecode(response.body);
+    final data = decoded is List
+        ? decoded
+        : (decoded as Map<String, dynamic>)['data'] as List<dynamic>? ?? [];
+
+
+
+    return data
+        .map((e) => DirectAirtimeModel.fromJson(e as Map<String, dynamic>))
         .toList();
   }
 }

@@ -26,27 +26,29 @@ class GiveawayCountdownBox extends StatelessWidget {
         color: AppColors.white.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(12),
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          AnimatedText(
-            value: value,
-            highlight: highlight,
-            primaryGreen: _primaryGreen,
-            textDark: _textDark,
-          ),
-          const SizedBox(height: 6),
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 9,
-              letterSpacing: .8,
-              fontWeight: FontWeight.w800,
-              color: AppColors.brightGrey,
-              height: 1,
+      child: FittedBox(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            AnimatedText(
+              value: value,
+              highlight: highlight,
+              primaryGreen: _primaryGreen,
+              textDark: _textDark,
             ),
-          ),
-        ],
+            const SizedBox(height: 6),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 8,
+                letterSpacing: .8,
+                fontWeight: FontWeight.w800,
+                color: AppColors.brightGrey,
+                height: 1,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -17,12 +17,14 @@ class DataGiveawayState extends Equatable {
   final String message;
   final List<DataGiveawayItem> dataPlans;
   final Phone phone;
+  final int selectedNetworkFilterIndex;
 
   const DataGiveawayState._({
     required this.status,
     required this.message,
     required this.dataPlans,
     required this.phone,
+    required this.selectedNetworkFilterIndex,
   });
 
   DataGiveawayState.initial(AppUser user)
@@ -31,22 +33,58 @@ class DataGiveawayState extends Equatable {
         message: '',
         dataPlans: const [],
         phone: Phone.pure(user.phone),
+        selectedNetworkFilterIndex: 0,
       );
+
+  List<DataGiveawayItem> get filteredPlans {
+    return switch (selectedNetworkFilterIndex) {
+      1 =>
+        dataPlans
+            .where((item) => item.network.toLowerCase().contains('mtn'))
+            .toList(),
+
+      2 =>
+        dataPlans
+            .where((item) => item.network.toLowerCase().contains('airtel'))
+            .toList(),
+
+      3 =>
+        dataPlans
+            .where((item) => item.network.toLowerCase().contains('glo'))
+            .toList(),
+
+      4 =>
+        dataPlans
+            .where((item) => item.network.toLowerCase().contains('9mobile'))
+            .toList(),
+
+      _ => dataPlans,
+    };
+  }
 
   DataGiveawayState copyWith({
     DataGiveawayStatus? status,
     String? message,
     List<DataGiveawayItem>? dataPlans,
-    Phone?phone
+    Phone? phone,
+    int? selectedNetworkFilterIndex,
   }) {
     return DataGiveawayState._(
       status: status ?? this.status,
       message: message ?? this.message,
       dataPlans: dataPlans ?? this.dataPlans,
-      phone: phone??this.phone,
+      phone: phone ?? this.phone,
+      selectedNetworkFilterIndex:
+          selectedNetworkFilterIndex ?? this.selectedNetworkFilterIndex,
     );
   }
 
   @override
-  List<Object?> get props => [status, dataPlans, message, phone];
+  List<Object?> get props => [
+    status,
+    dataPlans,
+    message,
+    phone,
+    selectedNetworkFilterIndex,
+  ];
 }

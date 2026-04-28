@@ -13,6 +13,7 @@ class DataGiveawayCard extends StatelessWidget {
     required this.isAvailable,
     super.key,
     required this.onClaimed,
+    this.isAirtime = false,
   });
 
   final String dataName;
@@ -23,6 +24,7 @@ class DataGiveawayCard extends StatelessWidget {
   final bool isAvailable;
 
   final VoidCallback onClaimed;
+  final bool isAirtime;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,7 @@ class DataGiveawayCard extends StatelessWidget {
         ? 0.0
         : dataQuantityRemaining / dataQuantity;
     final slotsLabel = '$dataQuantityRemaining slots available';
-    final planSize = _formatDataSize(dataSize);
+    final planSize = isAirtime ? dataSize : _formatDataSize(dataSize);
     final networkLabel = network.toUpperCase();
 
     return Container(

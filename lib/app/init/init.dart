@@ -184,6 +184,28 @@ void _giveaways() {
     )
     ..registerLazySingleton(
       () => ClaimDataGiveawayUseCase(giveawayRepository: serviceLocator()),
+    )
+    ..registerLazySingleton(
+      () => GetCashGiveawaysUseCase(giveawayRepository: serviceLocator()),
+    )
+    ..registerLazySingleton(
+      () => ClaimCashGiveawayUseCase(giveawayRepository: serviceLocator()),
+    )
+    ..registerLazySingleton(
+      () => AddCashAccountDetailsUseCase(giveawayRepository: serviceLocator()),
+    )
+    ..registerLazySingleton(
+      () => GetDirectAirtimesGiveawayUseCase(
+        giveawayRepository: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton(
+      () => ClaimDirectAirtimeGiveawayUseCase(giveawayRepository: serviceLocator()),
+    )
+    ..registerLazySingleton(
+      () => AddDirectAirtimePhoneGiveawayUseCase(
+        giveawayRepository: serviceLocator(),
+      ),
     );
 }
 

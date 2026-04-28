@@ -9,3 +9,5 @@ export 'product_giveaway_model.dart';
 export 'product_claim_address_model.dart';
 export 'cash_giveaway_item.dart';
 export 'user_cash_account_detail_model.dart';
+export 'direct_airtime_model.dart';
+export 'user_direct_airtime_phone_model.dart';

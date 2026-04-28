@@ -31,7 +31,8 @@ class FeaturedGiveawayCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Gap.v(14),
-            Divider(color: AppColors.background, thickness: 0.3),
+            Divider( thickness: 0.3),
+            Gap.v(14),
           ],
         ),
         itemCount: giveaways.length,

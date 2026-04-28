@@ -236,23 +236,123 @@ class GiveawayRepositoryImpl implements GiveawayRepository {
     required String bankName,
     String? bankCode,
     String? phoneNumber,
-  }) async{
-    // TODO: implement addCashAccountDetails
-    throw UnimplementedError();
+  }) async {
+    try {
+      final isConnected = await networkInfo.isConnected;
+      if (isConnected) {
+        final result = await giveawayRemoteDataSource.addCashAccountDetails(
+          cashId: cashId,
+          accountName: accountName,
+          accountNumber: accountNumber,
+          bankName: bankName,
+          bankCode: bankCode,
+          phoneNumber: phoneNumber,
+        );
+
+        return Right(result);
+      } else {
+        return Left(NetworkFailure('No internet connection'));
+      }
+    } catch (error) {
+      return Left(apiErrorHandler.handleError(error));
+    }
   }
 
   @override
   Future<Either<Failure, CashGiveawayItem>> claimCashGiveaway({
     required String cashId,
     required String giveawayTypeId,
-  }) {
-    // TODO: implement claimCashGiveaway
-    throw UnimplementedError();
+  }) async {
+    try {
+      final isConnected = await networkInfo.isConnected;
+      if (isConnected) {
+        final result = await giveawayRemoteDataSource.claimCashGiveaway(
+          giveawayTypeId: giveawayTypeId,
+          cashId: cashId,
+        );
+        return Right(result);
+      } else {
+        return Left(NetworkFailure('No internet connection'));
+      }
+    } catch (error) {
+      return Left(apiErrorHandler.handleError(error));
+    }
   }
 
   @override
-  Future<Either<Failure, List<CashGiveawayItem>>> getCashGiveaways() {
-    // TODO: implement getCashGiveaways
-    throw UnimplementedError();
+  Future<Either<Failure, List<CashGiveawayItem>>> getCashGiveaways() async {
+    try {
+      final isConnected = await networkInfo.isConnected;
+      if (isConnected) {
+        final result = await giveawayRemoteDataSource.getCashGiveaways();
+        return Right(result);
+      } else {
+        return Left(NetworkFailure('No internet connection'));
+      }
+    } catch (error) {
+      return Left(apiErrorHandler.handleError(error));
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserDirectAirtimePhoneModel>>
+  addPhoneForClaimedDirectAirtimeGiveaway({
+    required String airtimeId,
+    required String phoneNumber,
+  }) async {
+    try {
+      final isConnected = await networkInfo.isConnected;
+      if (isConnected) {
+        final result = await giveawayRemoteDataSource
+            .addPhoneForClaimedDirectAirtimeGiveaway(
+              airtimeId: airtimeId,
+              phoneNumber: phoneNumber,
+            );
+        return Right(result);
+      } else {
+        return Left(NetworkFailure('No internet connection'));
+      }
+    } catch (error) {
+      return Left(apiErrorHandler.handleError(error));
+    }
+  }
+
+  @override
+  Future<Either<Failure, DirectAirtimeModel>> claimDirectAirtimeGiveaway({
+    required String airtimeId,
+    required String giveawayTypeId,
+  }) async {
+    try {
+      final isConnected = await networkInfo.isConnected;
+      if (isConnected) {
+        final result = await giveawayRemoteDataSource
+            .claimDirectAirtimeGiveaway(
+              airtimeId: airtimeId,
+              giveawayTypeId: giveawayTypeId,
+            );
+        return Right(result);
+      } else {
+        return Left(NetworkFailure('No internet connection'));
+      }
+    } catch (error) {
+      return Left(apiErrorHandler.handleError(error));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<DirectAirtimeModel>>>
+  getDirectAirtimesGiveaway() async {
+    try {
+      final isConnected = await networkInfo.isConnected;
+      if (isConnected) {
+        final result = await giveawayRemoteDataSource
+            .getDirectAirtimesGiveaway();
+        return Right(result);
+      } else {
+        return Left(NetworkFailure('No internet connection'));
+      }
+    } catch (error) {
+      return Left(apiErrorHandler.handleError(error));
+    }
   }
 }

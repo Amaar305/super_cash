@@ -9,6 +9,9 @@ class CashGiveawayItem {
   final bool isAvailable;
   final DateTime createdAt;
   final DateTime updatedAt;
+  double get amount => double.tryParse(cashAmount) ?? 0;
+  String get amountFixed => amount.toStringAsFixed(0);
+  // String get prefixAmount=> amount;
 
   const CashGiveawayItem({
     required this.id,
@@ -28,10 +31,10 @@ class CashGiveawayItem {
       id: json['id'],
       cashName: json['cash_name'] as String,
       cashAmount: json['cash_amount'] as String,
-      description: json['description'],
+      description: json['cash_description'],
       cashQuantity: (json['cash_quantity'] as num).toInt(),
       cashQuantityRemaining: (json['cash_quantity_remaining'] as num).toInt(),
-      requiresBankDetails: json['requires_bank_details'] as bool,
+      requiresBankDetails: json['requires_account_details'] as bool,
       isAvailable: json['is_available'] as bool,
       createdAt: DateTime.parse(json['created_at']).toLocal(),
       updatedAt: DateTime.parse(json['updated_at']).toLocal(),

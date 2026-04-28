@@ -75,8 +75,8 @@ class Giveaway {
       numberOfUsers: _asString(map['number_of_users']),
       image: _asString(map['image']),
       status: UpcomingGiveawayStatus.fromString(_asString(map['status'])),
-      startsAt: _asDateTime(map['ends_at']),
-      endsAt: _asDateTime(map['starts_at']),
+      startsAt: _asDateTime(map['starts_at']),
+      endsAt: _asDateTime(map['ends_at']),
       isActive: _asBool(map['is_active']),
       createdAt: _asDateTime(map['created_at']),
     );

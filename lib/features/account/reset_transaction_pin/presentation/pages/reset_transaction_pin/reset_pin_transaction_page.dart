@@ -4,10 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:super_cash/app/app.dart';
 import 'package:super_cash/core/app_strings/app_string.dart';
 import 'package:super_cash/features/account/account.dart';
-import 'package:super_cash/features/account/reset_transaction_pin/presentation/widgets/reset_transaction_confirm_pin.dart';
-import 'package:super_cash/features/account/reset_transaction_pin/presentation/widgets/reset_transaction_new_pin.dart';
-import 'package:super_cash/features/account/reset_transaction_pin/presentation/widgets/reset_transaction_password.dart';
-import 'package:super_cash/features/account/reset_transaction_pin/presentation/widgets/reset_transaction_pin_button.dart';
 
 class ResetPinTransactionPage extends StatelessWidget {
   const ResetPinTransactionPage({super.key, required this.cubit});

@@ -55,4 +55,17 @@ abstract interface class GiveawayRepository {
     String? bankCode,
     String? phoneNumber,
   });
+
+  Future<Either<Failure, List<DirectAirtimeModel>>> getDirectAirtimesGiveaway();
+
+  Future<Either<Failure, DirectAirtimeModel>> claimDirectAirtimeGiveaway({
+    required String airtimeId,
+    required String giveawayTypeId,
+  });
+
+  Future<Either<Failure, UserDirectAirtimePhoneModel>>
+  addPhoneForClaimedDirectAirtimeGiveaway({
+    required String airtimeId,
+    required String phoneNumber,
+  });
 }

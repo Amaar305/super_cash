@@ -9,7 +9,6 @@ import 'package:super_cash/core/app_strings/app_string.dart';
 import 'package:flutter/material.dart';
 import 'package:super_cash/features/account/reset_transaction_pin/presentation/pages/reset_transaction_pin/reset_pin_transaction_page.dart';
 import 'package:super_cash/features/account/reset_transaction_pin/presentation/presentation.dart';
-import 'package:super_cash/features/account/reset_transaction_pin/presentation/widgets/reset_transaction_pin_email_field.dart';
 
 class ResetTransactionPinPage extends StatelessWidget {
   const ResetTransactionPinPage({super.key});

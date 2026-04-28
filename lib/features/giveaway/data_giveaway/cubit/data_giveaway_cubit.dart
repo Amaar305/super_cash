@@ -21,6 +21,14 @@ class DataGiveawayCubit extends Cubit<DataGiveawayState> {
        _giveawayTypeId = giveawayTypeId,
        super(DataGiveawayState.initial(user));
 
+  void onFilterNetworkChanged(int index) {
+    if (state.selectedNetworkFilterIndex == index || state.status.isLoading) {
+      return;
+    }
+
+    emit(state.copyWith(selectedNetworkFilterIndex: index));
+  }
+
   Future<void> getPlans() async {
     try {
       emit(state.copyWith(status: DataGiveawayStatus.loading));

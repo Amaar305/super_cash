@@ -44,6 +44,11 @@ class DataGiveawayView extends StatelessWidget {
             listenWhen: (previous, current) =>
                 previous.status != current.status,
             listener: (context, state) {
+              if (state.status.isLoading) {
+                showLoadingOverlay(context);
+              } else {
+                hideLoadingOverlay();
+              }
               if (state.status.isFailure && state.message.isNotEmpty) {
                 openSnackbar(SnackbarMessage.error(title: state.message));
               }
@@ -52,10 +57,7 @@ class DataGiveawayView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Gap.v(AppSpacing.xlg),
-                DataGiveawayNetworkFilterChips(
-                  labels: ['All', 'MTN', 'Airtel', 'GLO', '9Mobile'],
-                  selectedIndex: 1,
-                ),
+                DataNetworkFilterChips(),
                 const Gap.v(AppSpacing.xlg),
                 Text(
                   'Available Giveaway',
@@ -70,55 +72,6 @@ class DataGiveawayView extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class DataGiveawayListView extends StatelessWidget {
-  const DataGiveawayListView({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final giveaways = context.select(
-      (DataGiveawayCubit element) => element.state.dataPlans,
-    );
-    return Expanded(
-      child: ListView.builder(
-        itemCount: giveaways.length,
-        itemBuilder: (context, index) {
-          final giveaway = giveaways[index];
-          return DataGiveawayCard(
-            dataName: giveaway.dataName,
-            dataSize: giveaway.dataSize,
-            network: giveaway.network,
-            dataQuantity: giveaway.dataQuantity,
-            dataQuantityRemaining: giveaway.dataQuantityRemaining,
-            isAvailable: giveaway.isAvailable,
-            onClaimed: () async {
-              final cubit = context.read<DataGiveawayCubit>();
-              final succes = await showModalBottomSheet<DataGiveawayItem?>(
-                context: context,
-                isScrollControlled: true,
-                isDismissible: false,
-                enableDrag: false,
-                showDragHandle: false,
-                builder: (context) {
-                  return BlocProvider.value(
-                    value: cubit,
-                    child: DataGiveawayClaimSheet(dataGiveawayItem: giveaway),
-                  );
-                },
-              );
-              if (succes != null && context.mounted) {
-                context.showConfirmationBottomSheet(
-                  title: 'Your data has been successfully sent..',
-                  okText: 'Done',
-                );
-              }
-            },
-          );
-        },
       ),
     );
   }

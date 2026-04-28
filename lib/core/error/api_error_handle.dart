@@ -18,8 +18,9 @@ class ApiErrorHandler {
     if (error is RefreshTokenException) {
       // _appBloc.add(UserLoggedOut());
       _appCubit.tokenExpired();
-      final message =
-          error.message.isNotEmpty ? error.message : 'Session Expired';
+      final message = error.message.isNotEmpty
+          ? error.message
+          : 'Session Expired';
       return RefreshTokenFailure(message);
     }
     if (error is CacheException) {

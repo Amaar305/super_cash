@@ -10,6 +10,7 @@ class AppDropdownSearchField extends StatefulWidget {
     this.hasError = false,
     this.onChange,
     this.enable = true,
+    this.filled = false,
     this.initialValue,
   });
   final String label;
@@ -17,7 +18,7 @@ class AppDropdownSearchField extends StatefulWidget {
   final List<String>? items;
   final bool hasError;
   final String? initialValue;
-  final bool enable;
+  final bool enable, filled;
   final void Function(String? value)? onChange;
 
   @override
@@ -54,6 +55,7 @@ class _AppDropdownSearchFieldState extends State<AppDropdownSearchField> {
             ),
             decoratorProps: DropDownDecoratorProps(
               decoration: InputDecoration(
+                filled: widget.filled,
                 hintText: widget.hint,
                 hintStyle: const TextStyle(color: Color(0xCCADABAB)),
                 border: const UnderlineInputBorder(),

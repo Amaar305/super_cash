@@ -53,10 +53,17 @@ class AppRoutes {
   // Giveaways
   static const String giveaway = '/giveaway';
   static const String airtimeGiveaway = '$giveaway/airtime-giveaway';
-  static const String dataGiveaway = '$giveaway/data-giveaway/:giveaway_type_id';
-  static const String productGiveaway = '$giveaway/product-giveaway/:giveaway_type_id';
+  static const String dataGiveaway =
+      '$giveaway/data-giveaway/:giveaway_type_id';
+  static const String productGiveaway =
+      '$giveaway/product-giveaway/:giveaway_type_id';
   static const String productGiveawayDetails =
       '$giveaway/product-giveaway-details';
+  static const String cashGiveaway =
+      '$giveaway/cash-giveaway/:giveaway_type_id';
+
+  static const String directAirtimeGiveaway =
+      '$giveaway/direct-airtime-giveaway/:giveaway_type_id';
   static const String cableGiveaway = '$giveaway/cable-giveaway';
   static const String electricityGiveaway = '$giveaway/electricity-giveaway';
 
@@ -119,8 +126,11 @@ class RNames {
   static const String dataGiveaway = 'dataGiveaway';
   static const String productGiveaway = 'productGiveaway';
   static const String productGiveawayDetails = 'productGiveawayDetails';
+  static const String cashGiveaway = 'cashGiveaway';
   static const String cableGiveaway = 'cableGiveaway';
   static const String electricityGiveaway = 'electricityGiveaway';
   static const String giveawayHistory = 'giveawayHistory';
   static const String giveawayWinners = 'giveawayWinners';
+
+  static const String directAirtimeGiveaway='directAirtimeGiveaway';
 }

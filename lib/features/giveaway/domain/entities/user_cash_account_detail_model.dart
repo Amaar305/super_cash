@@ -1,6 +1,6 @@
 class UserCashAccountDetailModel {
   final String id;
-  final String cashId;
+  final String? status;
   final String accountName;
   final String accountNumber;
   final String bankName;
@@ -9,7 +9,7 @@ class UserCashAccountDetailModel {
 
   const UserCashAccountDetailModel({
     required this.id,
-    required this.cashId,
+    required this.status,
     required this.accountName,
     required this.accountNumber,
     required this.bankName,
@@ -20,7 +20,7 @@ class UserCashAccountDetailModel {
   factory UserCashAccountDetailModel.fromJson(Map<String, dynamic> json) {
     return UserCashAccountDetailModel(
       id: json['id'] as String,
-      cashId: json['cash_id'] as String,
+      status: json['status'] as String?,
       accountName: json['account_name'] as String,
       accountNumber: json['account_number'] as String,
       bankName: json['bank_name'] as String,

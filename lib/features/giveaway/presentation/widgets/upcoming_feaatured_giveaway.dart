@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:shared/shared.dart';
 import 'package:super_cash/core/fonts/app_text_style.dart';
 import 'package:super_cash/features/giveaway/giveaway.dart';
 
@@ -76,6 +75,7 @@ class UpcomingFeaaturedGiveaway extends StatelessWidget {
                       ),
                     ],
                   ),
+                  _ViewMoreTextButton(),
                 ],
               ),
             ),
@@ -118,6 +118,43 @@ class UpcomingFeaaturedGiveaway extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class _ViewMoreTextButton extends StatelessWidget {
+  const _ViewMoreTextButton();
+
+  @override
+  Widget build(BuildContext context) {
+    return Tappable.faded(
+      onTap: () {},
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        spacing: AppSpacing.xs,
+        children: [
+          Text(
+            'View more',
+            style:
+                poppinsTextStyle(
+                  color: AppColors.brightGrey,
+                  fontWeight: AppFontWeight.bold,
+                  fontSize: 12,
+                ).copyWith(
+                  decoration: TextDecoration.underline,
+                  decorationColor: AppColors.white,
+                  decorationStyle: TextDecorationStyle.dotted,
+                  decorationThickness: 2,
+                ),
+          ),
+          Icon(
+            Icons.visibility_outlined,
+            color: AppColors.brightGrey,
+            size: 15,
+          ),
+        ],
+      ),
     );
   }
 }

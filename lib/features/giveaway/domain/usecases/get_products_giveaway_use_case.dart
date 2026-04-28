@@ -1,4 +1,4 @@
-import 'package:fpdart/src/either.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:super_cash/core/error/failure.dart';
 import 'package:super_cash/core/usecase/use_case.dart';
 import 'package:super_cash/features/giveaway/giveaway.dart';

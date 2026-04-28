@@ -113,7 +113,14 @@ class LiveAndUpcomingGiveaways extends StatelessWidget {
       //     break;
       //   default:
       // }
-      if (giveaway.giveawayType.code.contains('airtime')) {
+      if (giveaway.giveawayType.code == 'airtime-direct') {
+        context.pushNamed(
+          RNames.directAirtimeGiveaway,
+          pathParameters: {
+            'giveaway_type_id': giveaway.giveawayType.id.toString(),
+          },
+        );
+      } else if (giveaway.giveawayType.code.contains('airtime')) {
         context.pushNamed(
           RNames.airtimeGiveaway,
           pathParameters: {
@@ -122,7 +129,21 @@ class LiveAndUpcomingGiveaways extends StatelessWidget {
         );
       } else if (giveaway.giveawayType.code.contains('product')) {
         context.pushNamed(
+          RNames.productGiveaway,
+          pathParameters: {
+            'giveaway_type_id': giveaway.giveawayType.id.toString(),
+          },
+        );
+      } else if (giveaway.giveawayType.code.contains('data')) {
+        context.pushNamed(
           RNames.dataGiveaway,
+          pathParameters: {
+            'giveaway_type_id': giveaway.giveawayType.id.toString(),
+          },
+        );
+      } else if (giveaway.giveawayType.code.contains('cash')) {
+        context.pushNamed(
+          RNames.cashGiveaway,
           pathParameters: {
             'giveaway_type_id': giveaway.giveawayType.id.toString(),
           },

@@ -296,6 +296,25 @@ class AppRouter {
             },
           ),
           GoRoute(
+            name: RNames.cashGiveaway,
+            path: 'cash-giveaway/:giveaway_type_id',
+            builder: (_, state) {
+              final giveawayTypeId =
+                  state.pathParameters['giveaway_type_id'] ?? 'none';
+
+              return CashGiveawayPage(giveawayTypeId: giveawayTypeId);
+            },
+          ),
+          GoRoute(
+            name: RNames.directAirtimeGiveaway,
+            path: 'direct-airtime-giveaway/:giveaway_type_id',
+            builder: (_, state) {
+              final giveawayTypeId =
+                  state.pathParameters['giveaway_type_id'] ?? 'none';
+              return DirectAirtimeGiveawayPage(giveawayTypeId: giveawayTypeId);
+            },
+          ),
+          GoRoute(
             name: RNames.productGiveaway,
             path: 'product-giveaway/:giveaway_type_id',
             builder: (_, state) {

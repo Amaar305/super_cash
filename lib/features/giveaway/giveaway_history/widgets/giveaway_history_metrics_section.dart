@@ -9,150 +9,106 @@ class GiveawayHistoryMetricsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final totalRewads = context.select(
+    final totalRewards = context.select(
       (GiveawayHistoryCubit cubit) => cubit.state.totalRewards,
     );
     final airtimeAmount = context.select(
       (GiveawayHistoryCubit cubit) => cubit.state.totalAirtimeAmount,
     );
-    return Container(
-      width: double.infinity,
-      height: 210,
-      padding: EdgeInsets.all(AppSpacing.xlg),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(AppSpacing.xlg),
-        gradient: LinearGradient(
-          colors: [
-            AppColors.blue.withValues(alpha: 0.5),
-            AppColors.blue.withValues(alpha: 0.2),
-          ],
-        ),
-        border: Border.all(color: AppColors.blue.withValues(alpha: 0.8)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withValues(alpha: 0.2),
-            spreadRadius: 2,
-            blurRadius: 5,
-            offset: Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        spacing: AppSpacing.md,
+    final dataAmount = context.select((GiveawayHistoryCubit cubit) {
+      return cubit.state.data.fold<double>(0, (total, history) {
+        if (!history.giveawayType.code.contains('data')) {
+          return total;
+        }
+        return total + (double.tryParse(history.amount) ?? 0);
+      });
+    });
+
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(AppSpacing.xlg),
+      child: Stack(
         children: [
-          // First
-          NewWidgetFirst(totalRewards: totalRewads),
-
-          // Second
-          NewWidgetSecondChild(airtimeAmount: airtimeAmount, dataAmount: 0),
-        ],
-      ),
-    );
-  }
-}
-
-class NewWidgetSecondChild extends StatelessWidget {
-  const NewWidgetSecondChild({
-    super.key,
-    required this.airtimeAmount,
-    required this.dataAmount,
-  });
-  final double airtimeAmount;
-  final double dataAmount;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      spacing: AppSpacing.lg,
-      children: [
-        Expanded(
-          child: Metrics(
-            label: 'Airtime',
-            icon: Icons.phone,
-            value: '₦${airtimeAmount.toStringAsFixed(0)}',
-            metric: '+12.5%',
-          ),
-        ),
-        Container(width: 0.2, height: 53, color: AppColors.background2),
-        Expanded(
-          child: Metrics(
-            label: 'Data',
-            icon: Icons.signal_cellular_alt,
-            isAirtime: false,
-            value: '${dataAmount.toStringAsFixed(0)}GB',
-            metric: '+18.2%',
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class Metrics extends StatelessWidget {
-  const Metrics({
-    super.key,
-    required this.label,
-    required this.icon,
-    required this.value,
-    required this.metric,
-    this.isAirtime = true,
-  });
-  final String label;
-  final IconData icon;
-  final bool isAirtime;
-  final String value;
-  final String metric;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 138,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: AppSpacing.sm,
-        children: [
-          Row(
-            spacing: AppSpacing.sm,
-            children: [
-              Icon(
-                icon,
-                size: 18,
-                color: isAirtime ? Color(0xff3B82F6) : Color(0xffF472B6),
+          Container(
+            width: double.infinity,
+            height: 210,
+            padding: const EdgeInsets.all(AppSpacing.xlg),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  AppColors.deepBlue,
+                  AppColors.blue,
+                  const Color(0xff5B8DEF),
+                ],
               ),
-              Text(
-                label,
-                style: poppinsTextStyle(
-                  fontSize: 12,
-                  fontWeight: AppFontWeight.medium,
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.blue.withValues(alpha: 0.18),
+                  blurRadius: 18,
+                  offset: const Offset(0, 10),
                 ),
-              ),
-            ],
-          ),
-          Text(
-            value,
-            style: poppinsTextStyle(
-              fontSize: 18,
-              fontWeight: AppFontWeight.bold,
+              ],
             ),
           ),
-          // Text(
-          //   metric,
-          //   style: poppinsTextStyle(
-          //     fontSize: 12,
-          //     color: Color(0xff34D399),
-          //     fontWeight: AppFontWeight.black,
-          //   ),
-          // ),
+          Positioned(
+            top: -36,
+            right: -28,
+            child: _GlowCircle(size: 118, opacity: 0.16),
+          ),
+          Positioned(
+            bottom: -46,
+            left: -30,
+            child: _GlowCircle(size: 132, opacity: 0.10),
+          ),
+          Positioned(
+            right: 24,
+            bottom: 72,
+            child: _GlowCircle(size: 18, opacity: 0.25),
+          ),
+          SizedBox(
+            height: 210,
+            child: Padding(
+              padding: const EdgeInsets.all(AppSpacing.xlg),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _RewardsHeader(totalRewards: totalRewards),
+                  const Spacer(),
+                  Row(
+                    spacing: AppSpacing.md,
+                    children: [
+                      Expanded(
+                        child: _MetricTile(
+                          label: 'Airtime',
+                          value: 'N${airtimeAmount.toStringAsFixed(0)}',
+                          icon: Icons.phone_iphone_rounded,
+                          color: const Color(0xffB7F7D5),
+                        ),
+                      ),
+                      Expanded(
+                        child: _MetricTile(
+                          label: 'Data',
+                          value: '${dataAmount.toStringAsFixed(0)}GB',
+                          icon: Icons.signal_cellular_alt_rounded,
+                          color: const Color(0xffFFD6A5),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
   }
 }
 
-class NewWidgetFirst extends StatelessWidget {
-  const NewWidgetFirst({super.key, required this.totalRewards});
+class _RewardsHeader extends StatelessWidget {
+  const _RewardsHeader({required this.totalRewards});
+
   final int totalRewards;
 
   @override
@@ -165,56 +121,161 @@ class NewWidgetFirst extends StatelessWidget {
             spacing: AppSpacing.sm,
             children: [
               Text(
-                'Total Rewards'.toUpperCase(),
+                'Claimed rewards'.toUpperCase(),
                 style: poppinsTextStyle(
-                  fontSize: 12,
+                  fontSize: 11,
                   fontWeight: AppFontWeight.medium,
-                  color: AppColors.darkGrey,
-                ).copyWith(letterSpacing: 1.2, height: 1.5),
+                  color: AppColors.white.withValues(alpha: 0.72),
+                ).copyWith(letterSpacing: 1.1),
               ),
               Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
                 spacing: AppSpacing.sm,
                 children: [
                   Text(
                     '$totalRewards',
                     style: poppinsTextStyle(
-                      fontSize: 24,
+                      fontSize: 34,
                       fontWeight: AppFontWeight.bold,
-                      color: AppColors.black,
-                    ),
+                      color: AppColors.white,
+                    ).copyWith(height: 1),
                   ),
-
-                  Text(
-                    'Wins',
-                    style: poppinsTextStyle(
-                      fontSize: 13,
-                    ).copyWith(letterSpacing: 1.5),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 3),
+                    child: Text(
+                      totalRewards == 1 ? 'win' : 'wins',
+                      style: poppinsTextStyle(
+                        fontSize: 13,
+                        fontWeight: AppFontWeight.medium,
+                        color: AppColors.white.withValues(alpha: 0.78),
+                      ),
+                    ),
                   ),
                 ],
               ),
             ],
           ),
         ),
-        _Badge(),
+        _AwardBadge(),
       ],
     );
   }
 }
 
-class _Badge extends StatelessWidget {
-  const _Badge();
+class _MetricTile extends StatelessWidget {
+  const _MetricTile({
+    required this.label,
+    required this.value,
+    required this.icon,
+    required this.color,
+  });
+
+  final String label;
+  final String value;
+  final IconData icon;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 50,
-      height: 50,
+      height: 78,
+      padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
-        color: AppColors.blue.withValues(alpha: 0.20),
-        borderRadius: BorderRadius.circular(AppSpacing.xlg),
-        border: Border.all(color: AppColors.blue.withValues(alpha: 0.30)),
+        color: AppColors.white.withValues(alpha: 0.14),
+        borderRadius: BorderRadius.circular(AppSpacing.md),
+        border: Border.all(color: AppColors.white.withValues(alpha: 0.18)),
       ),
-      child: Center(child: Assets.icons.giveawayHistoryAward.svg()),
+      child: Row(
+        children: [
+          Container(
+            width: 38,
+            height: 38,
+            decoration: BoxDecoration(
+              color: color.withValues(alpha: 0.22),
+              borderRadius: BorderRadius.circular(14),
+            ),
+            child: Icon(icon, size: 19, color: color),
+          ),
+          const SizedBox(width: AppSpacing.sm),
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              spacing: 2,
+              children: [
+                Text(
+                  value,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: poppinsTextStyle(
+                    fontSize: 17,
+                    fontWeight: AppFontWeight.bold,
+                    color: AppColors.white,
+                  ).copyWith(height: 1.1),
+                ),
+                Text(
+                  label,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: poppinsTextStyle(
+                    fontSize: 11,
+                    fontWeight: AppFontWeight.medium,
+                    color: AppColors.white.withValues(alpha: 0.72),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _AwardBadge extends StatelessWidget {
+  const _AwardBadge();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 58,
+      height: 58,
+      decoration: BoxDecoration(
+        color: AppColors.white.withValues(alpha: 0.16),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: AppColors.white.withValues(alpha: 0.20)),
+      ),
+      child: Center(
+        child: Container(
+          width: 42,
+          height: 42,
+          decoration: BoxDecoration(
+            color: AppColors.white,
+            borderRadius: BorderRadius.circular(14),
+          ),
+          child: Center(child: Assets.icons.giveawayHistoryAward.svg()),
+        ),
+      ),
+    );
+  }
+}
+
+class _GlowCircle extends StatelessWidget {
+  const _GlowCircle({required this.size, required this.opacity});
+
+  final double size;
+  final double opacity;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(color: AppColors.white.withValues(alpha: opacity)),
+        color: AppColors.white.withValues(alpha: opacity / 2),
+      ),
     );
   }
 }
