@@ -33,6 +33,7 @@ class _ConfirmPasswordFieldState extends State<ConfirmPasswordField> {
   @override
   void dispose() {
     _debouncer.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 

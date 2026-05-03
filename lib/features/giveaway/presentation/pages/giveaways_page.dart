@@ -2,9 +2,11 @@ import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:super_cash/app/init/init.dart';
 import 'package:super_cash/app/routes/app_routes.dart';
 import 'package:super_cash/app/view/app.dart';
+import 'package:super_cash/core/common/common.dart';
 import 'package:super_cash/features/giveaway/giveaway.dart';
 
 class GiveawaysPage extends StatelessWidget {
@@ -17,19 +19,19 @@ class GiveawaysPage extends StatelessWidget {
         getGiveawayTypesUseCase: serviceLocator(),
         getGiveawaysUseCase: serviceLocator(),
       ),
-      child: GiveawayView(),
+      child: GiveawaysView(),
     );
   }
 }
 
-class GiveawayView extends StatefulWidget {
-  const GiveawayView({super.key});
+class GiveawaysView extends StatefulWidget {
+  const GiveawaysView({super.key});
 
   @override
-  State<GiveawayView> createState() => _GiveawayViewState();
+  State<GiveawaysView> createState() => _GiveawaysViewState();
 }
 
-class _GiveawayViewState extends State<GiveawayView> {
+class _GiveawaysViewState extends State<GiveawaysView> {
   @override
   void initState() {
     super.initState();
@@ -44,7 +46,6 @@ class _GiveawayViewState extends State<GiveawayView> {
       appBar: AppBar(
         title: AppAppBarTitle('Giveaways'),
         leading: AppLeadingAppBarWidget(onTap: () => context.pop()),
-        centerTitle: false,
       ),
       body: RefreshIndicator.adaptive(
         onRefresh: context.read<GiveawayCubit>().getGiveaways,
@@ -98,21 +99,21 @@ class LiveAndUpcomingGiveaways extends StatelessWidget {
     final otherGiveaways = context.watch<GiveawayCubit>().state.otherGiveaways;
 
     if (otherGiveaways.isEmpty) {
-      return Center(child: Text('No available giveaways'));
+      return AppEmptyState(
+        title: 'No available giveaways.',
+        fontSize: 12,
+        padding: EdgeInsets.zero,
+        iconSize: 30,
+        height: 70,
+        width: 70,
+      );
     }
 
     void naviagte(BuildContext context, Giveaway giveaway) {
-      // context.pushNamed(RNames.productGiveawayDetails, extra: giveaway);
-      // return;
       if (giveaway.status.isCancelled || giveaway.status.isCompleted) {
         return;
       }
-      // switch (giveaway.giveawayType.code) {
-      //   case value:
 
-      //     break;
-      //   default:
-      // }
       if (giveaway.giveawayType.code == 'airtime-direct') {
         context.pushNamed(
           RNames.directAirtimeGiveaway,
@@ -198,23 +199,56 @@ class _HistoryWinnersRow extends StatelessWidget {
     return Row(
       spacing: AppSpacing.md,
       children: [
-        Expanded(
-          child: OutlineAction(
-            icon: Icons.history_rounded,
-            label: "History",
-            onTap: () => context.pushNamed(RNames.giveawayHistory),
-          ),
-        ),
+        Expanded(child: HistoryButton()),
 
         Expanded(
           child: OutlineAction(
-            icon: Icons.emoji_events_rounded,
+            icon: Icons.emoji_events_outlined,
             label: "Winners",
-            iconColor: Color(0xFFFFBF00),
+            iconColor: AppColors.white,
             onTap: () => context.pushNamed(RNames.giveawayWinners),
           ),
         ),
       ],
+    );
+  }
+}
+
+class HistoryButton extends StatelessWidget {
+  const HistoryButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Tappable.faded(
+      onTap: () => context.pushNamed(RNames.giveawayHistory),
+      child: Container(
+        height: 45,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          // gradient: AppColors.walletGradient,
+          borderRadius: BorderRadius.circular(12),
+          color: AppColors.darkGrey,
+        ),
+
+        child: Center(
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            spacing: AppSpacing.sm,
+            children: [
+              Icon(Icons.history_rounded, size: 20, color: AppColors.white),
+              Text(
+                'History',
+                style: GoogleFonts.exo(
+                  // fontSize: 12,
+                  color: AppColors.white,
+                  fontWeight: AppFontWeight.medium,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

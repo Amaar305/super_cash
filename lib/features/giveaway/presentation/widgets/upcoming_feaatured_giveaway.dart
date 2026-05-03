@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:super_cash/app/routes/routes.dart';
 import 'package:super_cash/core/fonts/app_text_style.dart';
 import 'package:super_cash/features/giveaway/giveaway.dart';
 
@@ -75,7 +77,7 @@ class UpcomingFeaaturedGiveaway extends StatelessWidget {
                       ),
                     ],
                   ),
-                  _ViewMoreTextButton(),
+                  _ViewMoreTextButton(giveaway: giveaway),
                 ],
               ),
             ),
@@ -123,12 +125,14 @@ class UpcomingFeaaturedGiveaway extends StatelessWidget {
 }
 
 class _ViewMoreTextButton extends StatelessWidget {
-  const _ViewMoreTextButton();
+  const _ViewMoreTextButton({required this.giveaway});
+  final Giveaway giveaway;
 
   @override
   Widget build(BuildContext context) {
     return Tappable.faded(
-      onTap: () {},
+      onTap: () =>
+          context.pushNamed(RNames.productGiveawayDetails, extra: giveaway),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.end,

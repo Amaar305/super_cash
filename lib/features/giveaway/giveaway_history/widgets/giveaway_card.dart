@@ -15,6 +15,7 @@ class GiveawayCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     if (giveawayHistory.isProductGiveaway) {
       return _ProductHistoryCard(giveawayHistory: giveawayHistory);
     }

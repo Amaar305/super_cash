@@ -14,6 +14,7 @@ class DataGiveawayCard extends StatelessWidget {
     super.key,
     required this.onClaimed,
     this.isAirtime = false,
+    this.buttonLabel,
   });
 
   final String dataName;
@@ -25,6 +26,7 @@ class DataGiveawayCard extends StatelessWidget {
 
   final VoidCallback onClaimed;
   final bool isAirtime;
+  final String? buttonLabel;
 
   @override
   Widget build(BuildContext context) {
@@ -115,24 +117,10 @@ class DataGiveawayCard extends StatelessWidget {
           const Gap.v(AppSpacing.lg),
           SizedBox(
             width: double.infinity,
-            child: FilledButton(
+            child: PrimaryButton(
+              // isLoading: is,
               onPressed: isAvailable ? onClaimed : null,
-              style: FilledButton.styleFrom(
-                elevation: 0,
-                backgroundColor: const Color(0xFFDCE3F1),
-                foregroundColor: const Color(0xFF16233C),
-                disabledBackgroundColor: const Color(0xFFE8ECF4),
-                disabledForegroundColor: const Color(0xFF98A2B3),
-                padding: const EdgeInsets.symmetric(vertical: 14),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                textStyle: poppinsTextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              child: const Text('Claim Data'),
+              label: buttonLabel ?? 'Claim Data',
             ),
           ),
         ],

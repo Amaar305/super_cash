@@ -32,6 +32,7 @@ class _FirstNameFieldState extends State<FirstNameField> {
 
   @override
   void dispose() {
+    _focusNode.dispose();
     _debouncer.dispose();
     super.dispose();
   }

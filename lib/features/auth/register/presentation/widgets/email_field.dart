@@ -32,6 +32,7 @@ class _EmailFieldState extends State<EmailField> {
 
   @override
   void dispose() {
+    _focusNode.dispose();
     _debouncer.dispose();
     super.dispose();
   }

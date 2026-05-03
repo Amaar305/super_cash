@@ -32,6 +32,7 @@ class _PhoneFieldState extends State<PhoneField> {
 
   @override
   void dispose() {
+    _focusNode.dispose();
     _debouncer.dispose();
     super.dispose();
   }
@@ -51,6 +52,7 @@ class _PhoneFieldState extends State<PhoneField> {
       children: [
         // AppTextFieldLabel(AppStrings.phoneNumber),
         AppTextField.underlineBorder(
+          focusNode: _focusNode,
           hintText: 'Enter ${AppStrings.phoneNumber.toLowerCase()}',
           prefixIcon: const Icon(
             Icons.phone_outlined,

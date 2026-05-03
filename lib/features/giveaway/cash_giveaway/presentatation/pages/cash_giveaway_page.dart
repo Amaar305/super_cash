@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,24 +14,35 @@ class CashGiveawayPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          CashGiveawayCubit(
-              addCashAccountDetailsUseCase: serviceLocator(),
-              claimCashGiveawayUseCase: serviceLocator(),
-              getCashGiveawaysUseCase: serviceLocator(),
-              giveawayTypeId: giveawayTypeId,
-              fetchBankListUseCase: serviceLocator(),
-              validateBankUseCase: serviceLocator(),
-            )
-            ..getCashGiveaways()
-            ..fetchBankList(),
+      create: (context) => CashGiveawayCubit(
+        addCashAccountDetailsUseCase: serviceLocator(),
+        claimCashGiveawayUseCase: serviceLocator(),
+        getCashGiveawaysUseCase: serviceLocator(),
+        giveawayTypeId: giveawayTypeId,
+        fetchBankListUseCase: serviceLocator(),
+        validateBankUseCase: serviceLocator(),
+      ),
       child: CashGiveawayView(),
     );
   }
 }
 
-class CashGiveawayView extends StatelessWidget {
+class CashGiveawayView extends StatefulWidget {
   const CashGiveawayView({super.key});
+
+  @override
+  State<CashGiveawayView> createState() => _CashGiveawayViewState();
+}
+
+class _CashGiveawayViewState extends State<CashGiveawayView> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<CashGiveawayCubit>().getCashGiveaways();
+      unawaited(context.read<CashGiveawayCubit>().fetchBankList());
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

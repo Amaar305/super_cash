@@ -11,6 +11,10 @@ class AppEmptyState extends StatelessWidget {
     this.illustration,
     this.action,
     this.padding,
+    this.width,
+    this.height,
+    this.iconSize,
+    this.fontSize,
   });
 
   final String title;
@@ -19,6 +23,10 @@ class AppEmptyState extends StatelessWidget {
   final Widget? illustration;
   final Widget? action;
   final EdgeInsetsGeometry? padding;
+  final double? width;
+  final double? height;
+  final double? iconSize;
+  final double? fontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -30,8 +38,8 @@ class AppEmptyState extends StatelessWidget {
     final Widget visual =
         illustration ??
         Container(
-          height: 96,
-          width: 96,
+          height: height ?? 96,
+          width: height ?? 96,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             gradient: LinearGradient(
@@ -46,7 +54,7 @@ class AppEmptyState extends StatelessWidget {
           child: Icon(
             icon ?? Icons.checklist_outlined,
             color: accentColor,
-            size: 40,
+            size: iconSize ?? 40,
           ),
         );
 
@@ -64,7 +72,6 @@ class AppEmptyState extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(AppSpacing.lg),
               color: colorScheme.surface,
-              
             ),
             child: Padding(
               padding: EdgeInsets.symmetric(
@@ -80,7 +87,7 @@ class AppEmptyState extends StatelessWidget {
                     title,
                     textAlign: TextAlign.center,
                     style: poppinsTextStyle(
-                      fontSize: AppSpacing.lg,
+                      fontSize: fontSize ?? AppSpacing.lg,
                       fontWeight: AppFontWeight.semiBold,
                       color: colorScheme.onSurface,
                     ),

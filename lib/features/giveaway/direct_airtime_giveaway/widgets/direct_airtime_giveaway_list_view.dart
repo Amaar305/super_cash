@@ -14,43 +14,44 @@ class DirectAirtimeGiveawayListView extends StatelessWidget {
           (value) => value.state.filteredAirtimes,
         );
     if (airtimes.isEmpty) {
-      return AppEmptyState(
-        title: 'No available airtimes',
-        icon: Icons.phone_iphone_outlined,
-        action: TextButton.icon(
-          onPressed: context.read<DirectAirtimeGiveawayCubit>().getAirtimes,
-          label: Text('Refresh'),
-          icon: Icon(Icons.refresh),
+      return SliverToBoxAdapter(
+        child: AppEmptyState(
+          title: 'No available airtimes',
+          icon: Icons.phone_iphone_outlined,
+          action: TextButton.icon(
+            onPressed: context.read<DirectAirtimeGiveawayCubit>().getAirtimes,
+            label: Text('Refresh'),
+            icon: Icon(Icons.refresh),
+          ),
         ),
       );
     }
-    return Expanded(
-      child: ListView.builder(
-        itemCount: airtimes.length,
-        itemBuilder: (context, index) {
-          final item = airtimes[index];
-          return DataGiveawayCard(
-            isAirtime: true,
-            dataName: item.airtimeName,
-            dataSize: '${item.fixedAmount} Naira',
-            network: item.network,
-            dataQuantity: item.amountQuantity,
-            dataQuantityRemaining: item.amountQuantityRemaining,
-            isAvailable: item.isAvailable,
-            onClaimed: () async {
-              final cubit = context.read<DirectAirtimeGiveawayCubit>();
-              cubit.claimDirectAirtime(
-                item.id,
-                onClaimed: (airtime) => _onClaimedGiveaway(
-                  airtime: airtime,
-                  context: context,
-                  cubit: cubit,
-                ),
-              );
-            },
-          );
-        },
-      ),
+    return SliverList.builder(
+      itemCount: airtimes.length,
+      itemBuilder: (context, index) {
+        final item = airtimes[index];
+        return DataGiveawayCard(
+          isAirtime: true,
+          dataName: item.airtimeName,
+          dataSize: '${item.fixedAmount} Naira',
+          network: item.network,
+          dataQuantity: item.amountQuantity,
+          dataQuantityRemaining: item.amountQuantityRemaining,
+          isAvailable: item.isAvailable,
+          buttonLabel: "Claim ${item.airtimeName}",
+          onClaimed: () async {
+            final cubit = context.read<DirectAirtimeGiveawayCubit>();
+            cubit.claimDirectAirtime(
+              item.id,
+              onClaimed: (airtime) => _onClaimedGiveaway(
+                airtime: airtime,
+                context: context,
+                cubit: cubit,
+              ),
+            );
+          },
+        );
+      },
     );
   }
 

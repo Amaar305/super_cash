@@ -10,7 +10,7 @@ class GiveawayWinnerCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = winner.type.code == 'airtime-pin'
+    final color = winner.type.code.contains('airtime')
         ? AppColors.blue
         : AppColors.green;
     return Container(
@@ -72,7 +72,7 @@ class GiveawayWinnerCard extends StatelessWidget {
           ],
         ),
         trailing: Text(
-          "N${winner.amount}",
+          "N${winner.fixedAmount}",
           style: poppinsTextStyle(fontWeight: AppFontWeight.black),
         ),
       ),

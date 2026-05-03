@@ -21,21 +21,40 @@ class FeaturedGiveawayContainer extends StatelessWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: 12,
+        spacing: 14,
         children: [
           // FEATURED UPCOMING pill
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               newMethod(),
-
-              IconButton(
-                style: IconButton.styleFrom(
-                  foregroundColor: AppColors.white,
-                  backgroundColor: AppColors.white.withValues(alpha: 0.2),
+              Tappable.faded(
+                onTap: () {},
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 7,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: .35),
+                    borderRadius: BorderRadius.circular(999),
+                  ),
+                  child: Row(
+                    spacing: AppSpacing.xs,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.info_outline,
+                        size: 12,
+                        color: AppColors.white,
+                      ),
+                      Text(
+                        'Details'.toUpperCase(),
+                        style: TextStyle(fontSize: 10, color: AppColors.white),
+                      ),
+                    ],
+                  ),
                 ),
-                onPressed: () {},
-                icon: Icon(Icons.notifications_outlined),
               ),
             ],
           ),

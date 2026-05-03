@@ -34,6 +34,26 @@ class ProductGiveawayState extends Equatable {
     required this.houseAddress,
   });
 
+  int get totalProducts =>
+      products.fold(0, (total, product) => total + product.productQuantity);
+
+  int get totalAvailableProducts => products.fold(
+    0,
+    (total, product) => total + product.productQuantityRemaining,
+  );
+
+  double get remainingPercent {
+    var total = 0;
+    var remaining = 0;
+
+    for (final product in products) {
+      total += product.productQuantity;
+      remaining += product.productQuantityRemaining;
+    }
+
+    return total == 0 ? 0 : remaining / total;
+  }
+
   ProductGiveawayState.initial({required AppUser user})
     : this._(
         status: ProductGiveawayStatus.initial,

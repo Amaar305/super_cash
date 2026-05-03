@@ -51,14 +51,6 @@ class DataGiveawayCubit extends Cubit<DataGiveawayState> {
       );
     } catch (error, stackTrace) {
       logE('Failed to get data plans $error', stackTrace: stackTrace);
-
-      if (!isClosed) return;
-      emit(
-        state.copyWith(
-          status: DataGiveawayStatus.failure,
-          message: 'Failed to get data plans.',
-        ),
-      );
     }
   }
 

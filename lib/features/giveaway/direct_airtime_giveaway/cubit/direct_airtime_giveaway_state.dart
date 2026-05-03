@@ -62,6 +62,41 @@ class DirectAirtimeGiveawayState extends Equatable {
     };
   }
 
+  int get totalAirtime {
+    var total = 0;
+
+    for (final item in airtimes) {
+      total += ((double.tryParse(item.amount) ?? 0) * item.amountQuantity)
+          .toInt();
+    }
+
+    return total;
+  }
+
+  int get availableAirtime {
+    var total = 0;
+
+    for (final item in airtimes) {
+      total +=
+          ((double.tryParse(item.amount) ?? 0) * item.amountQuantityRemaining)
+              .toInt();
+    }
+
+    return total;
+  }
+
+  double get remainingPercent {
+    var total = 0;
+    var remaining = 0;
+
+    for (final airtime in airtimes) {
+      total += airtime.amountQuantity;
+      remaining += airtime.amountQuantityRemaining;
+    }
+
+    return total == 0 ? 0 : remaining / total;
+  }
+
   DirectAirtimeGiveawayState copyWith({
     DirectAirtimeGiveawayStatus? status,
     String? message,

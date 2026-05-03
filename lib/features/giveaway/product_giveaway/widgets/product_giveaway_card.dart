@@ -21,6 +21,7 @@ class ProductGiveawayCard extends StatelessWidget {
     );
     return _ProductShell(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           _HeroCard(image: product.image),
           Gap.v(AppSpacing.lg),
@@ -35,7 +36,7 @@ class ProductGiveawayCard extends StatelessWidget {
               onClaimed: () => context
                   .read<ProductGiveawayCubit>()
                   .claimProduct(product.id, onSuccessfulClaimed),
-              isDisabled: product.outOfStock || product.isAvailable,
+              isDisabled: product.outOfStock || !product.isAvailable,
             ),
           ),
         ],
@@ -47,7 +48,7 @@ class ProductGiveawayCard extends StatelessWidget {
 class ProductClaimButton extends StatelessWidget {
   const ProductClaimButton({
     super.key,
-    this.isDisabled = true,
+    this.isDisabled = false,
     required this.onClaimed,
     required this.isLoading,
   });
@@ -58,24 +59,11 @@ class ProductClaimButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final enable = isDisabled || isLoading;
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadiusGeometry.circular(AppSpacing.md),
-        ),
-        elevation: 0,
-        fixedSize: Size.fromHeight(48),
-        foregroundColor: AppColors.white,
-        backgroundColor: Color.fromARGB(255, 0, 6, 10),
-      ),
-      onPressed: !enable ? null : onClaimed,
-      child: isLoading
-          ? Center(child: CircularProgressIndicator.adaptive())
-          : Text(
-              isDisabled ? 'Out of stock' : 'Claim Now',
-              style: TextStyle(fontWeight: AppFontWeight.medium),
-            ),
+
+    return PrimaryButton(
+      isLoading: isLoading,
+      onPressed: onClaimed,
+      label: isDisabled ? 'Out of stock' : 'Claim Now',
     );
   }
 }

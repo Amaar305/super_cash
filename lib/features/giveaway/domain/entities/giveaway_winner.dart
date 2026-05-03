@@ -15,6 +15,8 @@ class GiveawayWinner {
     required this.type,
   });
 
+  String get fixedAmount => (double.tryParse(amount) ?? 0.0).toStringAsFixed(0);
+
   factory GiveawayWinner.fromJson(Map<String, dynamic> json) {
     return GiveawayWinner(
       id: json['id'],

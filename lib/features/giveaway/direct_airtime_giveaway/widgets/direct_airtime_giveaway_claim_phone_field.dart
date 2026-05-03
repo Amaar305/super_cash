@@ -2,8 +2,10 @@ import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/shared.dart';
+import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/core/common/common.dart';
 import 'package:super_cash/features/giveaway/giveaway.dart';
+import 'package:super_cash/features/vtupass/vtupass.dart';
 
 class DirectAirtimeGiveawayClaimPhoneField extends StatefulWidget {
   const DirectAirtimeGiveawayClaimPhoneField({
@@ -57,9 +59,7 @@ class _DirectAirtimeGiveawayClaimPhoneFieldState
   @override
   void didUpdateWidget(DirectAirtimeGiveawayClaimPhoneField oldWidget) {
     super.didUpdateWidget(oldWidget);
-
     final phone = _cubit.state.phone;
-
     if (_controller.text != phone.value) {
       _controller.text = phone.value;
     }
@@ -89,8 +89,16 @@ class _DirectAirtimeGiveawayClaimPhoneFieldState
           hintText: "Enter Phone Number",
           textController: _controller,
           errorText: phoneErrMsg,
+          suffixIcon: ForMySelfButton(onTap: onForMyselfTapped),
         ),
       ],
     );
+  }
+
+  void onForMyselfTapped() {
+      final user = context.read<AppCubit>().state.user;
+
+    if (user == null || user.isAnonymous) return;
+    _controller.text = user.phone;
   }
 }

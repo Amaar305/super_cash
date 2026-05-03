@@ -68,6 +68,12 @@ abstract class AppColors {
   /// Green material color.
   static const MaterialColor green = Colors.green;
 
+  static final walletGradient = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [AppColors.black.withValues(alpha: 0.7), AppColors.black],
+  );
+
   /// The primary Instagram gradient pallete.
   static const primaryGradient = <Color>[
     Color(0xFF833AB4), // Purple
@@ -126,7 +132,7 @@ abstract class AppColors {
 
   ///
   static const Color orange = Colors.orange;
-///
-  static const Color warning= Color(0xFFFF6B6B)
-;
+
+  ///
+  static const Color warning = Color(0xFFFF6B6B);
 }

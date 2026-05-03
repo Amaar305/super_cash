@@ -1,6 +1,7 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared/shared.dart';
 import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/app/init/init.dart';
 import 'package:super_cash/app/view/app.dart';
@@ -23,37 +24,108 @@ class ProductGiveawayPage extends StatelessWidget {
             serviceLocator<ClaimProductGiveawayUseCase>(),
         giveawayTypeId: giveawayTypeId,
         user: context.read<AppCubit>().state.user!,
-      )..getProducts(),
+      ),
       child: PoductGiveawayView(),
     );
   }
 }
 
-class PoductGiveawayView extends StatelessWidget {
+class PoductGiveawayView extends StatefulWidget {
   const PoductGiveawayView({super.key});
+
+  @override
+  State<PoductGiveawayView> createState() => _PoductGiveawayViewState();
+}
+
+class _PoductGiveawayViewState extends State<PoductGiveawayView> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<ProductGiveawayCubit>().getProducts();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
       appBar: AppBar(title: AppAppBarTitle('Product Giveaway')),
-      body: BlocListener<ProductGiveawayCubit, ProductGiveawayState>(
-        listenWhen: (previous, current) => previous.status != current.status,
-        listener: (context, state) {
-          if (state.status.isLoading) {
-            showLoadingOverlay(context);
-          } else {
-            hideLoadingOverlay();
-          }
+      body: RefreshIndicator.adaptive(
+        onRefresh: context.read<ProductGiveawayCubit>().getProducts,
+        child: BlocListener<ProductGiveawayCubit, ProductGiveawayState>(
+          listenWhen: (previous, current) => previous.status != current.status,
+          listener: (context, state) {
+            if (state.status.isLoading) {
+              showLoadingOverlay(context);
+            } else {
+              hideLoadingOverlay();
+            }
 
-          if (state.status.isFailed && state.message.isNotEmpty) {
-            openSnackbar(
-              SnackbarMessage.error(title: state.message),
-              clearIfQueue: true,
-            );
-          }
-        },
-        child: _ProductListView(),
+            if (state.status.isFailed && state.message.isNotEmpty) {
+              openSnackbar(
+                SnackbarMessage.error(title: state.message),
+                clearIfQueue: true,
+              );
+            }
+          },
+          child: Column(
+            children: [
+              ProductHeader(),
+              Expanded(child: _ProductListView()),
+            ],
+          ),
+        ),
       ),
+    );
+  }
+}
+
+class ProductHeader extends StatelessWidget {
+  const ProductHeader({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final totalProduct = context.select<ProductGiveawayCubit, int>(
+      (value) => value.state.totalProducts,
+    );
+    final totalAvailableProducts = context.select<ProductGiveawayCubit, int>(
+      (value) => value.state.totalAvailableProducts,
+    );
+    final remainingPercent = context.select<ProductGiveawayCubit, double>(
+      (value) => value.state.remainingPercent,
+    );
+
+    return Row(
+      spacing: AppSpacing.lg,
+      children: [
+        Expanded(
+          child: GiveawayAnalyticsHeaderItem(
+            title: 'TOTAL PRODUCT',
+            icon: Icons.production_quantity_limits,
+            subtitle: totalProduct.planDisplayAmount,
+            footerTitle: 'Across all active drops',
+          ),
+        ),
+        Expanded(
+          child: GiveawayAnalyticsHeaderItem(
+            title: 'AVAILABLE TO CLAIM',
+            icon: Icons.shopping_bag_outlined,
+            subtitle: totalAvailableProducts.planDisplayAmount,
+            footerTitle: '${remainingPercent.toStringAsFixed(1)}% REMAINING',
+            footerTitleColor: Color(0xff006E2F),
+            extraWidget: SizedBox(
+              width: double.infinity,
+              height: 4,
+              child: LinearProgressIndicator(
+                value: remainingPercent,
+                color: Color(0xff006E2F),
+                borderRadius: BorderRadius.circular(999),
+                // minHeight: 4,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

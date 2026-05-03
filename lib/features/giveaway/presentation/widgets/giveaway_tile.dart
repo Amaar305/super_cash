@@ -47,6 +47,8 @@ class GiveawayTile extends StatelessWidget {
           icon: icon,
           iconColor: iconColor,
           iconBg: iconBg,
+          onTap: onTap,
+          isDisabled: isDisabled,
         ),
       ),
     );
@@ -63,6 +65,8 @@ class _GiveawayTileCard extends StatelessWidget {
     this.iconBg,
     this.icon,
     this.iconColor,
+    this.onTap,
+    required this.isDisabled,
   });
 
   final UpcomingGiveawayStatus status;
@@ -73,6 +77,8 @@ class _GiveawayTileCard extends StatelessWidget {
   final Color? iconBg;
   final IconData? icon;
   final Color? iconColor;
+  final VoidCallback? onTap;
+  final bool isDisabled;
 
   @override
   Widget build(BuildContext context) {
@@ -100,6 +106,8 @@ class _GiveawayTileCard extends StatelessWidget {
               title: title,
               subtitle: subtitle,
               endsAt: endsAt,
+              onTap: onTap,
+              isDisabled: isDisabled,
             ),
           ),
         ],
@@ -113,11 +121,15 @@ class _GiveawayDetails extends StatelessWidget {
     required this.title,
     required this.subtitle,
     required this.endsAt,
+    this.onTap,
+    required this.isDisabled,
   });
 
   final String title;
   final String subtitle;
   final DateTime? endsAt;
+  final VoidCallback? onTap;
+  final bool isDisabled;
 
   @override
   Widget build(BuildContext context) {
@@ -129,8 +141,7 @@ class _GiveawayDetails extends StatelessWidget {
         _GiveawayTitle(title: title),
         _GiveawaySubtitle(subtitle: subtitle),
         if (endsAt != null) _GiveawayEndsAt(endsAt: endsAt!),
-        const Gap.v(AppSpacing.xs),
-        const _GiveawayActionButton(),
+        _GiveawayActionButton(onTap: onTap, isDisabled: isDisabled),
       ],
     );
   }
@@ -210,13 +221,15 @@ class _GiveawayEndsAt extends StatelessWidget {
 }
 
 class _GiveawayActionButton extends StatelessWidget {
-  const _GiveawayActionButton();
+  const _GiveawayActionButton({this.onTap, required this.isDisabled});
+  final VoidCallback? onTap;
+  final bool isDisabled;
 
   @override
   Widget build(BuildContext context) {
     return AppButton(
       text: '',
-      onPressed: () {},
+      onPressed: onTap,
       style: ElevatedButton.styleFrom(
         fixedSize: const Size(160, 36),
         shape: RoundedRectangleBorder(
@@ -225,8 +238,8 @@ class _GiveawayActionButton extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 10),
         backgroundColor: AppColors.black.withValues(alpha: 0.7),
       ),
-      child: const Text(
-        'ENTER NOW',
+      child: Text(
+        isDisabled ? 'DISABED' : 'ENTER NOW',
         style: TextStyle(color: Color(0xFFF1F1F1)),
       ),
     );

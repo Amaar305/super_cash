@@ -62,6 +62,28 @@ class DataGiveawayState extends Equatable {
     };
   }
 
+  double get totalGB => dataPlans.fold(0, (previousValue, item) {
+    final size = double.tryParse(item.dataSize) ?? 0;
+    return (size * item.dataQuantity) + previousValue;
+  });
+  double get availableGB => dataPlans.fold(0, (previousValue, item) {
+    final size = double.tryParse(item.dataSize) ?? 0;
+    return (size * item.dataQuantityRemaining) + previousValue;
+  });
+
+  double get remainingPercent {
+    var total = 0.0;
+    var remaining = 0.0;
+
+    for (final item in dataPlans) {
+      final amount = double.tryParse(item.dataSize) ?? 1;
+      total += amount * item.dataQuantity;
+      remaining += amount * item.dataQuantityRemaining;
+    }
+
+    return total == 0 ? 0 : remaining / total;
+  }
+
   DataGiveawayState copyWith({
     DataGiveawayStatus? status,
     String? message,

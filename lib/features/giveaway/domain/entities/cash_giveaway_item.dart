@@ -1,3 +1,5 @@
+import 'package:shared/shared.dart';
+
 class CashGiveawayItem {
   final String id;
   final String cashName;
@@ -10,7 +12,7 @@ class CashGiveawayItem {
   final DateTime createdAt;
   final DateTime updatedAt;
   double get amount => double.tryParse(cashAmount) ?? 0;
-  String get amountFixed => amount.toStringAsFixed(0);
+  String get amountFixed => amount.planDisplayAmount;
   // String get prefixAmount=> amount;
 
   const CashGiveawayItem({

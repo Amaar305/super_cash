@@ -1,5 +1,6 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:shared/shared.dart';
 import 'package:super_cash/core/fonts/app_text_style.dart';
 
 class GiveawayNetworkFilterChips extends StatelessWidget {
@@ -23,11 +24,13 @@ class GiveawayNetworkFilterChips extends StatelessWidget {
           final isSelected = index == selectedIndex;
           return Tappable.scaled(
             onTap: () => onIndexChanged?.call(index),
-            child: Padding(
+            child: AnimatedPadding(
+              duration: 200.ms,
               padding: EdgeInsets.only(
                 right: index == labels.length - 1 ? 0 : AppSpacing.md,
               ),
-              child: Container(
+              child: AnimatedContainer(
+                duration: 200.ms,
                 constraints: const BoxConstraints(minWidth: 80),
                 padding: const EdgeInsets.symmetric(
                   horizontal: AppSpacing.lg,
@@ -41,10 +44,10 @@ class GiveawayNetworkFilterChips extends StatelessWidget {
                 ),
                 alignment: Alignment.center,
                 child: Text(
-                  labels[index].toUpperCase(),
+                  labels[index].capitalize,
                   style: poppinsTextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w500,
                     color: isSelected
                         ? AppColors.white
                         : const Color(0xFF5B6473),

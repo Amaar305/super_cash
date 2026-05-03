@@ -22,10 +22,11 @@ class OutlineAction extends StatelessWidget {
       onTap: onTap,
 
       child: Container(
-        height: 52,
+        height: 45,
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
+          // color: Colors.white,
+          color: AppColors.darkGrey,
+          borderRadius: BorderRadius.circular(12),
           border: Border.all(width: 1.2, color: Color(0xFFE6ECEF)),
         ),
         child: Row(
@@ -35,7 +36,10 @@ class OutlineAction extends StatelessWidget {
             const SizedBox(width: 10),
             Text(
               label,
-              style: poppinsTextStyle(fontWeight: AppFontWeight.semiBold),
+              style: poppinsTextStyle(
+                fontWeight: AppFontWeight.semiBold,
+                color: AppColors.white,
+              ),
             ),
           ],
         ),

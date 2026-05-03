@@ -113,17 +113,5 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
         onSuccess?.call();
       },
     );
-    // message:l.message
-
-    // try {
-    //   await Future.delayed(Duration(seconds: 10));
-    //   emit(state.copyWith(status: ForgotPasswordStatus.success));
-    //   final newState = state.copyWith(status: ForgotPasswordStatus.success);
-    //   if (isClosed) return;
-    //   emit(newState);
-    //   onSuccess?.call();
-    // } catch (error, stackTrace) {
-    //   _errorFormatter(error, stackTrace);
-    // }
   }
 }
