@@ -53,9 +53,9 @@ class _Description extends StatelessWidget {
     return Column(
       spacing: AppSpacing.md,
       children: [
-        Text(dataGiveawayItem.dataName, style: context.titleMedium),
+        Text('Hurry up!', style: context.titleMedium),
         Text(
-          'You have successfully claimed ${dataGiveawayItem.dataName} ${dataGiveawayItem.network.capitalize}.\nPlease provide your phone number to receive the data.',
+          'You are about to claim ${dataGiveawayItem.dataName} ${dataGiveawayItem.network.capitalize}.\nPlease provide your phone number to receive the data.',
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 13, fontWeight: AppFontWeight.extraLight),
         ),

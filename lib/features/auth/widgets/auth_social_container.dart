@@ -51,7 +51,7 @@ class AuthSocialContainer extends StatelessWidget {
           Text(
             'Connect with us on ',
             textAlign: TextAlign.center,
-            style: MonaSansTextStyle.label(fontWeight: AppFontWeight.black),
+            style: TextStyle(fontFamily: 'MonaSans'),
           ),
           InquiryWidget(),
           Row(
@@ -68,9 +68,7 @@ class AuthSocialContainer extends StatelessWidget {
                 child: Text(
                   authLabel,
                   textAlign: TextAlign.center,
-                  style: MonaSansTextStyle.label(
-                    fontWeight: AppFontWeight.black,
-                  ),
+                  style: TextStyle(fontFamily: 'MonaSans'),
                 ),
               ),
               Expanded(
@@ -85,7 +83,6 @@ class AuthSocialContainer extends StatelessWidget {
           SizedBox(
             width: double.infinity,
             child: PrimaryButton(
-              isLoading: false,
               label: authButtonLabel,
               onPressed: () {
                 context.read<AuthCubit>().changeAuth(showLogin: !isLogin);

@@ -739,6 +739,11 @@ void _home() {
     )
     ..registerFactory(
       () => FetchAppSettingsUseCase(homeUserRepository: serviceLocator()),
+    )
+    ..registerFactory(
+      () => CreatePalmPayAccountUseCase(
+         serviceLocator(),
+      ),
     );
 }
 

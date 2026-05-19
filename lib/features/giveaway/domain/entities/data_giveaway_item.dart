@@ -23,6 +23,8 @@ class DataGiveawayItem {
   final DateTime createdAt;
   final DateTime updatedAt;
 
+  bool get outOfData => dataQuantityRemaining < 1;
+
   factory DataGiveawayItem.fromJson(Map<String, dynamic> json) {
     return DataGiveawayItem(
       id: json['id'],

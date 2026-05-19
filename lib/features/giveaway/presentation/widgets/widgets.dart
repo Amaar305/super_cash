@@ -10,3 +10,4 @@ export 'upcoming_feaatured_giveaway.dart';
 export 'new_upcoming_giveaway_card.dart';
 export 'giveaway_network_filter_chips.dart';
 export 'giveaway_analytics_header_item.dart';
+export 'giveaway_animated_countdown_box.dart';

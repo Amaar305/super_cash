@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class AnimatedText extends StatelessWidget {
-  const AnimatedText({
+class GiveawayAnimatedText extends StatelessWidget {
+  const GiveawayAnimatedText({
     super.key,
     required this.value,
     required this.highlight,
@@ -19,7 +19,7 @@ class AnimatedText extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedSwitcher(
       duration: const Duration(milliseconds: 220),
-      switchInCurve: Curves.easeOutBack,
+      switchInCurve: Curves.easeOut,
       switchOutCurve: Curves.easeIn,
       transitionBuilder: (child, animation) {
         final isIncoming = child.key == ValueKey(value);

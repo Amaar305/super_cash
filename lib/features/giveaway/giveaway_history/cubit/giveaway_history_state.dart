@@ -76,12 +76,27 @@ class GiveawayHistoryState extends Equatable {
   }
 
   int get totalRewards => data.length;
+
   double get totalAirtimeAmount => data.fold(0, (previousValue, element) {
     if (!element.giveawayType.code.contains('airtime')) {
       return previousValue;
     }
     return previousValue + double.parse(element.amount);
   });
+
+  double get totalGB {
+    var total = 0.0;
+    for (var history in data) {
+      if (!history.isDataGiveaway) continue;
+
+      final dataGiveaway = history.dataGiveaway;
+      final size = double.tryParse(dataGiveaway.dataSize) ?? 0;
+      final sizeGB = size >= 1 ? size : size / 1;
+      total += sizeGB;
+    }
+    return total;
+  }
+
   @override
   List<Object?> get props => [
     status,

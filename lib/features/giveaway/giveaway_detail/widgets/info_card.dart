@@ -1,4 +1,4 @@
-part of '../pages/product_giveaway_details_page.dart';
+part of '../pages/giveway_detail_page.dart';
 
 class _InfoCard extends StatelessWidget {
   const _InfoCard({
@@ -42,13 +42,13 @@ class _InfoCard extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Icon(icon, color: iconColor, size: 22),
+                  Icon(icon, color: iconColor, size: 16),
                   const SizedBox(width: 12),
                   Text(
                     title,
                     style: poppinsTextStyle(
                       color: titleColor,
-                      fontSize: 14,
+                      fontSize: 12,
                       fontWeight: AppFontWeight.bold,
                     ),
                   ),

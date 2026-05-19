@@ -70,13 +70,15 @@ class GiveawayAnalyticsHeaderItem extends StatelessWidget {
             children: [
               if (extraWidget == null)
                 Icon(Icons.circle, color: AppColors.green, size: 6),
-              Text(
-                footerTitle,
-
-                style: poppinsTextStyle(
-                  fontSize: 10,
-                  fontWeight: AppFontWeight.medium,
-                  color: footerTitleColor,
+              Flexible(
+                child: Text(
+                  footerTitle,
+                  maxLines: 1,
+                  style: poppinsTextStyle(
+                    fontSize: 10,
+                    fontWeight: AppFontWeight.medium,
+                    color: footerTitleColor,
+                  ),
                 ),
               ),
             ],

@@ -1,6 +1,11 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shared/shared.dart';
+import 'package:super_cash/app/init/init.dart';
+import 'package:super_cash/app/routes/app_routes.dart';
+import 'package:super_cash/app/view/app.dart';
 import 'package:super_cash/core/fonts/app_text_style.dart';
 import 'package:super_cash/features/giveaway/giveaway.dart';
 
@@ -23,10 +28,15 @@ part '../widgets/start_and_end_date.dart';
 part '../widgets/status_badge.dart';
 part '../widgets/step_card.dart';
 
-class ProductGiveawayDetailsPage extends StatelessWidget {
-  const ProductGiveawayDetailsPage({super.key, required this.giveaway});
+class GivewayDetailPage extends StatelessWidget {
+  const GivewayDetailPage({
+    super.key,
+    required this.giveaway,
+    required this.destinationRouteName,
+  });
 
   final Giveaway giveaway;
+  final String destinationRouteName;
 
   static const _pageBackground = Color(0xFFF6F8F7);
   static const _heroTop = Color.fromARGB(255, 36, 56, 71);
@@ -35,46 +45,142 @@ class ProductGiveawayDetailsPage extends StatelessWidget {
   static const _softGreen = Color.fromARGB(255, 15, 71, 139);
   static const _softMuted = Color.fromARGB(255, 123, 133, 139);
   static const _sectionTitle = Color.fromARGB(255, 2, 18, 29);
-  static const _primaryCta = AppColors.blue;
+  static const _primaryCta = AppColors.background2;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => GiveawayDetailCubit(
+        checkGiveawayEligibilityUseCase: serviceLocator(),
+      ),
+      child: _GivewayDetailView(
+        giveaway: giveaway,
+        destinationRouteName: destinationRouteName,
+      ),
+    );
+  }
+}
+
+class _GivewayDetailView extends StatelessWidget {
+  const _GivewayDetailView({
+    required this.giveaway,
+    required this.destinationRouteName,
+  });
+
+  final Giveaway giveaway;
+  final String destinationRouteName;
 
   @override
   Widget build(BuildContext context) {
     final details = _GiveawayDetails.from(giveaway);
+    final giveawayTypeId = giveaway.giveawayType.id.toString();
 
-    return AppScaffold(
-      appBar: AppBar(
-        backgroundColor: _pageBackground,
-        surfaceTintColor: Colors.transparent,
-        centerTitle: false,
-        leading: AppLeadingAppBarWidget(
-          onTap: () => Navigator.of(context).maybePop(),
+    return BlocListener<GiveawayDetailCubit, GiveawayDetailState>(
+      listener: (context, state) {
+        if (state.status.isFailure || state.status.isNotEligible) {
+          openSnackbar(
+            SnackbarMessage.error(title: state.message),
+            clearIfQueue: true,
+          );
+          return;
+        }
+
+        if (state.status.isEligible) {
+          // openSnackbar(
+          //   SnackbarMessage.success(title: state.message),
+          //   clearIfQueue: true,
+          // );
+
+          if (details.isProductGiveaway) {
+            context.pushNamed(
+              destinationRouteName,
+              pathParameters: {'giveaway_type_id': giveawayTypeId},
+              extra: giveaway.status == UpcomingGiveawayStatus.upcoming
+                  ? false
+                  : true,
+            );
+
+            return;
+          }
+
+          if (state.shouldNavigateOnSuccess) {
+            context.pushNamed(
+              destinationRouteName,
+              pathParameters: {'giveaway_type_id': giveawayTypeId},
+              extra: giveaway.status == UpcomingGiveawayStatus.upcoming
+                  ? false
+                  : true,
+            );
+          }
+        }
+      },
+      child: AppScaffold(
+        appBar: AppBar(
+          backgroundColor: GivewayDetailPage._pageBackground,
+          surfaceTintColor: Colors.transparent,
+          centerTitle: false,
+          leading: AppLeadingAppBarWidget(
+            onTap: () => Navigator.of(context).maybePop(),
+          ),
+          title: AppAppBarTitle('Giveaway Details'),
         ),
-        title: AppAppBarTitle('Giveaway Details'),
-      ),
-      bottomNavigationBar: _ActionFooter(details: details),
-      body: AppConstrainedScrollView(
-        padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _HeroCard(details: details),
-            const Gap.v(18),
-            _DescriptionSection(details: details),
-            const Gap.v(10),
-            _MetricRow(details: details),
-            const Gap.v(10),
-            _StartAndEndDate(giveaway: giveaway),
-            const Gap.v(10),
-            _CountdownSection(details: details),
-            const Gap.v(10),
-            _HowItWorksSection(details: details),
-            const Gap.v(18),
-            _FaqSection(details: details),
-            const Gap.v(10),
-          ],
+        bottomNavigationBar: _ActionFooter(
+          details: details,
+          giveawayTypeId: giveawayTypeId,
+        ),
+        body: AppConstrainedScrollView(
+          padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _HeroCard(details: details),
+              const Gap.v(18),
+              _DescriptionSection(details: details),
+              const Gap.v(10),
+              _MetricRow(details: details),
+              const Gap.v(10),
+              _StartAndEndDate(giveaway: giveaway),
+              const Gap.v(10),
+              _CountdownSection(details: details),
+              const Gap.v(16),
+              _HowItWorksSection(details: details),
+              const Gap.v(18),
+              _FaqSection(details: details),
+              const Gap.v(10),
+            ],
+          ),
         ),
       ),
     );
+  }
+}
+
+class GivewayDetailRouteData {
+  const GivewayDetailRouteData({
+    required this.giveaway,
+    required this.destinationRouteName,
+  });
+
+  factory GivewayDetailRouteData.fromGiveaway(Giveaway giveaway) {
+    return GivewayDetailRouteData(
+      giveaway: giveaway,
+      destinationRouteName: destinationRouteNameFor(giveaway),
+    );
+  }
+
+  final Giveaway giveaway;
+  final String destinationRouteName;
+
+  static String destinationRouteNameFor(Giveaway giveaway) {
+    final code = giveaway.giveawayType.code;
+
+    if (code == 'airtime-direct') return RNames.directAirtimeGiveaway;
+    if (code.contains('airtime')) return RNames.airtimeGiveaway;
+    if (code.contains('product')) return RNames.productGiveaway;
+    if (code.contains('data')) return RNames.dataGiveaway;
+    if (code.contains('cash')) return RNames.cashGiveaway;
+
+    return RNames.giveaway;
   }
 }
 
@@ -97,6 +203,8 @@ class _GiveawayDetails {
     required this.isClosed,
     required this.countdownTarget,
     required this.countdownCardTitle,
+    required this.giveawayType,
+    required this.upcomingGiveawayStatus,
   });
 
   factory _GiveawayDetails.from(Giveaway giveaway) {
@@ -142,9 +250,12 @@ class _GiveawayDetails {
       countdownCardTitle: giveaway.status == UpcomingGiveawayStatus.upcoming
           ? 'COUNTDOWN TO START'
           : 'COUNTDOWN TO END',
+      giveawayType: giveaway.giveawayType,
+      upcomingGiveawayStatus: giveaway.status,
       isClosed:
           giveaway.status.isCancelled ||
           giveaway.status.isCompleted ||
+          !giveaway.status.isOngoing ||
           (endsAt != null && endsAt.isBefore(DateTime.now())),
     );
   }
@@ -166,6 +277,22 @@ class _GiveawayDetails {
   final bool isClosed;
   final DateTime? countdownTarget;
   final String countdownCardTitle;
+  final GiveawayType giveawayType;
+  final UpcomingGiveawayStatus upcomingGiveawayStatus;
+
+  String get _giveawayTypeCode => giveawayType.code.toLowerCase();
+
+  bool get isAirtimeGiveaway => _giveawayTypeCode == 'airtime-pin';
+
+  bool get isDirectAirtimeGiveaway =>
+      _giveawayTypeCode.contains('direct') &&
+      _giveawayTypeCode.contains('airtime');
+
+  bool get isDataGiveaway => _giveawayTypeCode.contains('data');
+
+  bool get isCashGiveaway => _giveawayTypeCode.contains('cash');
+
+  bool get isProductGiveaway => _giveawayTypeCode.contains('product');
 
   static String _normalize(String value) => value.trim();
 

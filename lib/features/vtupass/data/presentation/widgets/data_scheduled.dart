@@ -35,7 +35,7 @@ class DataScheduled extends StatelessWidget {
                   style: context.bodyMedium?.copyWith(
                     fontSize: AppSpacing.lg,
                     fontFamily: 'MonaSans',
-                    fontWeight: AppFontWeight.black,
+
                     height: 1.6,
                   ),
                 ),

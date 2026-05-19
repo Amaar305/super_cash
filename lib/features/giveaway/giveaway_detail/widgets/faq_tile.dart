@@ -1,4 +1,4 @@
-part of '../pages/product_giveaway_details_page.dart';
+part of '../pages/giveway_detail_page.dart';
 
 class _FaqTile extends StatelessWidget {
   const _FaqTile({required this.item, required this.initiallyExpanded});
@@ -12,7 +12,7 @@ class _FaqTile extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: ProductGiveawayDetailsPage._cardBorder),
+        border: Border.all(color: GivewayDetailPage._cardBorder),
       ),
       child: Theme(
         data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
@@ -40,7 +40,7 @@ class _FaqTile extends StatelessWidget {
             Text(
               item.answer,
               style: poppinsTextStyle(
-                color: ProductGiveawayDetailsPage._softMuted,
+                color: GivewayDetailPage._softMuted,
                 fontSize: 10,
                 fontWeight: AppFontWeight.medium,
               ),

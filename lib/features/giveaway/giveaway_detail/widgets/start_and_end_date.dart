@@ -1,4 +1,4 @@
-part of '../pages/product_giveaway_details_page.dart';
+part of '../pages/giveway_detail_page.dart';
 
 class _StartAndEndDate extends StatelessWidget {
   const _StartAndEndDate({required this.giveaway});
@@ -16,28 +16,35 @@ class _StartAndEndDate extends StatelessWidget {
       children: [
         Expanded(
           child: _InfoCard(
-            title: 'STARTS ON',
+            title: 'Starts On',
             icon: Icons.calendar_month_outlined,
+
             iconColor: AppColors.blue,
             titleColor: const Color(0xFF64748B),
             child: FittedBox(
               child: Text(
                 formatDateTime(giveaway.startsAt!),
-                style: poppinsTextStyle(fontWeight: AppFontWeight.semiBold),
+                style: poppinsTextStyle(
+                  fontWeight: AppFontWeight.semiBold,
+                  fontSize: 10,
+                ),
               ),
             ),
           ),
         ),
         Expanded(
           child: _InfoCard(
-            title: 'ENDS ON',
+            title: 'Ends On',
             icon: Icons.calendar_month_outlined,
             iconColor: AppColors.red,
             titleColor: const Color(0xFF64748B),
             child: FittedBox(
               child: Text(
                 formatDateTime(giveaway.endsAt!),
-                style: poppinsTextStyle(fontWeight: AppFontWeight.semiBold),
+                style: poppinsTextStyle(
+                  fontWeight: AppFontWeight.semiBold,
+                  fontSize: 10,
+                ),
               ),
             ),
           ),

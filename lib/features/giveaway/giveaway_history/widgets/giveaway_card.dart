@@ -15,7 +15,6 @@ class GiveawayCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     if (giveawayHistory.isProductGiveaway) {
       return _ProductHistoryCard(giveawayHistory: giveawayHistory);
     }
@@ -38,8 +37,8 @@ class _ProductHistoryCard extends StatelessWidget {
         ? 'Product giveaway'
         : product.productName;
     final description = product.productDescription.isEmpty
-        ? giveawayHistory.description
-        : product.productDescription;
+        ? trimDescription(giveawayHistory.description)
+        : trimDescription(product.productDescription);
 
     return _HistoryCardShell(
       accentColor: const Color(0xFF7C3AED),
@@ -95,8 +94,24 @@ class _CashHistoryCard extends StatelessWidget {
       accentColor: const Color(0xFF039855),
       backgroundColor: const Color(0xFFF0FFF8),
       icon: Icons.account_balance_wallet_outlined,
+
       child: Row(
         children: [
+          Container(
+            width: 58,
+            height: 58,
+            padding: EdgeInsets.all(AppSpacing.sm),
+            decoration: BoxDecoration(
+              color: AppColors.white,
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Icon(
+              Icons.account_balance_wallet_outlined,
+              size: 35,
+              color: const Color(0xFF039855),
+            ),
+          ),
+          Gap.h(AppSpacing.md),
           Expanded(
             child: _HistoryTitleBlock(
               eyebrow: 'Cash claimed',
@@ -138,7 +153,7 @@ class _DataHistoryCard extends StatelessWidget {
 
     return _HistoryCardShell(
       accentColor: const Color(0xFF1570EF),
-      backgroundColor: const Color(0xFFF4F8FF),
+      backgroundColor: const Color.fromARGB(255, 231, 237, 249),
       icon: Icons.wifi_tethering_outlined,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -168,6 +183,28 @@ class _DataHistoryCard extends StatelessWidget {
   }
 }
 
+String trimDescription(String description) {
+  if (description.length <= 50) return description;
+  return '${description.substring(0, 50)}...';
+}
+
+String formatDateTime2(DateTime dateTime) {
+  final now = DateTime.now();
+  final difference = now.difference(dateTime);
+
+  if (difference.inSeconds < 60) {
+    return 'Just now';
+  } else if (difference.inMinutes < 60) {
+    return '${difference.inMinutes} minute${difference.inMinutes > 1 ? 's' : ''} ago';
+  } else if (difference.inHours < 24) {
+    return '${difference.inHours} hour${difference.inHours > 1 ? 's' : ''} ago';
+  } else if (difference.inDays < 7) {
+    return '${difference.inDays} day${difference.inDays > 1 ? 's' : ''} ago';
+  } else {
+    return '${dateTime.day}/${dateTime.month}/${dateTime.year}';
+  }
+}
+
 class _HistoryCardShell extends StatelessWidget {
   const _HistoryCardShell({
     required this.child,
@@ -187,7 +224,7 @@ class _HistoryCardShell extends StatelessWidget {
       width: double.infinity,
       padding: EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
-        color: backgroundColor,
+        color: Colors.white70,
         borderRadius: BorderRadius.circular(24),
         border: Border.all(color: accentColor.withValues(alpha: 0.12)),
         boxShadow: [
@@ -257,7 +294,7 @@ class _HistoryTitleBlock extends StatelessWidget {
         ),
         Gap.v(AppSpacing.xxs),
         Text(
-          '$subtitle • ${dateAgo(date)}',
+          '$subtitle • ${formatDateTime(date)}',
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           style: poppinsTextStyle(fontSize: 11, color: const Color(0xFF667085)),

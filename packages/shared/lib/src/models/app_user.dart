@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:shared/shared.dart';
 
@@ -77,7 +78,6 @@ class AppUser {
   );
   String get fullName => '$firstName  $lastName';
   factory AppUser.fromMap(Map<String, dynamic> map) {
-    
     final user = map.containsKey('user')
         ? (map['user'] as Map?)?.cast<String, dynamic>() ?? {}
         : map;
@@ -184,20 +184,32 @@ class HideHomeUI {
   final bool fund;
   final bool virtualCard;
   final bool tasks;
+  bool get any => all || transfer || fund || virtualCard || tasks;
 
-  factory HideHomeUI.fromJson(Map<String, dynamic> json) => HideHomeUI(
-        all: json['all'] as bool? ?? false,
-        fund: json['fund'] as bool? ?? false,
-        transfer: json['transfer'] as bool? ?? false,
-        virtualCard: json['virtual_card'] as bool? ?? false,
-        tasks: json['tasks'] as bool? ?? false,
-      );
+  factory HideHomeUI.fromJson(Map<String, dynamic> json) {
+    final meta = json['meta'] as Map<String, dynamic>? ?? {};
+
+    final android = meta['android'] as Map<String, dynamic>? ?? {};
+    final ios = meta['ios'] as Map<String, dynamic>? ?? {};
+
+    final settings = Platform.isIOS ? ios : android;
+    bool setting(String key) =>
+        settings.containsKey(key) ? settings[key] == true : json[key] == true;
+
+    return HideHomeUI(
+      all: json['all'] == true,
+      transfer: setting('transfer'),
+      fund: setting('fund'),
+      virtualCard: setting('virtual_card'),
+      tasks: setting('tasks'),
+    );
+  }
 
   Map<String, dynamic> toJson() => {
         'all': all,
         'virtual_card': virtualCard,
         'transfer': transfer,
         'fund': fund,
-        'tasks':tasks,
+        'tasks': tasks,
       };
 }

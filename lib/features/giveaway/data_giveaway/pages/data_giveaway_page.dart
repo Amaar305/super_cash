@@ -41,6 +41,12 @@ class _DataGiveawayViewState extends State<DataGiveawayView> {
   }
 
   @override
+  void dispose() {
+    hideLoadingOverlay();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return AppScaffold(
       appBar: AppBar(title: AppAppBarTitle('Data Giveaway')),
@@ -74,16 +80,9 @@ class _DataGiveawayViewState extends State<DataGiveawayView> {
                     children: [
                       DataGiveawayHeader(),
                       const Gap.v(AppSpacing.xlg),
+                      Text('Available Giveaway', style: context.titleMedium),
+                      const Gap.v(AppSpacing.lg),
                       DataNetworkFilterChips(),
-                      const Gap.v(AppSpacing.xlg),
-                      Text(
-                        'Available Giveaway',
-                        style: Theme.of(context).textTheme.titleMedium
-                            ?.copyWith(
-                              color: const Color(0xFF16233C),
-                              fontWeight: FontWeight.w600,
-                            ),
-                      ),
                       const Gap.v(AppSpacing.lg),
                     ],
                   ),
@@ -126,11 +125,21 @@ class DataGiveawayHeader extends StatelessWidget {
             icon: Icons.signal_cellular_alt,
             subtitle: '${displayGB}GB',
             footerTitle: 'Across all active drops',
+            extraWidget: SizedBox(
+              width: double.infinity,
+              height: 4,
+              child: LinearProgressIndicator(
+                value: 1,
+                color: Color(0xff006E2F),
+                borderRadius: BorderRadius.circular(999),
+                // minHeight: 4,
+              ),
+            ),
           ),
         ),
         Expanded(
           child: GiveawayAnalyticsHeaderItem(
-            title: 'AVAILABLE TO CLAIM',
+            title: 'AVAILABLE',
             icon: Icons.signal_cellular_alt,
             iconColor: Color(0xff006E2F),
             subtitle: '${state.availableGB.toStringAsFixed(0)}GB',
@@ -141,7 +150,7 @@ class DataGiveawayHeader extends StatelessWidget {
               width: double.infinity,
               height: 4,
               child: LinearProgressIndicator(
-                value: state.remainingPercent,
+                value: state.remainingPercent / 100,
                 color: Color(0xff006E2F),
                 borderRadius: BorderRadius.circular(999),
                 // minHeight: 4,

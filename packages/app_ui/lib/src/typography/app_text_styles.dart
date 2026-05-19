@@ -16,7 +16,7 @@ import 'package:flutter/material.dart';
 abstract class UITextStyle {
   static const _baseTextStyle = TextStyle(
     package: 'app_ui',
-    fontWeight: AppFontWeight.medium,
+    fontWeight: AppFontWeight.regular,
     fontFamily: 'Inter',
     decoration: TextDecoration.none,
     textBaseline: TextBaseline.alphabetic,
@@ -140,7 +140,7 @@ abstract class UITextStyle {
 abstract class ContentTextStyle {
   static const _baseTextStyle = TextStyle(
     package: 'app_ui',
-    fontWeight: AppFontWeight.medium,
+    fontWeight: AppFontWeight.regular,
     fontFamily: 'Inter',
     decoration: TextDecoration.none,
     textBaseline: TextBaseline.alphabetic,
@@ -239,6 +239,7 @@ abstract class ContentTextStyle {
     fontSize: 16,
     height: 1.5,
     letterSpacing: 0.5,
+    fontWeight: AppFontWeight.regular,
   );
 
   /// Body Text 2 Text Style (the default)
@@ -246,12 +247,13 @@ abstract class ContentTextStyle {
     fontSize: 14,
     height: 1.42,
     letterSpacing: 0.25,
+    fontWeight: AppFontWeight.regular,
   );
 
   /// Button Text Style
   static final TextStyle button = _baseTextStyle.copyWith(
     fontSize: 14,
-    fontWeight: AppFontWeight.bold,
+    fontWeight: AppFontWeight.regular,
     height: 1.42,
     letterSpacing: 0.1,
   );
@@ -261,6 +263,7 @@ abstract class ContentTextStyle {
     fontSize: 12,
     height: 1.33,
     letterSpacing: 0.4,
+    fontWeight: AppFontWeight.regular,
   );
 
   /// Overline Text Style
@@ -276,6 +279,7 @@ abstract class ContentTextStyle {
     fontSize: 11,
     height: 1.45,
     letterSpacing: 0.5,
+    fontWeight: AppFontWeight.regular,
   );
 }
 

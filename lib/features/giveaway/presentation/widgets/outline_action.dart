@@ -25,9 +25,9 @@ class OutlineAction extends StatelessWidget {
         height: 45,
         decoration: BoxDecoration(
           // color: Colors.white,
-          color: AppColors.darkGrey,
+          color: AppColors.blue,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(width: 1.2, color: Color(0xFFE6ECEF)),
+          // border: Border.all(width: 1.2, color: Color(0xFFE6ECEF)),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,

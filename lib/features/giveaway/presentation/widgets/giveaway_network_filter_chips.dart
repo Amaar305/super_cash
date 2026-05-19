@@ -31,10 +31,10 @@ class GiveawayNetworkFilterChips extends StatelessWidget {
               ),
               child: AnimatedContainer(
                 duration: 200.ms,
-                constraints: const BoxConstraints(minWidth: 80),
+                constraints: const BoxConstraints(minWidth: 70),
                 padding: const EdgeInsets.symmetric(
                   horizontal: AppSpacing.lg,
-                  vertical: AppSpacing.md,
+                  vertical: AppSpacing.sm,
                 ),
                 decoration: BoxDecoration(
                   color: isSelected

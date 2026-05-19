@@ -52,6 +52,7 @@ class _HomePageState extends State<HomePage> {
           } else {
             hideLoadingOverlay();
           }
+
           final update = state.homeSettings?.appUpdate;
           if (update != null) {
             _maybeShowAppUpdateDialog(context, update);

@@ -42,7 +42,7 @@ class AppTabItem extends StatelessWidget {
       child: Tappable(
         onTap: onTap,
         child: Container(
-          alignment: Alignment(0, 0),
+          alignment: Alignment.center,
           padding: EdgeInsets.symmetric(
             vertical: AppSpacing.sm,
             horizontal: AppSpacing.md,
@@ -53,9 +53,11 @@ class AppTabItem extends StatelessWidget {
           ),
           child: Text(
             label,
-            style: MonaSansTextStyle.label(
-              fontWeight: AppFontWeight.bold,
+            style: TextStyle(
+              fontFamily: 'MonaSans',
+              fontWeight: AppFontWeight.regular,
               color: activeTab ? activeTextColor : AppColors.white,
+              fontSize: 11,
             ),
           ),
         ),

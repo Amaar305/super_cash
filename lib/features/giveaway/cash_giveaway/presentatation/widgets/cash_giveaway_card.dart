@@ -44,6 +44,7 @@ class CashGiveawayCard extends StatelessWidget {
               CashClaimButton(
                 onPressed: () => onClaimed(cash),
                 isAvailable: cash.isAvailable,
+                quantityRemaining: cash.cashQuantityRemaining,
               ),
             ],
           ),
@@ -73,6 +74,14 @@ class CashGiveawayPercent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final percent =
+        (cashGiveawayItem.cashQuantity -
+            cashGiveawayItem.cashQuantityRemaining) /
+        cashGiveawayItem.cashQuantity;
+
+    final remaining =
+        cashGiveawayItem.cashQuantity - cashGiveawayItem.cashQuantityRemaining;
+
     return Column(
       spacing: AppSpacing.sm,
       children: [
@@ -87,7 +96,7 @@ class CashGiveawayPercent extends StatelessWidget {
               ),
             ),
             Text(
-              '${cashGiveawayItem.cashQuantityRemaining} of ${cashGiveawayItem.cashQuantity}',
+              '$remaining of ${cashGiveawayItem.cashQuantity}',
               style: poppinsTextStyle(
                 fontSize: 12,
                 fontWeight: AppFontWeight.semiBold,
@@ -99,10 +108,7 @@ class CashGiveawayPercent extends StatelessWidget {
           width: double.infinity,
           height: 8,
           child: LinearProgressIndicator(
-            value:
-                (cashGiveawayItem.cashQuantity -
-                    cashGiveawayItem.cashQuantityRemaining) /
-                cashGiveawayItem.cashQuantity,
+            value: percent,
             borderRadius: BorderRadius.circular(9999),
             color: Color(0xFFCA8A04),
           ),

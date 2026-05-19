@@ -1,4 +1,4 @@
-part of '../pages/product_giveaway_details_page.dart';
+part of '../pages/giveway_detail_page.dart';
 
 class _HeroCard extends StatelessWidget {
   const _HeroCard({required this.details});
@@ -14,10 +14,7 @@ class _HeroCard extends StatelessWidget {
         gradient: const LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [
-            ProductGiveawayDetailsPage._heroTop,
-            ProductGiveawayDetailsPage._heroBottom,
-          ],
+          colors: [GivewayDetailPage._heroTop, GivewayDetailPage._heroBottom],
         ),
       ),
       child: ClipRRect(
@@ -51,6 +48,8 @@ class _HeroCard extends StatelessWidget {
                     constraints: const BoxConstraints(maxWidth: 190),
                     child: Text(
                       details.heroTitle,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                       style: poppinsTextStyle(
                         color: AppColors.white,
                         fontSize: 28,

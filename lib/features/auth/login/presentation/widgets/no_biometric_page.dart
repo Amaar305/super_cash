@@ -5,9 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../auth.dart';
 
 class NoBiometricPage extends StatelessWidget {
-  const NoBiometricPage({
-    super.key,
-  });
+  const NoBiometricPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +35,7 @@ class NoBiometricPage extends StatelessWidget {
                   style: context.bodyMedium?.copyWith(
                     fontSize: AppSpacing.lg,
                     fontFamily: 'MonaSans',
-                    fontWeight: AppFontWeight.black,
+
                     height: 1.6,
                   ),
                 ),
@@ -45,7 +43,7 @@ class NoBiometricPage extends StatelessWidget {
                 PrimaryButton(
                   label: 'Login with Password',
                   onPressed: context.read<LoginCubit>().switchToPasswordLogin,
-                )
+                ),
               ],
             ),
           ),

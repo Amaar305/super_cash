@@ -6,7 +6,7 @@ enum AirtimeGiveawayStatus {
   loaded,
   processing,
   processed,
-processingError,
+  processingError,
   failure;
 
   bool get isInitial => this == AirtimeGiveawayStatus.initial;
@@ -24,7 +24,6 @@ class AirtimeGiveawayState extends Equatable {
   final String? errorMessage;
   final AirtimeGiveawayPin? claimedPin;
 
-
   const AirtimeGiveawayState._({
     required this.status,
     required this.giveawayPins,
@@ -38,6 +37,24 @@ class AirtimeGiveawayState extends Equatable {
         giveawayPins: const [],
         errorMessage: '',
       );
+  List<AirtimeGiveawayPin> get unClaimedPin =>
+      giveawayPins.where((pin) => !pin.isUsed).toList();
+
+  double get totalAmount => giveawayPins.fold(
+    0,
+    (previousValue, element) => element.amount + previousValue,
+  );
+  double get totalUnClaimedAmount => unClaimedPin.fold(
+    0,
+    (previousValue, element) => element.amount + previousValue,
+  );
+
+  double get remainingPercent {
+    var total = totalAmount;
+    var remaining = totalUnClaimedAmount;
+
+    return total == 0 ? 0 : (remaining / total) * 100;
+  }
 
   @override
   List<Object?> get props => [status, giveawayPins, errorMessage, claimedPin];

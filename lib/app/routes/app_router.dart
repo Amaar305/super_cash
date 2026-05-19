@@ -320,17 +320,31 @@ class AppRouter {
             builder: (_, state) {
               final giveawayTypeId =
                   state.pathParameters['giveaway_type_id'] ?? 'none';
+              final enabled = state.extra as bool? ?? false;
 
-              return ProductGiveawayPage(giveawayTypeId: giveawayTypeId);
+              return ProductGiveawayPage(
+                giveawayTypeId: giveawayTypeId,
+                enabled: enabled,
+              );
             },
           ),
           GoRoute(
-            name: RNames.productGiveawayDetails,
-            path: 'product-giveaway-details',
+            name: RNames.givewayDetail,
+            path: 'giveway-detail/:giveaway_type_id',
             builder: (_, state) {
-              final giveaway = state.extra as Giveaway;
+              final extra = state.extra;
+              final routeData = extra is GivewayDetailRouteData
+                  ? extra
+                  : extra is Giveaway
+                  ? GivewayDetailRouteData.fromGiveaway(extra)
+                  : null;
 
-              return ProductGiveawayDetailsPage(giveaway: giveaway);
+              if (routeData == null) return const NotFoundPage();
+
+              return GivewayDetailPage(
+                giveaway: routeData.giveaway,
+                destinationRouteName: routeData.destinationRouteName,
+              );
             },
           ),
           GoRoute(

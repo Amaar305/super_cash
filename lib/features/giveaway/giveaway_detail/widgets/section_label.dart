@@ -1,4 +1,4 @@
-part of '../pages/product_giveaway_details_page.dart';
+part of '../pages/giveway_detail_page.dart';
 
 class _SectionLabel extends StatelessWidget {
   const _SectionLabel({required this.text});
@@ -10,7 +10,7 @@ class _SectionLabel extends StatelessWidget {
     return Text(
       text,
       style: poppinsTextStyle(
-        color: ProductGiveawayDetailsPage._sectionTitle,
+        color: GivewayDetailPage._sectionTitle,
         fontSize: 11,
         fontWeight: AppFontWeight.semiBold,
       ),

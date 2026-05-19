@@ -29,19 +29,19 @@ class _AirtimeGiveawaySuccessDialogState
   });
 
   void dial() {
-    final dial = _pin.loadingCode ?? '*311*${_pin.maskedPin}#';
+    final dial = '*311*${_pin.pin}#';
     dialNumber(dial);
   }
 
   void copy() {
-    copyText(context, _pin.maskedPin, 'Copied');
+    copyText(context, _pin.pin, 'Copied');
   }
 
   AirtimeGiveawayPin get _pin => widget.airtimeGiveawayPin;
 
   @override
   Widget build(BuildContext context) {
-    final pinText = _showPin ? _pin.maskedPin : '*********';
+    final pinText = _showPin ? _pin.pin : _pin.maskedPin;
 
     return Dialog(
       backgroundColor: Colors.transparent,

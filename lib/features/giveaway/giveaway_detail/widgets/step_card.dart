@@ -1,4 +1,4 @@
-part of '../pages/product_giveaway_details_page.dart';
+part of '../pages/giveway_detail_page.dart';
 
 class _StepCard extends StatelessWidget {
   const _StepCard({required this.step});
@@ -12,7 +12,7 @@ class _StepCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: ProductGiveawayDetailsPage._cardBorder),
+        border: Border.all(color: GivewayDetailPage._cardBorder),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -22,7 +22,7 @@ class _StepCard extends StatelessWidget {
             height: 24,
             decoration: const BoxDecoration(
               shape: BoxShape.circle,
-              color: ProductGiveawayDetailsPage._primaryCta,
+              color: GivewayDetailPage._primaryCta,
             ),
             child: Center(
               child: Text(
@@ -52,9 +52,9 @@ class _StepCard extends StatelessWidget {
                 Text(
                   step.description,
                   style: poppinsTextStyle(
-                    color: ProductGiveawayDetailsPage._softMuted,
+                    color: GivewayDetailPage._softMuted,
                     fontSize: 10,
-                    fontWeight: AppFontWeight.medium,
+                    fontWeight: AppFontWeight.light,
                   ),
                 ),
               ],

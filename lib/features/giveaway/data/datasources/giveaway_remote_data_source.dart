@@ -96,17 +96,20 @@ class GiveawayRemoteDataSourceImpl implements GiveawayRemoteDataSource {
     required String giveawayTypeId,
   }) async {
     final response = await authClient.request(
-      method: 'GET',
+      method: 'POST',
       path: 'giveaway/check-giveaway-eligibility/',
-      queryParameters: {'giveaway_type_id': giveawayTypeId},
+      body: jsonEncode({'giveaway_type_id': giveawayTypeId}),
     );
 
     final decoded = jsonDecode(response.body);
-    final data = decoded is Map<String, dynamic>
-        ? decoded
-        : (decoded as Map<String, dynamic>)['data'] as Map<String, dynamic>? ??
-              ['data'];
-    ['data'];
+    if (decoded is! Map<String, dynamic>) {
+      return const GiveawayEligibilityResult(
+        isEligible: false,
+        message: 'Unable to check eligibility',
+      );
+    }
+
+    final data = decoded['data'];
 
     if (data is Map<String, dynamic>) {
       return GiveawayEligibilityResult.fromJson(data);
@@ -485,8 +488,6 @@ class GiveawayRemoteDataSourceImpl implements GiveawayRemoteDataSource {
     final data = decoded is List
         ? decoded
         : (decoded as Map<String, dynamic>)['data'] as List<dynamic>? ?? [];
-
-
 
     return data
         .map((e) => DirectAirtimeModel.fromJson(e as Map<String, dynamic>))

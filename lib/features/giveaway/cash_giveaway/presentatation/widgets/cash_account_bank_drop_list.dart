@@ -20,7 +20,7 @@ class CashAccountBankDropList extends StatelessWidget {
       (CashGiveawayCubit element) => element.state.selectedBank,
     );
     return Column(
-      spacing: AppSpacing.md,
+      spacing: AppSpacing.sm,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         AppDropdownSearchField(

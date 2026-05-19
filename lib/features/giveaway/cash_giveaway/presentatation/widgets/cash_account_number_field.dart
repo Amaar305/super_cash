@@ -70,7 +70,7 @@ class _CashAccountNumberFieldState extends State<CashAccountNumberField> {
           cubit.state.status.isLoading || cubit.state.status.isValidated,
     );
     return Column(
-      spacing: AppSpacing.md,
+      spacing: AppSpacing.sm,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         FieldLabelTitle('Select Bank'),

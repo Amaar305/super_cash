@@ -35,7 +35,7 @@ class DataGiveawayListView extends StatelessWidget {
           network: giveaway.network,
           dataQuantity: giveaway.dataQuantity,
           dataQuantityRemaining: giveaway.dataQuantityRemaining,
-          isAvailable: giveaway.isAvailable,
+          unAvailable: giveaway.outOfData,
           onClaimed: () async {
             final cubit = context.read<DataGiveawayCubit>();
             final succes = await showModalBottomSheet<DataGiveawayItem?>(
@@ -53,7 +53,9 @@ class DataGiveawayListView extends StatelessWidget {
             );
             if (succes != null && context.mounted) {
               context.showConfirmationBottomSheet(
-                title: 'Your data has been successfully sent..',
+                title: 'Congratulation!',
+                description:
+                    'Your data of ${succes.dataName} has been sent successfully.',
                 okText: 'Done',
               );
             }

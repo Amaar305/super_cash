@@ -15,13 +15,9 @@ class GiveawayHistoryMetricsSection extends StatelessWidget {
     final airtimeAmount = context.select(
       (GiveawayHistoryCubit cubit) => cubit.state.totalAirtimeAmount,
     );
+
     final dataAmount = context.select((GiveawayHistoryCubit cubit) {
-      return cubit.state.data.fold<double>(0, (total, history) {
-        if (!history.giveawayType.code.contains('data')) {
-          return total;
-        }
-        return total + (double.tryParse(history.amount) ?? 0);
-      });
+      return cubit.state.totalGB;
     });
 
     return ClipRRect(
@@ -89,7 +85,7 @@ class GiveawayHistoryMetricsSection extends StatelessWidget {
                       Expanded(
                         child: _MetricTile(
                           label: 'Data',
-                          value: '${dataAmount.toStringAsFixed(0)}GB',
+                          value: '${dataAmount}GB',
                           icon: Icons.signal_cellular_alt_rounded,
                           color: const Color(0xffFFD6A5),
                         ),

@@ -4,8 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:super_cash/core/common/common.dart';
 import 'package:super_cash/features/giveaway/giveaway.dart';
 
-class AirtimeGiveawayListView extends StatelessWidget {
-  const AirtimeGiveawayListView({super.key});
+class AirtimeGiveawayGridView extends StatelessWidget {
+  const AirtimeGiveawayGridView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,19 @@ class AirtimeGiveawayListView extends StatelessWidget {
     );
 
     if (pins.isEmpty) {
-      return AppEmptyState(title: 'No available pins');
+      return SliverToBoxAdapter(
+        child: AppEmptyState(
+          title: 'No available pins',
+          icon: Icons.phone_iphone_outlined,
+          action: TextButton.icon(
+            onPressed: context
+                .read<AirtimeGiveawayCubit>()
+                .getAirtimeGiveawayPins,
+            label: Text('Refresh'),
+            icon: Icon(Icons.refresh),
+          ),
+        ),
+      );
     }
 
     void onSuccess(AirtimeGiveawayPin giveawayPin) {
@@ -28,7 +40,7 @@ class AirtimeGiveawayListView extends StatelessWidget {
       );
     }
 
-    return GridView.builder(
+    return SliverGrid.builder(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         crossAxisSpacing: 10,

@@ -41,6 +41,12 @@ class _GiveawaysViewState extends State<GiveawaysView> {
   }
 
   @override
+  void dispose() {
+    hideLoadingOverlay();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return AppScaffold(
       appBar: AppBar(
@@ -60,26 +66,25 @@ class _GiveawaysViewState extends State<GiveawaysView> {
               } else {
                 hideLoadingOverlay();
               }
-              if (state.status.isFailure && state.errorMessage != null) {
+              if (state.status.isFailure &&
+                  state.errorMessage != null &&
+                  state.errorMessage!.isNotEmpty) {
                 openSnackbar(
-                  SnackbarMessage.error(title: state.errorMessage ?? ''),
+                  SnackbarMessage.error(title: state.errorMessage!),
                   clearIfQueue: true,
                 );
               }
             },
             buildWhen: (previous, current) => previous.types != current.types,
-
             builder: (context, state) {
               return Column(
                 children: [
                   _HistoryWinnersRow(),
                   Gap.v(14),
                   FeaturedGiveawayCard(),
-
                   Gap.v(18),
                   GiveawayStatusLineWidget(),
                   Gap.v(16),
-
                   LiveAndUpcomingGiveaways(),
                 ],
               );
@@ -106,6 +111,11 @@ class LiveAndUpcomingGiveaways extends StatelessWidget {
         iconSize: 30,
         height: 70,
         width: 70,
+        action: TextButton.icon(
+          onPressed: context.read<GiveawayCubit>().getGiveaways,
+          label: Text('Refresh'),
+          icon: Icon(Icons.refresh),
+        ),
       );
     }
 
@@ -114,58 +124,38 @@ class LiveAndUpcomingGiveaways extends StatelessWidget {
         return;
       }
 
-      if (giveaway.giveawayType.code == 'airtime-direct') {
-        context.pushNamed(
-          RNames.directAirtimeGiveaway,
-          pathParameters: {
-            'giveaway_type_id': giveaway.giveawayType.id.toString(),
-          },
-        );
-      } else if (giveaway.giveawayType.code.contains('airtime')) {
-        context.pushNamed(
-          RNames.airtimeGiveaway,
-          pathParameters: {
-            'giveaway_type_id': giveaway.giveawayType.id.toString(),
-          },
-        );
-      } else if (giveaway.giveawayType.code.contains('product')) {
-        context.pushNamed(
-          RNames.productGiveaway,
-          pathParameters: {
-            'giveaway_type_id': giveaway.giveawayType.id.toString(),
-          },
-        );
-      } else if (giveaway.giveawayType.code.contains('data')) {
-        context.pushNamed(
-          RNames.dataGiveaway,
-          pathParameters: {
-            'giveaway_type_id': giveaway.giveawayType.id.toString(),
-          },
-        );
-      } else if (giveaway.giveawayType.code.contains('cash')) {
-        context.pushNamed(
-          RNames.cashGiveaway,
-          pathParameters: {
-            'giveaway_type_id': giveaway.giveawayType.id.toString(),
-          },
-        );
-      } else {
+      final code = giveaway.giveawayType.code;
+      final isSupported =
+          code == 'airtime-direct' ||
+          code.contains('airtime') ||
+          code.contains('product') ||
+          code.contains('data') ||
+          code.contains('cash');
+
+      if (!isSupported) {
         return;
       }
+
+      context.pushNamed(
+        RNames.givewayDetail,
+        pathParameters: {
+          'giveaway_type_id': giveaway.giveawayType.id.toString(),
+        },
+        extra: GivewayDetailRouteData.fromGiveaway(giveaway),
+      );
     }
 
     return Column(
       spacing: 12,
       children: otherGiveaways.map((giveaway) {
         return GiveawayTile(
-          icon: getIcon(giveaway.giveawayType.code),
+          icon: _getIcon(giveaway.giveawayType.code),
           iconBg: Color(0xFFE7FBF2),
           iconColor: AppColors.blue,
           title: giveaway.giveawayType.name,
           subtitle: giveaway.description,
           status: giveaway.status,
           endsAt: giveaway.endsAt,
-
           isDisabled:
               giveaway.status.isCancelled || giveaway.status.isCompleted,
           onTap: () => naviagte(context, giveaway),
@@ -175,7 +165,7 @@ class LiveAndUpcomingGiveaways extends StatelessWidget {
     );
   }
 
-  IconData getIcon(String code) {
+  IconData _getIcon(String code) {
     switch (code) {
       case 'airtime-pin':
         return Icons.local_phone_rounded;
@@ -227,7 +217,7 @@ class HistoryButton extends StatelessWidget {
         decoration: BoxDecoration(
           // gradient: AppColors.walletGradient,
           borderRadius: BorderRadius.circular(12),
-          color: AppColors.darkGrey,
+          color: AppColors.blue,
         ),
 
         child: Center(

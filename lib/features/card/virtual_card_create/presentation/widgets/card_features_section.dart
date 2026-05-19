@@ -70,7 +70,8 @@ class _CardFeaturesSectionState extends State<CardFeaturesSection> {
                   Flexible(
                     child: Text(
                       AppStrings.cardFeaturesList[index],
-                      style: MonaSansTextStyle.label(
+                      style: TextStyle(
+                        fontFamily: 'MonaSans',
                         fontSize: 10,
                         fontWeight: AppFontWeight.semiBold,
                       ),

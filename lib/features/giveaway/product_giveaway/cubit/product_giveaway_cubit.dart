@@ -19,12 +19,13 @@ class ProductGiveawayCubit extends Cubit<ProductGiveawayState> {
     required AddProductDeliveryAddressUseCase addProductDeliveryAddressUseCase,
     required String giveawayTypeId,
     required AppUser user,
+    required bool enabled,
   }) : _getProductsGiveawayUseCase = getProductsGiveawayUseCase,
        _claimProductGiveawayUseCase = claimProductGiveawayUseCase,
        _addProductDeliveryAddressUseCase = addProductDeliveryAddressUseCase,
        _giveawayTypeId = giveawayTypeId,
 
-       super(ProductGiveawayState.initial(user: user));
+       super(ProductGiveawayState.initial(user: user, enabled: enabled));
 
   Future<void> getProducts() async {
     try {
@@ -67,6 +68,15 @@ class ProductGiveawayCubit extends Cubit<ProductGiveawayState> {
     void Function(ProductGiveawayModel product)? onClaimed,
   ) async {
     try {
+      if (!state.enabled) {
+        emit(
+          state.copyWith(
+            status: ProductGiveawayStatus.failed,
+            message: 'Product giveaway is currently unavailable.',
+          ),
+        );
+        return;
+      }
       emit(state.copyWith(status: ProductGiveawayStatus.loading));
 
       final res = await _claimProductGiveawayUseCase(
@@ -210,6 +220,15 @@ class ProductGiveawayCubit extends Cubit<ProductGiveawayState> {
     String productId, {
     void Function(ProductClaimAddressModel address)? onSuccess,
   }) async {
+    if (!state.enabled) {
+      emit(
+        state.copyWith(
+          status: ProductGiveawayStatus.failed,
+          message: 'Product giveaway is currently unavailable.',
+        ),
+      );
+      return;
+    }
     try {
       final fullName = FullName.dirty(state.fullName.value);
       final phone = Phone.dirty(state.phone.value);

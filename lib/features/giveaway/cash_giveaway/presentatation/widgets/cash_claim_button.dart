@@ -8,19 +8,31 @@ class CashClaimButton extends StatelessWidget {
     super.key,
     required this.onPressed,
     this.isAvailable = true,
+    required this.quantityRemaining,
   });
   final VoidCallback onPressed;
   final bool isAvailable;
+  final int quantityRemaining;
 
   @override
   Widget build(BuildContext context) {
     final isLoading = context.select(
       (CashGiveawayCubit c) => c.state.status.isLoading,
     );
+    final isPurchasable = quantityRemaining > 0 || !isAvailable;
     return PrimaryButton(
       isLoading: isLoading,
-      label: !isAvailable ? 'Not Available' : 'Claim Now',
-      onPressed: !isAvailable ? null : onPressed,
+      label: !isAvailable
+          ? 'Not Available'
+          : !isPurchasable
+          ? 'Claimed'
+          : 'Claim Now',
+      onPressed: !isAvailable
+          ? null
+          : !isPurchasable
+          ? () {}
+          : onPressed,
+      fontColor: !isPurchasable ? null : AppColors.black,
     );
   }
 }

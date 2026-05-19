@@ -67,28 +67,31 @@ class CashGiveawayState extends Equatable {
     );
   }
 
-  int get totalCash => giveaways.fold(
-    1,
-    (previousValue, item) => (item.amount * item.cashQuantity).toInt(),
-  );
+  List<CashGiveawayItem> get plans =>
+      giveaways.where((cash) => cash.isAvailable).toList();
 
-  int get availableCash => giveaways.fold(
+  int get totalCash => plans.fold(0, (previousValue, item) {
+    return (item.amount * item.cashQuantity).toInt();
+  });
+
+  int get availableCash => plans.fold(
     0,
     (previousValue, item) =>
         previousValue + (item.amount * item.cashQuantityRemaining).toInt(),
   );
 
   double get remainingPercent {
-    var total = 0.0;
-    var remaining = 0.0;
+    var total = totalCash;
+    var remaining = availableCash;
 
-    for (final item in giveaways) {
-      final amount = item.amount;
-      total += amount * item.cashQuantity;
-      remaining += amount * item.cashQuantityRemaining;
-    }
+    return total == 0 ? 0 : (remaining / total) * 100;
+  }
 
-    return total == 0 ? 0 : remaining / total;
+  double get remainingPercentValue {
+    var total = totalCash;
+    var remaining = availableCash;
+
+    return total == 0 ? 0 : (total - remaining) / total;
   }
 
   @override

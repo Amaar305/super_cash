@@ -53,4 +53,19 @@ class HomeUserRepositoryImpl implements HomeUserRepository {
       return left(apiErrorHandler.handleError(error));
     }
   }
+  
+  @override
+  Future<Either<Failure, ({Account? account, String message, String status})>> createPalmPayAccount() async {
+
+      try {
+        if (!await networkInfo.isConnected) {
+          return left(NetworkFailure("No internet connection."));
+        }
+        final res = await homeUserRemoteDataSource.createPalmPayAccount();
+  
+        return right(res);
+      } catch (error){
+        return left(apiErrorHandler.handleError(error));
+      }
+  }
 }

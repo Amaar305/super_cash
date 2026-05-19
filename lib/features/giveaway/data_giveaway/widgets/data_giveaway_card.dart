@@ -10,7 +10,7 @@ class DataGiveawayCard extends StatelessWidget {
     required this.network,
     required this.dataQuantity,
     required this.dataQuantityRemaining,
-    required this.isAvailable,
+    required this.unAvailable,
     super.key,
     required this.onClaimed,
     this.isAirtime = false,
@@ -22,7 +22,7 @@ class DataGiveawayCard extends StatelessWidget {
   final String network;
   final int dataQuantity;
   final int dataQuantityRemaining;
-  final bool isAvailable;
+  final bool unAvailable;
 
   final VoidCallback onClaimed;
   final bool isAirtime;
@@ -33,7 +33,7 @@ class DataGiveawayCard extends StatelessWidget {
     final accentColor = _networkColor(network);
     final progress = dataQuantity == 0
         ? 0.0
-        : dataQuantityRemaining / dataQuantity;
+        : (dataQuantity - dataQuantityRemaining) / dataQuantity;
     final slotsLabel = '$dataQuantityRemaining slots available';
     final planSize = isAirtime ? dataSize : _formatDataSize(dataSize);
     final networkLabel = network.toUpperCase();
@@ -51,7 +51,7 @@ class DataGiveawayCard extends StatelessWidget {
             children: [
               _CardBadge(label: network),
               const Spacer(),
-              _StatusPill(isAvailable: isAvailable),
+              _StatusPill(isAvailable: unAvailable),
             ],
           ),
           const Gap.v(AppSpacing.lg),
@@ -76,9 +76,8 @@ class DataGiveawayCard extends StatelessWidget {
           Text(
             dataName,
             style: poppinsTextStyle(
-              fontSize: 14,
               fontWeight: FontWeight.w500,
-              color: const Color(0xFF8F99AA),
+              color: const Color(0xFF696A6C),
             ),
           ),
           const Gap.v(AppSpacing.lg),
@@ -119,7 +118,7 @@ class DataGiveawayCard extends StatelessWidget {
             width: double.infinity,
             child: PrimaryButton(
               // isLoading: is,
-              onPressed: isAvailable ? onClaimed : null,
+              onPressed: !unAvailable ? onClaimed : null,
               label: buttonLabel ?? 'Claim Data',
             ),
           ),

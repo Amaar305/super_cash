@@ -142,6 +142,7 @@ enum UpcomingGiveawayStatus {
   bool get isCancelled=> this==UpcomingGiveawayStatus.cancelled;
 
   bool get isCompleted=> this==UpcomingGiveawayStatus.completed;
+  bool get isOngoing=> this==UpcomingGiveawayStatus.ongoing;
 
   static UpcomingGiveawayStatus fromString(String? value) {
     if (value == null) return UpcomingGiveawayStatus.upcoming;

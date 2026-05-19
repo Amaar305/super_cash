@@ -13,6 +13,8 @@ class CashGiveawayItem {
   final DateTime updatedAt;
   double get amount => double.tryParse(cashAmount) ?? 0;
   String get amountFixed => amount.planDisplayAmount;
+
+  bool get outOfCash => cashQuantityRemaining < 1;
   // String get prefixAmount=> amount;
 
   const CashGiveawayItem({

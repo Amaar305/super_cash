@@ -50,7 +50,7 @@ class _ReferralFieldState extends State<ReferralField> {
       children: [
         // AppTextFieldLabel(AppStrings.password),
         AppTextField.underlineBorder(
-          hintText: 'Referral (Optional)',
+          hintText: 'Referral Phone No. (Optional)',
           prefixIcon: const Icon(
             Icons.person_add_alt,
             size: 24,

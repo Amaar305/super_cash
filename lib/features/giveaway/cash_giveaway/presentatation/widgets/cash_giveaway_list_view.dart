@@ -10,7 +10,7 @@ class CashGiveawayListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final giveaways = context.select(
-      (CashGiveawayCubit element) => element.state.giveaways,
+      (CashGiveawayCubit element) => element.state.plans,
     );
     if (giveaways.isEmpty) {
       return AppEmptyState(
@@ -43,6 +43,9 @@ class CashGiveawayListView extends StatelessWidget {
                       isDismissible: false,
                       enableDrag: false,
                       showDragHandle: false,
+                      constraints: BoxConstraints(
+                        maxHeight: context.screenHeight * 0.7,
+                      ),
                       builder: (context) {
                         return BlocProvider.value(
                           value: cubit,
@@ -52,7 +55,7 @@ class CashGiveawayListView extends StatelessWidget {
                     );
                 if (success != null && context.mounted) {
                   context.showConfirmationBottomSheet(
-                    title: 'Your account details have been submitted.',
+                    title: 'Congratulation!',
                     okText: 'Done',
                     description:
                         'We will send ${cashItem.amountFixed} to '

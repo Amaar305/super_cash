@@ -1,4 +1,4 @@
-part of '../pages/product_giveaway_details_page.dart';
+part of '../pages/giveway_detail_page.dart';
 
 class _HeroImage extends StatelessWidget {
   const _HeroImage({required this.imageUrl});

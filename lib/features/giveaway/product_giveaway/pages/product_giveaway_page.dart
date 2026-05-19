@@ -9,8 +9,13 @@ import 'package:super_cash/core/common/common.dart';
 import 'package:super_cash/features/giveaway/giveaway.dart';
 
 class ProductGiveawayPage extends StatelessWidget {
-  const ProductGiveawayPage({super.key, required this.giveawayTypeId});
+  const ProductGiveawayPage({
+    super.key,
+    required this.giveawayTypeId,
+    required this.enabled,
+  });
   final String giveawayTypeId;
+  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +29,7 @@ class ProductGiveawayPage extends StatelessWidget {
             serviceLocator<ClaimProductGiveawayUseCase>(),
         giveawayTypeId: giveawayTypeId,
         user: context.read<AppCubit>().state.user!,
+        enabled: enabled,
       ),
       child: PoductGiveawayView(),
     );
@@ -44,6 +50,12 @@ class _PoductGiveawayViewState extends State<PoductGiveawayView> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<ProductGiveawayCubit>().getProducts();
     });
+  }
+
+  @override
+  void dispose() {
+    hideLoadingOverlay();
+    super.dispose();
   }
 
   @override
@@ -104,6 +116,16 @@ class ProductHeader extends StatelessWidget {
             icon: Icons.production_quantity_limits,
             subtitle: totalProduct.planDisplayAmount,
             footerTitle: 'Across all active drops',
+            extraWidget: SizedBox(
+              width: double.infinity,
+              height: 4,
+              child: LinearProgressIndicator(
+                value: 1,
+                color: Color(0xff006E2F),
+                borderRadius: BorderRadius.circular(999),
+                // minHeight: 4,
+              ),
+            ),
           ),
         ),
         Expanded(
@@ -117,7 +139,7 @@ class ProductHeader extends StatelessWidget {
               width: double.infinity,
               height: 4,
               child: LinearProgressIndicator(
-                value: remainingPercent,
+                value: remainingPercent / 100,
                 color: Color(0xff006E2F),
                 borderRadius: BorderRadius.circular(999),
                 // minHeight: 4,
@@ -136,7 +158,7 @@ class _ProductListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final products = context.select(
-      (ProductGiveawayCubit cubit) => cubit.state.products,
+      (ProductGiveawayCubit cubit) => cubit.state.availableProducts,
     );
     if (products.isEmpty) {
       return AppEmptyState(
@@ -149,7 +171,8 @@ class _ProductListView extends StatelessWidget {
         ),
       );
     }
-    return ListView.builder(
+    return ListView.separated(
+      separatorBuilder: (_, _) => Gap.v(AppSpacing.md),
       itemCount: products.length,
       padding: EdgeInsets.all(AppSpacing.lg),
       itemBuilder: (context, index) {
@@ -178,10 +201,10 @@ class _ProductListView extends StatelessWidget {
 
             if (succes != null && context.mounted) {
               context.showConfirmationBottomSheet(
-                title: 'Your product will be shipped shortly.',
+                title: 'Your shipping address has been recieved.',
                 okText: 'Done',
                 description:
-                    "Your product's delivery status is ${succes.deliveryStatus}. Will arrive within 2 working days.",
+                    "Your claimed product will be delivered to the provided address shortly. Make your provided phone number is available.",
               );
             }
           },

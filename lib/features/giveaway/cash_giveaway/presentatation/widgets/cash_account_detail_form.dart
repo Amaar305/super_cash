@@ -13,31 +13,19 @@ class CashAccountDetailForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      spacing: 20,
+      spacing: 16,
       children: [
         Text(
           'Account Information',
-          style: poppinsTextStyle(fontWeight: AppFontWeight.bold, fontSize: 20),
+          style: poppinsTextStyle(fontWeight: AppFontWeight.bold, fontSize: 16),
         ),
         Gap.v(AppSpacing.xs),
         CashAccountBankDropList(),
         CashAccountNumberField(),
-        Align(
-          alignment: Alignment.topRight,
-          child: TextButton(
-            onPressed: context.read<CashGiveawayCubit>().validateBank,
-            child: Text(
-              'VERIFY ACCOUNT',
-              style: poppinsTextStyle(
-                fontWeight: AppFontWeight.bold,
-                color: Color(0xFF006E2F),
-              ),
-            ),
-          ),
-        ),
 
         CashValidatedAccount(),
         _AddBUtton(cashId: cashItem.id),
+        Gap.v(AppSpacing.lg),
       ],
     );
   }
@@ -52,6 +40,18 @@ class _AddBUtton extends StatelessWidget {
     final isLoading = context.select(
       (CashGiveawayCubit element) => element.state.status.isLoading,
     );
+    final isValidated = context.select<CashGiveawayCubit, bool>(
+      (value) => value.state.status.isValidated,
+    );
+    if (!isValidated) {
+      return PrimaryButton(
+        isLoading: isLoading,
+        label: 'Verify Account',
+        onPressed: () {
+          context.read<CashGiveawayCubit>().validateBank();
+        },
+      );
+    }
     return PrimaryButton(
       isLoading: isLoading,
       label: 'Confirm Withdraw',

@@ -57,8 +57,8 @@ class AppRoutes {
       '$giveaway/data-giveaway/:giveaway_type_id';
   static const String productGiveaway =
       '$giveaway/product-giveaway/:giveaway_type_id';
-  static const String productGiveawayDetails =
-      '$giveaway/product-giveaway-details';
+  static const String givewayDetail =
+      '$giveaway/giveway-detail/:giveaway_type_id';
   static const String cashGiveaway =
       '$giveaway/cash-giveaway/:giveaway_type_id';
 
@@ -125,12 +125,12 @@ class RNames {
   static const String airtimeGiveaway = 'airtimeGiveaway';
   static const String dataGiveaway = 'dataGiveaway';
   static const String productGiveaway = 'productGiveaway';
-  static const String productGiveawayDetails = 'productGiveawayDetails';
+  static const String givewayDetail = 'givewayDetail';
   static const String cashGiveaway = 'cashGiveaway';
   static const String cableGiveaway = 'cableGiveaway';
   static const String electricityGiveaway = 'electricityGiveaway';
   static const String giveawayHistory = 'giveawayHistory';
   static const String giveawayWinners = 'giveawayWinners';
 
-  static const String directAirtimeGiveaway='directAirtimeGiveaway';
+  static const String directAirtimeGiveaway = 'directAirtimeGiveaway';
 }

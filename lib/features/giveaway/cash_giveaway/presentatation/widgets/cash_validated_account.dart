@@ -32,6 +32,7 @@ class CashValidatedAccount extends StatelessWidget {
               style: poppinsTextStyle(
                 fontWeight: AppFontWeight.medium,
                 fontSize: 16,
+                color: AppColors.green,
               ),
             ),
             Icon(Icons.done, color: AppColors.green),

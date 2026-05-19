@@ -16,14 +16,33 @@ class GiveawayHistoryPage extends StatelessWidget {
       create: (context) => GiveawayHistoryCubit(
         getGiveawayHistoriesUseCase:
             serviceLocator<GetGiveawayHistoriesUseCase>(),
-      )..getHistories(),
+      ),
       child: GiveawayHistoryView(),
     );
   }
 }
 
-class GiveawayHistoryView extends StatelessWidget {
+class GiveawayHistoryView extends StatefulWidget {
   const GiveawayHistoryView({super.key});
+
+  @override
+  State<GiveawayHistoryView> createState() => _GiveawayHistoryViewState();
+}
+
+class _GiveawayHistoryViewState extends State<GiveawayHistoryView> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<GiveawayHistoryCubit>().getHistories();
+    });
+  }
+
+  @override
+  void dispose() {
+    hideLoadingOverlay();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,14 +52,17 @@ class GiveawayHistoryView extends StatelessWidget {
       body: BlocConsumer<GiveawayHistoryCubit, GiveawayHistoryState>(
         listenWhen: (previous, current) => previous.status != current.status,
         listener: (context, state) {
+          final messsage = state.message;
           if (state.status.isLoading) {
             showLoadingOverlay(context);
           } else {
             hideLoadingOverlay();
           }
-          if (state.status.isFailure && state.message != null) {
+          if (state.status.isFailure &&
+              messsage != null &&
+              messsage.isNotEmpty) {
             openSnackbar(
-              SnackbarMessage.error(title: state.message ?? ''),
+              SnackbarMessage.error(title: messsage),
               clearIfQueue: true,
             );
           }
@@ -55,7 +77,10 @@ class GiveawayHistoryView extends StatelessWidget {
                 sliver: SliverToBoxAdapter(
                   child: Column(
                     spacing: AppSpacing.md,
-                    children: [GiveawayHistoryMetricsSection(), newMethod()],
+                    children: [
+                      GiveawayHistoryMetricsSection(),
+                      _buildFilterHeader(),
+                    ],
                   ),
                 ),
               ),
@@ -96,7 +121,7 @@ class GiveawayHistoryView extends StatelessWidget {
     );
   }
 
-  Widget newMethod() {
+  Widget _buildFilterHeader() {
     return Builder(
       builder: (context) {
         final net = context.read<GiveawayHistoryCubit>().state.quickNetwork;
@@ -138,21 +163,6 @@ class GiveawayHistoryView extends StatelessWidget {
           ],
         );
       },
-    );
-  }
-}
-
-class GiveawayHistoryTab extends StatelessWidget {
-  const GiveawayHistoryTab({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return AppTab(
-      backgroundColor: const Color(0xFF2F2E2E),
-      children: [
-        AppTabItem(label: 'Airtime', onTap: () {}, activeTab: true),
-        AppTabItem(label: 'Data'),
-      ],
     );
   }
 }

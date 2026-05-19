@@ -37,7 +37,7 @@ class DirectAirtimeGiveawayListView extends StatelessWidget {
           network: item.network,
           dataQuantity: item.amountQuantity,
           dataQuantityRemaining: item.amountQuantityRemaining,
-          isAvailable: item.isAvailable,
+          unAvailable: item.outOfAirtime,
           buttonLabel: "Claim ${item.airtimeName}",
           onClaimed: () async {
             final cubit = context.read<DirectAirtimeGiveawayCubit>();

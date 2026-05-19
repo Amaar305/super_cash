@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs
 
 import 'package:shared/shared.dart';
 
@@ -11,13 +11,6 @@ class HomeNotification {
     required this.startsAt,
     required this.endsAt,
   });
-
-  final String id;
-  final String title;
-  final String message;
-  final String category;
-  final DateTime? startsAt;
-  final DateTime? endsAt;
 
   factory HomeNotification.fromJson(Map<String, dynamic> json) =>
       HomeNotification(
@@ -32,6 +25,13 @@ class HomeNotification {
             ? null
             : DateTime.parse(json['ends_at'] as String),
       );
+
+  final String id;
+  final String title;
+  final String message;
+  final String category;
+  final DateTime? startsAt;
+  final DateTime? endsAt;
 
   Map<String, dynamic> toJson() {
     return {
@@ -52,10 +52,6 @@ class HomeSettings {
     required this.appUpdate,
   });
 
-  final HomeNotification? notification;
-  final AppUpdate? appUpdate;
-  final List<ImageSlider> imageSliders;
-
   factory HomeSettings.fromJson(Map<String, dynamic> json) => HomeSettings(
         appUpdate: json['app_update'] == null
             ? null
@@ -72,12 +68,33 @@ class HomeSettings {
         ),
       );
 
+  final HomeNotification? notification;
+  final AppUpdate? appUpdate;
+  final List<ImageSlider> imageSliders;
+
   Map<String, dynamic> toJson() => {
         'slider_items': imageSliders.map(
           (e) => e.toJson(),
         ),
         'notice_ticker': notification?.toJson(),
       };
+
+  HomeSettings copyWith(String? notificationMessage) {
+    return HomeSettings(
+      notification: notificationMessage == null
+          ? notification
+          : HomeNotification(
+              id: notification?.id ?? '',
+              title: notification?.title ?? '',
+              message: notificationMessage,
+              category: notification?.category ?? '',
+              startsAt: notification?.startsAt,
+              endsAt: notification?.endsAt,
+            ),
+      imageSliders: imageSliders,
+      appUpdate: appUpdate,
+    );
+  }
 }
 
 class AppUpdate {
@@ -96,19 +113,6 @@ class AppUpdate {
     required this.forceUpdate,
   });
 
-  final String id;
-  final String platform;
-  final int priority;
-  final String minimumVersionName;
-  final int minimumVersionCode;
-  final String latestVersionName;
-  final int latestVersionCode;
-  final String storeUrl;
-  final String changelog;
-  final Map<String, dynamic> metadata;
-  final bool requiresUpdate;
-  final bool forceUpdate;
-
   factory AppUpdate.fromJson(Map<String, dynamic> json) => AppUpdate(
         id: json['id'] as String? ?? '',
         platform: json['platform'] as String? ?? '',
@@ -124,6 +128,19 @@ class AppUpdate {
         requiresUpdate: json['requires_update'] as bool? ?? false,
         forceUpdate: json['force_update'] as bool? ?? false,
       );
+
+  final String id;
+  final String platform;
+  final int priority;
+  final String minimumVersionName;
+  final int minimumVersionCode;
+  final String latestVersionName;
+  final int latestVersionCode;
+  final String storeUrl;
+  final String changelog;
+  final Map<String, dynamic> metadata;
+  final bool requiresUpdate;
+  final bool forceUpdate;
 
   Map<String, dynamic> toJson() => {
         'id': id,

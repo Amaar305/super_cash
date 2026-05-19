@@ -50,7 +50,7 @@ class ForgotPasswordButton extends StatelessWidget {
             AppStrings.forgotPassword,
             style: TextStyle(
               color: AppColors.red,
-              fontWeight: AppFontWeight.bold,
+              // fontWeight: AppFontWeight.,
               // decoration: TextDecoration.underline,
               decorationColor: AppColors.blue,
               fontFamily: 'MonaSans',
@@ -94,7 +94,7 @@ class RememberMeButton extends StatelessWidget {
               AppStrings.rememberMe,
               style: TextStyle(
                 // color: AppColors.red,
-                fontWeight: AppFontWeight.bold,
+                // fontWeight: AppFontWeight.medium,
                 // decoration: TextDecoration.underline,
                 decorationColor: AppColors.blue,
                 fontFamily: 'MonaSans',

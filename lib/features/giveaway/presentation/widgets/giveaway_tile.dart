@@ -155,7 +155,7 @@ class _GiveawayTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      title,
+      "$title Giveaway",
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
       style: poppinsTextStyle(
@@ -207,7 +207,7 @@ class _GiveawayEndsAt extends StatelessWidget {
         Icon(Icons.history_toggle_off_sharp, color: color, size: 15),
         Expanded(
           child: Text(
-            "ENDS IN: $formattedEndsAt",
+            "Ends In: $formattedEndsAt",
             style: poppinsTextStyle(
               fontSize: 10,
               fontWeight: AppFontWeight.bold,
@@ -231,15 +231,15 @@ class _GiveawayActionButton extends StatelessWidget {
       text: '',
       onPressed: onTap,
       style: ElevatedButton.styleFrom(
-        fixedSize: const Size(160, 36),
+        fixedSize: const Size(160, 19),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadiusGeometry.circular(AppSpacing.md),
         ),
-        padding: const EdgeInsets.symmetric(vertical: 10),
+        // padding: const EdgeInsets.symmetric(vertical: 10),
         backgroundColor: AppColors.black.withValues(alpha: 0.7),
       ),
       child: Text(
-        isDisabled ? 'DISABED' : 'ENTER NOW',
+        isDisabled ? 'Disabled' : 'Enter Now',
         style: TextStyle(color: Color(0xFFF1F1F1)),
       ),
     );

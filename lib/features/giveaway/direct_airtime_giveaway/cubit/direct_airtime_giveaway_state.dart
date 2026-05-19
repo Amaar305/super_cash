@@ -36,36 +36,40 @@ class DirectAirtimeGiveawayState extends Equatable {
         selectedNetworkFilterIndex: 0,
       );
 
+  List<DirectAirtimeModel> get availableAirtimes =>
+      airtimes.where((a) => a.isAvailable).toList();
+
   List<DirectAirtimeModel> get filteredAirtimes {
+    final plans = availableAirtimes;
     return switch (selectedNetworkFilterIndex) {
       1 =>
-        airtimes
+        plans
             .where((item) => item.network.toLowerCase().contains('mtn'))
             .toList(),
 
       2 =>
-        airtimes
+        plans
             .where((item) => item.network.toLowerCase().contains('airtel'))
             .toList(),
 
       3 =>
-        airtimes
+        plans
             .where((item) => item.network.toLowerCase().contains('glo'))
             .toList(),
 
       4 =>
-        airtimes
+        plans
             .where((item) => item.network.toLowerCase().contains('9mobile'))
             .toList(),
 
-      _ => airtimes,
+      _ => plans,
     };
   }
 
   int get totalAirtime {
     var total = 0;
 
-    for (final item in airtimes) {
+    for (final item in availableAirtimes) {
       total += ((double.tryParse(item.amount) ?? 0) * item.amountQuantity)
           .toInt();
     }
@@ -76,7 +80,7 @@ class DirectAirtimeGiveawayState extends Equatable {
   int get availableAirtime {
     var total = 0;
 
-    for (final item in airtimes) {
+    for (final item in availableAirtimes) {
       total +=
           ((double.tryParse(item.amount) ?? 0) * item.amountQuantityRemaining)
               .toInt();
@@ -86,15 +90,10 @@ class DirectAirtimeGiveawayState extends Equatable {
   }
 
   double get remainingPercent {
-    var total = 0;
-    var remaining = 0;
+    var total = totalAirtime;
+    var remaining = availableAirtime;
 
-    for (final airtime in airtimes) {
-      total += airtime.amountQuantity;
-      remaining += airtime.amountQuantityRemaining;
-    }
-
-    return total == 0 ? 0 : remaining / total;
+    return total == 0 ? 0 : (remaining / total) * 100;
   }
 
   DirectAirtimeGiveawayState copyWith({

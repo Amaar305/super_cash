@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:super_cash/core/fonts/app_text_style.dart';
 import 'package:super_cash/features/giveaway/giveaway.dart';
+import 'package:super_cash/features/giveaway/product_giveaway/widgets/product_claim_button.dart';
 
 class ProductGiveawayCard extends StatelessWidget {
   const ProductGiveawayCard({
@@ -16,9 +17,6 @@ class ProductGiveawayCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isLoading = context.select(
-      (ProductGiveawayCubit c) => c.state.status.isLoading,
-    );
     return _ProductShell(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -29,15 +27,9 @@ class ProductGiveawayCard extends StatelessWidget {
           Gap.v(AppSpacing.md),
           _ProductQualityPercent(product: product),
           Gap.v(AppSpacing.lg),
-          SizedBox(
-            width: double.infinity,
-            child: ProductClaimButton(
-              isLoading: isLoading,
-              onClaimed: () => context
-                  .read<ProductGiveawayCubit>()
-                  .claimProduct(product.id, onSuccessfulClaimed),
-              isDisabled: product.outOfStock || !product.isAvailable,
-            ),
+          ProductClaimGiveawayButton(
+            product: product,
+            onSuccessfulClaimed: onSuccessfulClaimed,
           ),
         ],
       ),
@@ -45,25 +37,33 @@ class ProductGiveawayCard extends StatelessWidget {
   }
 }
 
-class ProductClaimButton extends StatelessWidget {
-  const ProductClaimButton({
+class ProductClaimGiveawayButton extends StatelessWidget {
+  const ProductClaimGiveawayButton({
     super.key,
-    this.isDisabled = false,
-    required this.onClaimed,
-    required this.isLoading,
+    required this.product,
+    required this.onSuccessfulClaimed,
   });
-  final bool isDisabled;
-  final bool isLoading;
 
-  final VoidCallback onClaimed;
+  final ProductGiveawayModel product;
+  final ValueChanged<ProductGiveawayModel> onSuccessfulClaimed;
 
   @override
   Widget build(BuildContext context) {
-
-    return PrimaryButton(
-      isLoading: isLoading,
-      onPressed: onClaimed,
-      label: isDisabled ? 'Out of stock' : 'Claim Now',
+    final isLoading = context.select(
+      (ProductGiveawayCubit c) => c.state.status.isLoading,
+    );
+    final enabled = context.select((ProductGiveawayCubit c) => c.state.enabled);
+    return SizedBox(
+      width: double.infinity,
+      child: ProductClaimButton(
+        isLoading: isLoading,
+        onClaimed: () => context.read<ProductGiveawayCubit>().claimProduct(
+          product.id,
+          onSuccessfulClaimed,
+        ),
+        isDisabled: !enabled || product.outOfStock || !product.isAvailable,
+        // label: enabled ? null : 'You\'r not Eligible',
+      ),
     );
   }
 }

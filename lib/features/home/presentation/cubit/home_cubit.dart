@@ -17,13 +17,16 @@ class HomeCubit extends HydratedCubit<HomeState> {
     required FetchAppSettingsUseCase fetchAppSettingsUseCase,
     required FetchUserUseCase fetchUserUseCase,
     required AppCubit appCubit,
+    required CreatePalmPayAccountUseCase createPalmPayAccountUseCase,
   }) : _fetchAppSettingsUseCase = fetchAppSettingsUseCase,
        _fetchUserUseCase = fetchUserUseCase,
        _appCubit = appCubit,
+       _createPalmPayAccountUseCase = createPalmPayAccountUseCase,
        super(HomeState.initial());
   final FetchUserUseCase _fetchUserUseCase;
   final FetchAppSettingsUseCase _fetchAppSettingsUseCase;
   final AppCubit _appCubit;
+  final CreatePalmPayAccountUseCase _createPalmPayAccountUseCase;
 
   void showBalance() => emit(state.copyWith(showBalance: !state.showBalance));
 
@@ -37,37 +40,77 @@ class HomeCubit extends HydratedCubit<HomeState> {
   }
 
   Future<void> onRefresh({bool forceRefresh = false}) async {
-    if (isClosed) return;
-    if (state.user != AppUser.anonymous && !forceRefresh) {
-      // Data already available and we're not forcing refresh
-      return;
-    }
+    if (_shouldSkipRefresh(forceRefresh)) return;
 
     emit(state.copyWith(status: HomeStatus.loading));
     final res = await _fetchUserUseCase(NoParam());
 
     if (isClosed) return;
 
-    res.fold(
-      (l) =>
-          emit(state.copyWith(status: HomeStatus.failure, message: l.message)),
-      (r) {
-        if (r.isSuspended) {
-          emit(
-            state.copyWith(
-              user: r,
-              status: HomeStatus.failure,
-              message: 'You have been suspended from this app.',
-            ),
-          );
-          _appCubit.logout();
-          return;
-        }
-        emit(state.copyWith(user: r, status: HomeStatus.success));
-
-        _appCubit.updateUser(r);
-      },
+    await res.fold<Future<void>>(
+      (failure) async => _emitFailure(failure.message),
+      _handleFetchedUser,
     );
+  }
+
+  bool _shouldSkipRefresh(bool forceRefresh) {
+    if (isClosed) return true;
+    return state.user != AppUser.anonymous && !forceRefresh;
+  }
+
+  Future<void> _handleFetchedUser(AppUser user) async {
+    if (_handleSuspendedUser(user)) return;
+
+    final updatedUser = await _ensureUserHasAccount(user);
+    if (isClosed) return;
+
+    await _appCubit.updateUser(updatedUser);
+  }
+
+  bool _handleSuspendedUser(AppUser user) {
+    if (!user.isSuspended) return false;
+
+    emit(
+      state.copyWith(
+        user: user,
+        status: HomeStatus.failure,
+        message: 'You have been suspended from this app.',
+      ),
+    );
+    _appCubit.logout();
+    return true;
+  }
+
+  Future<AppUser> _ensureUserHasAccount(AppUser user) async {
+    _emitUserLoaded(user);
+    if (user.accounts.isNotEmpty) return user;
+
+    final account = await _createPalmPayAccount();
+    if (account == null) return user;
+
+    final updatedUser = user.copyWith(accounts: [account]);
+    _emitUserLoaded(updatedUser);
+    return updatedUser;
+  }
+
+  Future<Account?> _createPalmPayAccount() async {
+    final accountResult = await _createPalmPayAccountUseCase(NoParam());
+    if (isClosed) return null;
+
+    return accountResult.fold((failure) {
+      _emitFailure(failure.message);
+      return null;
+    }, (result) => result.account);
+  }
+
+  void _emitUserLoaded(AppUser user) {
+    if (isClosed) return;
+    emit(state.copyWith(user: user, status: HomeStatus.success));
+  }
+
+  void _emitFailure(String message) {
+    if (isClosed) return;
+    emit(state.copyWith(status: HomeStatus.failure, message: message));
   }
 
   Future<void> fetchAppSettings() async {

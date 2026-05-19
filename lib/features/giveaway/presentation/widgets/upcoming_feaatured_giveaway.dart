@@ -1,10 +1,8 @@
-import 'dart:async';
-
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:super_cash/app/routes/routes.dart';
+import 'package:super_cash/app/routes/app_routes.dart';
 import 'package:super_cash/core/fonts/app_text_style.dart';
 import 'package:super_cash/features/giveaway/giveaway.dart';
 
@@ -30,56 +28,10 @@ class UpcomingFeaaturedGiveaway extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(child: _DefaultHeroImage(image: giveaway.image)),
-            Expanded(
-              flex: 2,
-              child: Column(
-                spacing: AppSpacing.sm,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    giveaway.giveawayType.name.capitalize,
-                    style: poppinsTextStyle(
-                      fontSize: 22,
-                      fontWeight: AppFontWeight.bold,
-                      color: textDark,
-                    ),
-                  ),
-                  if (giveaway.startsAt != null)
-                    _GiveawayEndsAt(
-                      endsAt: giveaway.startsAt!,
-                      prefix: 'STARTS IN:',
-                      subtextColor: subText,
-                    ),
-                  if (giveaway.endsAt != null)
-                    _GiveawayEndsAt(
-                      endsAt: giveaway.endsAt!,
-                      subtextColor: subText,
-                    ),
-
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    spacing: AppSpacing.sm,
-                    children: [
-                      Icon(
-                        Icons.production_quantity_limits,
-                        color: subText,
-                        size: 15,
-                      ),
-                      Text(
-                        "VALUE TO WIN: ${giveaway.valueToWin}",
-                        style: poppinsTextStyle(
-                          fontSize: 10,
-                          fontWeight: AppFontWeight.bold,
-                          color: subText,
-                        ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
-                  ),
-                  _ViewMoreTextButton(giveaway: giveaway),
-                ],
-              ),
+            _GiveawayInfo(
+              giveaway: giveaway,
+              textDark: textDark,
+              subText: subText,
             ),
           ],
         ),
@@ -89,8 +41,8 @@ class UpcomingFeaaturedGiveaway extends StatelessWidget {
           style: poppinsTextStyle(
             fontSize: 12,
             color: subText,
-            fontWeight: AppFontWeight.light,
-          ),
+            // fontWeight: AppFontWeight.light,
+          ).copyWith(height: 1.6),
         ),
         const Gap.v(AppSpacing.lg),
 
@@ -99,8 +51,8 @@ class UpcomingFeaaturedGiveaway extends StatelessWidget {
           width: double.infinity,
           padding: EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: AppColors.lightDark,
-            borderRadius: BorderRadius.all(Radius.circular(16)),
+            color: AppColors.white.withValues(alpha: 0.14),
+            borderRadius: BorderRadius.circular(AppSpacing.md),
           ),
           child: Column(
             children: [
@@ -113,7 +65,7 @@ class UpcomingFeaaturedGiveaway extends StatelessWidget {
                 ),
               ),
               const Gap.v(AppSpacing.sm),
-              _AnimatedCountdownBox(
+              GiveawayAnimatedCountdownBox(
                 target: giveaway.startsAt ?? DateTime.now(),
               ),
             ],
@@ -124,120 +76,98 @@ class UpcomingFeaaturedGiveaway extends StatelessWidget {
   }
 }
 
-class _ViewMoreTextButton extends StatelessWidget {
-  const _ViewMoreTextButton({required this.giveaway});
+class _GiveawayInfo extends StatelessWidget {
+  const _GiveawayInfo({
+    required this.giveaway,
+    required this.textDark,
+    required this.subText,
+  });
+
   final Giveaway giveaway;
+  final Color textDark;
+  final Color subText;
 
   @override
   Widget build(BuildContext context) {
-    return Tappable.faded(
-      onTap: () =>
-          context.pushNamed(RNames.productGiveawayDetails, extra: giveaway),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        spacing: AppSpacing.xs,
+    return Expanded(
+      flex: 2,
+      child: Column(
+        spacing: AppSpacing.sm,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'View more',
-            style:
-                poppinsTextStyle(
-                  color: AppColors.brightGrey,
-                  fontWeight: AppFontWeight.bold,
-                  fontSize: 12,
-                ).copyWith(
-                  decoration: TextDecoration.underline,
-                  decorationColor: AppColors.white,
-                  decorationStyle: TextDecorationStyle.dotted,
-                  decorationThickness: 2,
-                ),
+            giveaway.giveawayType.name.capitalize,
+            style: poppinsTextStyle(
+              fontSize: 22,
+              fontWeight: AppFontWeight.bold,
+              color: textDark,
+            ),
           ),
-          Icon(
-            Icons.visibility_outlined,
-            color: AppColors.brightGrey,
-            size: 15,
+          if (giveaway.startsAt != null)
+            _GiveawayEndsAt(
+              endsAt: giveaway.startsAt!,
+              prefix: 'STARTS IN:',
+              subtextColor: subText,
+            ),
+          if (giveaway.endsAt != null)
+            _GiveawayEndsAt(endsAt: giveaway.endsAt!, subtextColor: subText),
+
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            spacing: AppSpacing.sm,
+            children: [
+              Icon(Icons.production_quantity_limits, color: subText, size: 15),
+              Text(
+                "VALUE TO WIN: ${giveaway.valueToWin}",
+                style: poppinsTextStyle(
+                  fontSize: 10,
+                  fontWeight: AppFontWeight.bold,
+                  color: subText,
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ),
+
+          Tappable.faded(
+            onTap: () {
+              context.pushNamed(
+                RNames.givewayDetail,
+                pathParameters: {
+                  'giveaway_type_id': giveaway.giveawayType.id.toString(),
+                },
+                extra: GivewayDetailRouteData.fromGiveaway(giveaway),
+              );
+            },
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              margin: const EdgeInsets.only(top: 4, right: 8),
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Row(
+                spacing: AppSpacing.sm,
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.info_outline, size: 14, color: AppColors.black),
+                  Text(
+                    'Details'.toUpperCase(),
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: AppColors.black,
+                      fontWeight: AppFontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ],
       ),
-    );
-  }
-}
-
-class _AnimatedCountdownBox extends StatefulWidget {
-  const _AnimatedCountdownBox({required this.target});
-  final DateTime target;
-  @override
-  State<_AnimatedCountdownBox> createState() => _AnimatedCountdownBoxState();
-}
-
-class _AnimatedCountdownBoxState extends State<_AnimatedCountdownBox> {
-  Timer? _timer;
-
-  int _days = 0;
-  int _hrs = 0;
-  int _mins = 0;
-  int _secs = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    _syncNow();
-    _timer = Timer.periodic(const Duration(seconds: 1), (_) => _syncNow());
-  }
-
-  void _syncNow() {
-    final now = DateTime.now();
-    var diff = widget.target.difference(now);
-
-    if (diff.isNegative) diff = Duration.zero;
-
-    final days = diff.inDays;
-    final hours = diff.inHours % 24;
-    final mins = diff.inMinutes % 60;
-    final secs = diff.inSeconds % 60;
-
-    // Only rebuild when something changes
-    if (days != _days || hours != _hrs || mins != _mins || secs != _secs) {
-      setState(() {
-        _days = days;
-        _hrs = hours;
-        _mins = mins;
-        _secs = secs;
-      });
-    }
-  }
-
-  @override
-  void dispose() {
-    _timer?.cancel();
-    super.dispose();
-  }
-
-  String _two(int v) => v.toString().padLeft(2, '0');
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: GiveawayCountdownBox(value: _two(_days), label: "DAYS"),
-        ),
-        const SizedBox(width: 10),
-        Expanded(
-          child: GiveawayCountdownBox(value: _two(_hrs), label: "HRS"),
-        ),
-        const SizedBox(width: 10),
-        Expanded(
-          child: GiveawayCountdownBox(value: _two(_mins), label: "MINS"),
-        ),
-        const SizedBox(width: 10),
-        Expanded(
-          child: GiveawayCountdownBox(
-            value: _two(_secs),
-            label: "SECS",
-            highlight: true,
-          ),
-        ),
-      ],
     );
   }
 }

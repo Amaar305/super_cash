@@ -4,6 +4,7 @@ class AirtimeGiveawayPin {
   final double amount;
   final String maskedPin;
   final String? loadingCode;
+  final String pin;
   final String status;
 
   bool get isUsed =>
@@ -15,6 +16,7 @@ class AirtimeGiveawayPin {
       network: json['network'],
       amount: json['amount'].toDouble(),
       maskedPin: json['masked_pin'],
+      pin: json['pin'] as String? ?? '',
       status: json['status'],
       loadingCode: json['loading_code'] as String?,
     );
@@ -26,6 +28,7 @@ class AirtimeGiveawayPin {
     required this.amount,
     required this.maskedPin,
     required this.status,
+    required this.pin,
     this.loadingCode,
   });
 
@@ -33,8 +36,9 @@ class AirtimeGiveawayPin {
     "id": id,
     "network": network,
     "amount": amount,
-    "pin": maskedPin,
+    "masked_pin": maskedPin,
     "status": status,
     "loading_code": loadingCode,
+    "pin": pin,
   };
 }

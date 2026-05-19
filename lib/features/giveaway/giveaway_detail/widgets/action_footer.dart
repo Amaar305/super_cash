@@ -1,20 +1,26 @@
-part of '../pages/product_giveaway_details_page.dart';
+part of '../pages/giveway_detail_page.dart';
 
 class _ActionFooter extends StatelessWidget {
-  const _ActionFooter({required this.details});
+  const _ActionFooter({required this.details, required this.giveawayTypeId});
 
   final _GiveawayDetails details;
+  final String giveawayTypeId;
 
   @override
   Widget build(BuildContext context) {
+    final isProductGiveaway = details.isProductGiveaway;
+
     final isDisabled = details.isClosed;
+    final isLoading = context.select(
+      (GiveawayDetailCubit cubit) => cubit.state.status.isLoading,
+    );
 
     return SafeArea(
       top: false,
       child: Container(
         padding: const EdgeInsets.fromLTRB(16, 10, 16, 12),
         decoration: const BoxDecoration(
-          color: ProductGiveawayDetailsPage._pageBackground,
+          color: GivewayDetailPage._pageBackground,
           boxShadow: [
             BoxShadow(
               color: Color(0x14000000),
@@ -29,9 +35,26 @@ class _ActionFooter extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
-                onPressed: isDisabled ? null : () {},
+                onPressed: isLoading
+                    ? null
+                    : isProductGiveaway
+                    ? () => context.pushNamed(
+                        RNames.productGiveaway,
+                        pathParameters: {'giveaway_type_id': giveawayTypeId},
+                        extra:
+                            details.upcomingGiveawayStatus ==
+                                UpcomingGiveawayStatus.upcoming
+                            ? false
+                            : true,
+                      )
+                    : isDisabled
+                    ? null
+                    : () => context
+                          .read<GiveawayDetailCubit>()
+                          .navigateToProductGiveaway(),
+
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: ProductGiveawayDetailsPage._primaryCta,
+                  backgroundColor: GivewayDetailPage._primaryCta,
                   disabledBackgroundColor: const Color.fromARGB(
                     255,
                     184,
@@ -45,7 +68,16 @@ class _ActionFooter extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                icon: const Icon(Icons.how_to_reg_rounded, size: 18),
+                icon: isLoading
+                    ? const SizedBox(
+                        height: 18,
+                        width: 18,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: AppColors.white,
+                        ),
+                      )
+                    : const Icon(Icons.how_to_reg_rounded, size: 18),
                 label: Text(
                   'Enter Giveaway',
                   style: poppinsTextStyle(
@@ -60,7 +92,11 @@ class _ActionFooter extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: OutlinedButton.icon(
-                onPressed: () {},
+                onPressed: isLoading
+                    ? null
+                    : () => context
+                          .read<GiveawayDetailCubit>()
+                          .checkEligibility(giveawayTypeId: giveawayTypeId),
                 style: OutlinedButton.styleFrom(
                   backgroundColor: const Color.fromARGB(255, 227, 229, 232),
                   minimumSize: const Size.fromHeight(50),

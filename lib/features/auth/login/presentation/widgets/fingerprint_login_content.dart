@@ -22,7 +22,10 @@ class FingerprintLoginContent extends StatelessWidget {
           children: [
             Text(
               'Welcome Back!',
-              style: context.titleLarge?.copyWith(fontSize: 28),
+              style: poppinsTextStyle(
+                fontSize: 20,
+                fontWeight: AppFontWeight.semiBold,
+              ),
             ),
             const LoggedInWelcomeBackName(),
             LoggedInMaskedUserEmailText(),
@@ -49,7 +52,10 @@ class FingerprintContainer extends StatelessWidget {
             children: [
               Text(
                 'Login with fingerprint or face ID',
-                style: context.bodySmall,
+                style: poppinsTextStyle(
+                  fontSize: 12,
+                  fontWeight: AppFontWeight.semiBold,
+                ),
               ),
               FingerprintIconButton(),
               FingerprintButton(),

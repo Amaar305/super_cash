@@ -2,9 +2,9 @@ import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared/shared.dart';
 import 'package:super_cash/app/init/init.dart';
 import 'package:super_cash/app/view/app.dart';
-import 'package:super_cash/core/common/common.dart';
 import 'package:super_cash/core/fonts/app_text_style.dart';
 
 import 'package:super_cash/features/giveaway/giveaway.dart';
@@ -45,6 +45,12 @@ class _AirtimeGiveawayViewState extends State<AirtimeGiveawayView> {
   }
 
   @override
+  void dispose() {
+    hideLoadingOverlay();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return AppScaffold(
       appBar: AppBar(
@@ -52,89 +58,159 @@ class _AirtimeGiveawayViewState extends State<AirtimeGiveawayView> {
         centerTitle: false,
         leading: AppLeadingAppBarWidget(onTap: () => context.pop()),
       ),
-      body: BlocListener<AirtimeGiveawayCubit, AirtimeGiveawayState>(
-        listenWhen: (previous, current) => previous.status != current.status,
-        listener: (context, state) {
-          if (state.status.isLoading) {
-            showLoadingOverlay(context);
-          } else {
-            hideLoadingOverlay();
-          }
-          if ((state.status.isFailure || state.status.isProcressingError) &&
-              state.errorMessage != null) {
-            openSnackbar(
-              SnackbarMessage.error(title: state.errorMessage ?? ''),
-              clearIfQueue: true,
-            );
-          }
+      body: RefreshIndicator.adaptive(
+        onRefresh: context.read<AirtimeGiveawayCubit>().getAirtimeGiveawayPins,
+        child: BlocListener<AirtimeGiveawayCubit, AirtimeGiveawayState>(
+          listenWhen: (previous, current) => previous.status != current.status,
+          listener: (context, state) {
+            if (state.status.isLoading) {
+              showLoadingOverlay(context);
+            } else {
+              hideLoadingOverlay();
+            }
+            if ((state.status.isFailure || state.status.isProcressingError) &&
+                state.errorMessage != null) {
+              openSnackbar(
+                SnackbarMessage.error(title: state.errorMessage ?? ''),
+                clearIfQueue: true,
+              );
+            }
 
-          if (state.status.isProcessing) {
-            showAdaptiveDialog(
-              context: context,
-              builder: (context) {
-                return Dialog(
-                  backgroundColor: Colors.transparent,
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Material(
-                    color: AppColors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.6,
-                      height: MediaQuery.of(context).size.height * 0.2,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        spacing: AppSpacing.lg,
-                        children: [
-                          CircularProgressIndicator(
-                            color: AppColors.blue,
-                            strokeWidth: 2,
-                          ),
+            if (state.status.isProcessing) {
+              showAdaptiveDialog(
+                context: context,
+                builder: (context) {
+                  return Dialog(
+                    backgroundColor: Colors.transparent,
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Material(
+                      color: AppColors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.6,
+                        height: MediaQuery.of(context).size.height * 0.2,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          spacing: AppSpacing.lg,
+                          children: [
+                            CircularProgressIndicator(
+                              color: AppColors.blue,
+                              strokeWidth: 2,
+                            ),
 
-                          Text('Processing your claim...'),
-                        ],
+                            Text('Processing your claim...'),
+                          ],
+                        ),
                       ),
                     ),
+                  );
+                },
+              );
+            } else if (state.status.isProcressingError) {
+              context.pop();
+            }
+          },
+          child: CustomScrollView(
+            slivers: [
+              SliverPadding(
+                padding: EdgeInsets.all(AppSpacing.lg),
+                sliver: SliverToBoxAdapter(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      AirtimePinGiveawayHeader(),
+                      // const Gap.v(AppSpacing.xlg),
+                      Text(
+                        'Available Giveaway',
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      // const Gap.v(AppSpacing.lg),
+                      // DirectAirtimeNetworkFilter(),
+                      const Gap.v(AppSpacing.md),
+                    ],
                   ),
-                );
-              },
-            );
-          } else if (state.status.isProcressingError) {
-            context.pop();
-          }
-        },
-        child: Padding(
-          padding: EdgeInsets.all(AppSpacing.lg),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  AppFilterButton(
-                    onFilterTapped: () {
-                      showFilterBotthomSheet(context);
-                    },
-                  ),
-                  TextButton.icon(
-                    onPressed: () {},
-                    label: Text('Clear Filters'),
-                    style: TextButton.styleFrom(
-                      foregroundColor: AppColors.blue,
-                    ),
-                    icon: Icon(Icons.clear_all, size: 16),
-                  ),
-                ],
+                ),
               ),
-              Gap.v(AppSpacing.lg),
-              Expanded(child: AirtimeGiveawayListView()),
+              SliverPadding(
+                sliver: AirtimeGiveawayGridView(),
+                padding: const EdgeInsets.fromLTRB(
+                  AppSpacing.lg,
+                  0,
+                  AppSpacing.lg,
+                  AppSpacing.xlg,
+                ),
+              ),
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class AirtimePinGiveawayHeader extends StatelessWidget {
+  const AirtimePinGiveawayHeader({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final state = context
+        .select<AirtimeGiveawayCubit, (double, double, double)>(
+          (value) => (
+            value.state.totalAmount,
+            value.state.totalUnClaimedAmount,
+            value.state.remainingPercent,
+          ),
+        );
+    final total = state.$1;
+    final unClaimed = state.$2;
+    final remainingPercent = state.$3;
+    return Row(
+      spacing: AppSpacing.lg,
+      children: [
+        Expanded(
+          child: GiveawayAnalyticsHeaderItem(
+            title: 'TOTAL AiRTIME POOL',
+            icon: Icons.phone,
+            subtitle: 'N${total.planDisplayAmount}',
+            footerTitle: 'Across all active drops',
+            extraWidget: SizedBox(
+              width: double.infinity,
+              height: 4,
+              child: LinearProgressIndicator(
+                value: 1,
+                color: Color(0xff006E2F),
+                borderRadius: BorderRadius.circular(999),
+                // minHeight: 4,
+              ),
+            ),
+          ),
+        ),
+        Expanded(
+          child: GiveawayAnalyticsHeaderItem(
+            title: 'AVAILABLE TO CLAIM',
+            icon: Icons.phone_callback,
+            iconColor: Color(0xff006E2F),
+            subtitle: 'N${unClaimed.planDisplayAmount}',
+            footerTitle: '${remainingPercent.toStringAsFixed(1)}% REMAINING',
+            footerTitleColor: Color(0xff006E2F),
+            extraWidget: SizedBox(
+              width: double.infinity,
+              height: 4,
+              child: LinearProgressIndicator(
+                value: remainingPercent / 100,
+                color: Color(0xff006E2F),
+                borderRadius: BorderRadius.circular(999),
+                // minHeight: 4,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

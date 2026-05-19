@@ -36,52 +36,50 @@ class DataGiveawayState extends Equatable {
         selectedNetworkFilterIndex: 0,
       );
 
+  List<DataGiveawayItem> get availablePlans =>
+      dataPlans.where((data) => data.isAvailable).toList();
+
   List<DataGiveawayItem> get filteredPlans {
+    final plans = availablePlans;
     return switch (selectedNetworkFilterIndex) {
       1 =>
-        dataPlans
+        plans
             .where((item) => item.network.toLowerCase().contains('mtn'))
             .toList(),
 
       2 =>
-        dataPlans
+        plans
             .where((item) => item.network.toLowerCase().contains('airtel'))
             .toList(),
 
       3 =>
-        dataPlans
+        plans
             .where((item) => item.network.toLowerCase().contains('glo'))
             .toList(),
 
       4 =>
-        dataPlans
+        plans
             .where((item) => item.network.toLowerCase().contains('9mobile'))
             .toList(),
 
-      _ => dataPlans,
+      _ => plans,
     };
   }
 
-  double get totalGB => dataPlans.fold(0, (previousValue, item) {
+  double get totalGB => availablePlans.fold(0, (previousValue, item) {
     final size = double.tryParse(item.dataSize) ?? 0;
     return (size * item.dataQuantity) + previousValue;
   });
-  double get availableGB => dataPlans.fold(0, (previousValue, item) {
+  double get availableGB => availablePlans.fold(0, (previousValue, item) {
     final size = double.tryParse(item.dataSize) ?? 0;
     return (size * item.dataQuantityRemaining) + previousValue;
   });
 
   double get remainingPercent {
-    var total = 0.0;
-    var remaining = 0.0;
+    var total = totalGB;
+    var remaining = availableGB;
 
-    for (final item in dataPlans) {
-      final amount = double.tryParse(item.dataSize) ?? 1;
-      total += amount * item.dataQuantity;
-      remaining += amount * item.dataQuantityRemaining;
-    }
-
-    return total == 0 ? 0 : remaining / total;
+    return total == 0 ? 0 : (remaining / total) * 100;
   }
 
   DataGiveawayState copyWith({

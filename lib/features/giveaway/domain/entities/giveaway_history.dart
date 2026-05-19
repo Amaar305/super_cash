@@ -33,17 +33,17 @@ class GiveawayHistory {
   AirtimeGiveawayPin get giveawayPin {
     final planId = meta?['plan_id'] as String?;
     final network = meta?['network'] as String?;
-    final pin = meta?['code'] as String?;
+    final pin = meta?['pin'] as String? ?? meta?['code'] as String? ?? '';
     final loadingCode = meta?['loading_code'] as String?;
-    // final code = meta?['code'] as String?;
 
     return AirtimeGiveawayPin(
       id: planId ?? '',
       network: network ?? '',
       amount: double.parse(amount),
-      maskedPin: pin ?? '',
+      maskedPin: pin,
       status: 'claimed',
       loadingCode: loadingCode,
+      pin: pin,
     );
   }
 

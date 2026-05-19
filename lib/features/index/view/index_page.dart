@@ -24,6 +24,7 @@ class IndexPage extends StatelessWidget {
             appCubit: context.read<AppCubit>(),
             fetchAppSettingsUseCase: serviceLocator(),
             fetchUserUseCase: serviceLocator(),
+            createPalmPayAccountUseCase: serviceLocator(),
           )..onRefresh(forceRefresh: true),
         ),
         BlocProvider(

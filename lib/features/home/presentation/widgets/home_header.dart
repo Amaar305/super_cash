@@ -1,12 +1,9 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
-
-import '../../home.dart';
+import 'package:super_cash/features/home/home.dart';
 
 class HomeHeader extends StatelessWidget {
-  const HomeHeader({
-    super.key,
-  });
+  const HomeHeader({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +22,7 @@ class HomeHeader extends StatelessWidget {
           Spacer(),
           HomeNotificationBadge(),
           Gap.h(AppSpacing.md),
-          SizedBox.square(
-            dimension: 24,
-            child: Assets.icons.menu.svg(),
-          ),
+          SizedBox.square(dimension: 24, child: Assets.icons.menu.svg()),
         ],
       ),
     );

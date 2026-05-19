@@ -9,7 +9,7 @@ class FeaturedGiveawayCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const textDark = Color(0xFFFFFFFF);
-    const subText = Color.fromARGB(255, 226, 226, 226);
+    const subText = AppColors.white;
 
     final giveaways = context.watch<GiveawayCubit>().state.upcomingGiveaways;
 
@@ -29,11 +29,7 @@ class FeaturedGiveawayCard extends StatelessWidget {
         },
         separatorBuilder: (context, index) => Column(
           mainAxisSize: MainAxisSize.min,
-          children: [
-            Gap.v(14),
-            Divider( thickness: 0.3),
-            Gap.v(14),
-          ],
+          children: [Gap.v(14), Divider(thickness: 0.3), Gap.v(14)],
         ),
         itemCount: giveaways.length,
       ),

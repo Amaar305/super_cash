@@ -137,7 +137,6 @@ class CashGiveawayCubit extends Cubit<CashGiveawayState> {
             state.copyWith(
               status: CashGiveawayStatus.validatedBank,
               bankValidationResult: validatedBank,
-
               message: '',
             ),
           );

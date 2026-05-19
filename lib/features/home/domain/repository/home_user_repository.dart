@@ -10,4 +10,6 @@ abstract class HomeUserRepository {
     required String version,
     required String versionCode,
   });
+
+  Future<Either<Failure, ({String message, String status, Account? account})>> createPalmPayAccount();
 }

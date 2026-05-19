@@ -23,6 +23,7 @@ class ProductGiveawayState extends Equatable {
   final Phone phone;
   final String? state;
   final HouseAddress houseAddress;
+  final bool enabled;
 
   const ProductGiveawayState._({
     required this.status,
@@ -32,29 +33,30 @@ class ProductGiveawayState extends Equatable {
     required this.phone,
     required this.state,
     required this.houseAddress,
+    this.enabled = false,
   });
 
-  int get totalProducts =>
-      products.fold(0, (total, product) => total + product.productQuantity);
+  List<ProductGiveawayModel> get availableProducts =>
+      products.where((p) => p.isAvailable).toList();
 
-  int get totalAvailableProducts => products.fold(
+  int get totalProducts => availableProducts.fold(
+    0,
+    (total, product) => total + product.productQuantity,
+  );
+
+  int get totalAvailableProducts => availableProducts.fold(
     0,
     (total, product) => total + product.productQuantityRemaining,
   );
 
   double get remainingPercent {
-    var total = 0;
-    var remaining = 0;
+    var total = totalProducts;
+    var remaining = totalAvailableProducts;
 
-    for (final product in products) {
-      total += product.productQuantity;
-      remaining += product.productQuantityRemaining;
-    }
-
-    return total == 0 ? 0 : remaining / total;
+    return total == 0 ? 0 : (remaining / total) * 100;
   }
 
-  ProductGiveawayState.initial({required AppUser user})
+  ProductGiveawayState.initial({required AppUser user, required bool enabled})
     : this._(
         status: ProductGiveawayStatus.initial,
         message: '',
@@ -63,6 +65,7 @@ class ProductGiveawayState extends Equatable {
         fullName: FullName.pure(user.fullName),
         phone: Phone.pure(user.phone),
         houseAddress: const HouseAddress.pure(),
+        enabled: enabled,
       );
 
   ProductGiveawayState copyWith({
@@ -73,6 +76,7 @@ class ProductGiveawayState extends Equatable {
     Phone? phone,
     String? state,
     HouseAddress? houseAddress,
+    bool? enabled,
   }) {
     return ProductGiveawayState._(
       status: status ?? this.status,
@@ -82,6 +86,7 @@ class ProductGiveawayState extends Equatable {
       fullName: fullName ?? this.fullName,
       houseAddress: houseAddress ?? this.houseAddress,
       phone: phone ?? this.phone,
+      enabled: enabled ?? this.enabled,
     );
   }
 
@@ -94,5 +99,6 @@ class ProductGiveawayState extends Equatable {
     phone,
     state,
     houseAddress,
+    enabled,
   ];
 }

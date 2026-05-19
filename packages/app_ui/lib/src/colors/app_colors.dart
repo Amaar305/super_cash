@@ -68,6 +68,7 @@ abstract class AppColors {
   /// Green material color.
   static const MaterialColor green = Colors.green;
 
+  ///
   static final walletGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,

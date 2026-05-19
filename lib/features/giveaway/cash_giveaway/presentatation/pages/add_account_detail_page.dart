@@ -29,6 +29,18 @@ class AddCashAccountDetailSheet extends StatelessWidget {
             ),
             Gap.v(AppSpacing.lg),
             _Header(cashItem: cashItem),
+            Gap.v(AppSpacing.sm),
+            Align(
+              alignment: Alignment.topLeft,
+              child: Text(
+                'Do not leave the page else you will loose your progress.',
+                style: poppinsTextStyle(
+                  fontSize: 11,
+                  color: AppColors.red,
+                  fontWeight: AppFontWeight.medium,
+                ),
+              ),
+            ),
             Gap.v(AppSpacing.xlg),
             CashAccountDetailForm(cashItem: cashItem),
           ],
@@ -48,7 +60,7 @@ class _Header extends StatelessWidget {
     return Container(
       width: double.infinity,
       // height: 123,
-      padding: EdgeInsets.all(AppSpacing.xlg),
+      padding: EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
         color: Color(0xFFF2F4F6),
         borderRadius: BorderRadius.circular(AppSpacing.xlg),

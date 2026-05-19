@@ -46,21 +46,12 @@ class ElectricityCubit extends Cubit<ElectricityState> {
       );
     } catch (error, stackTrace) {
       logE('Failed to fetch plans $error', stackTrace: stackTrace);
-      if (isClosed) return;
-      final res = await _getElectricityPlansUseCase(NoParam());
-
-      res.fold(
-        (l) => emit(
-          state.copyWith(status: ElectricityStatus.failure, message: l.message),
-        ),
-        (r) =>
-            emit(state.copyWith(plans: r, status: ElectricityStatus.success)),
-      );
     }
   }
 
   void onPlanSelection(Electricity plan) =>
       emit(state.copyWith(selectedPlan: plan));
+      
   void onAmountChanged(String newValue) {
     final previousScreenState = state;
     final previoustAmountState = previousScreenState.amount;
@@ -233,7 +224,12 @@ class ElectricityCubit extends Cubit<ElectricityState> {
         state.copyWith(status: ElectricityStatus.failure, message: l.message),
       ),
       (r) {
-        emit(state.copyWith(status: ElectricityStatus.purchased, transactionResponse: r));
+        emit(
+          state.copyWith(
+            status: ElectricityStatus.purchased,
+            transactionResponse: r,
+          ),
+        );
         onPurchased?.call(r);
       },
     );

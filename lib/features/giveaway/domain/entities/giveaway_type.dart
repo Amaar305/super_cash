@@ -62,9 +62,12 @@ class GiveawayType {
 enum GiveawayTypeCode {
   airtime,
   data,
+  cash,
+  directAirtime,
   product;
 
   bool get isAirtime => this == GiveawayTypeCode.airtime;
   bool get isData => this == GiveawayTypeCode.data;
   bool get isProduct => this == GiveawayTypeCode.product;
+  bool get isCash => this == GiveawayTypeCode.cash;
 }

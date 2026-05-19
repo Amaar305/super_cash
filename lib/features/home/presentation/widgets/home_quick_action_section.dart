@@ -52,7 +52,7 @@ class HomeQuickActionSection extends StatelessWidget {
             ],
             if (!hideHomeUI.transfer) ...[
               HomeQuickActionButton(
-                AppStrings.transfer,
+                'Bonus',
                 icon: Assets.icons.transferLine.svg(),
                 onTap: () => context.goNamedSafe(RNames.bonus),
               ),

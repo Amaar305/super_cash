@@ -1,4 +1,4 @@
-part of '../pages/product_giveaway_details_page.dart';
+part of '../pages/giveway_detail_page.dart';
 
 class _MetricCard extends StatelessWidget {
   const _MetricCard({
@@ -18,7 +18,7 @@ class _MetricCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: ProductGiveawayDetailsPage._cardBorder),
+        border: Border.all(color: GivewayDetailPage._cardBorder),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -26,7 +26,7 @@ class _MetricCard extends StatelessWidget {
           Text(
             title,
             style: poppinsTextStyle(
-              color: ProductGiveawayDetailsPage._softMuted,
+              color: GivewayDetailPage._softMuted,
               fontSize: 10,
               fontWeight: AppFontWeight.medium,
             ),
@@ -46,14 +46,14 @@ class _MetricCard extends StatelessWidget {
               const Icon(
                 Icons.arrow_upward_rounded,
                 size: 12,
-                color: ProductGiveawayDetailsPage._softGreen,
+                color: GivewayDetailPage._softGreen,
               ),
               const SizedBox(width: 4),
               Expanded(
                 child: Text(
                   subtitle,
                   style: poppinsTextStyle(
-                    color: ProductGiveawayDetailsPage._softGreen,
+                    color: GivewayDetailPage._softGreen,
                     fontSize: 10,
                     fontWeight: AppFontWeight.semiBold,
                   ),

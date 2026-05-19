@@ -45,6 +45,12 @@ class _CashGiveawayViewState extends State<CashGiveawayView> {
   }
 
   @override
+  void dispose() {
+    hideLoadingOverlay();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return AppScaffold(
       appBar: AppBar(title: AppAppBarTitle('Cash Giveaway')),

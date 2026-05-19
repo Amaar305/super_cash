@@ -12,6 +12,7 @@ class PrimaryButton extends StatelessWidget {
     this.onPressed,
     this.child,
     this.backgroundColor,
+    this.fontColor,
   });
 
   final bool isLoading;
@@ -19,6 +20,7 @@ class PrimaryButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final Widget? child;
   final Color? backgroundColor;
+  final Color? fontColor;
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +55,9 @@ class PrimaryButton extends StatelessWidget {
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(12)),
             ),
-            textStyle: GoogleFonts.exo(color: AppColors.white),
+            textStyle: GoogleFonts.exo(
+              color: fontColor ?? AppColors.white,
+            ),
           ),
           onPressed: onPressed,
           child: child,

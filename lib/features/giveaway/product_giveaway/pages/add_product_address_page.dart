@@ -1,5 +1,6 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:super_cash/features/giveaway/giveaway.dart';
 
 class AddProductAddressPage extends StatelessWidget {
@@ -16,7 +17,16 @@ class AddProductAddressPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Gap.v(AppSpacing.xlg),
+            Align(
+              alignment: Alignment.topRight,
+              child: IconButton(
+                icon: Icon(Icons.cancel),
+                onPressed: () {
+                  context.pop(null);
+                },
+              ),
+            ),
+            Gap.v(AppSpacing.lg),
             // Product image
             _ProduuctImage(product: product),
             Gap.v(AppSpacing.md),
@@ -41,7 +51,6 @@ class _ProduuctImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   
     return SizedBox(
       width: 160,
       height: 122,

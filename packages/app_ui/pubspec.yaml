@@ -61,7 +61,7 @@ flutter:
     - family: OpenSans
       fonts:
         - asset: assets/fonts/OpenSans-Regular.ttf
-        #   weight: 800
+          weight: 400
         # - asset: assets/fonts/OpenSans-Regular.ttf
         #   weight: 700
         # - asset: assets/fonts/OpenSans-Regular.ttf
@@ -75,7 +75,7 @@ flutter:
     - family: Karla
       fonts:
         - asset: assets/fonts/Karla-Regular.ttf
-        #   weight: 800
+          weight: 400
         # - asset: assets/fonts/Karla-Regular.ttf
         #   weight: 700
         # - asset: assets/fonts/Karla-Regular.ttf
@@ -89,6 +89,7 @@ flutter:
     - family: MonaSans
       fonts:
         - asset: assets/fonts/MonaSans-Regular.ttf
+          weight: 400
         #   weight: 900
         # - asset: assets/fonts/MonaSans-Regular.ttf
         #   weight: 800

@@ -18,7 +18,7 @@ class HomeTasks extends StatelessWidget {
     if (hideHomeUI == null || hideHomeUI.tasks) {
       return SizedBox.shrink();
     }
-    final iconSize = 20.0;
+    final iconSize = 18.0;
     final items = [
       TaskItem(
         name: 'Tasks',
@@ -95,7 +95,7 @@ class TaskTile extends StatelessWidget {
         ),
 
         child: Row(
-          spacing: AppSpacing.md,
+          spacing: AppSpacing.sm,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             task.icon,
@@ -103,10 +103,9 @@ class TaskTile extends StatelessWidget {
               child: Text(
                 task.name,
                 maxLines: 1,
-                // overflow: TextOverflow.ellipsis,
                 style: poppinsTextStyle(
-                  fontSize: 12,
-                  fontWeight: AppFontWeight.bold,
+                  fontSize: 11.5,
+                  fontWeight: AppFontWeight.light,
                 ),
               ),
             ),

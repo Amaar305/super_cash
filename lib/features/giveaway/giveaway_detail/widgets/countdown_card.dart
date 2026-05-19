@@ -1,4 +1,4 @@
-part of '../pages/product_giveaway_details_page.dart';
+part of '../pages/giveway_detail_page.dart';
 
 class _CountdownCard extends StatefulWidget {
   const _CountdownCard({
@@ -42,7 +42,7 @@ class _CountdownCardState extends State<_CountdownCard> {
 
         return Container(
           width: double.infinity,
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20).copyWith(bottom: 10, top: 10),
           decoration: BoxDecoration(
             color: AppColors.white,
             borderRadius: BorderRadius.circular(18),
@@ -50,6 +50,7 @@ class _CountdownCardState extends State<_CountdownCard> {
               left: BorderSide(color: AppColors.deepBlue, width: 4),
               top: BorderSide(color: AppColors.deepBlue, width: 1),
               bottom: BorderSide(color: AppColors.deepBlue, width: 1),
+              right: BorderSide(color: AppColors.deepBlue, width: 1),
             ),
             boxShadow: const [
               BoxShadow(

@@ -21,6 +21,16 @@ class CashGiveawayHeader extends StatelessWidget {
             icon: Icons.monetization_on,
             subtitle: '₦${state.totalCash.planDisplayAmount}',
             footerTitle: 'Across all active drops',
+            extraWidget: SizedBox(
+              width: double.infinity,
+              height: 4,
+              child: LinearProgressIndicator(
+                value: 1,
+                color: Color(0xff006E2F),
+                borderRadius: BorderRadius.circular(999),
+                // minHeight: 4,
+              ),
+            ),
           ),
         ),
         Expanded(
@@ -36,7 +46,7 @@ class CashGiveawayHeader extends StatelessWidget {
               width: double.infinity,
               height: 4,
               child: LinearProgressIndicator(
-                value: state.remainingPercent,
+                value: state.remainingPercentValue,
                 color: Color(0xff006E2F),
                 borderRadius: BorderRadius.circular(999),
                 // minHeight: 4,

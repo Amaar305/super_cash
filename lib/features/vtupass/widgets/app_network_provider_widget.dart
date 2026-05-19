@@ -29,7 +29,7 @@ class AppNetworkProviderWidget extends StatelessWidget {
     super.key,
     this.selectedNetwork,
     this.onNetworkSelect,
-    this.networks = const ['Glo', 'Airtel', 'MTN'], //'9Mobile',
+    this.networks = const ['Glo', 'Airtel', 'MTN', '9Mobile'], //,
   });
 
   final List<String> networks;

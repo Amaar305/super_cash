@@ -42,6 +42,12 @@ class _DirectAirtimeGiveawayViewState extends State<DirectAirtimeGiveawayView> {
   }
 
   @override
+  void dispose() {
+    hideLoadingOverlay();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return AppScaffold(
       appBar: AppBar(title: AppAppBarTitle('Direct Airtime Giveaway')),
@@ -76,16 +82,12 @@ class _DirectAirtimeGiveawayViewState extends State<DirectAirtimeGiveawayView> {
                         children: [
                           DirectAirtimeHeader(),
                           const Gap.v(AppSpacing.xlg),
-                          DirectAirtimeNetworkFilter(),
-                          const Gap.v(AppSpacing.xlg),
                           Text(
                             'Available Giveaway',
-                            style: Theme.of(context).textTheme.titleMedium
-                                ?.copyWith(
-                                  color: const Color(0xFF16233C),
-                                  fontWeight: FontWeight.w700,
-                                ),
+                            style: Theme.of(context).textTheme.titleMedium,
                           ),
+                          const Gap.v(AppSpacing.lg),
+                          DirectAirtimeNetworkFilter(),
                           const Gap.v(AppSpacing.lg),
                         ],
                       ),
@@ -126,6 +128,16 @@ class DirectAirtimeHeader extends StatelessWidget {
             icon: Icons.phone,
             subtitle: state.totalAirtime.planDisplayAmount,
             footerTitle: 'Across all active drops',
+            extraWidget: SizedBox(
+              width: double.infinity,
+              height: 4,
+              child: LinearProgressIndicator(
+                value: 1,
+                color: Color(0xff006E2F),
+                borderRadius: BorderRadius.circular(999),
+                // minHeight: 4,
+              ),
+            ),
           ),
         ),
         Expanded(
@@ -141,7 +153,7 @@ class DirectAirtimeHeader extends StatelessWidget {
               width: double.infinity,
               height: 4,
               child: LinearProgressIndicator(
-                value: state.remainingPercent,
+                value: state.remainingPercent / 100,
                 color: Color(0xff006E2F),
                 borderRadius: BorderRadius.circular(999),
                 // minHeight: 4,

@@ -11,6 +11,8 @@ class DirectAirtimeModel {
   final DateTime createdAt;
   final DateTime updatedAt;
 
+  bool get outOfAirtime=> amountQuantityRemaining<1;
+
   String get fixedAmount => (double.tryParse(amount) ?? 0.0).toStringAsFixed(0);
 
   const DirectAirtimeModel({

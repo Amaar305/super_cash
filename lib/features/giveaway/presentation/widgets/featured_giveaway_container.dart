@@ -16,7 +16,7 @@ class FeaturedGiveawayContainer extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [AppColors.black.withValues(alpha: 0.7), AppColors.black],
+          colors: [AppColors.deepBlue, AppColors.blue, const Color(0xff5B8DEF)],
         ),
       ),
       child: Column(
@@ -28,31 +28,15 @@ class FeaturedGiveawayContainer extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               newMethod(),
-              Tappable.faded(
-                onTap: () {},
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 7,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: .35),
-                    borderRadius: BorderRadius.circular(999),
-                  ),
-                  child: Row(
-                    spacing: AppSpacing.xs,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.info_outline,
-                        size: 12,
-                        color: AppColors.white,
-                      ),
-                      Text(
-                        'Details'.toUpperCase(),
-                        style: TextStyle(fontSize: 10, color: AppColors.white),
-                      ),
-                    ],
+              Flexible(
+                child: Text(
+                  'Giveaway',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: poppinsTextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w800,
+                    color: AppColors.white,
                   ),
                 ),
               ),
@@ -69,7 +53,7 @@ class FeaturedGiveawayContainer extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: .35),
+        color: Colors.white.withValues(alpha: .14),
         borderRadius: BorderRadius.circular(999),
       ),
       child: Row(
@@ -81,9 +65,8 @@ class FeaturedGiveawayContainer extends StatelessWidget {
             "FEATURED UPCOMING",
             style: poppinsTextStyle(
               fontSize: 10,
-
               fontWeight: FontWeight.w800,
-              color: AppColors.brightGrey,
+              color: AppColors.white,
             ).copyWith(letterSpacing: .5),
           ),
         ],
