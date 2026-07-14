@@ -14,7 +14,7 @@ class FundCardRepositoriesImpl implements FundCardRepositories {
   });
 
   @override
-  Future<Either<Failure, TransactionResponse>> fundCard({
+  Future<Either<Failure, CardOperationResponse>> fundCard({
     required String amount,
     required String cardId,
   }) async {

@@ -127,6 +127,7 @@ class _ElectricityFormState extends State<ElectricityForm> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
+                  spacing: AppSpacing.sm,
                   children: [
                     Text(
                       response.token ?? '',
@@ -181,7 +182,12 @@ class _ElectricityFormState extends State<ElectricityForm> {
                   ],
                 ),
               ),
-              PrimaryButton(label: 'Done', onPressed: context.pop),
+              PrimaryButton(
+                label: 'Done',
+                onPressed: () => context
+                  ..pop()
+                  ..pop(),
+              ),
             ],
           );
         }

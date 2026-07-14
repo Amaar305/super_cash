@@ -4,13 +4,14 @@ import 'package:super_cash/features/card/fund_card/fund_card.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:shared/shared.dart';
 
-class FundCardUseCase implements UseCase<TransactionResponse, FundCardParams> {
+class FundCardUseCase
+    implements UseCase<CardOperationResponse, FundCardParams> {
   final FundCardRepositories fundCardRepositories;
 
   FundCardUseCase({required this.fundCardRepositories});
 
   @override
-  Future<Either<Failure, TransactionResponse>> call(
+  Future<Either<Failure, CardOperationResponse>> call(
     FundCardParams param,
   ) async {
     return await fundCardRepositories.fundCard(

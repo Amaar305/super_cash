@@ -34,6 +34,10 @@ class DataView extends StatelessWidget {
       ),
       releaseFocus: true,
       resizeToAvoidBottomInset: true,
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.all(AppSpacing.lg).copyWith(bottom: 30),
+        child: DataButton(),
+      ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(AppSpacing.lg),
         child: Column(

@@ -50,8 +50,8 @@ class CardTransactionsCubit extends HydratedCubit<CardTransactionsState> {
             transactions: response.transactions,
             data: response.transactions,
             paginationMeta: response.meta,
-            nextPageUrl: response.meta.next,
-            hasReachedMax: response.meta.next == null,
+            nextPageUrl: response.meta?.next,
+            hasReachedMax: response.meta?.next == null,
             message: 'Initial transactions loaded successfully',
           ));
         },
@@ -96,8 +96,8 @@ class CardTransactionsCubit extends HydratedCubit<CardTransactionsState> {
             transactions: newTransactions,
             data: newTransactions,
             paginationMeta: response.meta,
-            nextPageUrl: response.meta.next,
-            hasReachedMax: response.meta.next == null,
+            nextPageUrl: response.meta?.next,
+            hasReachedMax: response.meta?.next == null,
             message: 'More transactions loaded successfully',
           ));
         },
@@ -142,10 +142,7 @@ class CardTransactionsCubit extends HydratedCubit<CardTransactionsState> {
       final result = data.where(
         (element) {
           value = value.toLowerCase();
-          final conditions =
-              element.cardTransactionType.toLowerCase().contains(value) ||
-                  element.description.toLowerCase().contains(value);
-          return conditions;
+          return element.description.toLowerCase().contains(value);
         },
       ).toList();
 

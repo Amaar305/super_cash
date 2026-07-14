@@ -6,14 +6,15 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared/shared.dart';
 
 class VirtaulCardDetails extends StatelessWidget {
-  const VirtaulCardDetails({super.key, this.cardDetails});
+  const VirtaulCardDetails({
+    super.key,
+    this.cardDetails,
+    this.isPlatinum = false,
+  });
   final CardDetails? cardDetails;
+  final bool isPlatinum;
   @override
   Widget build(BuildContext context) {
-    // final cardDetails = context.select(
-    //   (CardDetailCubit cubit) => cubit.state.cardDetails,
-    // );
-
     if (cardDetails == null) {
       return CardContainer(
         scrollable: false,
@@ -25,9 +26,9 @@ class VirtaulCardDetails extends StatelessWidget {
         ),
       );
     }
-
+    final textColor = isPlatinum ? null : AppColors.white;
     return CardContainer(
-      isPlatinum: cardDetails?.isPlatinum ?? false,
+      isPlatinum: true,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -39,7 +40,7 @@ class VirtaulCardDetails extends StatelessWidget {
                 style: TextStyle(
                   fontWeight: AppFontWeight.bold,
                   fontSize: AppSpacing.md,
-                  color: AppColors.white,
+                  color: textColor,
                 ),
               ),
               Row(
@@ -65,10 +66,10 @@ class VirtaulCardDetails extends StatelessWidget {
           // Gap.v(AppSpacing.md),
           Center(
             child: Text(
-              cardNumbers(cardDetails!.cardNumber),
+              cardNumbers(cardDetails?.cardNumber ?? ''),
               textAlign: TextAlign.center,
               style: GoogleFonts.ibmPlexMono(
-                color: AppColors.white,
+                color: textColor,
                 fontSize: 20,
                 letterSpacing: 2.5, // Stretch out the spacing
                 fontWeight: FontWeight.w500,
@@ -83,8 +84,13 @@ class VirtaulCardDetails extends StatelessWidget {
               _cardMiniText(
                 title: 'Exp. Date',
                 subtitle: cardDetails!.formattedExpiryDate,
+                isPlatinum: isPlatinum,
               ),
-              _cardMiniText(title: 'CVV', subtitle: cardDetails!.cvv),
+              _cardMiniText(
+                title: 'CVV',
+                subtitle: cardDetails?.cvv ?? '',
+                isPlatinum: isPlatinum,
+              ),
             ],
           ),
           Gap.v(AppSpacing.md),
@@ -95,9 +101,9 @@ class VirtaulCardDetails extends StatelessWidget {
               Text(
                 cardDetails!.cardName,
                 style: poppinsTextStyle(
-                  fontWeight: AppFontWeight.black,
+                  fontWeight: AppFontWeight.extraBold,
                   fontSize: AppSpacing.lg,
-                  color: AppColors.white,
+                  color: textColor,
                 ),
               ),
               Assets.images.international.image(width: 39.92, height: 30),
@@ -108,7 +114,11 @@ class VirtaulCardDetails extends StatelessWidget {
     );
   }
 
-  Widget _cardMiniText({required String title, required String subtitle}) {
+  Widget _cardMiniText({
+    required String title,
+    required String subtitle,
+    bool isPlatinum = false,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: AppSpacing.xs,
@@ -118,7 +128,7 @@ class VirtaulCardDetails extends StatelessWidget {
           style: TextStyle(
             fontSize: AppSpacing.md - 1,
             fontWeight: AppFontWeight.medium,
-            color: Color.fromRGBO(224, 224, 223, 1),
+            color: isPlatinum ? null : Color.fromRGBO(224, 224, 223, 1),
           ),
         ),
         Text(
@@ -126,7 +136,7 @@ class VirtaulCardDetails extends StatelessWidget {
           style: poppinsTextStyle(
             fontWeight: AppFontWeight.black,
             fontSize: AppSpacing.md,
-            color: AppColors.white,
+            color: isPlatinum ? null : AppColors.white,
           ),
         ),
       ],

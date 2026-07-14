@@ -9,7 +9,7 @@ class CardDollarRateWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dollarRate = context.select(
-      (CardRepoCubit cubit) => cubit.state.dollarRate?.dollarRate ?? 0,
+      (CardRepoCubit cubit) => cubit.state.cardFeeSettings?.usdToNgnRate ?? 0,
     );
     return CardDetailContainer(
       text: 'Today Current Exchange Rate: ',

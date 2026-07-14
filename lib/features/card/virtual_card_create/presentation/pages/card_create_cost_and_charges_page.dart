@@ -60,6 +60,7 @@ class CardCreateCostAndChargesView extends StatelessWidget {
         body: BlocListener<CreateVirtualCardCubit, CreateVirtualCardState>(
           listenWhen: (previous, current) => current.status != previous.status,
           listener: (context, state) {
+            print('Error: ${state.message}');
             if (state.status.isError && state.message.isNotEmpty) {
               openSnackbar(
                 SnackbarMessage.error(title: state.message),
@@ -98,10 +99,11 @@ class CardCreateCostAndChargesDetails extends StatelessWidget {
     );
 
     final cardCreationFee = context.select(
-      (CardRepoCubit cubit) => cubit.state.dollarRate?.cardCreationFee ?? 0,
+      (CardRepoCubit cubit) =>
+          cubit.state.cardFeeSettings?.cardCreationFeeUsd ?? 0,
     );
     final dollarRate = context.select(
-      (CardRepoCubit cubit) => cubit.state.dollarRate?.dollarRate ?? 1,
+      (CardRepoCubit cubit) => cubit.state.cardFeeSettings?.usdToNgnRate ?? 1,
     );
     String totalFee =
         '\$$amount ≈ ${calculateTotalFee(amount: amount, dollarRate: dollarRate, fee: cardCreationFee)}';
@@ -149,10 +151,11 @@ class CardCreationFeeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cardCreationFee = context.select(
-      (CardRepoCubit cubit) => cubit.state.dollarRate?.cardCreationFee ?? 0,
+      (CardRepoCubit cubit) =>
+          cubit.state.cardFeeSettings?.cardCreationFeeUsd ?? 0,
     );
     final dollarRate = context.select(
-      (CardRepoCubit cubit) => cubit.state.dollarRate?.dollarRate ?? 1,
+      (CardRepoCubit cubit) => cubit.state.cardFeeSettings?.usdToNgnRate ?? 1,
     );
 
     final isPlatinum = context.select(
@@ -201,7 +204,7 @@ class CardCreationFeeWidget extends StatelessWidget {
                   ),
 
                   cardTransactionDescSmallText(
-                    isPlatinum ? '\$10,000' : '\$5,000',
+                    isPlatinum ? '\$100,000' : '\$50,000',
                   ),
                 ],
               ),

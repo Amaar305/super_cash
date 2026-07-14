@@ -7,20 +7,20 @@ import 'package:shared/shared.dart';
 part 'card_repo_state.dart';
 
 class CardRepoCubit extends Cubit<CardRepoState> {
-  final GetDollarRateUseCase _getDollarRateUseCase;
-  CardRepoCubit({required GetDollarRateUseCase getDollarRateUseCase})
-    : _getDollarRateUseCase = getDollarRateUseCase,
+  final GetCardFeeSettingsUseCase _getCardFeeSettingsUseCase;
+  CardRepoCubit({required GetCardFeeSettingsUseCase getCardFeeSettingsUseCase})
+    : _getCardFeeSettingsUseCase = getCardFeeSettingsUseCase,
       super(CardRepoState.initail());
 
-  Future<void> fetchDollarRate() async {
+  Future<void> fetchCardFeeSettings() async {
     if (isClosed) return;
     try {
       emit(state.copyWith(status: CardRepoStatus.loading));
-      final res = await _getDollarRateUseCase(NoParam());
+      final res = await _getCardFeeSettingsUseCase(NoParam());
 
       res.fold(
         (failure) {
-          logE('Fail to fetch dollar rate ${failure.message}');
+          logE('Fail to fetch card fee settings ${failure.message}');
           emit(
             state.copyWith(
               status: CardRepoStatus.failure,
@@ -32,18 +32,18 @@ class CardRepoCubit extends Cubit<CardRepoState> {
           emit(
             state.copyWith(
               status: CardRepoStatus.success,
-              message: 'Successfully fetched dollar rate',
-              dollarRate: success,
+              message: 'Successfully fetched card fee settings',
+              cardFeeSettings: success,
             ),
           );
         },
       );
     } catch (error, stackTrace) {
-      logE('Fail to fetch dollar rate $error', stackTrace: stackTrace);
+      logE('Fail to fetch card fee settings $error', stackTrace: stackTrace);
       emit(
         state.copyWith(
           status: CardRepoStatus.failure,
-          message: 'Fail to fetch dollar rate',
+          message: 'Fail to fetch card fee settings',
         ),
       );
     }

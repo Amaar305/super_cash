@@ -79,6 +79,8 @@ class _GiveawaysViewState extends State<GiveawaysView> {
             builder: (context, state) {
               return Column(
                 children: [
+                  GiveawayDisclaimerNotice(),
+                  Gap.v(12),
                   _HistoryWinnersRow(),
                   Gap.v(14),
                   FeaturedGiveawayCard(),

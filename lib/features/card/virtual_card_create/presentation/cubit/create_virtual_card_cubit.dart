@@ -16,6 +16,7 @@ class CreateVirtualCardCubit extends Cubit<CreateVirtualCardState> {
 
   void updateCardType(bool cardType) =>
       emit(state.copyWith(isUSDCard: cardType));
+      
   void updateCardPlatinum(int index) {
     if (index == 0) {
       emit(state.copyWith(platinum: false));
@@ -142,7 +143,7 @@ class CreateVirtualCardCubit extends Cubit<CreateVirtualCardState> {
     final res = await _createCardUseCases(
       CreateCardParams(
         pin: cardPin.value,
-        cardLimit: isPlatinum ? '1000000' : '500000',
+        cardLimit: isPlatinum ? '100000' : '50000',
         amount: amount.value,
         cardBrand: isMasterCard ? 'Mastercard' : 'Visa',
       ),

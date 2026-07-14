@@ -85,12 +85,6 @@ class CardBalanceDetails extends StatelessWidget {
           isCopyable: false,
           boldValue: true,
         ),
-        CardDetailTitleWithValue(
-          title: AppStrings.currentBalance,
-          value: '\$${cardDetails.availableBalance.toStringAsFixed(2)}',
-          isCopyable: false,
-          boldValue: true,
-        ),
       ],
     );
   }

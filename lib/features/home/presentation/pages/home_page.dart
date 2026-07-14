@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      unawaited(context.read<CardRepoCubit>().fetchDollarRate());
+      unawaited(context.read<CardRepoCubit>().fetchCardFeeSettings());
       context.read<HomeCubit>().fetchAppSettings();
     });
   }

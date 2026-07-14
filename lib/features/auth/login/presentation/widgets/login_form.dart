@@ -32,9 +32,11 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      spacing: AppSpacing.xxlg,
-      children: [LoginEmailField(), LoginPasswordField()],
+    return AutofillGroup(
+      child: Column(
+        spacing: AppSpacing.xxlg,
+        children: [LoginEmailField(), LoginPasswordField()],
+      ),
     );
   }
 }

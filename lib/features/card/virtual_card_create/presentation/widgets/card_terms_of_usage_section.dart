@@ -31,7 +31,7 @@ class CardTermsOfUsageSection extends StatelessWidget {
                   child: Text(
                     terms.replaceAll(
                       'CARDLIMIT',
-                      isPlatinum ? '\$10,000' : '\$5,000',
+                      isPlatinum ? '\$100,000' : '\$50,000',
                     ),
                     style: MonaSansTextStyle.label(
                       fontSize: AppSpacing.md - 1,

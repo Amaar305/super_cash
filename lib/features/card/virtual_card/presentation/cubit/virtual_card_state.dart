@@ -24,11 +24,7 @@ class VirtualCardState extends Equatable {
   final String message;
 
   @override
-  List<Object> get props => [
-        status,
-        cards,
-        message,
-      ];
+  List<Object> get props => [status, cards, message];
 
   VirtualCardState copyWith({
     VirtualCardStatus? status,

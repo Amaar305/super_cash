@@ -28,23 +28,23 @@ class _FreezeCardTileWidgetState extends State<FreezeCardTileWidget> {
     final isLoading = context.select(
       (CardDetailCubit cubit) => cubit.state.status.isLoading,
     );
-    final cardStatus = context.select(
-      (CardDetailCubit cubit) => cubit.state.cardDetails?.isActive ?? false,
+    final isFrozen = context.select(
+      (CardDetailCubit cubit) => cubit.state.cardDetails?.isFrozen ?? false,
     );
 
     return CardQuickActionTile(
       leading: Assets.icons.iconWallet.svg(),
-      title: AppStrings.freezCard,
-      onTap: isLoading ? null : () => onCardFreezed(cardStatus),
+      title: isFrozen ? AppStrings.unFreezCard : AppStrings.freezCard,
+      onTap: isLoading ? null : () => onCardFreezed(isFrozen),
     );
   }
 
-  void onCardFreezed(bool cardStatus) {
+  void onCardFreezed(bool isFrozen) {
     context.showExtraBottomSheet(
-      title: AppStrings.freezCard,
-      description: cardStatus
-          ? AppStrings.freezCardDescription
-          : AppStrings.unfreezeCardDescription,
+      title: isFrozen ? AppStrings.unFreezCard : AppStrings.freezCard,
+      description: isFrozen
+          ? AppStrings.unfreezeCardDescription
+          : AppStrings.freezCardDescription,
       icon: Assets.images.warning.image(),
       children: [
         BlocProvider.value(
@@ -76,8 +76,8 @@ class FreezeCardBottomSheetButton extends StatelessWidget {
     final isLoading = context.select(
       (CardDetailCubit cubit) => cubit.state.status.isLoading,
     );
-    final cardStatus = context.select(
-      (CardDetailCubit cubit) => cubit.state.cardDetails?.isActive ?? false,
+    final isFrozen = context.select(
+      (CardDetailCubit cubit) => cubit.state.cardDetails?.isFrozen ?? false,
     );
 
     return PrimaryButton(
@@ -85,9 +85,10 @@ class FreezeCardBottomSheetButton extends StatelessWidget {
       isLoading: isLoading,
       onPressed: () {
         context.read<CardDetailCubit>().onFreezeCard(
+          unfreeze: isFrozen,
           onFreezed: (message) {
             context.showConfirmationBottomSheet(
-              title: cardStatus ? AppStrings.freezCard : AppStrings.unFreezCard,
+              title: isFrozen ? AppStrings.unFreezCard : AppStrings.freezCard,
               okText: AppStrings.done,
               description: message,
             );

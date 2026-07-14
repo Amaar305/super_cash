@@ -9,19 +9,28 @@ import 'package:super_cash/core/app_strings/app_string.dart';
 
 import '../../../card.dart';
 
-class CardDetailsPage extends StatelessWidget {
-  const CardDetailsPage({super.key, required this.cardId});
+class CardDetailsPageParams {
   final String cardId;
+  final bool isPlatinum;
+
+  const CardDetailsPageParams({required this.cardId, required this.isPlatinum});
+}
+
+class CardDetailsPage extends StatelessWidget {
+  const CardDetailsPage({super.key, required this.cardDetailsParams});
+
+  final CardDetailsPageParams cardDetailsParams;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => CardDetailCubit(
-        cardId: cardId,
+        cardId: cardDetailsParams.cardId,
+        isPlatinum: cardDetailsParams.isPlatinum,
         cardDetailsUseCase: serviceLocator(),
         freezeCardUseCase: serviceLocator(),
       )..fetchCardDetails(),
-      child: CardDetailsView(cardId: cardId),
+      child: CardDetailsView(cardId: cardDetailsParams.cardId),
     );
   }
 }
@@ -59,15 +68,12 @@ class CardDetailsBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cardDetails = context.select(
-      (CardDetailCubit cubit) => cubit.state.cardDetails,
-    );
-    void onChangeCardPin() {
-      context.push(
-        AppRoutes.virtualCardChangePin,
-        extra: {'card_id': cardId, 'card_details': cardDetails},
-      );
-    }
+    // void onChangeCardPin() {
+    //   context.push(
+    //     AppRoutes.virtualCardChangePin,
+    //     extra: {'card_id': cardId, 'card_details': cardDetails},
+    //   );
+    // }
 
     return BlocListener<CardDetailCubit, CardDetailState>(
       listenWhen: (previous, current) => previous.status != current.status,
@@ -82,7 +88,7 @@ class CardDetailsBody extends StatelessWidget {
       },
       child: Column(
         children: [
-          VirtaulCardDetails(cardDetails: cardDetails),
+          VirtualCardShell(),
           Gap.v(AppSpacing.lg),
           CardBalanceSection(),
           Gap.v(AppSpacing.lg),
@@ -95,14 +101,29 @@ class CardDetailsBody extends StatelessWidget {
           //     title: AppStrings.calculateTransactionFee,
           //     onTap: onCalculateTransactionTapped,
           //   ),
-          CardQuickActionTile(
-            leading: Assets.icons.iconSettingEye.svg(),
-            title: AppStrings.changeCardPin,
-            onTap: onChangeCardPin,
-          ),
+          // CardQuickActionTile(
+          //   leading: Assets.icons.iconSettingEye.svg(),
+          //   title: AppStrings.changeCardPin,
+          //   onTap: onChangeCardPin,
+          // ),
           FreezeCardTileWidget(cardId: cardId),
         ],
       ),
     );
+  }
+}
+
+class VirtualCardShell extends StatelessWidget {
+  const VirtualCardShell({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final cardDetails = context.select(
+      (CardDetailCubit cubit) => cubit.state.cardDetails,
+    );
+    final isPlatinum = context.select(
+      (CardDetailCubit cubit) => cubit.state.isPlatinum,
+    );
+    return VirtaulCardDetails(cardDetails: cardDetails, isPlatinum: isPlatinum);
   }
 }

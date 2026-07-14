@@ -19,8 +19,11 @@ class VirtualCardCubit extends Cubit<VirtualCardState> {
       );
 
   void fetchCards() async {
+  
     emit(state.copyWith(status: VirtualCardStatus.loading));
-
+    await Future.delayed(
+      const Duration(seconds: 1),
+    ); // Simulate a delay for loading state
     final res = await _fetchVirtualCardUseCase(NoParam());
 
     res.fold(

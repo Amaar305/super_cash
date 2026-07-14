@@ -70,10 +70,11 @@ class FundCardTransactionFeeSection extends StatelessWidget {
       (FundCardCubit cubit) => cubit.state.amount.value,
     );
     final cardTransactionFee = context.select(
-      (CardRepoCubit cubit) => cubit.state.dollarRate?.cardTransactionFee ?? 0,
+      (CardRepoCubit cubit) =>
+          cubit.state.cardFeeSettings?.fundingFeeFixedUsd ?? 0,
     );
     final dollarRate = context.select(
-      (CardRepoCubit cubit) => cubit.state.dollarRate?.dollarRate ?? 0,
+      (CardRepoCubit cubit) => cubit.state.cardFeeSettings?.usdToNgnRate ?? 0,
     );
 
     final totalCharge = calculateTotalFee(

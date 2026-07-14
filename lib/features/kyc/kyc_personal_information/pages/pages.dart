@@ -1,0 +1,1 @@
+export 'kyc_personal_information_page.dart';

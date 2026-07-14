@@ -19,14 +19,16 @@ class CardDetailCubit extends HydratedCubit<CardDetailState> {
     required String cardId,
     required CardDetailsUseCase cardDetailsUseCase,
     required FreezeCardUseCase freezeCardUseCase,
-  })  : _cardId = cardId,
-        _cardDetailsUseCase = cardDetailsUseCase,
-        _freezeCardUseCase = freezeCardUseCase,
-        super(CardDetailState.initial());
-  @override
-  String get id => _cardId;
+    required bool isPlatinum,
+  }) : _cardId = cardId,
+       _cardDetailsUseCase = cardDetailsUseCase,
+       _freezeCardUseCase = freezeCardUseCase,
 
-  void resetState() => emit(CardDetailState.initial());
+       super(CardDetailState.initial(isPlatinum));
+  @override
+  String get id => "card_details_v2.0";
+
+  // void resetState() => emit(CardDetailState.initial());
 
   void fetchCardDetails({bool forceRefresh = false}) async {
     if (state.cardDetails != null && !forceRefresh) {
@@ -36,9 +38,7 @@ class CardDetailCubit extends HydratedCubit<CardDetailState> {
 
     emit(state.copyWith(status: CardDetailStatus.loading));
 
-    final res = await _cardDetailsUseCase(
-      CardDetailsParams(cardId: _cardId),
-    );
+    final res = await _cardDetailsUseCase(CardDetailsParams(cardId: _cardId));
 
     if (isClosed) return;
 
@@ -47,10 +47,7 @@ class CardDetailCubit extends HydratedCubit<CardDetailState> {
         state.copyWith(status: CardDetailStatus.failure, message: l.message),
       ),
       (r) => emit(
-        state.copyWith(
-          cardDetails: r,
-          status: CardDetailStatus.success,
-        ),
+        state.copyWith(cardDetails: r, status: CardDetailStatus.success),
       ),
     );
   }
@@ -105,6 +102,7 @@ class CardDetailCubit extends HydratedCubit<CardDetailState> {
   }
 
   Future<void> onFreezeCard({
+    bool unfreeze = false,
     void Function(String)? onFreezed,
   }) async {
     // Early return if already closed
@@ -114,51 +112,53 @@ class CardDetailCubit extends HydratedCubit<CardDetailState> {
 
     try {
       final result = await _freezeCardUseCase(
-        FreezeCardParam(cardId: _cardId),
+        FreezeCardParam(cardId: _cardId, unfreeze: unfreeze),
       );
 
       result.fold(
         (failure) {
-          emit(state.copyWith(
-              status: CardDetailStatus.failure, message: failure.message));
+          emit(
+            state.copyWith(
+              status: CardDetailStatus.failure,
+              message: failure.message,
+            ),
+          );
         },
         (response) {
           _handleFreezeResponse(response, onFreezed);
         },
       );
-
-      fetchCardDetails(forceRefresh: true);
     } catch (error) {
-      emit(state.copyWith(
-        status: CardDetailStatus.failure,
-        message: 'An unexpected error occurred',
-      ));
+      emit(
+        state.copyWith(
+          status: CardDetailStatus.failure,
+          message: 'An unexpected error occurred',
+        ),
+      );
       // Consider adding error logging here
       // logError(error, stackTrace);
     }
   }
 
   void _handleFreezeResponse(
-    Map<String, dynamic> response,
+    CardActionResponse response,
     void Function(String)? callback,
   ) {
-    final isValidResponse = response['status'] == 'success';
-    final cardStatus = isValidResponse ? response['card_status'] : false;
-    final message = isValidResponse
-        ? response['message']?.toString() ?? 'Card status updated'
-        : 'Invalid response from server';
-
     final updatedCardDetails = state.cardDetails?.copyWith(
-      isActive: cardStatus,
+      isActive: response.data.isActive,
+      isFrozen: response.data.isFrozen,
+      isDeleted: response.data.isDeleted,
     );
 
-    emit(state.copyWith(
-      status: CardDetailStatus.success,
-      cardDetails: updatedCardDetails,
-      message: message,
-    ));
+    emit(
+      state.copyWith(
+        status: CardDetailStatus.success,
+        cardDetails: updatedCardDetails,
+        message: response.message,
+      ),
+    );
 
-    callback?.call(message);
+    callback?.call(response.message);
   }
 
   @override

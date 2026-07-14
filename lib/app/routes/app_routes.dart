@@ -33,6 +33,8 @@ class AppRoutes {
   static const String virtualCardWithdraw = '$virtualCard/card-withdraw';
   static const String virtualCardTransactions =
       '$virtualCard/card-transactions';
+  static const String virtualCardTransactionDetail =
+      '$virtualCardTransactions/detail';
   static const String virtualCardChangePin = '$virtualCardDetail/change-pin';
   static const String history = '/history';
   static const String transactionDetail = '/transaction-details'; // fixed name
@@ -49,6 +51,14 @@ class AppRoutes {
   static const String generateAccount = '/generate-account';
   static const String liveChat = '/liveChat';
   static const String bonus = '/bonus';
+
+  // KYC
+  static const String kycStatus = '/kyc-status';
+  static const String kycPersonalInfo = '$kycStatus/personal-info';
+  static const String kycHomeAddress = '$kycStatus/home-address';
+  static const String kycSelfie = '$kycStatus/selfie';
+  static const String kycGovernmentId = '$kycStatus/government-id';
+  static const String kycBvn = '$kycStatus/bvn';
 
   // Giveaways
   static const String giveaway = '/giveaway';
@@ -101,6 +111,7 @@ class RNames {
   static const virtualCardDetail = 'virtualCardDetail';
   static const virtualCardWithdraw = 'virtualCardWithdraw';
   static const virtualCardTransactions = 'virtualCardTransactions';
+  static const virtualCardTransactionDetail = 'virtualCardTransactionDetail';
   static const virtualCardChangePin = 'virtualCardChangePin';
   static const transactionDetail = 'transactionDetail';
   static const confirmationDialog = 'confirmationDialog';
@@ -119,6 +130,14 @@ class RNames {
   static const String transfer = 'transfer';
   static const String bonus = 'bonus';
   static const String accountDeletion = 'accountDeletion';
+
+  // KYC
+  static const String kycStatus = 'kycStatus';
+  static const String kycPersonalInfo = 'kycPersonalInfo';
+  static const String kycHomeAddress = 'kycHomeAddress';
+  static const String kycSelfie = 'kycSelfie';
+  static const String kycGovernmentId = 'kycGovernmentId';
+  static const String kycBvn = 'kycBvn';
 
   // Giveaway
   static const String giveaway = 'giveaway';

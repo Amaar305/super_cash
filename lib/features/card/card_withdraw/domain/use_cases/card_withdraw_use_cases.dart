@@ -5,13 +5,13 @@ import 'package:fpdart/fpdart.dart';
 import 'package:shared/shared.dart';
 
 class WithdrawFundUseCase
-    implements UseCase<TransactionResponse, CardWithdrawParams> {
+    implements UseCase<CardOperationResponse, CardWithdrawParams> {
   final CardWithdrawRepositories cardWithdrawRepositories;
 
   WithdrawFundUseCase({required this.cardWithdrawRepositories});
 
   @override
-  Future<Either<Failure, TransactionResponse>> call(
+  Future<Either<Failure, CardOperationResponse>> call(
     CardWithdrawParams param,
   ) async {
     return cardWithdrawRepositories.cardWithdraw(
@@ -34,8 +34,7 @@ class FetchWalletBalanceUseCase implements UseCase<Wallet, NoParam> {
 
 class CardWithdrawParams {
   final String amount;
-
   final String cardId;
 
-  CardWithdrawParams({required this.amount, required this.cardId});
+  const CardWithdrawParams({required this.amount, required this.cardId});
 }

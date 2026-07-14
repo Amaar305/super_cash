@@ -20,6 +20,7 @@ import 'package:super_cash/features/welcome/welcome.dart';
 
 import '../../features/auth/auth.dart';
 import '../../features/card/card.dart';
+import '../../features/kyc/kyc.dart';
 import '../../features/enable_biometric/enable_biometric.dart';
 import '../../features/history/history.dart';
 import '../../features/home/home.dart';
@@ -213,8 +214,9 @@ class AppRouter {
           GoRoute(
             name: RNames.virtualCardDetail,
             path: 'detail',
-            builder: (context, state) =>
-                CardDetailsPage(cardId: state.extra as String),
+            builder: (context, state) => CardDetailsPage(
+              cardDetailsParams: state.extra as CardDetailsPageParams,
+            ),
             routes: [
               GoRoute(
                 name: RNames.virtualCardChangePin,
@@ -244,6 +246,15 @@ class AppRouter {
             path: 'card-transactions',
             builder: (context, state) =>
                 CardTransactionPage(cardId: state.extra as String),
+            routes: [
+              GoRoute(
+                name: RNames.virtualCardTransactionDetail,
+                path: 'detail',
+                builder: (context, state) => CardTransactionDetailPage(
+                  transaction: state.extra as CardTransaction,
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -266,6 +277,40 @@ class AppRouter {
         name: RNames.bonus,
         path: AppRoutes.bonus,
         builder: (_, __) => BonusPage(),
+      ),
+
+      // KYC
+      GoRoute(
+        name: RNames.kycStatus,
+        path: AppRoutes.kycStatus,
+        builder: (_, __) => const KycStatusPage(),
+        routes: [
+          GoRoute(
+            name: RNames.kycPersonalInfo,
+            path: 'personal-info',
+            builder: (_, __) => const KycPersonalInformationPage(),
+          ),
+          GoRoute(
+            name: RNames.kycHomeAddress,
+            path: 'home-address',
+            builder: (_, __) => const KycHomeAddressPage(),
+          ),
+          GoRoute(
+            name: RNames.kycSelfie,
+            path: 'selfie',
+            builder: (_, __) => const KYCSelfiePage(),
+          ),
+          GoRoute(
+            name: RNames.kycGovernmentId,
+            path: 'government-id',
+            builder: (_, __) => const KYCGovernmentIdPage(),
+          ),
+          GoRoute(
+            name: RNames.kycBvn,
+            path: 'bvn',
+            builder: (_, __) => const KYCBvnPage(),
+          ),
+        ],
       ),
 
       // Giveaway

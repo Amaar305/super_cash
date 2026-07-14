@@ -1,4 +1,5 @@
 import 'package:app_ui/app_ui.dart';
+import 'package:go_router/go_router.dart';
 import 'package:super_cash/app/app.dart';
 import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/core/fonts/app_text_style.dart';
@@ -138,7 +139,8 @@ class KYCNoticeBoard extends StatelessWidget {
   }
 
   void _navigate(BuildContext context) =>
-      context.goNamedSafe(RNames.upgradeTier);
+      // context.goNamedSafe(RNames.upgradeTier);
+      context.pushNamed(RNames.kycStatus);
 }
 
 class _AccentCircle extends StatelessWidget {

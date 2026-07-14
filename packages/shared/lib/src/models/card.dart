@@ -1,57 +1,98 @@
-//  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-//       "card_id": "string",
-//       "card_currency": "USD",
-//       "card_limit": "500000",
-//       "card_brand": "Mastercard",
-//       "is_active": import 'package:json_annotation/json_annotation.dart';
-
-// true,
-//       "is_delete": true,
-//       "created_at": "2025-06-14T16:52:14.862Z",
-//       "updated_at": "2025-06-14T16:52:14.862Z",
-//       "cardholder": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
-
 // ignore_for_file: public_member_api_docs
 
 import 'package:json_annotation/json_annotation.dart';
 
 part 'card.g.dart';
 
+String _stringFromJson(dynamic value) => value?.toString() ?? '';
+
+double _doubleFromJson(dynamic value) =>
+    double.tryParse(value.toString()) ?? 0.0;
+
+bool _boolFromJson(dynamic value) {
+  if (value is bool) return value;
+  return value?.toString().toLowerCase() == 'true';
+}
+
 @JsonSerializable()
 class Card {
   Card({
     required this.id,
-    required this.cardId,
-    required this.cardholder,
-    required this.cardCurrency,
-    required this.cardLimit,
-    required this.cardBrand,
+    required this.displayName,
+    required this.brand,
+    required this.cardType,
+    required this.currency,
+    required this.last4,
+    required this.expiryMonth,
+    required this.expiryYear,
+    required this.balance,
+    required this.status,
+    required this.statusDisplay,
     required this.isActive,
+    required this.isFrozen,
     required this.isDeleted,
+    required this.isPlatinum,
+    required this.cardLimit,
+    required this.providerName,
+    required this.issuedAt,
     required this.createdAt,
-    required this.updatedAt,
   });
   factory Card.fromJson(Map<String, dynamic> json) => _$CardFromJson(json);
+
   final String id;
-  @JsonKey(name: 'card_id')
-  final String cardId;
-  final String cardholder;
-  @JsonKey(name: 'card_currency')
-  final String cardCurrency;
-  @JsonKey(name: 'card_limit')
-  final String cardLimit;
-  @JsonKey(name: 'card_brand')
-  final String cardBrand;
-  @JsonKey(name: 'is_active')
+
+  @JsonKey(name: 'display_name')
+  final String displayName;
+
+  final String brand;
+
+  @JsonKey(name: 'card_type')
+  final String cardType;
+
+  final String currency;
+
+  @JsonKey(fromJson: _stringFromJson)
+  final String last4;
+
+  @JsonKey(name: 'expiry_month', fromJson: _stringFromJson)
+  final String expiryMonth;
+
+  @JsonKey(name: 'expiry_year', fromJson: _stringFromJson)
+  final String expiryYear;
+
+  @JsonKey(fromJson: _doubleFromJson)
+  final double balance;
+
+  final String status;
+
+  @JsonKey(name: 'status_display')
+  final String statusDisplay;
+
+  @JsonKey(name: 'is_active', fromJson: _boolFromJson)
   final bool isActive;
-  @JsonKey(name: 'is_delete')
+
+  @JsonKey(name: 'is_frozen', fromJson: _boolFromJson)
+  final bool isFrozen;
+
+  @JsonKey(name: 'is_deleted', fromJson: _boolFromJson)
   final bool isDeleted;
+
+  @JsonKey(name: 'is_platinum', fromJson: _boolFromJson)
+  final bool isPlatinum;
+
+  @JsonKey(name: 'card_limit', fromJson: _stringFromJson)
+  final String cardLimit;
+
+  @JsonKey(name: 'provider_name')
+  final String providerName;
+
+  @JsonKey(name: 'issued_at')
+  final DateTime issuedAt;
+
   @JsonKey(name: 'created_at')
   final DateTime createdAt;
-  @JsonKey(name: 'updated_at')
-  final DateTime updatedAt;
 
   Map<String, dynamic> toJson() => _$CardToJson(this);
 
-  bool get isPlatinum => cardLimit == '1000000';
+  String get formattedCardLimit => isPlatinum ? r'$100,000' : r'$50,000';
 }

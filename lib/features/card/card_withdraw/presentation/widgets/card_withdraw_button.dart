@@ -56,7 +56,7 @@ class _CardWithdrawButtonState extends State<CardWithdrawButton> {
           context.showConfirmationBottomSheet(
             title: 'Card withdraw succssfully initiated',
             okText: AppStrings.done,
-            description: p0.description,
+            description: p0.message,
           );
         });
       }),

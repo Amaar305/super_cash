@@ -5,6 +5,7 @@ import 'package:super_cash/app/init/init.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:super_cash/core/cooldown/cooldown.dart';
+import 'package:super_cash/core/fonts/app_text_style.dart';
 
 import '../../../../../core/app_strings/app_string.dart';
 import '../../../widgets/assistance_button.dart';
@@ -54,24 +55,35 @@ class _VerifyViewState extends State<VerifyView> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.showConfirmationBottomSheet(
-        dismissible: false,
-        showIcon: false,
-        title: 'Verify your email.',
-        description:
-            'Your email is not verified, please request an OTP to verify your email.',
-        okText: 'Request OTP',
-        onDone: () {
-          context.pop();
-          context.read<VerifyCubit>().requestOtp();
-        },
-      );
+      context
+          .showConfirmationBottomSheet(
+            dismissible: false,
+            showIcon: false,
+            title: 'Verify your email.',
+            description:
+                'Your email is not verified, please request an OTP to verify your email.',
+            okText: 'Request OTP',
+            onDone: () {
+              context.pop();
+              context.read<VerifyCubit>().requestOtp();
+            },
+          )
+          .then((value) {
+            if (!mounted) return;
+            context.read<CooldownCubit>().startCooldown(
+              CooldownKeys.verifyAccount,
+              Duration(seconds: 60),
+            );
+          });
     });
   }
 
   @override
   Widget build(BuildContext context) {
     // ignore: deprecated_member_use
+    final email = context.select<AppCubit, String?>(
+      (value) => value.state.user?.email,
+    );
     return WillPopScope(
       onWillPop: () {
         _confirmGoBack(context);
@@ -87,7 +99,7 @@ class _VerifyViewState extends State<VerifyView> {
             child: Column(
               spacing: AppSpacing.lg,
               children: [
-                VeriifyContainerInfo(email: ''),
+                VeriifyContainerInfo(email: email ?? ''),
                 Gap.v(AppSpacing.xxlg),
                 VerifyOtpForm(),
                 Gap.v(AppSpacing.spaceUnit),
@@ -136,9 +148,25 @@ class VerifyAccountCooldownText extends StatelessWidget {
           );
         }
 
-        return Text(
-          'Resend code in 0:44 sec',
-          style: TextStyle(fontSize: 12, fontWeight: AppFontWeight.bold),
+        return TextButton(
+          style: TextButton.styleFrom(backgroundColor: AppColors.lightBlue),
+          onPressed: () {
+            context.read<VerifyCubit>().requestOtp().then((value) {
+              if (!context.mounted) return;
+              context.read<CooldownCubit>().startCooldown(
+                CooldownKeys.verifyAccount,
+                Duration(seconds: 60),
+              );
+            });
+          },
+          child: Text(
+            'Request code.',
+            style: poppinsTextStyle(
+              fontSize: 12,
+              fontWeight: AppFontWeight.bold,
+              color: AppColors.white,
+            ),
+          ),
         );
       },
     );

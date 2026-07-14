@@ -19,6 +19,7 @@ CardDetailState _$CardDetailStateFromJson(Map<String, dynamic> json) =>
           : CardDetails.fromJson(json['cardDetails'] as Map<String, dynamic>),
       appleBillingAddress: BillingAddress.fromJson(
           json['appleBillingAddress'] as Map<String, dynamic>),
+          isPlatinum: json['isPlatinum'] as bool,
     );
 
 Map<String, dynamic> _$CardDetailStateToJson(CardDetailState instance) =>
@@ -30,6 +31,7 @@ Map<String, dynamic> _$CardDetailStateToJson(CardDetailState instance) =>
       'status': _$CardDetailStatusEnumMap[instance.status]!,
       'appleProduct': instance.appleProduct,
       'appleBillingAddress': instance.appleBillingAddress,
+      'isPlatinum': instance.isPlatinum,
     };
 
 const _$CardDetailStatusEnumMap = {

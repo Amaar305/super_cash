@@ -58,7 +58,7 @@ class _FundCardButtonState extends State<FundCardButton> {
               ); //Start cooldown
               context.showConfirmationBottomSheet(
                 title: 'Card Funding Initiated',
-                description: transaction.description,
+                description: transaction.message,
                 okText: AppStrings.done,
               );
             }),

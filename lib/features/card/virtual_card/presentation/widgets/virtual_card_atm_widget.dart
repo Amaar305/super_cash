@@ -67,9 +67,7 @@ class VirtualATMCard extends StatelessWidget {
     final mastercardText = card.isPlatinum
         ? 'PLATINUM MASTERCARD'
         : 'MASTERCARD';
-    final cardLimitText = card.isPlatinum
-        ? '\$10,000 Monthly Limit'
-        : '\$5,000 Monthly Limit';
+    final cardLimitText = '${card.formattedCardLimit} Monthly Limit';
 
     final cardTextColor = card.isPlatinum ? null : AppColors.white;
     return VirtualCardContainer(
@@ -149,7 +147,7 @@ class VirtualATMCreateCard extends StatelessWidget {
     };
 
     final mastercardText = cardBrand ? 'MASTERCARD' : 'VISA';
-    final cardLimitText = '\$5,000 Monthly Limit';
+    final cardLimitText = '\$50,000 Monthly Limit';
     final cardTextColor = AppColors.white;
 
     return Tappable.faded(
@@ -231,7 +229,7 @@ class VirtualPlatinumCard extends StatelessWidget {
         color: AppColors.white,
       ),
     };
-    final cardLimitText = '\$10,000 Monthly Limit';
+    final cardLimitText = '\$100,000 Monthly Limit';
 
     final mastercardText = cardBrand ? 'PLATINUM MASTERCARD' : 'VISA';
 

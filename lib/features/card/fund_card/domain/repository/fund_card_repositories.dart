@@ -3,7 +3,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:shared/shared.dart';
 
 abstract interface class FundCardRepositories {
-  Future<Either<Failure, TransactionResponse>> fundCard({
+  Future<Either<Failure, CardOperationResponse>> fundCard({
     required String amount,
     required String cardId,
   });

@@ -22,6 +22,7 @@ class CardDetailState extends Equatable {
   final CardDetailStatus status;
   final bool appleProduct;
   final BillingAddress appleBillingAddress;
+  final bool isPlatinum;
 
   const CardDetailState({
     required this.isCardDetailsExpanded,
@@ -30,32 +31,35 @@ class CardDetailState extends Equatable {
     required this.status,
     required this.appleProduct,
     required this.cardDetails,
-    required this.appleBillingAddress
+    required this.appleBillingAddress,
+    required this.isPlatinum,
   });
 
-  const CardDetailState.initial()
-      : this(
-          isCardDetailsExpanded: false,
-          isCardBillingAddressExpanded: false,
-          message: '',
-          status: CardDetailStatus.initial,
-          appleProduct: false,
-          cardDetails: null,
-          appleBillingAddress: const BillingAddress.appleProductBillingAddress()
-        );
+  const CardDetailState.initial(bool isPlatinum)
+    : this(
+        isCardDetailsExpanded: false,
+        isCardBillingAddressExpanded: false,
+        message: '',
+        status: CardDetailStatus.initial,
+        appleProduct: false,
+        cardDetails: null,
+        appleBillingAddress: const BillingAddress.appleProductBillingAddress(),
+        isPlatinum: isPlatinum,
+      );
   factory CardDetailState.fromJson(Map<String, dynamic> json) =>
       _$CardDetailStateFromJson(json);
 
   @override
   List<Object?> get props => [
-        isCardBillingAddressExpanded,
-        isCardDetailsExpanded,
-        message,
-        appleProduct,
-        status,
-        cardDetails,
-        appleBillingAddress,
-      ];
+    isCardBillingAddressExpanded,
+    isCardDetailsExpanded,
+    message,
+    appleProduct,
+    status,
+    cardDetails,
+    appleBillingAddress,
+    isPlatinum,
+  ];
 
   CardDetailState copyWith({
     CardDetails? cardDetails,
@@ -65,15 +69,19 @@ class CardDetailState extends Equatable {
     CardDetailStatus? status,
     bool? appleProduct,
     BillingAddress? appleBillingAddress,
+    bool? isPlatinum,
   }) {
     return CardDetailState(
       cardDetails: cardDetails ?? this.cardDetails,
-      isCardDetailsExpanded: isCardDetailsExpanded ?? this.isCardDetailsExpanded,
-      isCardBillingAddressExpanded: isCardBillingAddressExpanded ?? this.isCardBillingAddressExpanded,
+      isCardDetailsExpanded:
+          isCardDetailsExpanded ?? this.isCardDetailsExpanded,
+      isCardBillingAddressExpanded:
+          isCardBillingAddressExpanded ?? this.isCardBillingAddressExpanded,
       message: message ?? this.message,
       status: status ?? this.status,
       appleProduct: appleProduct ?? this.appleProduct,
       appleBillingAddress: appleBillingAddress ?? this.appleBillingAddress,
+      isPlatinum: isPlatinum ?? this.isPlatinum,
     );
   }
 

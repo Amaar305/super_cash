@@ -43,29 +43,9 @@ class CardTransactionView extends StatelessWidget {
           spacing: AppSpacing.lg,
           children: [
             CardTransactionSearchField(),
-            // CardTransactionFilterButton()
-            
             CardTransactionsBody(),
-            // CardTransactionsFooter(),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class CardTransactionsFooter extends StatelessWidget {
-  const CardTransactionsFooter({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.all(AppSpacing.lg),
-      color: Color(0xFFF8FAFC),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [Text('data')],
       ),
     );
   }

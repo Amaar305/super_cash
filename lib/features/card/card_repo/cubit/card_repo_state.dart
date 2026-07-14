@@ -13,36 +13,36 @@ enum CardRepoStatus {
 
 class CardRepoState extends Equatable {
   final CardRepoStatus status;
-  final DollarRate? dollarRate;
+  final CardFeeSettings? cardFeeSettings;
   final String message;
 
   const CardRepoState({
     required this.status,
-    required this.dollarRate,
+    required this.cardFeeSettings,
     required this.message,
   });
 
   const CardRepoState.initail()
       : this(
-          dollarRate: null,
+          cardFeeSettings: null,
           status: CardRepoStatus.initail,
           message: '',
         );
   @override
   List<Object?> get props => [
         status,
-        dollarRate,
+        cardFeeSettings,
         message,
       ];
 
   CardRepoState copyWith({
     CardRepoStatus? status,
-    DollarRate? dollarRate,
+    CardFeeSettings? cardFeeSettings,
     String? message,
   }) {
     return CardRepoState(
       status: status ?? this.status,
-      dollarRate: dollarRate ?? this.dollarRate,
+      cardFeeSettings: cardFeeSettings ?? this.cardFeeSettings,
       message: message ?? this.message,
     );
   }

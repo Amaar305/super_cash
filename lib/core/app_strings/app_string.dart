@@ -6,7 +6,7 @@ class AppStrings {
   static const String createAccount = 'Create an Account';
   static const String verifyAccount = 'Verification';
   static const String verifyAccountInstruction =
-      'Please enter the code sent to {maskemail} or spam folder';
+      'Please enter the code sent to {maskemail} or check your SPAM folder';
 
   static const String firstName = 'First Name';
   static const String lastName = 'Last Name';

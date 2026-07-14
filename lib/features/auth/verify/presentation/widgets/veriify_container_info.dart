@@ -29,7 +29,7 @@ class VeriifyContainerInfo extends StatelessWidget {
             Flexible(
               child: Text(
                 AppStrings.verifyAccountInstruction.replaceAll(
-                  'maskemail',
+                  '{maskemail}',
                   maskEmail(email),
                 ),
                 style: TextStyle(fontSize: 10, fontWeight: FontWeight.w500),

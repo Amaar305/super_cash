@@ -46,6 +46,12 @@ class _ElectricityViewState extends State<ElectricityView> {
         title: AppAppBarTitle(AppStrings.electricity),
         leading: AppLeadingAppBarWidget(onTap: context.pop),
       ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(
+          AppSpacing.lg,
+        ).copyWith(bottom: AppSpacing.xxlg),
+        child: ElectricityButton(),
+      ),
       body: ListView(
         padding: const EdgeInsets.all(AppSpacing.lg),
         children: [
@@ -55,7 +61,6 @@ class _ElectricityViewState extends State<ElectricityView> {
           Gap.v(AppSpacing.xlg),
           ElectricityVTUButtons(),
           Gap.v(AppSpacing.xlg),
-          ElectricityButton(),
         ],
       ),
     );

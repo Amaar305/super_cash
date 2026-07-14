@@ -23,33 +23,25 @@ class CardDetailsBillingAddress extends StatelessWidget {
           if (billingAddress != null) ...[
             CardDetailTitleWithValue(
               title: 'Address',
-              value: billingAddress?.billingAddress1,
+              value: billingAddress?.address,
             ),
             CardDetailTitleWithValue(
               title: 'City',
-              value: billingAddress?.billingCity,
+              value: billingAddress?.city,
             ),
 
             CardDetailTitleWithValue(
               title: 'Country',
-              value: billingAddress?.billingCountry,
-            ),
-            CardDetailTitleWithValue(
-              title: 'Country Code',
-              value: billingAddress?.countryCode,
+              value: billingAddress?.country,
             ),
             CardDetailTitleWithValue(
               title: 'Zip Code',
-              value: billingAddress?.billingZipCode,
+              value: billingAddress?.postalCode,
             ),
 
             CardDetailTitleWithValue(
               title: 'State',
               value: billingAddress?.state,
-            ),
-            CardDetailTitleWithValue(
-              title: 'State Code',
-              value: billingAddress?.stateCode,
             ),
           ] else if (cardDetails != null) ...[
             CardDetailTitleWithValue(

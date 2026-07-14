@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//Users/macbookpro/Documents/Projects/Web/cashapp/kyc/api/**)",
+      "Bash(find /Users/macbookpro -name \"*.dart\" -path \"*app_client*\" | grep -v \".dart_tool\\\\|build\\\\|cpython\" | sort | head -10)",
+      "Read(//Users/macbookpro/**)",
+      "Read(//Users/macbookpro/Documents/Projects/Web/cashapp/virtual_cards/api/**)"
+    ]
+  }
+}

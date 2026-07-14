@@ -33,32 +33,45 @@ class _CardTransactionSearchFieldState
 
   @override
   Widget build(BuildContext context) {
+    final isSortAsc = context.select(
+      (CardTransactionsCubit cubit) => cubit.state.isSortAsc,
+    );
+
     return Row(
-      spacing: AppSpacing.md,
+      spacing: AppSpacing.sm,
       children: [
         Expanded(
           child: AppTextField(
             hintText: AppStrings.search,
+            prefixIcon: Icon(
+              Icons.search,
+              size: 20,
+              color: AppColors.grey,
+            ),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(6.15),
-              borderSide: BorderSide(
-                color: AppColors.lightBlueFilled,
-                width: 1.23,
-              ),
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(color: AppColors.brightGrey),
             ),
             onChanged: (value) =>
                 _debouncer.run(() => _cubit.searchTransaction(value)),
           ),
         ),
-        Container(
-          width: 50,
-          height: 50,
-          alignment: Alignment(0, 0),
-          decoration: BoxDecoration(
-            color: AppColors.buttonColor,
-            borderRadius: BorderRadius.circular(5),
+        Tappable.faded(
+          onTap: _cubit.sortByAmount,
+          child: Container(
+            width: 44,
+            height: 44,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: AppColors.brightGrey),
+            ),
+            child: Icon(
+              isSortAsc ? Icons.arrow_upward : Icons.arrow_downward,
+              size: 18,
+              color: AppColors.grey,
+            ),
           ),
-          child: Icon(Icons.search, color: AppColors.white, size: 22),
         ),
       ],
     );

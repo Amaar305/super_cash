@@ -32,7 +32,6 @@ class _VirtualCardViewState extends State<VirtualCardView> {
   @override
   void initState() {
     super.initState();
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<VirtualCardCubit>().fetchCards();
     });
@@ -40,6 +39,7 @@ class _VirtualCardViewState extends State<VirtualCardView> {
 
   @override
   Widget build(BuildContext context) {
+
     return AppScaffold(
       releaseFocus: true,
       resizeToAvoidBottomInset: true,
@@ -50,6 +50,7 @@ class _VirtualCardViewState extends State<VirtualCardView> {
       body: RefreshIndicator.adaptive(
         onRefresh: () async {
           context.read<VirtualCardCubit>().fetchCards();
+          
         },
         child: Padding(
           padding: EdgeInsets.all(AppSpacing.lg),

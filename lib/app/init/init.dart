@@ -29,6 +29,7 @@ import 'package:http/http.dart' as http;
 
 import '../../features/add_fund/add_fund.dart';
 import '../../features/auth/auth.dart';
+import '../../features/kyc/kyc.dart';
 import '../../features/card/card_details/domain/use_cases/card_details_use_cases.dart';
 import '../../features/card/card_repo/card_repo.dart';
 import '../../features/home/home.dart';
@@ -110,7 +111,7 @@ Future<void> initDependencies({required bool development}) async {
   _confirmTransactionPin();
   _home();
   _liveSuppors();
-  _cardDollarRate();
+  _cardFeeSettings();
   _airtime();
   _notifications();
   _data();
@@ -133,6 +134,7 @@ Future<void> initDependencies({required bool development}) async {
   _bonus();
 
   _giveaways();
+  _kyc();
 }
 
 void _giveaways() {
@@ -388,7 +390,7 @@ void _beneficiary() {
     );
 }
 
-void _cardDollarRate() {
+void _cardFeeSettings() {
   // Database
   serviceLocator
     ..registerFactory<CardRemoteDataSource>(
@@ -403,11 +405,11 @@ void _cardDollarRate() {
     )
     // Usecases
     ..registerFactory(
-      () => GetDollarRateUseCase(cardRepositories: serviceLocator()),
+      () => GetCardFeeSettingsUseCase(cardRepositories: serviceLocator()),
     )
     // Cubit
     ..registerLazySingleton(
-      () => CardRepoCubit(getDollarRateUseCase: serviceLocator()),
+      () => CardRepoCubit(getCardFeeSettingsUseCase: serviceLocator()),
     );
 }
 
@@ -883,6 +885,34 @@ void _airtime() {
     ..registerFactory(
       () => AirtimeUsecase(repository: serviceLocator<AirtimeRepository>()),
     );
+}
+
+void _kyc() {
+  serviceLocator
+    // DataSource
+    ..registerFactory<KycRemoteDataSource>(
+      () => KycRemoteDataSourceImpl(apiClient: serviceLocator()),
+    )
+    // Repository
+    ..registerFactory<KycRepository>(
+      () => KycRepositoryImpl(
+        kycRemoteDataSource: serviceLocator(),
+        apiErrorHandler: serviceLocator(),
+      ),
+    )
+    // Use cases
+    ..registerFactory(() => GetKycStatusUseCase(kycRepository: serviceLocator()))
+    ..registerFactory(() => GetPersonalInfoUseCase(kycRepository: serviceLocator()))
+    ..registerFactory(() => SubmitPersonalInfoUseCase(kycRepository: serviceLocator()))
+    ..registerFactory(() => GetAddressUseCase(kycRepository: serviceLocator()))
+    ..registerFactory(() => SubmitAddressUseCase(kycRepository: serviceLocator()))
+    ..registerFactory(() => GetSelfieUseCase(kycRepository: serviceLocator()))
+    ..registerFactory(() => UploadSelfieUseCase(kycRepository: serviceLocator()))
+    ..registerFactory(() => GetDocumentsUseCase(kycRepository: serviceLocator()))
+    ..registerFactory(() => UploadDocumentUseCase(kycRepository: serviceLocator()))
+    ..registerFactory(() => GetBvnUseCase(kycRepository: serviceLocator()))
+    ..registerFactory(() => SubmitBvnUseCase(kycRepository: serviceLocator()))
+    ..registerFactory(() => RegisterCardholderUseCase(kycRepository: serviceLocator()));
 }
 
 void _cable() {

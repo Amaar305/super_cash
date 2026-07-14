@@ -87,7 +87,6 @@ class _SplashPageState extends State<SplashPage>
   @override
   Widget build(BuildContext context) {
     final nameStyle = context.titleLarge?.copyWith(
-      // color: AppColors.deepBlue,
       fontWeight: FontWeight.w600,
       letterSpacing: 0.8,
     );

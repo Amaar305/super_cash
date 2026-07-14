@@ -73,10 +73,21 @@ class CardWithdrawTransactionFeeSection extends StatelessWidget {
     );
 
     final dollarRate = context.select(
-      (CardRepoCubit cubit) => cubit.state.dollarRate?.dollarRate ?? 0,
+      (CardRepoCubit cubit) => cubit.state.cardFeeSettings?.usdToNgnRate ?? 0,
     );
-    String creditedAmount = convertAmount(amount, dollarRate);
+    final withdrawalFee = context.select(
+      (CardRepoCubit cubit) =>
+          cubit.state.cardFeeSettings?.withdrawalFeeFixedUsd ?? 0,
+    );
+
+    final netAmount = (double.tryParse(amount) ?? 0) - withdrawalFee;
+    final netAmountStr = netAmount > 0 ? netAmount.toStringAsFixed(2) : '0';
+
+    String creditedAmount = convertAmount(netAmountStr, dollarRate);
     String amountW = '\$$amount ≈ ${convertAmount(amount, dollarRate)}';
+    String feeDisplay = withdrawalFee > 0
+        ? '\$${withdrawalFee.toStringAsFixed(2)} ≈ N${(withdrawalFee * dollarRate).toStringAsFixed(2)}'
+        : 'Free';
     return Column(
       spacing: AppSpacing.lg,
       children: [
@@ -105,7 +116,7 @@ class CardWithdrawTransactionFeeSection extends StatelessWidget {
               spacing: AppSpacing.md + 2,
               children: [
                 cardTransactionDescSmallText(amountW),
-                cardTransactionDescSmallText('Free'),
+                cardTransactionDescSmallText(feeDisplay),
                 cardTransactionDescSmallText(creditedAmount),
               ],
             ),

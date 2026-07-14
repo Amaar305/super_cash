@@ -103,7 +103,7 @@ void _showValidationSheet(BuildContext context, Map<String, dynamic> payload) {
           onPurchased: () async {
             context.pop();
             final cubit = context.read<CableCubit>();
-          
+
             final result = await context.push<bool?>(
               AppRoutes.confirmationDialog,
               extra: PurchaseDetail(
@@ -183,10 +183,7 @@ class DetailTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final style = MonaSansTextStyle.label(
-      fontWeight: AppFontWeight.black,
-      fontSize: AppSpacing.md + 2,
-    );
+    final style = TextStyle(fontFamily: 'MonaSans');
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [

@@ -25,6 +25,7 @@ class CardDetailTitleWithValue extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     title,
@@ -33,18 +34,21 @@ class CardDetailTitleWithValue extends StatelessWidget {
                       fontWeight: AppFontWeight.light,
                     ),
                   ),
-                  const Spacer(),
-                  Text(
-                    value ?? '',
-                    style: TextStyle(
-                      fontSize: AppSpacing.md,
-                      fontWeight: boldValue
-                          ? AppFontWeight.extraBold
-                          : AppFontWeight.light,
+                  const Gap.h(AppSpacing.sm),
+                  Expanded(
+                    child: Text(
+                      value ?? '',
+                      textAlign: TextAlign.end,
+                      style: TextStyle(
+                        fontSize: AppSpacing.md,
+                        fontWeight: boldValue
+                            ? AppFontWeight.extraBold
+                            : AppFontWeight.light,
+                      ),
                     ),
                   ),
-                  const Gap.h(AppSpacing.sm),
-                  if (isCopyable)
+                  if (isCopyable) ...[
+                    const Gap.h(AppSpacing.sm),
                     Tappable.faded(
                       onTap: () {
                         copyText(context, value ?? '', '$title copied');
@@ -54,6 +58,7 @@ class CardDetailTitleWithValue extends StatelessWidget {
                         color: AppColors.buttonColor,
                       ),
                     ),
+                  ],
                 ],
               ),
               const Divider(thickness: 0.3),

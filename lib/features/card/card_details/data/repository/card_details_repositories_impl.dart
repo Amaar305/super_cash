@@ -9,7 +9,7 @@ class CardDetailsRepositoriesImpl implements CardDetailsRepositories {
   final CardDetailsRemoteDataSource cardDetailsRemoteDataSource;
   final ApiErrorHandler apiErrorHandler;
 
-  CardDetailsRepositoriesImpl({
+  const CardDetailsRepositoriesImpl({
     required this.cardDetailsRemoteDataSource,
     required this.apiErrorHandler,
   });
@@ -28,12 +28,18 @@ class CardDetailsRepositoriesImpl implements CardDetailsRepositories {
   }
 
   @override
-  Future<Either<Failure, Map<String, dynamic>>> freezeCard(
-    String cardId,
-  ) async {
+  Future<Either<Failure, CardActionResponse>> freezeCard(
+    String cardId, {
+    bool unfreeze = false,
+  }) async {
     try {
-      final response = await cardDetailsRemoteDataSource.freezeCard(cardId);
-      return right(response);
+      if (unfreeze) {
+        final response = await cardDetailsRemoteDataSource.unfreezeCard(cardId);
+        return right(response);
+      } else {
+        final response = await cardDetailsRemoteDataSource.freezeCard(cardId);
+        return right(response);
+      }
     } catch (e) {
       return left(apiErrorHandler.handleError(e));
     }

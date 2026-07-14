@@ -46,7 +46,7 @@ class FundCardCubit extends Cubit<FundCardState> {
     emit(newScreenState);
   }
 
-  void onSubmit([void Function(TransactionResponse)? onSuccess]) async {
+  void onSubmit([void Function(CardOperationResponse)? onSuccess]) async {
     final amount = Amount.dirty(state.amount.value);
     final isFormValid = FormzValid([amount]).isFormValid;
 

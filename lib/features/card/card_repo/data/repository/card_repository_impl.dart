@@ -9,18 +9,19 @@ class CardRepositoryImpl implements CardRepositories {
   final CardRemoteDataSource cardRemoteDataSource;
   final ApiErrorHandler apiErrorHandler;
 
- const  CardRepositoryImpl({
+  const CardRepositoryImpl({
     required this.cardRemoteDataSource,
     required this.apiErrorHandler,
   });
 
   @override
-  Future<Either<Failure, DollarRate>> getDollarRate() async {
+  Future<Either<Failure, CardFeeSettings>> getCardFeeSettings() async {
     try {
-      final result = await cardRemoteDataSource.getDollarRate();
+      final result = await cardRemoteDataSource.getCardFeeSettings();
       return right(result);
     } catch (error) {
       return left(apiErrorHandler.handleError(error));
     }
   }
+
 }

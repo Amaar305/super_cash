@@ -14,7 +14,7 @@ const  CardWithdrawRepositoriesImpl({
   });
 
   @override
-  Future<Either<Failure, TransactionResponse>> cardWithdraw({
+  Future<Either<Failure, CardOperationResponse>> cardWithdraw({
     required String amount,
     required String cardId,
   }) async {

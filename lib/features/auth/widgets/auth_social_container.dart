@@ -49,7 +49,7 @@ class AuthSocialContainer extends StatelessWidget {
         spacing: 16,
         children: [
           Text(
-            'Connect with us on ',
+            'Reach out to us on ',
             textAlign: TextAlign.center,
             style: TextStyle(fontFamily: 'MonaSans'),
           ),

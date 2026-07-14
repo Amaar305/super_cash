@@ -5,5 +5,8 @@ import 'package:shared/shared.dart';
 abstract interface class CardDetailsRepositories {
   Future<Either<Failure, CardDetails>> getFullCardDetails(String cardId);
 
-  Future<Either<Failure, Map<String, dynamic>>> freezeCard(String cardId);
+  Future<Either<Failure, CardActionResponse>> freezeCard(
+    String cardId, {
+    bool unfreeze = false,
+  });
 }

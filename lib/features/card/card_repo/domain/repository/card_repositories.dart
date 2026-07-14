@@ -3,5 +3,5 @@ import 'package:fpdart/fpdart.dart';
 import 'package:shared/shared.dart';
 
 abstract interface class CardRepositories {
-  Future<Either<Failure, DollarRate>> getDollarRate();
+  Future<Either<Failure, CardFeeSettings>> getCardFeeSettings();
 }

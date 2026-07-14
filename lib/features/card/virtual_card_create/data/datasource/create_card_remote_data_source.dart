@@ -24,12 +24,13 @@ class CreateCardRemoteDataSourceImpl implements CreateCardRemoteDataSource {
   }) async {
     final response = await apiClient.request(
       method: 'POST',
-      path: 'card/card-creation/',
+      path: 'virtual_cards/cards/',
       body: jsonEncode({
-        'amount': amount,
+        'initial_funding_amount': amount,
         'pin': pin,
+        'currency': 'USD'.toLowerCase(),
         'card_limit': cardLimit,
-        'card_brand': cardBrand,
+        'brand': cardBrand.toLowerCase(),
       }),
     );
     Map<String, dynamic> res = jsonDecode(response.body);

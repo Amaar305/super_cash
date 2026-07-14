@@ -3,8 +3,7 @@ import 'package:super_cash/app/routes/routes.dart';
 import 'package:super_cash/core/app_strings/app_string.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/shared.dart' as s;
-
-import '../../virtual_card.dart';
+import 'package:super_cash/features/card/card.dart';
 
 class VirtualCardWidget extends StatelessWidget {
   const VirtualCardWidget({super.key, required this.card});
@@ -13,18 +12,24 @@ class VirtualCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void fundCard() =>
-        context.goNamedSafe(RNames.virtualCardFund, extra: card.cardId);
+        context.goNamedSafe(RNames.virtualCardFund, extra: card.id);
     void cardWithdraw() =>
-        context.goNamedSafe(RNames.virtualCardWithdraw, extra: card.cardId);
+        context.goNamedSafe(RNames.virtualCardWithdraw, extra: card.id);
     void cardTransactions() =>
-        context.goNamedSafe(RNames.virtualCardTransactions, extra: card.cardId);
+        context.goNamedSafe(RNames.virtualCardTransactions, extra: card.id);
 
     void viewCardDetails() async {
       final isConfirmed =
           await context.goNamedSafe<bool?>(RNames.confirmationDialog) ?? false;
 
       if (isConfirmed && context.mounted) {
-        context.goNamedSafe(RNames.virtualCardDetail, extra: card.cardId);
+        context.goNamedSafe(
+          RNames.virtualCardDetail,
+          extra: CardDetailsPageParams(
+            cardId: card.id,
+            isPlatinum: card.isPlatinum,
+          ),
+        );
       }
     }
 

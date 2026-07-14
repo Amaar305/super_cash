@@ -17,7 +17,7 @@ class DataInstant extends StatelessWidget {
         DataPlanDurationWidget(),
         DataPlansSection(),
         Gap.v(AppSpacing.xxxs),
-        DataButton(),
+        // DataButton(),
       ],
     );
   }
