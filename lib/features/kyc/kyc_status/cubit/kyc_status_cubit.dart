@@ -47,6 +47,7 @@ class KycStatusCubit extends Cubit<KycStatusState> {
       )),
       (cardholder) => emit(state.copyWith(
         status: KycStatusStatus.registered,
+        cardholder: cardholder,
         message: cardholder.isActive
             ? 'Card account activated successfully.'
             : 'Cardholder registered. Your account is being reviewed.',

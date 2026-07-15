@@ -130,6 +130,7 @@ class AppUser {
     bool? isKycVerified,
     bool? transactionPin,
     bool? isSuspended,
+    String? userTier,
     List<Account>? accounts,
     Tokens? tokens,
   }) {
@@ -144,6 +145,7 @@ class AppUser {
       isKycVerified: isKycVerified ?? this.isKycVerified,
       transactionPin: transactionPin ?? this.transactionPin,
       isSuspended: isSuspended ?? this.isSuspended,
+      userTier: userTier ?? this.userTier,
       accounts: accounts ?? this.accounts,
       tokens: tokens ?? this.tokens,
     );

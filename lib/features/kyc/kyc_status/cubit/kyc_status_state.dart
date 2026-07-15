@@ -36,11 +36,13 @@ class KycStatusState extends Equatable {
   final KycStatusStatus status;
   final String message;
   final KycStatus? kycStatus;
+  final KycCardholderResponse? cardholder;
 
   const KycStatusState._({
     required this.status,
     required this.message,
     required this.kycStatus,
+    this.cardholder,
   });
 
   const KycStatusState.intial()
@@ -51,17 +53,19 @@ class KycStatusState extends Equatable {
         );
 
   @override
-  List<Object?> get props => [status, message, kycStatus];
+  List<Object?> get props => [status, message, kycStatus, cardholder];
 
   KycStatusState copyWith({
     KycStatusStatus? status,
     String? message,
     KycStatus? kycStatus,
+    KycCardholderResponse? cardholder,
   }) {
     return KycStatusState._(
       status: status ?? this.status,
       message: message ?? this.message,
       kycStatus: kycStatus ?? this.kycStatus,
+      cardholder: cardholder ?? this.cardholder,
     );
   }
 

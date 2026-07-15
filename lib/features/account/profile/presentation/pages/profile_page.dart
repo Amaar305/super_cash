@@ -136,7 +136,7 @@ class _AccountVerificationSection extends StatelessWidget {
           : NewWidget(
               label: AppStrings.accountVerification,
               icon: Iconsax.location,
-              onTap: () => context.goNamedSafe(RNames.upgradeTier),
+              onTap: () => context.goNamedSafe(RNames.kycStatus),
             ),
     );
   }

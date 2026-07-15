@@ -142,11 +142,10 @@ class AppStrings {
   ];
   static const String cardTermsOfUsage = 'Card Terms of Usage';
   static const List<String> cardTermsOfUsagesList = [
-    'A card would be deleted after 15 consecutive declines due to insufficient balance on the 15th decline.',
+    'A fee of \$0.5 will be charged from your card balance due to an insufficient fund error.',
     'Card must have a minimum available balance of \$1.',
-    'A card without a transaction for three (3) months will eventually get deleted.',
-    'The card will be deactivated if the monthly maintenance charge is not paid.',
-    '1% Transaction fee applies with a minimum of \$1 and maximum of \$5.',
+    'Card transactions in other international currencies (e.g. GBP, EUR) attract a charge of 2% of the amount.',
+    'USD card transactions in domestic currency (NGN) attract a charge of 1%, capped at \$3.',
     'The monthly spending limit for this card is CARDLIMIT',
   ];
 

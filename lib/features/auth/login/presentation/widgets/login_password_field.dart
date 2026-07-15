@@ -66,6 +66,7 @@ class _LoginPasswordFieldState extends State<LoginPasswordField> {
           enabled: !isLoading,
           obscureText: showPassword,
           textInputAction: TextInputAction.done,
+          autofillHints: const [AutofillHints.password],
           errorText: passwordErrorMessage,
           errorMaxLines: 3,
           onChanged: (v) => _debouncer.run(() => _cubit.onPasswordChanged(v)),

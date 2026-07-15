@@ -55,7 +55,7 @@ class NoCreditCardWidget extends StatelessWidget {
           label: AppStrings.upgradeTierTwo,
           onPressed: () {
             context.pop();
-            context.goNamedSafe(RNames.upgradeTier);
+            context.goNamedSafe(RNames.kycStatus);
           },
         ),
         SizedBox(

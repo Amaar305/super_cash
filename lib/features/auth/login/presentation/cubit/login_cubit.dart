@@ -2,7 +2,7 @@ import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/app/init/init.dart';
 import 'package:super_cash/core/usecase/use_case.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_fields/form_fields.dart';
 import 'package:shared/shared.dart';
@@ -200,6 +200,13 @@ class LoginCubit extends Cubit<LoginState> {
       (user) async {
         if (isClosed) return;
         emit(state.copyWith(status: LoginStatus.success, user: user));
+
+        // Tells the OS the autofill session is done and the credentials
+        // were valid — this is what actually triggers the native
+        // "Save Password?" prompt (iCloud Keychain / Google Password
+        // Manager). Wrapping the fields in AutofillGroup with the right
+        // autofillHints alone doesn't show it without this call.
+        TextInput.finishAutofillContext();
 
         // Decide the next screen or action to trigger after login succeeds.
         final decisionEither = await _determineLoginFlowUseCase(user);
