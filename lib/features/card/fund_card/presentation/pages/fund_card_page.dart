@@ -69,24 +69,25 @@ class FundCardTransactionFeeSection extends StatelessWidget {
     final amount = context.select(
       (FundCardCubit cubit) => cubit.state.amount.value,
     );
-    final cardTransactionFee = context.select(
-      (CardRepoCubit cubit) =>
-          cubit.state.cardFeeSettings?.fundingFeeFixedUsd ?? 0,
+    final cardFeeSettings = context.select(
+      (CardRepoCubit cubit) => cubit.state.cardFeeSettings,
     );
-    final dollarRate = context.select(
-      (CardRepoCubit cubit) => cubit.state.cardFeeSettings?.usdToNgnRate ?? 0,
-    );
+    final dollarRate = cardFeeSettings?.usdToNgnRate ?? 0;
+    final cardTransactionFee = (cardFeeSettings?.fundingFeeFixedUsd ?? 0)
+        .toStringAsFixed(0);
+
+    final amountInNaira = convertAmount(amount, dollarRate);
 
     final totalCharge = calculateTotalFee(
       amount: amount,
       dollarRate: dollarRate,
-      fee: cardTransactionFee,
+      fee: cardFeeSettings?.cardFundingFeeDollerToNaira ?? 0,
     );
-    final amountInNaira = convertAmount(amount, dollarRate);
+
     final deductedAmount = calculateTotalFee(
       amount: amount,
       dollarRate: dollarRate,
-      fee: cardTransactionFee,
+      fee: cardFeeSettings?.cardFundingFeeDollerToNaira ?? 0,
     );
     return Column(
       spacing: AppSpacing.lg,
@@ -117,7 +118,9 @@ class FundCardTransactionFeeSection extends StatelessWidget {
               spacing: AppSpacing.md + 2,
               children: [
                 _buildSmallText('\$$amount ≈ $amountInNaira'),
-                _buildSmallText('N$cardTransactionFee'),
+                _buildSmallText(
+                  '\$$cardTransactionFee ≈ N${cardFeeSettings?.cardFundingFeeDollerToNaira}',
+                ),
                 _buildSmallText('\$$amount ≈ $totalCharge'),
                 _buildSmallText(deductedAmount),
               ],

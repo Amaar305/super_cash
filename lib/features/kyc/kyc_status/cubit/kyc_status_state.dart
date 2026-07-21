@@ -46,11 +46,7 @@ class KycStatusState extends Equatable {
   });
 
   const KycStatusState.intial()
-      : this._(
-          status: KycStatusStatus.initial,
-          message: '',
-          kycStatus: null,
-        );
+    : this._(status: KycStatusStatus.initial, message: '', kycStatus: null);
 
   @override
   List<Object?> get props => [status, message, kycStatus, cardholder];
@@ -125,6 +121,9 @@ class KycStatusState extends Equatable {
   int get totalSteps => 5;
   double get progressValue =>
       totalSteps == 0 ? 0.0 : completedStepsCount / totalSteps;
-  bool get canActivate => kycStatus?.readyForCardRegistration ?? false;
-  String get progressLabel => '$completedStepsCount of $totalSteps steps completed';
+  bool get canActivate =>
+      (kycStatus?.readyForCardRegistration ?? false) &&
+      completedStepsCount == totalSteps;
+  String get progressLabel =>
+      '$completedStepsCount of $totalSteps steps completed';
 }

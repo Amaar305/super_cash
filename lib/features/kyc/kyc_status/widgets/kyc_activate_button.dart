@@ -55,7 +55,7 @@ class KycActivateButton extends StatelessWidget {
                     ),
                   )
                 : Text(
-                    'Activate Cardholder Registration',
+                    'Upgrade tier 2',
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: AppFontWeight.semiBold,

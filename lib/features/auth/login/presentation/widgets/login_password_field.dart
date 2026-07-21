@@ -64,7 +64,7 @@ class _LoginPasswordFieldState extends State<LoginPasswordField> {
           focusNode: _focusNode,
           filled: Config.filled,
           enabled: !isLoading,
-          obscureText: showPassword,
+          obscureText: !showPassword,
           textInputAction: TextInputAction.done,
           autofillHints: const [AutofillHints.password],
           errorText: passwordErrorMessage,

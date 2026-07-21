@@ -8,7 +8,7 @@ String convertAmount(String amount, double dollarRate) {
   try {
     final am = double.parse(amount);
     final result = (am * dollarRate).toStringAsFixed(2);
-    return 'N$result';
+    return result;
   } catch (e, stackTrace) {
     logE('Fail to convert amount to naira $e', stackTrace: stackTrace);
     return '';

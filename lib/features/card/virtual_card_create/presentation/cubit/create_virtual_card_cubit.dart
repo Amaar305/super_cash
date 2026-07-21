@@ -119,13 +119,13 @@ class CreateVirtualCardCubit extends Cubit<CreateVirtualCardState> {
     final amount = Amount.dirty(state.amount.value);
     final cardPin = Otp.dirty(state.cardPin.value);
     final confirmCardPin = Otp.dirty(state.confirmCardPin.value);
-    final didMatched = cardPin.value == confirmCardPin.value;
+    // final didMatched = cardPin.value == confirmCardPin.value;
     final isUSDCard = state.isUSDCard;
     final isMasterCard = state.isMasterCard;
     final isPlatinum = state.platinum;
 
-    final isFormValid =
-        FormzValid([amount, cardPin, confirmCardPin]).isFormValid && didMatched;
+    // final isFormValid =
+    //     FormzValid([amount, cardPin, confirmCardPin]).isFormValid && didMatched;
 
     final newState = state.copyWith(
       amount: amount,
@@ -134,12 +134,12 @@ class CreateVirtualCardCubit extends Cubit<CreateVirtualCardState> {
       isMasterCard: isMasterCard,
       platinum: isPlatinum,
       isUSDCard: isUSDCard,
-      status: isFormValid ? CreateVirtualCardStatus.loading : null,
+      status: CreateVirtualCardStatus.loading,
     );
 
     emit(newState);
 
-    if (!isFormValid) return;
+    // if (!isFormValid) return;
     final res = await _createCardUseCases(
       CreateCardParams(
         pin: cardPin.value,

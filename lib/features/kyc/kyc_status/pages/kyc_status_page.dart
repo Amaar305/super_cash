@@ -212,8 +212,9 @@ class _SuccessBody extends StatelessWidget {
               canActivate: state.canActivate,
               completedCount: state.completedStepsCount,
               totalSteps: state.totalSteps,
-              onPressed: () =>
-                  context.read<KycStatusCubit>().registerCardholder(),
+              onPressed: () => context
+                  .read<KycStatusCubit>()
+                  .registerCardholder(() => context.pop(true)),
             ),
             const Gap.v(AppSpacing.lg),
           ],

@@ -55,7 +55,7 @@ class _KycHomeAddressPostalCodeFieldState
       spacing: AppSpacing.lg,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const FieldLabelTitle('Postal Code (optional)'),
+        const FieldLabelTitle('Postal Code'),
         AppTextField.underlineBorder(
           hintText: 'e.g. 100001',
           prefixIcon: const Icon(

@@ -7,8 +7,6 @@ import 'package:shared/shared.dart';
 import 'package:super_cash/core/app_strings/app_string.dart';
 import 'package:super_cash/features/card/card.dart';
 
-
-
 class CardCreatePage extends StatelessWidget {
   const CardCreatePage({super.key});
 
@@ -132,10 +130,16 @@ class CardCreateProceedButton extends StatelessWidget {
       onPressed: () {
         Navigator.push(
           context,
-          CardCreatePinPage.route(
+          CardCreateCostAndChargesPage.route(
             cardCubit: context.read<CreateVirtualCardCubit>(),
           ),
         );
+        // Navigator.push(
+        //   context,
+        //   CardCreatePinPage.route(
+        //     cardCubit: context.read<CreateVirtualCardCubit>(),
+        //   ),
+        // );
       },
     );
   }

@@ -29,19 +29,19 @@ class CreateVirtualCardState extends Equatable {
     required this.platinum,
   });
   const CreateVirtualCardState.initial()
-      : this._(
-          isMasterCard: true,
-          isUSDCard: true,
-          message: '',
-          status: CreateVirtualCardStatus.initial,
-          amount: const Amount.pure(),
-          cardPin: const Otp.pure(),
-          confirmCardPin: const Otp.pure(),
-          cardPinMessage: '',
-          confirmCardPinMessage: '',
-          showPin: false,
-          platinum: false,
-        );
+    : this._(
+        isMasterCard: true,
+        isUSDCard: true,
+        message: '',
+        status: CreateVirtualCardStatus.initial,
+        amount: const Amount.pure('1'),
+        cardPin: const Otp.pure(),
+        confirmCardPin: const Otp.pure(),
+        cardPinMessage: '',
+        confirmCardPinMessage: '',
+        showPin: false,
+        platinum: false,
+      );
   final CreateVirtualCardStatus status;
   final bool isUSDCard;
   final bool isMasterCard;
@@ -55,18 +55,18 @@ class CreateVirtualCardState extends Equatable {
   final bool showPin;
   @override
   List<Object> get props => [
-        isUSDCard,
-        isMasterCard,
-        message,
-        status,
-        amount,
-        cardPin,
-        confirmCardPin,
-        cardPinMessage,
-        confirmCardPinMessage,
-        showPin,
-        platinum,
-      ];
+    isUSDCard,
+    isMasterCard,
+    message,
+    status,
+    amount,
+    cardPin,
+    confirmCardPin,
+    cardPinMessage,
+    confirmCardPinMessage,
+    showPin,
+    platinum,
+  ];
 
   CreateVirtualCardState copyWith({
     CreateVirtualCardStatus? status,
@@ -91,7 +91,8 @@ class CreateVirtualCardState extends Equatable {
       confirmCardPin: confirmCardPin ?? this.confirmCardPin,
       amount: amount ?? this.amount,
       cardPinMessage: cardPinMessage ?? this.cardPinMessage,
-      confirmCardPinMessage: confirmCardPinMessage ?? this.confirmCardPinMessage,
+      confirmCardPinMessage:
+          confirmCardPinMessage ?? this.confirmCardPinMessage,
       showPin: showPin ?? this.showPin,
     );
   }

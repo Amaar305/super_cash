@@ -28,7 +28,7 @@ class VirtaulCardDetails extends StatelessWidget {
     }
     final textColor = isPlatinum ? null : AppColors.white;
     return CardContainer(
-      isPlatinum: true,
+      isPlatinum: isPlatinum,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

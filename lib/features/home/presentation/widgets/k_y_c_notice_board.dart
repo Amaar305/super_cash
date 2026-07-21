@@ -5,6 +5,7 @@ import 'package:super_cash/app/cubit/app_cubit.dart';
 import 'package:super_cash/core/fonts/app_text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:super_cash/features/home/home.dart';
 
 class KYCNoticeBoard extends StatelessWidget {
   const KYCNoticeBoard({super.key});
@@ -138,9 +139,12 @@ class KYCNoticeBoard extends StatelessWidget {
     );
   }
 
-  void _navigate(BuildContext context) =>
-      // context.goNamedSafe(RNames.upgradeTier);
-      context.pushNamed(RNames.kycStatus);
+  void _navigate(BuildContext context) async {
+    final result = await context.pushNamed<bool?>(RNames.kycStatus);
+    if (result == true && context.mounted) {
+      context.read<HomeCubit>().onRefresh(forceRefresh: true);
+    }
+  }
 }
 
 class _AccentCircle extends StatelessWidget {

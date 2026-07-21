@@ -29,7 +29,7 @@ class CardDetailsPage extends StatelessWidget {
         isPlatinum: cardDetailsParams.isPlatinum,
         cardDetailsUseCase: serviceLocator(),
         freezeCardUseCase: serviceLocator(),
-      )..fetchCardDetails(),
+      )..fetchCardDetails(forceRefresh: true),
       child: CardDetailsView(cardId: cardDetailsParams.cardId),
     );
   }
@@ -88,7 +88,7 @@ class CardDetailsBody extends StatelessWidget {
       },
       child: Column(
         children: [
-          VirtualCardShell(),
+          VirtualCardDetailShell(),
           Gap.v(AppSpacing.lg),
           CardBalanceSection(),
           Gap.v(AppSpacing.lg),
@@ -107,23 +107,25 @@ class CardDetailsBody extends StatelessWidget {
           //   onTap: onChangeCardPin,
           // ),
           FreezeCardTileWidget(cardId: cardId),
+          Gap.v(AppSpacing.xxxlg),
+          Gap.v(AppSpacing.xxxlg),
+          Gap.v(AppSpacing.xxxlg),
+          Gap.v(AppSpacing.xxxlg),
         ],
       ),
     );
   }
 }
 
-class VirtualCardShell extends StatelessWidget {
-  const VirtualCardShell({super.key});
+class VirtualCardDetailShell extends StatelessWidget {
+  const VirtualCardDetailShell({super.key});
 
   @override
   Widget build(BuildContext context) {
     final cardDetails = context.select(
       (CardDetailCubit cubit) => cubit.state.cardDetails,
     );
-    final isPlatinum = context.select(
-      (CardDetailCubit cubit) => cubit.state.isPlatinum,
-    );
-    return VirtaulCardDetails(cardDetails: cardDetails, isPlatinum: isPlatinum);
+
+    return VirtaulCardDetails(cardDetails: cardDetails, isPlatinum: false);
   }
 }

@@ -4,7 +4,6 @@ import 'package:super_cash/core/fonts/app_text_style.dart';
 import 'package:super_cash/features/card/card_repo/cubit/card_repo_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared/shared.dart';
 
 import '../../../../../core/app_strings/app_string.dart';
 import '../../../../../core/common/common.dart';
@@ -60,10 +59,12 @@ class CardCreateCostAndChargesView extends StatelessWidget {
         body: BlocListener<CreateVirtualCardCubit, CreateVirtualCardState>(
           listenWhen: (previous, current) => current.status != previous.status,
           listener: (context, state) {
-            print('Error: ${state.message}');
             if (state.status.isError && state.message.isNotEmpty) {
               openSnackbar(
-                SnackbarMessage.error(title: state.message),
+                SnackbarMessage.error(
+                  title: state.message,
+                  timeout: Duration(milliseconds: 4000),
+                ),
                 clearIfQueue: true,
               );
             }
@@ -98,17 +99,14 @@ class CardCreateCostAndChargesDetails extends StatelessWidget {
       (CreateVirtualCardCubit cubit) => cubit.state.amount.value,
     );
 
-    final cardCreationFee = context.select(
-      (CardRepoCubit cubit) =>
-          cubit.state.cardFeeSettings?.cardCreationFeeUsd ?? 0,
+    final cardFeeSettings = context.select(
+      (CardRepoCubit cubit) => cubit.state.cardFeeSettings,
     );
-    final dollarRate = context.select(
-      (CardRepoCubit cubit) => cubit.state.cardFeeSettings?.usdToNgnRate ?? 1,
-    );
+
     String totalFee =
-        '\$$amount ≈ ${calculateTotalFee(amount: amount, dollarRate: dollarRate, fee: cardCreationFee)}';
+        '\$$amount ≈ ${cardFeeSettings?.calculateTotalUSDFeeToNaira(amount) ?? 1}';
     String creationFundingAmount =
-        '\$$amount ≈ ${convertAmount(amount, dollarRate)}';
+        '\$$amount ≈ ${cardFeeSettings?.convertUSDAmountToNaira(amount) ?? 1}';
 
     return Column(
       spacing: AppSpacing.sm,
@@ -132,7 +130,7 @@ class CardCreateCostAndChargesDetails extends StatelessWidget {
               spacing: AppSpacing.md,
               children: [
                 cardTransactionDescSmallText(
-                  '\$${(cardCreationFee / dollarRate).toStringAsFixed(0)} ≈ N$cardCreationFee',
+                  '\$${cardFeeSettings?.cardCreationFeeUsd.toStringAsFixed(0)} ≈ N${cardFeeSettings?.cardCreationFeeDollerToNaira.toStringAsFixed(2)}',
                 ),
                 cardTransactionDescSmallText(creationFundingAmount),
                 cardTransactionDescSmallText(totalFee),
@@ -150,12 +148,8 @@ class CardCreationFeeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cardCreationFee = context.select(
-      (CardRepoCubit cubit) =>
-          cubit.state.cardFeeSettings?.cardCreationFeeUsd ?? 0,
-    );
-    final dollarRate = context.select(
-      (CardRepoCubit cubit) => cubit.state.cardFeeSettings?.usdToNgnRate ?? 1,
+    final cardFeeSettings = context.select(
+      (CardRepoCubit cubit) => cubit.state.cardFeeSettings,
     );
 
     final isPlatinum = context.select(
@@ -200,7 +194,7 @@ class CardCreationFeeWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   cardTransactionDescSmallText(
-                    '\$${(cardCreationFee / dollarRate).toStringAsFixed(0)} ≈ N$cardCreationFee',
+                    '\$${cardFeeSettings?.cardCreationFeeUsd ?? 1} ≈ N${cardFeeSettings?.cardCreationFeeDollerToNaira}',
                   ),
 
                   cardTransactionDescSmallText(

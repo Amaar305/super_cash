@@ -107,7 +107,7 @@ class CardWithdrawTransactionFeeSection extends StatelessWidget {
               spacing: AppSpacing.md,
               children: [
                 cardTransactionDescText('Amount'),
-                cardTransactionDescText('Total Charged'),
+                cardTransactionDescText('Withdrawal Fee'),
                 cardTransactionDescText('Amount to be credited to your wallet'),
               ],
             ),

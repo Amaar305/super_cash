@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs
 
 import 'package:json_annotation/json_annotation.dart';
+import 'package:shared/shared.dart';
 
 part 'card_fee_settings.g.dart';
 
@@ -105,4 +106,41 @@ class CardFeeSettings {
   final double maxWithdrawalNgn;
 
   Map<String, dynamic> toJson() => _$CardFeeSettingsToJson(this);
+  double get cardCreationFeeDollerToNaira => cardCreationFeeUsd * usdToNgnRate;
+  double get cardWithdrawalFeeDollerToNaira =>
+      withdrawalFeeFixedUsd * usdToNgnRate;
+  double get cardFundingFeeDollerToNaira =>
+      fundingFeeFixedUsd * usdToNgnRate;
+
+  String calculateTotalUSDFeeToNaira(
+    String amount, {
+    bool creation = true,
+  }) {
+    try {
+      if (amount.isEmpty) return '0';
+      // Convert  to naira
+      final nairaAmount = double.parse(amount) * usdToNgnRate;
+      final fee = creation ? cardCreationFeeDollerToNaira : fundingFeeFixedUsd;
+      // Calcutae the sum
+      final sum = (nairaAmount + fee).toStringAsFixed(2);
+
+      return 'N$sum';
+    } catch (e, stackTrace) {
+      logE('Fail to convert total fee $e', stackTrace: stackTrace);
+      return '0';
+    }
+  }
+
+  String convertUSDAmountToNaira(String amount) {
+    if (amount.isEmpty) return '0';
+
+    try {
+      final am = double.parse(amount);
+      final result = (am * usdToNgnRate).toStringAsFixed(2);
+      return 'N$result';
+    } catch (e, stackTrace) {
+      logE('Fail to convert amount to naira $e', stackTrace: stackTrace);
+      return '';
+    }
+  }
 }

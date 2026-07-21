@@ -13,9 +13,9 @@ class KycStatusCubit extends Cubit<KycStatusState> {
   KycStatusCubit({
     required GetKycStatusUseCase getKycStatusUseCase,
     required RegisterCardholderUseCase registerCardholderUseCase,
-  })  : _getKycStatusUseCase = getKycStatusUseCase,
-        _registerCardholderUseCase = registerCardholderUseCase,
-        super(KycStatusState.intial());
+  }) : _getKycStatusUseCase = getKycStatusUseCase,
+       _registerCardholderUseCase = registerCardholderUseCase,
+       super(KycStatusState.intial());
 
   Future<void> getKycStatus() async {
     emit(state.copyWith(status: KycStatusStatus.loading));
@@ -36,22 +36,29 @@ class KycStatusCubit extends Cubit<KycStatusState> {
     }
   }
 
-  Future<void> registerCardholder() async {
+  Future<void> registerCardholder([void Function()? onRegistered]) async {
     emit(state.copyWith(status: KycStatusStatus.registering));
     final result = await _registerCardholderUseCase(NoParam());
     if (isClosed) return;
     result.fold(
-      (failure) => emit(state.copyWith(
-        status: KycStatusStatus.failure,
-        message: failure.message,
-      )),
-      (cardholder) => emit(state.copyWith(
-        status: KycStatusStatus.registered,
-        cardholder: cardholder,
-        message: cardholder.isActive
-            ? 'Card account activated successfully.'
-            : 'Cardholder registered. Your account is being reviewed.',
-      )),
+      (failure) => emit(
+        state.copyWith(
+          status: KycStatusStatus.failure,
+          message: failure.message,
+        ),
+      ),
+      (cardholder) {
+        emit(
+          state.copyWith(
+            status: KycStatusStatus.registered,
+            cardholder: cardholder,
+            message: cardholder.isActive
+                ? 'Tier 2 activated successfully.'
+                : 'Tier has been upgraded. Your account is being reviewed.',
+          ),
+        );
+        onRegistered?.call();
+      },
     );
   }
 
@@ -61,7 +68,8 @@ class KycStatusCubit extends Cubit<KycStatusState> {
       if (isClosed) return;
       res.fold(
         (_) => null,
-        (r) => emit(state.copyWith(kycStatus: r, status: KycStatusStatus.success)),
+        (r) =>
+            emit(state.copyWith(kycStatus: r, status: KycStatusStatus.success)),
       );
     } catch (_) {}
   }

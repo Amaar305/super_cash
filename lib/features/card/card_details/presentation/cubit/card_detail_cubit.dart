@@ -26,7 +26,7 @@ class CardDetailCubit extends HydratedCubit<CardDetailState> {
 
        super(CardDetailState.initial(isPlatinum));
   @override
-  String get id => "card_details_v2.0";
+  String get id => "${_cardId}_v2.0";
 
   // void resetState() => emit(CardDetailState.initial());
 

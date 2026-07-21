@@ -14,14 +14,10 @@ class KycSelfiePreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final selfieFile = context.select((KycSelfieCubit c) => c.state.selfieFile);
-    final imagerl = context.select(
+    final imageUrl = context.select(
       (KycSelfieCubit c) => c.state.displayImageUrl,
     );
-    // TODO: Remove here in production
-    final imageUrl = imagerl?.replaceAll(
-      'https://supercash.com.ng',
-      'http://127.0.0.1:8000',
-    );
+
     final selfieError = context.select(
       (KycSelfieCubit c) => c.state.selfieError,
     );
@@ -83,7 +79,6 @@ class _PreviewContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('imageUrl: $imageUrl');
     if (selfieFile != null) {
       return SizedBox(
         height: 200,

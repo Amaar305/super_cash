@@ -83,7 +83,7 @@ class AuthClient {
         body: body,
         timeout: timeout ?? _defaultTimeout,
       );
-      
+
       if (first.statusCode != 401 || !withToken) {
         _throwOnHttpError(first);
         return first;
@@ -379,7 +379,18 @@ class AuthClient {
     // Common DRF shapes:
     // {"detail": "..."} or {"non_field_errors": ["..."]} or {"field": ["..."]}
     if (data['detail'] is String) return data['detail'] as String;
-    if (data['message'] is String) return data['message'] as String;
+    final message = data['message'];
+
+    try {
+      final mList = jsonDecode(message as String) as List<dynamic>;
+
+      for (final m in mList) {
+        return m as String;
+      }
+    } catch (e) {
+      if (message is String) return message;
+    }
+
     if (data['error'] is String) return data['error'] as String;
 
     for (final entry in data.entries) {
