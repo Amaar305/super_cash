@@ -103,8 +103,9 @@ class CardCreateCostAndChargesDetails extends StatelessWidget {
       (CardRepoCubit cubit) => cubit.state.cardFeeSettings,
     );
 
+    var t = double.parse(amount) + (cardFeeSettings?.cardCreationFeeUsd ?? 0);
     String totalFee =
-        '\$$amount ≈ ${cardFeeSettings?.calculateTotalUSDFeeToNaira(amount) ?? 1}';
+        '\$${t.toStringAsFixed(0)} ≈ ${cardFeeSettings?.calculateTotalUSDFeeToNaira(amount) ?? 1}';
     String creationFundingAmount =
         '\$$amount ≈ ${cardFeeSettings?.convertUSDAmountToNaira(amount) ?? 1}';
 
