@@ -296,6 +296,11 @@ class AppStrings {
 
   static const String smile = 'Smile Voice';
   static const String smileVoiceAndDataBundles = 'Voice and Data Bundles';
+  static const String smileEmail = 'Smile Email';
+  static const String enterSmileEmail = 'Enter your Smile email address';
+  static const String verifyEmail = 'Verify Email';
+  static const String smileAccount = 'Account';
+  static const String smilePlan = 'Data Plan';
 
   static const String accountNumber = 'Account Number';
 

@@ -44,7 +44,7 @@ class AppRoutes {
   static const String referTerms = '/refer-terms';
   static const String examPin = '/exam-pin';
   static const String smile = '/smile';
-  static const String smileProceed = '$smile/smile-proceed';
+  static const String smilePurchase = '$smile/purchase';
   static const String manageBeneficiary = '/manage-beneficiary';
   static const String saveBeneficiary = '$manageBeneficiary/save';
   static const String transfer = '/transfer';
@@ -120,7 +120,7 @@ class RNames {
   static const referTerms = 'referTerms';
   static const examPin = 'examPin';
   static const smile = 'smile';
-  static const smileProceed = 'smileProceed';
+  static const smilePurchase = 'smilePurchase';
   static const manageBeneficiary = 'manageBeneficiary';
   static const saveBeneficiary = 'saveBeneficiary';
   static const enableBiometric = 'enableBiometric';

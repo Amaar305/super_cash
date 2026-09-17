@@ -19,6 +19,7 @@ import 'package:super_cash/features/giveaway/giveaway.dart';
 import 'package:super_cash/features/history/history.dart';
 import 'package:super_cash/features/live_chat/live_chat.dart';
 import 'package:super_cash/features/notification/notification.dart';
+import 'package:super_cash/features/smile/smile.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:local_auth/local_auth.dart';
@@ -135,6 +136,7 @@ Future<void> initDependencies({required bool development}) async {
 
   _giveaways();
   _kyc();
+  _smile();
 }
 
 void _giveaways() {
@@ -202,7 +204,9 @@ void _giveaways() {
       ),
     )
     ..registerLazySingleton(
-      () => ClaimDirectAirtimeGiveawayUseCase(giveawayRepository: serviceLocator()),
+      () => ClaimDirectAirtimeGiveawayUseCase(
+        giveawayRepository: serviceLocator(),
+      ),
     )
     ..registerLazySingleton(
       () => AddDirectAirtimePhoneGiveawayUseCase(
@@ -742,11 +746,7 @@ void _home() {
     ..registerFactory(
       () => FetchAppSettingsUseCase(homeUserRepository: serviceLocator()),
     )
-    ..registerFactory(
-      () => CreatePalmPayAccountUseCase(
-         serviceLocator(),
-      ),
-    );
+    ..registerFactory(() => CreatePalmPayAccountUseCase(serviceLocator()));
 }
 
 _auth() {
@@ -901,18 +901,34 @@ void _kyc() {
       ),
     )
     // Use cases
-    ..registerFactory(() => GetKycStatusUseCase(kycRepository: serviceLocator()))
-    ..registerFactory(() => GetPersonalInfoUseCase(kycRepository: serviceLocator()))
-    ..registerFactory(() => SubmitPersonalInfoUseCase(kycRepository: serviceLocator()))
+    ..registerFactory(
+      () => GetKycStatusUseCase(kycRepository: serviceLocator()),
+    )
+    ..registerFactory(
+      () => GetPersonalInfoUseCase(kycRepository: serviceLocator()),
+    )
+    ..registerFactory(
+      () => SubmitPersonalInfoUseCase(kycRepository: serviceLocator()),
+    )
     ..registerFactory(() => GetAddressUseCase(kycRepository: serviceLocator()))
-    ..registerFactory(() => SubmitAddressUseCase(kycRepository: serviceLocator()))
+    ..registerFactory(
+      () => SubmitAddressUseCase(kycRepository: serviceLocator()),
+    )
     ..registerFactory(() => GetSelfieUseCase(kycRepository: serviceLocator()))
-    ..registerFactory(() => UploadSelfieUseCase(kycRepository: serviceLocator()))
-    ..registerFactory(() => GetDocumentsUseCase(kycRepository: serviceLocator()))
-    ..registerFactory(() => UploadDocumentUseCase(kycRepository: serviceLocator()))
+    ..registerFactory(
+      () => UploadSelfieUseCase(kycRepository: serviceLocator()),
+    )
+    ..registerFactory(
+      () => GetDocumentsUseCase(kycRepository: serviceLocator()),
+    )
+    ..registerFactory(
+      () => UploadDocumentUseCase(kycRepository: serviceLocator()),
+    )
     ..registerFactory(() => GetBvnUseCase(kycRepository: serviceLocator()))
     ..registerFactory(() => SubmitBvnUseCase(kycRepository: serviceLocator()))
-    ..registerFactory(() => RegisterCardholderUseCase(kycRepository: serviceLocator()));
+    ..registerFactory(
+      () => RegisterCardholderUseCase(kycRepository: serviceLocator()),
+    );
 }
 
 void _cable() {
@@ -938,5 +954,40 @@ void _cable() {
     )
     ..registerFactory(
       () => ValidateCableUsecase(repository: serviceLocator<CableRepository>()),
+    );
+}
+
+void _smile() {
+  // Datasources
+  serviceLocator
+    ..registerFactory<SmileRemoteDataSource>(
+      () => SmileRemoteDataSourceImpl(authClient: serviceLocator<AuthClient>()),
+    )
+    // Repositories
+    ..registerFactory<SmileRepository>(
+      () => SmileRepositoryImpl(
+        remoteDataSource: serviceLocator<SmileRemoteDataSource>(),
+        apiErrorHandler: serviceLocator(),
+      ),
+    )
+    // Usecases
+    ..registerFactory(
+      () =>
+          FetchSmilePlansUseCase(repository: serviceLocator<SmileRepository>()),
+    )
+    ..registerFactory(
+      () => VerifySmileEmailUseCase(
+        repository: serviceLocator<SmileRepository>(),
+      ),
+    )
+    ..registerFactory(
+      () => PurchaseSmilePlanUseCase(
+        repository: serviceLocator<SmileRepository>(),
+      ),
+    )
+    ..registerFactory(
+      () => QuerySmileTransactionStatusUseCase(
+        repository: serviceLocator<SmileRepository>(),
+      ),
     );
 }

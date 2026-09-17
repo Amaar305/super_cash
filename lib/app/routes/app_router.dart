@@ -12,6 +12,7 @@ import 'package:super_cash/features/confirm_transaction_pin/confirm_transaction_
 import 'package:super_cash/features/giveaway/giveaway.dart';
 import 'package:super_cash/features/onboarding/onboarding.dart';
 import 'package:super_cash/features/referal/referal.dart';
+import 'package:super_cash/features/smile/smile.dart';
 import 'package:super_cash/features/transfer/presentation/pages/transfer_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -162,13 +163,13 @@ class AppRouter {
       GoRoute(
         name: RNames.smile,
         path: AppRoutes.smile,
-        builder: (_, __) => SmilePage(),
+        builder: (_, __) => const SmilePlanSelectionPage(),
         routes: [
           GoRoute(
-            name: RNames.smileProceed,
-            path: 'smile-proceed',
+            name: RNames.smilePurchase,
+            path: 'purchase',
             builder: (context, state) =>
-                SmileProceedPage(cubit: state.extra as SmileCubit),
+                SmilePurchasePage(plan: state.extra as SmilePlan),
           ),
         ],
       ),
