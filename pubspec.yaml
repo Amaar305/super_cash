@@ -77,7 +77,7 @@ dependencies:
   webview_flutter_plus: ^0.4.19
   iconsax: ^0.0.8
   flutter_date_pickers: ^0.4.3
-  intl: ^0.20.2
+  intl: ^0.20.3
   url_launcher: ^6.3.2
   cupertino_icons: ^1.0.8
   dropdown_search: ^6.0.2
